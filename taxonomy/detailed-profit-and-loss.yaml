@@ -1,0 +1,51 @@
+taxonomy:
+  dpl:
+    contexts:
+    - entity: metadata.business.company-number
+      id: business
+      scheme: http://www.companieshouse.gov.uk/
+    - from: business
+      id: current-item1
+      period: metadata.report.periods.0
+      segments:
+        detailed-analysis: item1
+    document-metadata:
+    - comment
+    metadata:
+    - context: current-item1
+      id: comment
+      value: Consultancy services
+    lookup:
+      countries-regions:
+        dimension: uk-geo:CountriesRegionsDimension
+        map:
+          UK: uk-geo:UnitedKingdom
+          england-and-wales: uk-geo:EnglandWales
+      detailed-analysis:
+        dimension: dpl:DetailedAnalysisDimension
+        map:
+          item1: dpl:Item1
+          item10: dpl:Item10
+          item2: dpl:Item2
+          item3: dpl:Item3
+          item4: dpl:Item4
+          item5: dpl:Item5
+          item6: dpl:Item6
+          item7: dpl:Item7
+          item8: dpl:Item8
+          item9: dpl:Item9
+    namespaces:
+      dpl: http://www.hmrc.gov.uk/schemas/ct/dpl/2019-01-01
+      uk-core: http://xbrl.frc.org.uk/fr/2019-01-01/core
+    schema: http://www.hmrc.gov.uk/schemas/ct/dpl/2019-01-01/dpl-2019.xsd
+    sign-reversed: {}
+    tags:
+      comment: dpl:DetailedProfitLossFree-textComment
+      consultancy: uk-core:TurnoverRevenue
+      gross-profit: uk-core:GrossProfitLoss
+      it-and-computing: dpl:ItComputingCosts
+      profit-before-tax: uk-core:ProfitLossBeforeTax
+      staffing: core:WagesSalaries
+      telecoms: dpl:TelecommunicationsCosts
+      total-costs: dpl:TotalCosts
+      turnover: uk-core:TurnoverRevenue

@@ -1,0 +1,579 @@
+taxonomy:
+  frs101:
+    contexts:
+    - entity: metadata.business.company-number
+      id: business
+      scheme: http://www.companieshouse.gov.uk/
+    - from: business
+      id: report-period
+      period: metadata.report.periods.0
+    - from: business
+      id: previous-period
+      period: metadata.report.periods.1
+    - from: business
+      id: report-date
+      instant: metadata.report.date
+    - from: report-period
+      id: industry-sector
+      segments:
+        industry-sector: metadata.business.industry-sector
+    - from: report-period
+      id: accounting-standards
+      segments:
+        accounting-standards: metadata.report.accounting-standards
+    - from: report-period
+      id: accounts-type
+      segments:
+        accounts-type: metadata.report.accounts-type
+    - from: report-period
+      id: accounts-status
+      segments:
+        accounts-status: metadata.report.accounts-status
+    - from: report-period
+      id: entity-legal-form
+      segments:
+        entity-legal-form: metadata.business.company-formation.form
+    - from: report-period
+      id: entity-legal-country
+      segments:
+        countries-regions: metadata.business.company-formation.country
+    - from: report-period
+      id: officer1
+      segments:
+        officer: director1
+    - from: report-period
+      id: officer2
+      segments:
+        officer: director2
+    - from: report-period
+      id: officer3
+      segments:
+        officer: director3
+    - from: report-period
+      id: officer4
+      segments:
+        officer: director4
+    - from: report-period
+      id: officer5
+      segments:
+        officer: director5
+    - from: report-period
+      id: officer6
+      segments:
+        officer: director6
+    - from: report-period
+      id: officer7
+      segments:
+        officer: director7
+    - from: report-period
+      id: officer8
+      segments:
+        officer: director8
+    - from: report-period
+      id: officer9
+      segments:
+        officer: director9
+    - from: report-period
+      id: officer10
+      segments:
+        officer: director10
+    - from: report-period
+      id: officer11
+      segments:
+        officer: director11
+    - from: report-period
+      id: officer12
+      segments:
+        officer: director12
+    - from: report-period
+      id: officer13
+      segments:
+        officer: director13
+    - from: report-period
+      id: officer14
+      segments:
+        officer: director14
+    - from: report-period
+      id: officer15
+      segments:
+        officer: director15
+    - from: report-period
+      id: officer16
+      segments:
+        officer: director16
+    - from: report-period
+      id: officer17
+      segments:
+        officer: director17
+    - from: report-period
+      id: officer18
+      segments:
+        officer: director18
+    - from: report-period
+      id: officer19
+      segments:
+        officer: director19
+    - from: report-period
+      id: officer20
+      segments:
+        officer: director20
+    - from: report-period
+      id: signing-officer
+      segments:
+        officer: metadata.report.signing-officer
+    - from: report-period
+      id: contact-country
+      segments:
+        countries-regions: metadata.business.contact.country
+    - from: report-period
+      id: phone
+      segments:
+        phone-number-type: metadata.business.contact.phone.type
+    - from: report-period
+      id: website
+      segments:
+        countries-regions: metadata.business.contact.country
+    document-metadata:
+    - report-title
+    - report-date
+    - authorised-date
+    - period-start
+    - period-end
+    - company-name
+    - company-number
+    - vat-registration
+    - software
+    - software-version
+    - balance-sheet-date
+    - activities
+    - sic1
+    - sic2
+    - sic3
+    - sic4
+    - industry-sector
+    - is-dormant
+    - trading-status
+    - accounting-standards
+    - accounts-type
+    - accounts-status
+    - entity-legal-form
+    - entity-legal-country
+    - entity-legal-date
+    - average-employees
+    - average-employees
+    - officer
+    - signing-officer
+    - contact-name
+    - contact-address1
+    - contact-address2
+    - contact-address3
+    - contact-location
+    - contact-county
+    - contact-postcode
+    - contact-email
+    - contact-phone-country
+    - contact-phone-area
+    - contact-phone-number
+    - website-url
+    - website-description
+    lookup:
+      accounting-standards:
+        dimension: uk-bus:AccountingStandardsDimension
+        map:
+          frs101: uk-bus:FRS101
+          frs102: uk-bus:FRS102
+          frsse: uk-bus:FRSSE
+          full-irs: uk-bus:FullIFRS
+          micro-entities: uk-bus:Micro-entities
+          other-standards: uk-bus:OtherStandards
+          small-entities-regime: uk-bus:SmallEntities
+      accounts-status:
+        dimension: uk-bus:AccountsStatusDimension
+        map:
+          audit-exempt-no-accountants-report: uk-bus:AuditExempt-NoAccountantsReport
+          audit-exempt-with-accountants-report: uk-bus:AuditExemptWithAccountantsReport
+          audited: uk-bus:Audited
+          independent-examination: uk-bus:IndependentExaminationCharity
+          other-reporting-regime: uk-bus:OtherReportingRegime
+      accounts-type:
+        dimension: uk-bus:AccountsTypeDimension
+        map:
+          abbreviated-accounts: uk-bus:AbbreviatedAccounts
+          abridged-accounts: uk-bus:AbridgedAccounts
+          full-accounts: uk-bus:FullAccounts
+      countries-regions:
+        dimension: uk-geo:CountriesRegionsDimension
+        map:
+          UK: uk-geo:UnitedKingdom
+          england-and-wales: uk-geo:EnglandWales
+      entity-legal-form:
+        dimension: uk-bus:LegalFormEntityDimension
+        map:
+          branch-trading-in-uk: uk-bus:BranchTradingInUK
+          community-interest-company: uk-bus:CommunityInterestCompanyCIC
+          company-limited-by-guarantee: uk-bus:CompanyLimitedByGuarantee
+          friendly-society: uk-bus:FriendlySociety
+          incorporated-by-act-of-parliament: uk-bus:IncorporatedByActParliament
+          incorporated-by-royal-charter: uk-bus:IncorporatedByRoyalCharter
+          industrial-and-provident-society: uk-bus:IndustrialProvidentSociety
+          limited-liability-partnership: uk-bus:LimitedLiabilityPartnershipLLP
+          other-incorporated-association: uk-bus:OtherIncorporatedAssociation
+          other-non-uk: uk-bus:OtherNon-UK
+          other-uk: uk-bus:OtherUK
+          private-limited-company: uk-bus:PrivateLimitedCompanyLtd
+          public-limited-company-not-quoted: uk-bus:PublicLimitedCompanyPLCNotQuotedOnAnyExchange
+          public-limited-company-plc: uk-bus:PublicLimitedCompanyPLC
+          registered-charity: uk-bus:RegisteredCharity
+          scottish-partnership: uk-bus:ScottishPartnership
+          unlimited-company: uk-bus:UnlimitedCompany
+      industry-sector:
+        dimension: uk-bus:MainIndustrySectorDimension
+        map:
+          a: uk-bus:A-AgricultureForestryFishing
+          b: uk-bus:B-MiningQuarrying
+          c: uk-bus:C-Manufacturing
+          d: uk-bus:D-ElectricityGasSteamAirConditioningSupply
+          e: uk-bus:E-WaterSupplySewerageWasteManagementRemediationActivities
+          f: uk-bus:F-Construction
+          g: uk-bus:G-WholesaleRetailTradeRepairMotorVehiclesMotorcycles
+          h: uk-bus:H-TransportationStorage
+          i: uk-bus:I-AccommodationFoodServiceActivities
+          j: uk-bus:J-InformationCommunication
+          k: uk-bus:K-FinancialInsuranceActivities
+          l: uk-bus:L-RealEstateActivities
+          m: uk-bus:M-ProfessionalScientificTechnicalActivities
+          n: uk-bus:N-AdministrativeSupportServiceActivities
+          o: uk-bus:O-PublicAdministrationDefenceCompulsorySocialSecurity
+          p: uk-bus:P-Education
+          q: uk-bus:Q-HumanHealthSocialWorkActivities
+          r: uk-bus:R-ArtsEntertainmentRecreation
+          s: uk-bus:S-OtherServiceActivities
+      matures:
+        dimension: uk-core:MaturitiesOrExpirationPeriodsDimension
+        map:
+          after-1-year: uk-core:AfterOneYear
+          within-1-year: uk-core:WithinOneYear
+      officer:
+        dimension: uk-bus:EntityOfficersDimension
+        map:
+          director1: uk-bus:Director1
+          director10: uk-bus:Director10
+          director2: uk-bus:Director2
+          director3: uk-bus:Director3
+          director4: uk-bus:Director4
+          director5: uk-bus:Director5
+          director6: uk-bus:Director6
+          director7: uk-bus:Director7
+          director8: uk-bus:Director8
+          director9: uk-bus:Director9
+      phone-number-type:
+        dimension: uk-bus:PhoneNumberTypeDimension
+        map:
+          fax: uk-bus:Fax
+          landline: uk-bus:Landline
+          mobile: uk-bus:Mobile
+    metadata:
+    - config: metadata.report.title
+      context: report-period
+      id: report-title
+    - config: metadata.report.date
+      context: report-date
+      id: report-date
+      kind: date
+    - config: metadata.report.authorised-date
+      context: report-date
+      id: authorised-date
+    - config: metadata.report.periods.0.start
+      context: report-date
+      id: period-start
+      kind: date
+    - config: metadata.report.periods.0.end
+      context: report-date
+      id: period-end
+      kind: date
+    - config: metadata.business.company-name
+      context: report-period
+      id: company-name
+    - config: metadata.business.company-number
+      context: report-period
+      id: company-number
+    - config: metadata.business.vat-registration
+      context: report-period
+      id: vat-registration
+    - config: internal.software
+      context: report-period
+      id: software
+    - config: internal.software-version
+      context: report-period
+      id: software-version
+    - config: metadata.report.balance-sheet-date
+      context: report-date
+      id: balance-sheet-date
+    - config: metadata.business.activities
+      context: report-period
+      id: activities
+    - config: metadata.business.sic-codes.0
+      context: report-period
+      id: sic1
+    - config: metadata.business.sic-codes.1
+      context: report-period
+      id: sic2
+    - config: metadata.business.sic-codes.2
+      context: report-period
+      id: sic3
+    - config: metadata.business.sic-codes.3
+      context: report-period
+      id: sic4
+    - context: industry-sector
+      id: industry-sector
+      value: ''
+    - config: metadata.business.is-dormant
+      context: report-period
+      id: is-dormant
+      kind: bool
+    - context: report-period
+      id: trading-status
+      value: ''
+    - context: accounting-standards
+      id: accounting-standards
+      value: ''
+    - context: accounts-type
+      id: accounts-type
+      value: ''
+    - context: accounts-status
+      id: accounts-status
+      value: ''
+    - context: entity-legal-form
+      id: entity-legal-form
+      value: ''
+    - context: entity-legal-country
+      id: entity-legal-country
+      value: ''
+    - config: metadata.business.company-formation.date
+      context: report-date
+      id: entity-legal-date
+      kind: date
+    - config: metadata.business.average-employees.0
+      context: report-period
+      id: average-employees
+      kind: count
+    - config: metadata.business.average-employees.1
+      context: previous-period
+      id: average-employees
+      kind: count
+    - config: metadata.business.directors.0
+      context: officer1
+      id: officer
+    - config: metadata.business.directors.1
+      context: officer2
+      id: officer
+    - config: metadata.business.directors.2
+      context: officer3
+      id: officer
+    - config: metadata.business.directors.3
+      context: officer4
+      id: officer
+    - config: metadata.business.directors.4
+      context: officer5
+      id: officer
+    - config: metadata.business.directors.5
+      context: officer6
+      id: officer
+    - config: metadata.business.directors.6
+      context: officer7
+      id: officer
+    - config: metadata.business.directors.7
+      context: officer8
+      id: officer
+    - config: metadata.business.directors.8
+      context: officer9
+      id: officer
+    - config: metadata.business.directors.9
+      context: officer10
+      id: officer
+    - config: metadata.business.directors.10
+      context: officer11
+      id: officer
+    - config: metadata.business.directors.11
+      context: officer12
+      id: officer
+    - config: metadata.business.directors.12
+      context: officer13
+      id: officer
+    - config: metadata.business.directors.13
+      context: officer14
+      id: officer
+    - config: metadata.business.directors.14
+      context: officer15
+      id: officer
+    - config: metadata.business.directors.15
+      context: officer16
+      id: officer
+    - config: metadata.business.directors.16
+      context: officer17
+      id: officer
+    - config: metadata.business.directors.17
+      context: officer18
+      id: officer
+    - config: metadata.business.directors.18
+      context: officer19
+      id: officer
+    - config: metadata.business.directors.19
+      context: officer20
+      id: officer
+    - context: signing-officer
+      id: signing-officer
+      value: ''
+    - config: metadata.business.contact.name
+      context: contact-country
+      id: contact-name
+    - config: metadata.business.contact.address.0
+      context: contact-country
+      id: contact-address1
+    - config: metadata.business.contact.address.1
+      context: contact-country
+      id: contact-address2
+    - config: metadata.business.contact.address.2
+      context: contact-country
+      id: contact-address3
+    - config: metadata.business.contact.location
+      context: contact-country
+      id: contact-location
+    - config: metadata.business.contact.county
+      context: contact-country
+      id: contact-county
+    - config: metadata.business.contact.postcode
+      context: contact-country
+      id: contact-postcode
+    - config: metadata.business.contact.email
+      context: contact-country
+      id: contact-email
+    - config: metadata.business.contact.phone.country
+      context: phone
+      id: contact-phone-country
+    - config: metadata.business.contact.phone.area
+      context: phone
+      id: contact-phone-area
+    - config: metadata.business.contact.phone.number
+      context: phone
+      id: contact-phone-number
+    - config: metadata.business.website.url
+      context: website
+      id: website-url
+    - config: metadata.business.website.description
+      context: website
+      id: website-description
+    namespaces:
+      uk-bus: http://xbrl.frc.org.uk/cd/2021-01-01/business
+      uk-core: http://xbrl.frc.org.uk/fr/2021-01-01/core
+      uk-direp: http://xbrl.frc.org.uk/reports/2021-01-01/direp
+      uk-geo: http://xbrl.frc.org.uk/cd/2021-01-01/countries
+    notes:
+      company: 'The company is a private company limited by shares and is
+        registered in England and Wales number ~[company-number].
+        The registered address is: ~[contact-address1::, ]
+	~[contact-address2::, ] ~[contact-address3::, ]
+	~[contact-location:: ] ~[contact-postcode].'
+      directors-acknowledge: '~{directors-duty=The directors acknowledge
+        their responsibilities for complying with the requirements of the
+	Act withrespect to accounting records and the preparation of
+	financial statements.}'
+      micro-entity-provisions: '~{accounts-prepared-small-company-regime=These
+        financial statements have been prepared in accordance with the
+	micro-entity provisions.}'
+      no-audit-required: '~{small-company-exempt-from-audit=The members have
+        not required the company to obtain an audit of its financial
+	statements for the accounting period in accordance with section 476.}'
+      small-company-audit-exempt: '~{small-company-exempt-from-audit=For the
+        accounting period ending ~[period-end] the company was
+        entitled to exemption from audit under section 477 of the Companies
+	Act 2006 relating to small companies.}'
+      software-version: These accounts were generated using
+        ~[software] version ~[software-version].
+    schema: https://xbrl.frc.org.uk/FRS-102/2021-01-01/FRS-102-2021-01-01.xsd
+    sign-reversed:
+      accruals-and-deferred-income: true
+      administrative-expenses: true
+      corporation-tax-owed: true
+      cost-of-sales: true
+      creditors-after-1-year: true
+      creditors-within-1-year: true
+      other-creditors: true
+      prepayments-and-accrued-income: true
+      provisions-for-liabilities: true
+      trade-creditors: true
+    tags:
+      accounting-standards: uk-bus:AccountingStandardsApplied
+      accounts-prepared-small-company-regime: uk-direp:StatementThatAccountsHaveBeenPreparedInAccordanceWithProvisionsSmallCompaniesRegime
+      accounts-status: uk-bus:AccountsStatusAuditedOrUnaudited
+      accounts-type: uk-bus:AccountsTypeFullOrAbbreviated
+      accruals-and-deferred-income: uk-core:AccruedLiabilitiesDeferredIncome
+      activities: uk-bus:DescriptionPrincipalActivities
+      administrative-expenses: uk-core:AdministrativeExpenses
+      authorised-date: uk-core:DateAuthorisationFinancialStatementsForIssue
+      average-employees: uk-core:AverageNumberEmployeesDuringPeriod
+      balance-sheet-date: uk-bus:BalanceSheetDate
+      bank: uk-core:CashBankOnHand
+      carrying-final: uk-core:PropertyPlantEquipmentIncludingRight-of-useAssets
+      company-name: uk-bus:EntityCurrentLegalOrRegisteredName
+      company-number: uk-bus:UKCompaniesHouseRegisteredNumber
+      contact-address1: uk-bus:AddressLine1
+      contact-address2: uk-bus:AddressLine2
+      contact-address3: uk-bus:AddressLine3
+      contact-county: uk-bus:CountyRegion
+      contact-email: uk-bus:E-mailAddress
+      contact-location: uk-bus:PrincipalLocation-CityOrTown
+      contact-name: uk-bus:NameContactDepartmentOrPerson
+      contact-phone-area: uk-bus:AreaCode
+      contact-phone-country: uk-bus:CountryCode
+      contact-phone-number: uk-bus:LocalNumber
+      contact-postcode: uk-bus:PostalCodeZip
+      corporation-tax-owed: uk-core:TaxationIncludingDeferredTaxationBalanceSheetSubtotal
+      cost-of-sales: uk-core:CostSales
+      creditors-after-1-year: uk-core:Creditors
+      creditors-within-1-year: uk-core:Creditors
+      current-assets: uk-core:CurrentAssets
+      debtors: uk-core:TradeDebtorsTradeReceivables
+      depreciation-analysis: uk-core:AccumulatedDepreciationImpairmentPropertyPlantEquipment
+      depreciation-charge: uk-core:IncreaseFromDepreciationChargeForYearPropertyPlantEquipment
+      directors-duty: uk-direp:StatementThatDirectorsAcknowledgeTheirResponsibilitiesUnderCompaniesAct
+      entity-legal-country: uk-bus:CountryFormationOrIncorporation
+      entity-legal-date: uk-bus:DateFormationOrIncorporation
+      entity-legal-form: uk-bus:LegalFormEntity
+      fixed-assets: uk-core:FixedAssets
+      fixed-assets-additions: uk-core:IncreaseDecreaseInPropertyPlantEquipment
+      fixed-assets-analysis: uk-core:PropertyPlantEquipmentGrossCost
+      gross-profit: uk-core:GrossProfitLoss
+      industry-sector: uk-bus:MainIndustrySector
+      is-dormant: uk-bus:EntityDormantTruefalse
+      members-not-required-audit: uk-direp:StatementThatMembersHaveNotRequiredCompanyToObtainAnAudit
+      net-assets: uk-core:NetAssetsLiabilities
+      net-current-assets: uk-core:NetCurrentAssetsLiabilities
+      officer: uk-bus:NameEntityOfficer
+      other-creditors: uk-core:OtherCreditorsIncludingTaxationSocialSecurityBalanceSheetSubtotal
+      period-end: uk-bus:EndDateForPeriodCoveredByReport
+      period-start: uk-bus:StartDateForPeriodCoveredByReport
+      prepayments-and-accrued-income: uk-core:PrepaymentsAccruedIncomeNotExpressedWithinCurrentAssetSubtotal
+      profit: uk-core:ProfitLoss
+      provisions-for-liabilities: uk-core:ProvisionsForLiabilitiesBalanceSheetSubtotal
+      report-date: uk-bus:BusinessReportPublicationDate
+      report-title: uk-bus:ReportTitle
+      sic1: uk-bus:SICCodeRecordedUKCompaniesHouse1
+      sic2: uk-bus:SICCodeRecordedUKCompaniesHouse2
+      sic3: uk-bus:SICCodeRecordedUKCompaniesHouse3
+      sic4: uk-bus:SICCodeRecordedUKCompaniesHouse4
+      signing-officer: uk-core:DirectorSigningFinancialStatements
+      small-company-exempt-from-audit: uk-direp:StatementThatCompanyEntitledToExemptionFromAuditUnderSection477CompaniesAct2006RelatingToSmallCompanies
+      software: uk-bus:NameProductionSoftware
+      software-version: uk-bus:VersionProductionSoftware
+      supplementary-note: uk-bus:SupplementaryNote
+      tangible-assets: uk-core:PropertyPlantEquipmentIncludingRight-of-useAssets
+      total-assets-less-liabilities: uk-core:TotalAssetsLessCurrentLiabilities
+      total-capital-and-reserves: uk-core:Equity
+      trade-creditors: uk-core:TradeCreditorsTradePayables
+      trading-status: uk-bus:EntityTradingStatus
+      turnover: uk-core:TurnoverRevenue
+      vat-refund-owed: uk-core:DeferredTaxAssetDebtors
+      vat-registration: uk-bus:VATRegistrationNumber
+      website-description: uk-bus:DescriptionOrOtherInformationOnWebsite
+      website-url: uk-bus:WebsiteMainPageURL

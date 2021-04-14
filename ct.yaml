@@ -1,0 +1,523 @@
+accounts:
+  file: example.gnucash
+taxonomy:
+  file: taxonomy/corptax.yaml
+  id: corptax
+metadata:
+  business:
+    activities: Computer security consultancy and development services
+    average-employees:
+    - 2
+    - 1
+    company-formation:
+      country: england-and-wales
+      date: '2019-03-01'
+      form: private-limited-company
+    company-name: Example Biz Ltd.
+    company-number: 012345678
+    contact:
+      address:
+      - 123 Leadbarton Street
+      - Dumpston Trading Estate
+      country: UK
+      county: Minchingshire
+      email: corporate@example.org
+      location: Threapminchington
+      name: Corporate Enquiries
+      phone:
+        area: '7900'
+        country: '+44'
+        number: '0123456'
+        type: landline
+      postcode: QQ99 9ZZ
+    directors:
+    - A Bloggs
+    - B Smith
+    - C Jones
+    industry-sector: m
+    is-dormant: false
+    sic-codes:
+    - '62020'
+    - '62021'
+    vat-registration: GB012345678
+    website:
+      description: Corporate website
+      url: https://example.org/corporate
+  report:
+    accounting-standards: micro-entities
+    accounts-status: audit-exempt-no-accountants-report
+    accounts-type: abridged-accounts
+    authorised-date: '2021-08-31'
+    balance-sheet-date: '2021-08-31'
+    currency: GBP
+    date: '2021-08-31'
+    fy1:
+      name: FY1
+      start: '2020-09-01'
+      end: '2021-04-05'
+    fy2:
+      name: FY2
+      start: '2021-04-06'
+      end: '2021-08-31'
+    periods:
+    - name: '2021'
+      start: '2020-09-01'
+      end: '2021-08-31'
+    signed-by: B Smith
+    title: Unaudited Micro-Entity Accounts
+  tax:
+    utr: 0123456789
+    period:
+      name: '2021'
+      start: '2020-09-01'
+      end: '2021-08-31'
+computations:
+- description: Turnover / revenue
+  id: turnover
+  kind: group
+  lines:
+  - accounts:
+    - Income
+    description: Consultancy
+    id: consultancy
+    kind: line
+    period: in-year
+  period: in-year
+- description: Gross Profit
+  id: gross-profit
+  inputs:
+  - turnover
+  kind: computation
+  period: in-year
+  segments:
+    business-type: company
+- description: Allowances
+  id: allowances
+  kind: group
+  lines:
+  - accounts:
+    - Assets:Capital Equipment:Computer Equipment
+    description: Annual investment allowance
+    id: annual-investment-allowance
+    kind: line
+    period: in-year
+    reverse-sign: true
+    segments:
+      business-type: management-expenses
+  period: in-year
+- description: Trading Profit
+  id: trading-profit
+  inputs:
+  - gross-profit
+  - allowances
+  kind: computation
+  period: in-year
+- description: Management Expenses
+  id: management-expenses
+  kind: group
+  lines:
+  - accounts:
+    - Expenses:Emoluments:Employees
+    description: Salaries
+    id: salaries
+    kind: line
+    period: in-year
+    segments:
+      business-type: management-expenses
+  - accounts:
+    - Expenses:Emoluments:Employer Pension Contribution
+    description: Pension contributions
+    id: pensions
+    kind: line
+    period: in-year
+    segments:
+      business-type: management-expenses
+  - accounts:
+    - Expenses:VAT Purchases:Accountant
+    description: Legal and professional services
+    id: legal-and-professional
+    kind: line
+    period: in-year
+    segments:
+      business-type: management-expenses
+  - accounts:
+    - Expenses:VAT Purchases:Bank Charges
+    description: Bank charges
+    id: bank-charges
+    kind: line
+    period: in-year
+    segments:
+      business-type: management-expenses
+  - accounts:
+    - Expenses:VAT Purchases:Office
+    - Expenses:VAT Purchases:Telecoms
+    description: Office costs
+    id: office
+    kind: line
+    period: in-year
+    segments:
+      business-type: management-expenses
+  - accounts:
+    - Expenses:VAT Purchases:Software
+    description: Software
+    id: software-expenses
+    kind: line
+    period: in-year
+    segments:
+      business-type: management-expenses
+  - accounts:
+    - Expenses:VAT Purchases:Subscriptions
+    - Expenses:VAT Purchases:Sundries
+    description: Sundries
+    id: sundries
+    kind: line
+    period: in-year
+    segments:
+      business-type: management-expenses
+  - accounts:
+    - Expenses:VAT Purchases:Travel/Accom
+    description: Travel
+    id: travel
+    kind: line
+    period: in-year
+    segments:
+      business-type: management-expenses
+  period: in-year
+  segments:
+    business-type: management-expenses
+- description: Profit before tax
+  id: profit-before-tax
+  inputs:
+  - trading-profit
+  - management-expenses
+  kind: computation
+  period: in-year
+  segments:
+    business-type: company
+- id: tax-owed
+  description: Corporation tax owed
+  kind: group
+  hide-breakdown: true
+  lines:
+  - accounts:
+    - Equity:Corporation Tax
+    description: Other
+    id: corporation-tax
+    kind: line
+    period: in-year
+  period: in-year
+- id: profit-before-tax-fy1
+  kind: computation
+  description: Profit before tax FY1
+  inputs:
+  - input: profit-before-tax
+    operation: apportion
+    whole-period: metadata.report.periods.0
+    proportion-period: metadata.report.fy1
+- id: profit-before-tax-fy2
+  kind: computation
+  description: Profit before tax FY2
+  inputs:
+  - input: profit-before-tax
+    operation: apportion
+    whole-period: metadata.report.periods.0
+    proportion-period: metadata.report.fy2
+- id: tax-fy1
+  kind: computation
+  description: Corporation tax FY1 (19%)
+  inputs:
+  - input: tax-owed
+    operation: apportion
+    whole-period: metadata.report.periods.0
+    proportion-period: metadata.report.fy1
+- id: tax-fy2
+  kind: computation
+  description: Corporation tax FY2 (19%)
+  inputs:
+  - input: tax-owed
+    operation: apportion
+    whole-period: metadata.report.periods.0
+    proportion-period: metadata.report.fy2
+- id: tax-total
+  description: Corporation tax total
+  kind: computation
+  hide-breakdown: true
+  inputs:
+  - tax-fy1
+  - tax-fy2
+  period: in-year
+- id: profit
+  kind: computation
+  description: Profit
+  inputs:
+  - profit-before-tax
+  - tax-owed
+worksheets:
+- computations:
+  - turnover
+  - gross-profit
+  - allowances
+  - trading-profit
+  - management-expenses
+  - profit-before-tax
+  - profit-before-tax-fy1
+  - profit-before-tax-fy2
+  - tax-fy1
+  - tax-fy2
+  - tax-total
+  - profit
+  description: Tax Calculation
+  id: tax-calculation
+  kind: multi-period
+elements:
+- elements:
+  - about
+  - profits
+  - tax-chargeable
+  - tax-calculation
+  id: report
+  kind: composite
+- id: about
+  kind: facttable
+  title: Corporation Tax Return
+  facts:
+  - context: report-date
+    description: Company name
+    field: '1'
+    id: company-name
+    key: metadata.business.company-name
+    kind: config
+  - context: report-date
+    description: Tax reference
+    field: '3'
+    id: tax-reference
+    key: metadata.tax.utr
+    kind: config
+  - context: report-date
+    description: Return period start
+    field: '30'
+    id: return-period-start
+    key: metadata.tax.period.start
+    kind: config-date
+  - context: report-date
+    description: Return period end
+    field: '35'
+    id: return-period-end
+    key: metadata.tax.period.end
+    kind: config-date
+  - context: report-date
+    description: Start of accounts period
+    field: '-'
+    id: account-period-start
+    key: metadata.tax.period.start
+    kind: config-date
+  - context: report-date
+    description: End of accounts period
+    field: '-'
+    id: account-period-end
+    key: metadata.tax.period.end
+    kind: config-date
+  - context: report-period
+    description: Company is a partner in a firm
+    field: '-'
+    id: partner-in-a-firm
+    kind: bool
+    value: 'false'
+- id: profits
+  kind: facttable
+  title: Profits and gains
+  facts:
+  - id: adjusted-trading-profit-of-this-period
+    context: report-period
+    description: Trading profits
+    field: '155'
+    computation: trading-profit
+    kind: computation
+    period-config: metadata.tax.period
+  - id: trading-losses-brought-forward
+    description: Trading losses brough forward
+    field: 160, 285
+    context: report-period
+    kind: money
+    value: 0
+  - id: net-trading-profits
+    computation: trading-profit
+    context: report-period
+    description: Net trading profits
+    field: '165'
+    kind: computation
+    period-config: metadata.tax.period
+  - context: report-period
+    description: Net chargeable gains
+    field: '220'
+    id: net-chargeable-gains
+    kind: money
+    value: 0
+  - id: profits-before-other-deductions-and-reliefs
+    computation: trading-profit
+    context: report-period
+    description: Profits before other deductions and reliefs
+    field: '235'
+    kind: computation
+    period-config: metadata.tax.period
+  - computation: management-expenses
+    context: management-expenses-period
+    description: Management expenses
+    field: '245'
+    id: management-expenses
+    kind: computation
+    period-config: metadata.tax.period
+  - computation: management-expenses
+    context: report-period
+    description: Total deductions and reliefs
+    field: '295'
+    id: total-deductions-and-reliefs
+    kind: computation
+    period-config: metadata.tax.period
+  - computation: profit-before-tax
+    context: report-period
+    description: Profits before donations and group relief
+    field: '300'
+    id: profits-before-charges-and-group-relief
+    kind: computation
+    period-config: metadata.tax.period
+  - context: report-period
+    description: Qualifying donations
+    field: '305'
+    id: qualifying-donations
+    kind: money
+    value: 0
+  - context: report-period
+    description: Group relief
+    field: '310'
+    id: group-relief-claimed
+    kind: money
+    value: 0
+  - context: report-period
+    description: Group relief for carried forward losses
+    field: '312'
+    id: group-relief-claimed-for-carried-forward-losses
+    kind: money
+    value: 0
+  - computation: profit-before-tax
+    context: report-period
+    description: Profits chargeable to Corporation Tax
+    field: '315'
+    id: total-profits-chargeable-to-corporation-tax
+    kind: computation
+    period-config: metadata.tax.period
+- id: tax-chargeable
+  kind: facttable
+  title: Tax chargeable
+  facts:
+  - id: financial-year1-covered-by-the-return
+    context: report-period
+    description: Financial year 1 covered by the return
+    field: '330'
+    kind: string
+    value: '2020'
+  - id: financial-year2-covered-by-the-return
+    context: report-period
+    description: Financial year 2 covered by the return
+    field: '380'
+    kind: string
+    value: '2021'
+  - id: fy1-amount-of-profit-chargeable-at-first-rate
+    context: report-period
+    description: FY1 amount of profit chargable at first rate
+    field: '335'
+    computation: profit-before-tax-fy1
+    kind: computation
+    period-config: metadata.tax.period
+  - id: fy2-amount-of-profit-chargeable-at-first-rate
+    context: report-period
+    description: FY2 amount of profit chargable at first rate
+    field: '385'
+    computation: profit-before-tax-fy2
+    kind: computation
+    period-config: metadata.tax.period
+  - id: fy1-first-rate-of-tax
+    context: report-period
+    description: FY1 first rate of tax (%)
+    field: '340'
+    kind: number
+    value: 19
+  - id: fy2-first-rate-of-tax
+    context: report-period
+    description: FY2 first rate of tax (%)
+    field: '390'
+    kind: number
+    value: 19
+  - id: fy1-tax-at-first-rate
+    computation: tax-fy1
+    context: report-period
+    description: FY1 tax at first rate
+    field: '345'
+    kind: computation
+    period-config: metadata.tax.period
+  - id: fy2-tax-at-first-rate
+    computation: tax-fy2
+    context: report-period
+    description: FY2 tax at first rate
+    field: '395'
+    kind: computation
+    period-config: metadata.tax.period
+  - id: corporation-tax-chargeable
+    computation: tax-total
+    context: report-period
+    description: Corporation tax
+    field: '430'
+    kind: computation
+    period-config: metadata.tax.period
+  - context: report-period
+    description: Marginal relief for ring fence trades
+    field: '435'
+    id: marginal-rate-relief-for-ring-fence-trades-payable
+    kind: money
+    value: 0
+  - computation: tax-owed
+    context: report-period
+    description: Corporation tax chargeable
+    field: '440'
+    id: corporation-tax-chargeable-payable
+    kind: computation
+    period-config: metadata.tax.period
+  - id: total-reliefs-and-deductions-in-terms-of-tax-payable
+    context: report-period
+    description: Total reliefs and deduction in terms of tax
+    field: '470'
+    kind: money
+    value: 0
+    period-config: metadata.tax.period
+  - id: net-corporation-tax-payable
+    kind: computation
+    context: report-period
+    computation: tax-owed
+    description: Net Corporation Tax liability
+    field: '475'
+    period-config: metadata.tax.period
+  - id: tax-chargeable
+    kind: computation
+    context: report-period
+    computation: tax-owed
+    description: Tax chargable
+    field: '510'
+    period-config: metadata.tax.period
+  - id: tax-payable
+    kind: computation
+    context: report-period
+    computation: tax-owed
+    description: Tax payable
+    field: '528'
+    period-config: metadata.tax.period
+  - id: tax-outstanding
+    kind: computation
+    context: report-period
+    computation: tax-owed
+    description: Tax outstanding
+    field: '600'
+    period-config: metadata.tax.period
+- id: tax-calculation
+  kind: worksheet
+  title: Tax calculation
+  worksheet: tax-calculation

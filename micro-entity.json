@@ -1,0 +1,654 @@
+{
+
+    "accounts": {
+        "file": "example.gnucash"
+    },
+
+    "metadata": {
+    
+	"business": {
+	    "company-name": "Example Biz Ltd.",
+	    "company-number": "012345678",
+	    "vat-registration": "GB012345678",
+	    "activities": "Computer security consultancy and development services",
+	    "industry-sector": "m",
+	    "is-dormant": false,
+	    "company-formation": {
+		"form": "private-limited-company",
+		"country": "england-and-wales",
+		"date": "2019-03-01"
+	    },
+	    "sic-codes": [
+		"62020", "62021"
+	    ],
+	    "directors": [
+		"A Bloggs",
+		"B Smith",
+		"C Jones"
+	    ],
+	    "contact": {
+		"name": "Corporate Enquiries",
+		"address": [
+		    "123 Leadbarton Street",
+		    "Dumpston Trading Estate"
+		],
+		"location": "Threapminchington",
+		"county": "Minchingshire",
+		"postcode": "QQ99 9ZZ",
+		"email": "corporate@example.org",
+		"phone": {
+		    "country": "+44",
+		    "area": "7900",
+		    "number": "0123456"
+		},
+		"country": "UK"
+	    },
+	    "website": {
+		"url": "https://example.org/corporate",
+		"description": "Corporate website"
+	    }
+	},
+
+	"report": {
+	    "title": "Unaudited Micro-Entity Accounts",
+	    "accounts-status": "audit-exempt-no-accountants-report",
+	    "accounts-type": "abridged-accounts",
+	    "accounting-standards": "micro-entities",
+	    "statement-date": "2021-08-31",
+	    "date": "2021-06-13",
+	    "currency": "GBP",
+	    "signing-director": "B Smith",
+ 	    "periods": [
+ 		{
+ 		    "name": "2021",
+ 		    "start": "2020-09-01",
+ 		    "end": "2021-08-31"
+ 		},
+ 		{
+ 		    "name": "2020",
+ 		    "start": "2019-09-01",
+ 		    "end": "2020-08-31"
+ 		}
+ 	    ]
+	}
+
+    },
+    
+    "computations": [
+	{
+	    "id": "turnover",
+	    "kind": "group",
+	    "description": "Turnover / revenue",
+	    "hide-breakdown": true,
+	    "lines": [
+		{
+		    "kind": "line",
+		    "id": "consultancy",
+		    "description": "Consultancy",
+		    "accounts": [
+			"Income"
+		    ],
+		    "period": "in-year"
+		}
+	    ],
+	    "tags": {
+		"tag": "uk-core:TurnoverRevenue",
+		"context": "period-{0}"
+	    }
+	    
+	},
+	{
+	    "id": "cost-of-sales",
+	    "kind": "group",
+	    "description": "Cost of Sales",
+	    "hide-breakdown": true,
+	    "lines": [
+		{
+		    "id": "staffing",
+		    "kind": "line",
+		    "description": "Staffing Costs",
+		    "period": "in-year",
+		    "accounts": [
+			"Expenses:Emoluments"
+		    ]
+		}
+	    ],
+	    "tags": {
+		"tag": "uk-core:CostSales",
+		"context": "period-{0}",
+		"sign": "reversed"
+	    }
+	},	
+	{
+	    "id": "gross-profit",
+	    "kind": "computation",
+	    "description": "Gross Profit",
+	    "inputs": [
+		"turnover",
+		"cost-of-sales"
+	    ],
+	    "tags": {
+		"tag": "uk-core:GrossProfitLoss",
+		"context": "period-{0}"
+	    }
+	},
+	{
+	    "id": "administrative-expenses",
+	    "kind": "group",
+	    "description": "Administrative Expenses",
+	    "hide-breakdown": true,
+	    "lines": [
+		{
+		    "id": "depreciation",
+		    "kind": "line",
+		    "description": "Depreciation",
+		    "accounts": [
+			"Expenses:Depreciation"
+		    ],
+		    "period": "in-year"
+		},
+		{
+		    "id": "other-charges",
+		    "kind": "line",
+		    "description": "Other",
+		    "accounts": [
+			"Expenses:VAT Purchases",
+			"Expenses:Other non-VAT expenses"
+		    ],
+		    "period": "in-year"
+		}
+	    ],
+	    "tags": {
+		"tag": "uk-core:AdministrativeExpenses",
+		"context": "period-{0}",
+		"sign": "reversed"
+	    }
+	},
+	{
+	    "id": "profit",
+	    "kind": "computation",
+	    "description": "Profit (Loss)",
+	    "inputs": [
+		"gross-profit",
+		"administrative-expenses"
+	    ],
+	    "tags": {
+		"tag": "uk-core:ProfitLoss",
+		"context": "period-{0}"
+	    }
+	},
+	{
+	    "id": "fixed-assets",
+	    "kind": "group",
+	    "description": "Fixed Assets",
+	    "hide-breakdown": true,
+	    "lines": [
+		{
+		    "id": "tangible-assets",
+		    "kind": "line",
+		    "description": "Tangible Assets",
+		    "tags": {
+			"tag": "uk-core:PropertyPlantEquipmentIncludingRight-of-useAssets"
+		    },
+		    "period": "to-end",
+		    "accounts": [
+			"Assets:Capital Equipment"
+		    ]
+		}
+	    ],
+	    "tags": {
+		"tag": "uk-core:FixedAssets"
+	    }
+	},
+	{
+	    "id": "current-assets",
+	    "kind": "group",
+	    "description": "Current Assets",
+	    "hide-breakdown": true,
+	    "tags": {
+		"tag": "uk-core:CurrentAssets"
+	    },
+	    "lines": [
+		{
+		    "id": "debtors",
+		    "kind": "line",
+		    "description": "Debtors",
+		    "period": "to-end",
+		    "tags": {
+			"tag": "uk-core:TradeDebtorsTradeReceivables"
+		    },
+		    "accounts": [
+			"Accounts Receivable",
+			"Assets:Owed To Us"
+		    ]
+		},
+		{
+		    "id": "vat-refund-owed",
+		    "kind": "line",
+		    "description": "VAT Refund Due",
+		    "period": "to-end",
+		    "tags": {
+			"tag": "uk-core:DeferredTaxAssetDebtors"
+		    },
+		    "accounts": [
+			"VAT:Input"
+		    ]
+		},
+		{
+		    "id": "bank",
+		    "kind": "line",
+		    "description": "Bank",
+		    "period": "to-end",
+		    "tags": {
+			"tag": "uk-core:CashBankOnHand"
+		    },
+		    "accounts": [
+			"Bank Accounts"
+		    ]
+		}
+	    ]
+	},
+	{
+	    "id": "prepayments-and-accrued-income",
+	    "kind": "group",
+	    "description": "Prepayments and Accrued Income",
+	    "tags": {
+		"tag": "uk-core:PrepaymentsAccruedIncomeNotExpressedWithinCurrentAssetSubtotal",
+		"sign": "reversed"
+	    },
+	    "lines": [
+	    ]
+	},
+	{
+	    "id": "creditors-within-1-year",
+	    "kind": "group",
+	    "description": "Creditors: falling due within one year",
+	    "hide-breakdown": true,
+	    "tags": {
+		"tag": "uk-core:Creditors",
+		"context": "within-year-{0}",
+		"sign": "reversed"
+	    },
+	    "lines": [
+		{
+		    "id": "trade-creditors",
+		    "kind": "line",
+		    "description": "Trade Creditors",
+		    "period": "to-end",
+		    "tags": {
+			"tag": "uk-core:TradeCreditorsTradePayables",
+			"context": "within-year-{0}",
+			"sign": "reversed"
+		    },
+		    "accounts": [
+			"Accounts Payable"
+		    ]
+		},
+		{
+		    "id": "other-creditors",
+		    "kind": "line",
+		    "description": "Other Creditors",
+		    "period": "to-end",
+		    "tags": {
+			"tag": "uk-core:OtherCreditorsIncludingTaxationSocialSecurityBalanceSheetSubtotal",
+			"context": "within-year-{0}",
+			"sign": "reversed"
+		    },
+		    "accounts": [
+			"VAT:Output"
+		    ]
+		}
+	    ]
+	},
+	{
+	    "id": "net-current-assets",
+	    "kind": "computation",
+	    "description": "Net Current Assets",
+	    "tags": {
+		"tag": "uk-core:NetCurrentAssetsLiabilities"
+	    },
+	    "inputs": [
+		"current-assets",
+		"prepayments-and-accrued-income",
+		"creditors-within-1-year"
+	    ]
+	},
+	{
+	    "id": "total-assets-less-liabilities",
+	    "kind": "computation",
+	    "description": "Total Assets Less Liabilities",
+	    "tags": {
+		"tag": "uk-core:TotalAssetsLessCurrentLiabilities"
+	    },
+	    "inputs": [
+		"fixed-assets",
+		"current-assets",
+		"prepayments-and-accrued-income",
+		"creditors-within-1-year"
+	    ]
+	},
+	{
+	    "id": "creditors-after-1-year",
+	    "kind": "group",
+	    "description": "Creditors: falling due after one year",
+	    "tags": {
+		"tag": "uk-core:Creditors",
+		"context": "after-year-{0}",
+		"sign": "reversed"
+	    },
+	    "lines": [
+	    ]
+	},
+	{
+	    "id": "provisions-for-liabilities",
+	    "kind": "group",
+	    "description": "Provisions For Liabilities",
+	    "hide-breakdown": true,
+	    "tags": {
+		"tag": 	"uk-core:ProvisionsForLiabilitiesBalanceSheetSubtotal",
+		"sign": "reversed"
+	    },
+	    "lines": [
+		{
+		    "id": "corporation-tax-owed",
+		    "kind": "line",
+		    "description": "Corporation Tax",
+		    "period": "to-end",
+		    "tags": {
+			"tag": "uk-core:TaxationIncludingDeferredTaxationBalanceSheetSubtotal",
+			"sign": "reversed"
+		    },
+		    "accounts": [
+			"Liabilities:Owed Corporation Tax"
+		    ]
+		}
+	    ]
+	},
+	{
+	    "id": "accruals-and-deferred-income",
+	    "kind": "group",
+	    "description": "Accrued liabilities and deferred income",
+	    "tags": {
+		"tag": "uk-core:AccruedLiabilitiesDeferredIncome",
+		"sign": "reversed"
+	    },
+	    "lines": [
+	    ]
+	},
+	{
+	    "id": "net-assets",
+	    "kind": "computation",
+	    "description": "Net Assets",
+	    "tags": {
+		"tag": "uk-core:NetAssetsLiabilities"
+	    },
+	    "inputs": [
+		"total-assets-less-liabilities",
+		"creditors-after-1-year",
+		"provisions-for-liabilities",
+		"accruals-and-deferred-income"
+	    ]
+	},
+	{
+	    "id": "capital-and-reserves",
+	    "kind": "group",
+	    "hide-breakdown": true,
+	    "description": "Capital and Reserves",
+	    "lines": [
+		{
+		    "id": "share-capital",
+		    "kind": "line",
+		    "description": "Share Capital",
+		    "accounts": [
+			"Equity:Shareholdings"
+		    ],
+		    "period": "to-end"
+		},
+		{
+		    "id": "profit-loss",
+		    "kind": "line",
+		    "description": "Retained Profit",
+		    "accounts": [
+			"Income",
+			"Expenses"
+		    ],
+		    "period": "to-end"
+		},
+		{
+		    "id": "dividends",
+		    "kind": "line",
+		    "description": "Dividends",
+		    "accounts": [
+			"Equity:Dividends"
+		    ],
+		    "period": "to-end"
+		},
+		{
+		    "kind": "line",
+		    "description": "Corporation Tax",
+		    "accounts": [
+			"Equity:Corporation Tax"
+		    ],
+		    "period": "to-end"
+		}
+	    ]
+	},
+	{
+	    "id": "total-capital-and-reserves",
+	    "kind": "computation",
+	    "description": "Total Capital and Reserves",
+	    "tags": {
+		"tag": "uk-core:Equity"
+	    },
+	    "inputs": [
+		"capital-and-reserves"
+	    ]
+	},
+
+
+
+	
+	{
+	    "id": "fixed-assets-analysis",
+	    "kind": "group",
+	    "description": "Fixed Assets",
+	    "hide-breakdown": true,
+	    "lines": [
+		{
+		    "kind": "line",
+		    "description": "At start of period",
+		    "period": "to-start",
+		    "accounts": [
+			"Assets:Capital Equipment:Computer Equipment"
+		    ]
+		},
+		{
+		    "kind": "line",
+		    "description": "Additions",
+		    "period": "in-year",
+		    "accounts": [
+			"Assets:Capital Equipment:Computer Equipment"
+		    ],
+		    "tags": {
+			"tag": "uk-core:IncreaseDecreaseInPropertyPlantEquipment",
+			"context": "period-{0}"
+		    }
+		}
+	    ],
+	    "tags": {
+		"tag": "uk-core:PropertyPlantEquipmentGrossCost"
+	    }
+	},
+
+
+	{
+	    "id": "depreciation-analysis",
+	    "kind": "group",
+	    "description": "Depreciation",
+	    "hide-breakdown": true,
+	    "lines": [
+		{
+		    "kind": "line",
+		    "description": "At start of period",
+		    "period": "to-start",
+		    "accounts": [
+			"Assets:Capital Equipment:Depreciation"
+		    ]
+		},
+		{
+		    "kind": "line",
+		    "description": "Charge",
+		    "period": "in-year",
+		    "accounts": [
+			"Assets:Capital Equipment:Depreciation"
+		    ],
+		    "tags": {
+			"tag": "uk-core:IncreaseFromDepreciationChargeForYearPropertyPlantEquipment",
+			"context": "period-{0}"
+		    }
+		}
+	    ],
+	    "tags": {
+		"tag": "uk-core:AccumulatedDepreciationImpairmentPropertyPlantEquipment"
+	    }
+	},
+
+	{
+	    "id": "carrying-final",
+	    "kind": "computation",
+	    "description": "Carrying at end of period",
+	    "inputs": [
+		"fixed-assets-analysis",
+		"depreciation-analysis"
+	    ],
+	    "tags": {
+		"tag": "uk-core:PropertyPlantEquipmentIncludingRight-of-useAssets"
+	    }
+	}
+
+
+    ],
+
+
+    
+    "worksheets": [
+
+	{
+	    "id": "balance-sheet",
+	    "kind": "multi-period",
+
+	    "tags": {
+	    },
+
+	    "items": [
+		"fixed-assets",
+		"current-assets",
+		"prepayments-and-accrued-income",
+		"creditors-within-1-year",
+		"net-current-assets",
+		"total-assets-less-liabilities",
+		"creditors-after-1-year",
+		"provisions-for-liabilities",
+		"accruals-and-deferred-income",
+		"net-assets",
+		"capital-and-reserves",
+		"total-capital-and-reserves"
+	    ]
+
+	},
+	
+	{
+	    "id": "profit-and-loss",
+	    "kind": "multi-period",
+	    "description": "Profit and Loss",
+
+	    "tags": {
+	    },
+
+	    "items": [
+		"turnover",
+		"cost-of-sales",
+		"gross-profit",
+		"administrative-expenses",
+		"profit"
+	    ]
+
+	},
+	
+	{
+	    "id": "fixed-assets",
+	    "kind": "multi-period",
+	    "description": "Fixed Assets",
+
+	    "tags": {
+	    },
+
+	    "items": [
+		"fixed-assets-analysis",
+		"depreciation-analysis",
+		"carrying-final"
+	    ]
+
+	}
+	
+    ],
+
+    "elements": [
+
+	{
+	    "id": "report",
+	    "kind": "composite",
+	    "elements": [
+		"title",
+		"balance-sheet",
+		"profit-and-loss",
+		"notes"
+	    ]
+	},
+
+	{
+	    "id": "title",
+	    "kind": "title",
+	    "signature-image": "signature.png",
+	    "signature-type": "image/png"
+	},
+
+	{
+	    "id": "balance-sheet",
+	    "kind": "worksheet",
+	    "title": "Balance Sheet",
+	    "worksheet": "balance-sheet"
+	},
+
+	{
+	    "id": "profit-and-loss",
+	    "kind": "worksheet",
+	    "title": "Income Statement",
+	    "worksheet": "profit-and-loss"
+	},
+
+	{
+	    "id": "fixed-assets",
+	    "kind": "worksheet",
+	    "title": "Fixed Assets",
+	    "worksheet": "fixed-assets"
+	},
+
+	{
+	    "id": "notes",
+	    "kind": "notes",
+	    "notes": [
+		"micro-entity-provisions",
+		"small-company-audit-exempt",
+		"no-audit-required",
+		"company",
+		"directors-acknowledge",
+		"software-version",
+		"note:These are fictional accounts, references to real-world entities or persons is unintentional."
+	    ]
+	}
+
+    ]
+
+}
+

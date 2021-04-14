@@ -1,0 +1,209 @@
+accounts:
+  file: example.gnucash
+taxonomy:
+  file: taxonomy/detailed-profit-and-loss.yaml
+  id: dpl
+metadata:
+  business:
+    activities: Computer security consultancy and development services
+    average-employees:
+    - 2
+    - 1
+    company-formation:
+      country: england-and-wales
+      date: '2019-03-01'
+      form: private-limited-company
+    company-name: Example Biz Ltd.
+    company-number: 012345678
+    contact:
+      address:
+      - 123 Leadbarton Street
+      - Dumpston Trading Estate
+      country: UK
+      county: Minchingshire
+      email: corporate@example.org
+      location: Threapminchington
+      name: Corporate Enquiries
+      phone:
+        area: '7900'
+        country: '+44'
+        number: '0123456'
+        type: landline
+      postcode: QQ99 9ZZ
+    directors:
+    - A Bloggs
+    - B Smith
+    - C Jones
+    industry-sector: m
+    is-dormant: false
+    sic-codes:
+    - '62020'
+    - '62021'
+    vat-registration: GB012345678
+    website:
+      description: Corporate website
+      url: https://example.org/corporate
+  report:
+    accounting-standards: micro-entities
+    accounts-status: audit-exempt-no-accountants-report
+    accounts-type: abridged-accounts
+    authorised-date: '2021-08-31'
+    balance-sheet-date: '2021-08-31'
+    currency: GBP
+    date: '2021-08-31'
+    periods:
+    - name: '2021'
+      start: '2020-09-01'
+      end: '2021-08-31'
+    signed-by: B Smith
+    title: Unaudited Micro-Entity Accounts
+  tax:
+    business-type: company
+    date: '2021-08-31'
+    ni:
+      employer: false
+      sme: false
+      trading: false
+    partner-in-a-firm: false
+    period:
+      end: '2021-08-31'
+      name: '2021'
+      start: '2020-09-01'
+    utr: 0123456789
+computations:
+- description: Turnover / revenue
+  id: turnover
+  kind: group
+  lines:
+  - accounts:
+    - Income
+    description: Consultancy
+    id: consultancy
+    kind: line
+    period: in-year
+    segments:
+      detailed-analysis: item1
+  period: in-year
+- description: Gross Profit
+  id: gross-profit
+  inputs:
+  - turnover
+  kind: computation
+  period: in-year
+- description: Total costs
+  id: total-costs
+  kind: group
+  lines:
+  - accounts:
+    - Expenses:Emoluments:Employees
+    description: Salaries
+    id: salaries
+    kind: line
+    period: in-year
+  - accounts:
+    - Expenses:Emoluments:Employer Pension Contribution
+    description: Pension contributions
+    id: pensions
+    kind: line
+    period: in-year
+  - accounts:
+    - Expenses:Depreciation
+    description: Depreciation
+    id: depreciation
+    kind: line
+    period: in-year
+  - accounts:
+    - Expenses:VAT Purchases:Accountant
+    description: Accountancy services
+    id: accountancy
+    kind: line
+    period: in-year
+  - accounts:
+    - Expenses:VAT Purchases:Bank Charges
+    description: Bank charges
+    id: bank-charges
+    kind: line
+    period: in-year
+  - accounts:
+    - Expenses:VAT Purchases:Office
+    description: Office costs
+    id: office
+    kind: line
+    period: in-year
+  - accounts:
+    - Expenses:VAT Purchases:Software
+    description: Software
+    id: software
+    kind: line
+    period: in-year
+  - accounts:
+    - Expenses:VAT Purchases:Subscriptions
+    description: Subscriptions
+    id: subscriptions
+    kind: line
+    period: in-year
+  - accounts:
+    - Expenses:VAT Purchases:Sundries
+    description: Sundries
+    id: sundries
+    kind: line
+    period: in-year
+  - accounts:
+    - Expenses:VAT Purchases:Telecoms
+    description: Telecoms
+    id: Telecoms
+    kind: line
+    period: in-year
+  - accounts:
+    - Expenses:VAT Purchases:Travel/Accom
+    description: Travel
+    id: travel
+    kind: line
+    period: in-year
+  period: in-year
+- description: Profit before tax
+  id: profit-before-tax
+  inputs:
+  - gross-profit
+  - total-costs
+  kind: computation
+  period: in-year
+- description: Tax Due
+  id: tax-due
+  kind: group
+  lines:
+  - accounts:
+    - Equity:Corporation Tax
+    description: Corporation Tax
+    id: dpl-corporation-tax
+    kind: line
+    period: in-year
+  period: in-year
+- description: Profit (Loss)
+  id: profit
+  inputs:
+  - gross-profit
+  - total-costs
+  - tax-due
+  kind: computation
+  period: in-year
+worksheets:
+- computations:
+  - turnover
+  - gross-profit
+  - total-costs
+  - profit-before-tax
+  - tax-due
+  - profit
+  description: Detailed Profit and Loss
+  id: profit-and-loss
+  kind: multi-period
+elements:
+- id: report
+  kind: composite
+  elements:
+  - profit-and-loss
+- id: profit-and-loss
+  kind: worksheet
+  title: Detailed Profit and Loss
+  worksheet: profit-and-loss

@@ -1,0 +1,64 @@
+accounts:
+  file: accounts.gnucash
+report:
+  items:
+  - description: Fixed Assets
+    kind: group
+    lines:
+    - accounts:
+      - Assets:Capital Equipment:Equipment
+      - Assets:EU Reverse VAT Purchase
+      - Assets:Equipment prior to VAT registration
+      description: Tangible Assets
+      in-year: false
+      kind: line
+    - accounts:
+      - Assets:Capital Equipment:Salvage Assets
+      description: Salvage Assets
+      in-year: false
+      kind: line
+  - description: Current Assets
+    kind: group
+    lines:
+    - accounts:
+      - Accounts Receivable
+      description: Other Debtors
+      in-year: false
+      kind: line
+    - accounts:
+      - VAT:Input
+      - Reclaimable VAT prior to registration
+      description: VAT Refund Owed
+      in-year: false
+      kind: line
+    - accounts:
+      - Bank Accounts
+      description: Bank
+      in-year: false
+      kind: line
+  - description: Prepayments and Accrued Income
+    kind: group
+    lines: []
+  - description: 'Creditors: falling due within one year'
+    kind: group
+    lines:
+    - accounts:
+      - Liabilities
+      - Accounts Payable
+      description: Creditors
+      in-year: false
+      kind: line
+  - description: Net Current Assets
+    inputs:
+    - Current Assets
+    - Prepayments and Accrued Income
+    - 'Creditors: falling due within one year'
+    kind: computation
+  kind: multi-period-report
+  periods:
+  - end: '2021-08-31'
+    name: '2021'
+    start: '2020-09-01'
+  - end: '2020-08-31'
+    name: '2020'
+    start: '2019-09-01'

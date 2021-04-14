@@ -1,0 +1,37 @@
+#!/usr/bin/env python3
+
+from gnucash_ixbrl.config import Config
+
+import gnucash_ixbrl.accounts as accounts
+from gnucash_ixbrl.taxonomy import Taxonomy
+import sys
+from gnucash_ixbrl.datasource import DataSource
+
+if len(sys.argv) < 4:
+    sys.stderr.write("Usage:\n    report <config> <report> <format>\n")
+    sys.exit(1)
+
+cfg = Config.load(sys.argv[1])
+cfg.set("internal.software", "gnucash-uk-reports")
+cfg.set("internal.software-version", "0.0.1")
+
+file = cfg.get("accounts.file")
+
+session = accounts.Accounts(file)
+
+d = DataSource(cfg, session)
+
+elt = d.get_element(sys.argv[2])
+
+if sys.argv[3] == "ixbrl":
+    tx_cfg = Config.load(cfg.get("taxonomy.file"))
+    tx_id = cfg.get("taxonomy.id")
+    tx = Taxonomy(tx_cfg, tx_id)
+    elt.to_ixbrl(tx, sys.stdout)
+elif sys.argv[3] == "html":
+    elt.to_html(sys.stdout)
+elif sys.argv[3] == "text":
+    elt.to_text(sys.stdout)
+else:
+    raise RuntimeError("Output type '%s' not known." % sys.argv[3])
+
