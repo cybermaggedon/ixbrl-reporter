@@ -58,12 +58,20 @@ taxonomy:
       net-corporation-tax-payable: true
       tax-chargeable: true
       tax-payable: true
+      tax-outstanding: true
       corporation-tax-chargeable-payable: true
       fy1-tax-at-first-rate: true
       fy2-tax-at-first-rate: true
       management-expenses: true
       total-deductions-and-reliefs: true
     tags:
+      profit-before-tax-fy1: ct-comp:FY1AmountOfProfitChargeableAtFirstRate
+      profit-before-tax-fy2: ct-comp:FY2AmountOfProfitChargeableAtFirstRate
+      tax-fy1: ct-comp:FY1TaxAtFirstRate
+      tax-fy2: ct-comp:FY2TaxAtFirstRate
+      tax-total: ct-comp:CorporationTaxChargeable
+      profit-before-tax-total: ct-comp:TotalProfitsChargeableToCorporationTax
+      trading-profit: ct-comp:AdjustedTradingProfitOfThisPeriod      
       account-period-end: ct-comp:PeriodOfAccountEndDate
       account-period-start: ct-comp:PeriodOfAccountStartDate
       act-set-against-corporation-tax: ct-comp:ACTSetAgainstCorporationTax
@@ -450,7 +458,6 @@ taxonomy:
       fy2-tax-at-third-rate: ct-comp:FY2TaxAtThirdRate
       fy2-third-rate-of-tax: ct-comp:FY2ThirdRateOfTax
       gross-chargeable-gains: ct-comp:GrossChargeableGains
-      gross-profit: ct-comp:AdjustedTradingProfitOfThisPeriod
       gross-s212-deemed-chargeable-gains: ct-comp:GrossS212DeemedChargeableGains
       gross-turnover-off-payroll-working: ct-comp:GrossTurnoverOffPayrollWorking
       group-atlrd-tax-credits-received: ct-comp:GroupATLRDTaxCreditsReceived

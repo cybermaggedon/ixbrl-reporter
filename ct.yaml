@@ -84,12 +84,12 @@ computations:
   inputs:
   - consultancy
   period: in-year
-- description: Gross Profit
-  id: gross-profit
+- id: gross-profit
+  kind: computation
+  description: Gross Profit
+  period: in-year
   inputs:
   - turnover
-  kind: computation
-  period: in-year
   segments:
     business-type: company
 - accounts:
@@ -233,6 +233,12 @@ computations:
     operation: apportion
     whole-period: metadata.report.periods.0
     proportion-period: metadata.report.fy2
+- id: profit-before-tax-total
+  description: Profit before tax
+  kind: group
+  inputs:
+  - profit-before-tax-fy1
+  - profit-before-tax-fy2
 - id: tax-fy1
   kind: computation
   description: Corporation tax FY1 (19%)
@@ -251,15 +257,14 @@ computations:
     proportion-period: metadata.report.fy2
 - id: tax-total
   description: Corporation tax total
-  kind: computation
-  hide-breakdown: true
+  kind: group
   inputs:
   - tax-fy1
   - tax-fy2
   period: in-year
 - id: profit
   kind: computation
-  description: Profit
+  description: Profit after tax
   inputs:
   - profit-before-tax
   - tax-owed
@@ -270,11 +275,7 @@ worksheets:
   - allowances
   - trading-profit
   - management-expenses
-  - profit-before-tax
-  - profit-before-tax-fy1
-  - profit-before-tax-fy2
-  - tax-fy1
-  - tax-fy2
+  - profit-before-tax-total
   - tax-total
   - profit
   description: Tax Calculation
