@@ -80,6 +80,7 @@ computations:
   kind: group
   description: Turnover / revenue
   hide-breakdown: true
+  period: in-year
   inputs:
   - consultancy
 - id: gross-profit
@@ -334,7 +335,7 @@ computations:
   kind: line
   period: in-year
 - description: Fixed Assets
-  id: fixed-assets-analysis
+  id: fixed-assets-total
   kind: group
   inputs:
   - fixed-assets-initial
@@ -352,7 +353,7 @@ computations:
   kind: line
   period: in-year
 - description: Depreciation
-  id: depreciation-analysis
+  id: depreciation-total
   kind: group
   inputs:
   - depreciation-initial
@@ -360,8 +361,8 @@ computations:
 - description: Carrying at end of period
   id: carrying-final
   inputs:
-  - fixed-assets-analysis
-  - depreciation-analysis
+  - fixed-assets-total
+  - depreciation-total
   kind: computation
 - id: ordinary-shares-at-start
   accounts:
@@ -417,8 +418,8 @@ worksheets:
   kind: multi-period
   description: Fixed Assets
   computations:
-  - fixed-assets-analysis
-  - depreciation-analysis
+  - fixed-assets-total
+  - depreciation-total
   - carrying-final
 - id: share-capital
   kind: multi-period

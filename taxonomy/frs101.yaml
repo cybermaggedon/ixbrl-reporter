@@ -502,6 +502,8 @@ taxonomy:
       prepayments-and-accrued-income: true
       provisions-for-liabilities: true
       trade-creditors: true
+      depreciation-charge: true
+      depreciation-total: true
     tags:
       accounting-standards: uk-bus:AccountingStandardsApplied
       accounts-prepared-small-company-regime: uk-direp:StatementThatAccountsHaveBeenPreparedInAccordanceWithProvisionsSmallCompaniesRegime
@@ -534,7 +536,7 @@ taxonomy:
       creditors-within-1-year: uk-core:Creditors
       current-assets: uk-core:CurrentAssets
       debtors: uk-core:TradeDebtorsTradeReceivables
-      depreciation-analysis: uk-core:AccumulatedDepreciationImpairmentPropertyPlantEquipment
+      depreciation-total: uk-core:AccumulatedDepreciationImpairmentPropertyPlantEquipment
       depreciation-charge: uk-core:IncreaseFromDepreciationChargeForYearPropertyPlantEquipment
       directors-duty: uk-direp:StatementThatDirectorsAcknowledgeTheirResponsibilitiesUnderCompaniesAct
       entity-legal-country: uk-bus:CountryFormationOrIncorporation
@@ -542,7 +544,7 @@ taxonomy:
       entity-legal-form: uk-bus:LegalFormEntity
       fixed-assets: uk-core:FixedAssets
       fixed-assets-additions: uk-core:IncreaseDecreaseInPropertyPlantEquipment
-      fixed-assets-analysis: uk-core:PropertyPlantEquipmentGrossCost
+      fixed-assets-total: uk-core:PropertyPlantEquipmentGrossCost
       gross-profit: uk-core:GrossProfitLoss
       industry-sector: uk-bus:MainIndustrySector
       is-dormant: uk-bus:EntityDormantTruefalse
