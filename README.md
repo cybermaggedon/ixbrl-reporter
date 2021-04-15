@@ -35,7 +35,7 @@ available on package repositories.  MacOS and Windows builds of GnuCash are
 reportedly not shipping with Python APIs at the moment.
 
 ```
-pip3 install git+https://github.com/cybermaggedon/gnucash-uk-reports
+pip3 install git+https://github.com/cybermaggedon/gnucash-ixbrl
 ```
 
 ## Usage
