@@ -71,7 +71,7 @@ class MultiPeriodWorksheet(Worksheet):
                             for period in self.periods
                         ]
                     )
-                    srs.id = output0.defn.lines[i].id
+                    srs.id = output0.defn.inputs[i].id
                     items.append(srs)
                 sec.items = items
 

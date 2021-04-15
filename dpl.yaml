@@ -71,18 +71,19 @@ metadata:
       start: '2020-09-01'
     utr: 0123456789
 computations:
+- accounts:
+  - Income
+  description: Consultancy
+  id: consultancy
+  kind: line
+  period: in-year
+  segments:
+    detailed-analysis: item1
 - description: Turnover / revenue
   id: turnover
   kind: group
-  lines:
-  - accounts:
-    - Income
-    description: Consultancy
-    id: consultancy
-    kind: line
-    period: in-year
-    segments:
-      detailed-analysis: item1
+  inputs:
+  - consultancy
   period: in-year
 - description: Gross Profit
   id: gross-profit
@@ -90,77 +91,88 @@ computations:
   - turnover
   kind: computation
   period: in-year
+- accounts:
+  - Expenses:Emoluments:Employees
+  description: Salaries
+  id: salaries
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:Emoluments:Employer Pension Contribution
+  description: Pension contributions
+  id: pensions
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:Depreciation
+  description: Depreciation
+  id: depreciation
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Accountant
+  description: Accountancy services
+  id: accountancy
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Bank Charges
+  description: Bank charges
+  id: bank-charges
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Office
+  description: Office costs
+  id: office
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Software
+  description: Software
+  id: software
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Subscriptions
+  description: Subscriptions
+  id: subscriptions
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Sundries
+  description: Sundries
+  id: sundries
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Telecoms
+  description: Telecoms
+  id: telecoms
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Travel/Accom
+  description: Travel
+  id: travel
+  kind: line
+  period: in-year
 - description: Total costs
   id: total-costs
   kind: group
-  lines:
-  - accounts:
-    - Expenses:Emoluments:Employees
-    description: Salaries
-    id: salaries
-    kind: line
-    period: in-year
-  - accounts:
-    - Expenses:Emoluments:Employer Pension Contribution
-    description: Pension contributions
-    id: pensions
-    kind: line
-    period: in-year
-  - accounts:
-    - Expenses:Depreciation
-    description: Depreciation
-    id: depreciation
-    kind: line
-    period: in-year
-  - accounts:
-    - Expenses:VAT Purchases:Accountant
-    description: Accountancy services
-    id: accountancy
-    kind: line
-    period: in-year
-  - accounts:
-    - Expenses:VAT Purchases:Bank Charges
-    description: Bank charges
-    id: bank-charges
-    kind: line
-    period: in-year
-  - accounts:
-    - Expenses:VAT Purchases:Office
-    description: Office costs
-    id: office
-    kind: line
-    period: in-year
-  - accounts:
-    - Expenses:VAT Purchases:Software
-    description: Software
-    id: software
-    kind: line
-    period: in-year
-  - accounts:
-    - Expenses:VAT Purchases:Subscriptions
-    description: Subscriptions
-    id: subscriptions
-    kind: line
-    period: in-year
-  - accounts:
-    - Expenses:VAT Purchases:Sundries
-    description: Sundries
-    id: sundries
-    kind: line
-    period: in-year
-  - accounts:
-    - Expenses:VAT Purchases:Telecoms
-    description: Telecoms
-    id: Telecoms
-    kind: line
-    period: in-year
-  - accounts:
-    - Expenses:VAT Purchases:Travel/Accom
-    description: Travel
-    id: travel
-    kind: line
-    period: in-year
   period: in-year
+  inputs:
+  - salaries
+  - pensions
+  - depreciation
+  - accountancy
+  - bank-charges
+  - office
+  - software
+  - subscriptions
+  - sundries
+  - telecoms
+  - travel
 - description: Profit before tax
   id: profit-before-tax
   inputs:
@@ -168,17 +180,18 @@ computations:
   - total-costs
   kind: computation
   period: in-year
+- accounts:
+  - Equity:Corporation Tax
+  description: Corporation Tax
+  id: corporation-tax-due
+  kind: line
+  period: in-year
 - description: Tax Due
   id: tax-due
   kind: group
-  lines:
-  - accounts:
-    - Equity:Corporation Tax
-    description: Corporation Tax
-    id: dpl-corporation-tax
-    kind: line
-    period: in-year
   period: in-year
+  inputs:
+  - corporation-tax-due
 - description: Profit (Loss)
   id: profit
   inputs:

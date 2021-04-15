@@ -164,10 +164,15 @@ class Constant(Computable):
         return output
 
 class Group(Computable):
-    def __init__(self, id, description, context, period=AT_END, segments={}):
+    def __init__(self, id, description, inputs=None, context=None,
+                 period=AT_END, segments={}):
+
+        if inputs == None:
+            inputs = []
+
         self.id = id
         self.description = description
-        self.lines = []
+        self.inputs = inputs
         self.context = context
         self.period = period
         self.segments = segments
@@ -188,12 +193,10 @@ class Group(Computable):
 
         segs = cfg.get("segments", {})
 
-        g = Group(id, cfg.get("description"), context, pid, segs)
+        g = Group(id, cfg.get("description"), [], context, pid, segs)
 
-        for l in cfg.get("lines"):
-
-            elt = Computable.load(l, comps, context, data)
-            g.add(elt)
+        for v in cfg.get("inputs"):
+            g.add(comps[v])
 
         def set_hide(x):
             g.hide_breakdown = x
@@ -202,8 +205,8 @@ class Group(Computable):
         
         return g
 
-    def add(self, line):
-        self.lines.append(line)
+    def add(self, input):
+        self.inputs.append(input)
 
     def compute(self, accounts, start, end, result):
 
@@ -215,8 +218,8 @@ class Group(Computable):
             context = self.context.with_period(Period("", start, end))
 
         total = 0
-        for line in self.lines:
-            total += line.compute(accounts, start, end, result)
+        for input in self.inputs:
+            total += input.compute(accounts, start, end, result)
 
         if len(self.segments) != 0:
             context = context.with_segments(self.segments)
@@ -227,7 +230,7 @@ class Group(Computable):
 
     def get_output(self, result):
 
-        if len(self.lines) == 0:
+        if len(self.inputs) == 0:
             output = NilValue(self, self.description, result.get(self.id))
             return output
 
@@ -240,7 +243,7 @@ class Group(Computable):
                 self.description,
                 result.get(self.id),
                 items= [
-                    item.get_output(result) for item in self.lines
+                    item.get_output(result) for item in self.inputs
                 ]
             )
 
@@ -254,7 +257,7 @@ class Group(Computable):
                 self.description,
                 result.get(self.id),
                 items= [
-                    item.get_output(result) for item in self.lines
+                    item.get_output(result) for item in self.inputs
                 ]
             )
 

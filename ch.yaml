@@ -70,95 +70,106 @@ metadata:
       start: '2020-09-01'
       end: '2021-08-31'
 computations:
+- id: consultancy
+  kind: line
+  description: Consultancy
+  period: in-year
+  accounts:
+  - Income
 - id: turnover
   kind: group
   description: Turnover / revenue
   hide-breakdown: true
-  lines:
-  - accounts:
-    - Income
-    description: Consultancy
-    id: consultancy
-    kind: line
-    period: in-year
-  period: in-year
+  inputs:
+  - consultancy
 - id: gross-profit
   kind: computation
   description: Gross Profit
+  period: in-year
   inputs:
   - turnover
+- id: salaries
+  kind: line
+  accounts:
+  - Expenses:Emoluments:Employees
+  description: Salaries
+  period: in-year
+- id: pensions
+  kind: line
+  accounts:
+  - Expenses:Emoluments:Employer Pension Contribution
+  description: Pension contributions
+  period: in-year
+- id: depreciation
+  kind: line
+  description: Depreciation
+  accounts:
+  - Expenses:Depreciation
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Accountant
+  description: Accountancy services
+  id: accountancy
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Bank Charges
+  description: Bank charges
+  id: bank-charges
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Office
+  description: Office costs
+  id: office
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Software
+  description: Software
+  id: software
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Subscriptions
+  description: Subscriptions
+  id: subscriptions
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Sundries
+  description: Sundries
+  id: sundries
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Telecoms
+  description: Telecoms
+  id: telecoms
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Travel/Accom
+  description: Travel
+  id: travel
+  kind: line
   period: in-year
 - id: administrative-expenses
   kind: group
   description: Administrative Expenses
   hide-breakdown: true
-  lines:
-  - id: salaries
-    kind: line
-    accounts:
-    - Expenses:Emoluments:Employees
-    description: Salaries
-    period: in-year
-  - id: pensions
-    kind: line
-    accounts:
-    - Expenses:Emoluments:Employer Pension Contribution
-    description: Pension contributions
-    period: in-year
-  - id: depreciation
-    kind: line
-    description: Depreciation
-    accounts:
-    - Expenses:Depreciation
-    period: in-year
-  - accounts:
-    - Expenses:VAT Purchases:Accountant
-    description: Accountancy services
-    id: accountancy
-    kind: line
-    period: in-year
-  - accounts:
-    - Expenses:VAT Purchases:Bank Charges
-    description: Bank charges
-    id: bank-charges
-    kind: line
-    period: in-year
-  - accounts:
-    - Expenses:VAT Purchases:Office
-    description: Office costs
-    id: office
-    kind: line
-    period: in-year
-  - accounts:
-    - Expenses:VAT Purchases:Software
-    description: Software
-    id: software
-    kind: line
-    period: in-year
-  - accounts:
-    - Expenses:VAT Purchases:Subscriptions
-    description: Subscriptions
-    id: subscriptions
-    kind: line
-    period: in-year
-  - accounts:
-    - Expenses:VAT Purchases:Sundries
-    description: Sundries
-    id: sundries
-    kind: line
-    period: in-year
-  - accounts:
-    - Expenses:VAT Purchases:Telecoms
-    description: Telecoms
-    id: Telecoms
-    kind: line
-    period: in-year
-  - accounts:
-    - Expenses:VAT Purchases:Travel/Accom
-    description: Travel
-    id: travel
-    kind: line
-    period: in-year
+  inputs:
+  - salaries
+  - pensions
+  - depreciation
+  - accountancy
+  - bank-charges
+  - office
+  - software
+  - subscriptions
+  - sundries
+  - telecoms
+  - travel
   period: in-year
 - id: profit
   kind: computation
@@ -167,60 +178,66 @@ computations:
   inputs:
   - gross-profit
   - administrative-expenses
+- accounts:
+  - Assets:Capital Equipment
+  description: Tangible Assets
+  id: tangible-assets
+  kind: line
+  period: at-end
 - id: fixed-assets
   description: Fixed Assets
   kind: group
   period: at-end
-  lines:
-  - accounts:
-    - Assets:Capital Equipment
-    description: Tangible Assets
-    id: tangible-assets
-    kind: line
-    period: at-end
+  inputs:
+  - tangible-assets
+- accounts:
+  - Accounts Receivable
+  - Assets:Owed To Us
+  description: Debtors
+  id: debtors
+  kind: line
+  period: at-end
+- accounts:
+  - VAT:Input
+  description: VAT Refund Due
+  id: vat-refund-owed
+  kind: line
+  period: at-end
+- accounts:
+  - Bank Accounts
+  description: Bank
+  id: bank
+  kind: line
+  period: at-end
 - description: Current Assets
   id: current-assets
   kind: group
-  lines:
-  - accounts:
-    - Accounts Receivable
-    - Assets:Owed To Us
-    description: Debtors
-    id: debtors
-    kind: line
-    period: at-end
-  - accounts:
-    - VAT:Input
-    description: VAT Refund Due
-    id: vat-refund-owed
-    kind: line
-    period: at-end
-  - accounts:
-    - Bank Accounts
-    description: Bank
-    id: bank
-    kind: line
-    period: at-end
+  inputs:
+  - debtors
+  - vat-refund-owed
+  - bank
 - description: Prepayments and Accrued Income
   id: prepayments-and-accrued-income
   kind: group
-  lines: []
+  inputs: []
+- accounts:
+  - Accounts Payable
+  description: Trade Creditors
+  id: trade-creditors
+  kind: line
+  period: at-end
+- accounts:
+  - VAT:Output
+  description: Other Creditors
+  id: other-creditors
+  kind: line
+  period: at-end
 - description: 'Creditors: falling due within one year'
   id: creditors-within-1-year
   kind: group
-  lines:
-  - accounts:
-    - Accounts Payable
-    description: Trade Creditors
-    id: trade-creditors
-    kind: line
-    period: at-end
-  - accounts:
-    - VAT:Output
-    description: Other Creditors
-    id: other-creditors
-    kind: line
-    period: at-end
+  inputs:
+  - trade-creditors
+  - other-creditors
   segments:
     matures: within-1-year
 - id: net-current-assets
@@ -241,23 +258,24 @@ computations:
 - description: 'Creditors: falling due after one year'
   id: creditors-after-1-year
   kind: group
-  lines: []
+  inputs: []
   segments:
     matures: after-1-year
+- accounts:
+  - Liabilities:Owed Corporation Tax
+  description: Corporation Tax
+  id: corporation-tax-owed
+  kind: line
+  period: at-end
 - description: Provisions For Liabilities
   id: provisions-for-liabilities
   kind: group
-  lines:
-  - accounts:
-    - Liabilities:Owed Corporation Tax
-    description: Corporation Tax
-    id: corporation-tax-owed
-    kind: line
-    period: at-end
+  inputs:
+  - corporation-tax-owed
 - description: Accrued liabilities and deferred income
   id: accruals-and-deferred-income
   kind: group
-  lines: []
+  inputs: []
 - description: Net Assets
   id: net-assets
   inputs:
@@ -266,96 +284,111 @@ computations:
   - provisions-for-liabilities
   - accruals-and-deferred-income
   kind: computation
+- accounts:
+  - Equity:Shareholdings
+  description: Share Capital
+  id: share-capital
+  kind: line
+  period: at-end
+- accounts:
+  - Income
+  - Expenses
+  description: Retained Profit
+  id: profit-loss
+  kind: line
+  period: at-end
+- accounts:
+  - Equity:Dividends
+  description: Dividends
+  id: dividends
+  kind: line
+  period: at-end
+- id: corporation-tax
+  accounts:
+  - Equity:Corporation Tax
+  description: Corporation Tax
+  kind: line
+  period: at-end
 - description: Capital and Reserves
   id: capital-and-reserves
   kind: group
-  lines:
-  - accounts:
-    - Equity:Shareholdings
-    description: Share Capital
-    id: share-capital
-    kind: line
-    period: at-end
-  - accounts:
-    - Income
-    - Expenses
-    description: Retained Profit
-    id: profit-loss
-    kind: line
-    period: at-end
-  - accounts:
-    - Equity:Dividends
-    description: Dividends
-    id: dividends
-    kind: line
-    period: at-end
-  - accounts:
-    - Equity:Corporation Tax
-    description: Corporation Tax
-    kind: line
-    period: at-end
+  inputs:
+  - share-capital
+  - dividends
+  - corporation-tax
 - description: Total Capital and Reserves
   id: total-capital-and-reserves
   inputs:
   - capital-and-reserves
   kind: computation
+- accounts:
+  - Assets:Capital Equipment:Computer Equipment
+  description: At start of period
+  id: fixed-assets-initial
+  kind: line
+  period: at-start
+- accounts:
+  - Assets:Capital Equipment:Computer Equipment
+  description: Additions
+  id: fixed-assets-additions
+  kind: line
+  period: in-year
 - description: Fixed Assets
   id: fixed-assets-analysis
   kind: group
-  lines:
-  - accounts:
-    - Assets:Capital Equipment:Computer Equipment
-    description: At start of period
-    id: fixed-assets-inital
-    kind: line
-    period: at-start
-  - accounts:
-    - Assets:Capital Equipment:Computer Equipment
-    description: Additions
-    id: fixed-assets-additions
-    kind: line
-    period: in-year
+  inputs:
+  - fixed-assets-initial
+  - fixed-assets-additions
+- id: depreciation-initial
+  accounts:
+  - Assets:Capital Equipment:Depreciation
+  description: At start of period
+  kind: line
+  period: at-start
+- accounts:
+  - Assets:Capital Equipment:Depreciation
+  description: Charge
+  id: depreciation-charge
+  kind: line
+  period: in-year
 - description: Depreciation
   id: depreciation-analysis
   kind: group
-  lines:
-  - accounts:
-    - Assets:Capital Equipment:Depreciation
-    description: At start of period
-    kind: line
-    period: at-start
-  - accounts:
-    - Assets:Capital Equipment:Depreciation
-    description: Charge
-    id: depreciation-charge
-    kind: line
-    period: in-year
+  inputs:
+  - depreciation-initial
+  - depreciation-charge
 - description: Carrying at end of period
   id: carrying-final
   inputs:
   - fixed-assets-analysis
   - depreciation-analysis
   kind: computation
+- id: ordinary-shares-at-start
+  accounts:
+  - Equity:Shareholdings:Ordinary Shares
+  description: Ordinary Shares
+  kind: line
+  period: at-start
+- id: preference-shares-at-start
+  accounts:
+  - Equity:Shareholdings:Preference Shares
+  description: Preference Shares
+  kind: line
+  period: at-start
+- id: shares-issued
+  accounts:
+  - Equity:Shareholdings
+  description: Shares Issued
+  kind: line
+  period: in-year
 - description: Share Capital
   id: share-capital
   kind: group
-  lines:
-  - accounts:
-    - Equity:Shareholdings:Ordinary Shares
-    description: Ordinary Shares
-    kind: line
-    period: at-start
-  - accounts:
-    - Equity:Shareholdings:Preference Shares
-    description: Preference Shares
-    kind: line
-    period: at-start
-  - accounts:
-    - Equity:Shareholdings
-    description: Shares Issued
-    kind: line
-    period: in-year
   period: at-end
+  inputs:
+  - ordinary-shares-at-start
+  - preference-shares-at-start
+  - shares-issued
 worksheets:
 - id: balance-sheet
   kind: multi-period
