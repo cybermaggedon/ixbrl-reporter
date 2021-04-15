@@ -315,6 +315,7 @@ computations:
   kind: group
   inputs:
   - share-capital
+  - profit-loss
   - dividends
   - corporation-tax
 - description: Total Capital and Reserves

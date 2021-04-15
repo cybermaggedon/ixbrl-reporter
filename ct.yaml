@@ -14,7 +14,7 @@ metadata:
       date: '2019-03-01'
       form: private-limited-company
     company-name: Example Biz Ltd.
-    company-number: 012345678
+    company-number: '012345678'
     contact:
       address:
       - 123 Leadbarton Street

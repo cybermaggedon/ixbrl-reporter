@@ -384,8 +384,8 @@ h2 {
         unit.appendChild(measure)
         resources.appendChild(unit)
        
-        out.write(doc.toprettyxml())
-#        out.write(doc.toxml())
+#        out.write(doc.toprettyxml())
+        out.write(doc.toxml())
 
     def create_contexts(self, taxonomy):
 
