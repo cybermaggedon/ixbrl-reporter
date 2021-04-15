@@ -136,7 +136,7 @@ computations:
 - accounts:
   - Expenses:VAT Purchases:Subscriptions
   description: Subscriptions
-  id: subscriptions
+  id: subscriptions-costs
   kind: line
   period: in-year
 - accounts:
@@ -169,7 +169,7 @@ computations:
   - bank-charges
   - office
   - software
-  - subscriptions
+  - subscriptions-costs
   - sundries
   - telecoms
   - travel
@@ -183,7 +183,7 @@ computations:
 - accounts:
   - Equity:Corporation Tax
   description: Corporation Tax
-  id: corporation-tax-due
+  id: corporation-tax
   kind: line
   period: in-year
 - description: Tax Due
@@ -191,7 +191,7 @@ computations:
   kind: group
   period: in-year
   inputs:
-  - corporation-tax-due
+  - corporation-tax
 - description: Profit (Loss)
   id: profit
   inputs:
