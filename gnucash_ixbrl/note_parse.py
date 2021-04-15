@@ -20,6 +20,12 @@ class MetadataToken:
         self.suffix = suffix
         self.null = null
 
+class ComputationToken:
+    def __init__(self, name, context="", period=""):
+        self.name = name
+        self.context = context
+        self.period = period
+
 class NoteParser:
     @staticmethod
     def parse(note):
@@ -31,6 +37,7 @@ class NoteParser:
         IN_TEXT = 1
         POST_TILDE = 2
         IN_TAG_NAME = 3
+        IN_COMPUTATION_NAME = 4
         IN_METADATA_NAME = 5
 
         state = IN_TEXT
@@ -68,6 +75,11 @@ class NoteParser:
                 if c == '[':
                     state = IN_METADATA_NAME
                     metadata_name = ""
+                    continue
+
+                if c == '(':
+                    state = IN_COMPUTATION_NAME
+                    computation_name = ""
                     continue
 
                 err = "Didn't expect character '%c' after a tilde" % c
@@ -131,6 +143,25 @@ class NoteParser:
                     continue
 
                 metadata_name += c
+                continue
+
+            if state == IN_COMPUTATION_NAME:
+                if c == ')':
+
+                    toks = computation_name.split(":")
+
+                    if len(toks) < 1 or len(toks) > 3:
+                        raise RuntimeError(
+                            "Too many fields: %s" % computation_name
+                        )
+                    tok = ComputationToken(*toks)
+
+                    tokens.append(tok)
+                    text = ""
+                    state = IN_TEXT
+                    continue
+
+                computation_name += c
                 continue
 
         if state == IN_TEXT:

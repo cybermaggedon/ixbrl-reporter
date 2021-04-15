@@ -6,6 +6,9 @@ from . valueset import ValueSet
 from . multi_period import MultiPeriodWorksheet
 from . element import Element
 from . config import NoneValue
+from . datum import *
+
+import copy
 
 class DataSource:
     def __init__(self, cfg, session):
@@ -101,3 +104,48 @@ class DataSource:
     def get_config_date(self, key, deflt=None):
         return self.cfg.get_date(key, deflt)
 
+    def to_datum(self, defn, context):
+
+        if defn.get("kind") == "config":
+            id = defn.get("id")
+            value = self.get_config(defn.get("key"))
+            datum = StringDatum(id, value, context)
+            return datum
+        elif defn.get("kind") == "config-date":
+            id = defn.get("id")
+            value = self.get_config_date(defn.get("key"))
+            datum = DateDatum(id, value, context)
+            return datum
+        elif defn.get("kind") == "bool":
+            id = defn.get("id")
+            value = defn.get_bool("value")
+            datum = BoolDatum(id, value, context)
+            return datum
+        elif defn.get("kind") == "string":
+            id = defn.get("id")
+            value = defn.get("value")
+            datum = StringDatum(id, value, context)
+            return datum
+        elif defn.get("kind") == "money":
+            id = defn.get("id")
+            value = defn.get("value")
+            datum = MoneyDatum(id, value, context)
+            return datum
+        elif defn.get("kind") == "number":
+            id = defn.get("id")
+            value = defn.get("value")
+            datum = NumberDatum(id, value, context)
+            return datum
+        elif defn.get("kind") == "computation":
+            id = defn.get("id")
+            comp_id = defn.get("computation")
+            key = defn.get("period-config")
+            period = Period.load(self.get_config(
+                key
+            ))
+            res = self.get_results([comp_id], period)
+            value = res.get(comp_id)
+            value = copy.copy(value)
+            value.id = id
+            value.context = context
+            return value

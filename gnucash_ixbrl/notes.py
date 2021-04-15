@@ -68,6 +68,21 @@ class NotesElement(BasicElement):
 
                     if tk.null != "":
                         elements[-1].appendChild(par.doc.createTextNode(tk.null))
+            elif isinstance(tk, ComputationToken):
+
+                if tk.period == "":
+                    period = self.data.get_report_period()
+                else:
+                    period = Period.load(self.data.get_config(tk.period))
+
+                res = self.data.perform_computations(period)
+
+                datum = res.get(tk.name)
+
+                fact = taxonomy.create_fact(datum)
+
+                if fact:
+                    fact.append(par.doc, elements[-1])
 
             elif isinstance(tk, TagOpen):
 

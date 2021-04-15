@@ -56,57 +56,8 @@ class FactTable(BasicElement):
         out.write(title)
         
         for v in self.elements:
-            datum = self.to_datum(v, None)
+            datum = self.data.to_datum(v, None)
             out.write("{0}: {1}\n".format(datum.id, datum.value))
-
-    def to_datum(self, defn, context):
-
-        if defn.get("kind") == "config":
-            id = defn.get("id")
-            value = self.data.get_config(defn.get("key"))
-            datum = StringDatum(id, value, context)
-            return datum
-        elif defn.get("kind") == "config-date":
-            id = defn.get("id")
-            value = self.data.get_config_date(defn.get("key"))
-            datum = DateDatum(id, value, context)
-            return datum
-        elif defn.get("kind") == "bool":
-            id = defn.get("id")
-            value = defn.get_bool("value")
-            datum = BoolDatum(id, value, context)
-            return datum
-        elif defn.get("kind") == "string":
-            id = defn.get("id")
-            value = defn.get("value")
-            datum = StringDatum(id, value, context)
-            return datum
-        elif defn.get("kind") == "money":
-            id = defn.get("id")
-            value = defn.get("value")
-            datum = MoneyDatum(id, value, context)
-            return datum
-        elif defn.get("kind") == "number":
-            id = defn.get("id")
-            value = defn.get("value")
-            datum = NumberDatum(id, value, context)
-            return datum
-        elif defn.get("kind") == "computation":
-            id = defn.get("id")
-            comp_id = defn.get("computation")
-            key = defn.get("period-config")
-            period = Period.load(self.data.get_config(
-                key
-            ))
-            res = self.data.get_results([comp_id], period)
-            value = res.get(comp_id)
-            value = copy.copy(value)
-            value.id = id
-            value.context = context
-            return value
-
-        raise RuntimeError("Don't recognised kind '%s'" % defn.get("kind"))
-        
 
     def to_ixbrl_elt(self, par, taxonomy):
 
@@ -130,7 +81,7 @@ class FactTable(BasicElement):
             else:
                 context = period_context
 
-            datum = self.to_datum(v, context)
+            datum = self.data.to_datum(v, context)
 
             fact = taxonomy.create_fact(datum)
             elt = self.make_fact(par, v.get("field"),

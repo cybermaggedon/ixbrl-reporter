@@ -90,13 +90,13 @@ computations:
   period: in-year
   inputs:
   - turnover
-- accounts:
-  - Assets:Capital Equipment:Computer Equipment
-  description: Annual investment allowance
-  id: annual-investment-allowance
+- id: annual-investment-allowance
   kind: line
+  description: Annual investment allowance
   period: in-year
   reverse-sign: true
+  accounts:
+  - Assets:Capital Equipment:Computer Equipment
   segments:
     business-type: management-expenses
 - description: Allowances

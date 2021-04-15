@@ -103,12 +103,19 @@ computations:
   id: pensions
   kind: line
   period: in-year
-- accounts:
-  - Expenses:Depreciation
-  description: Depreciation
-  id: depreciation
+- id: depreciation
   kind: line
+  description: Depreciation
   period: in-year
+  accounts:
+  - Expenses:Depreciation
+- id: reverse-depreciation
+  kind: line
+  description: Depreciation
+  period: in-year
+  reverse-sign: true
+  accounts:
+  - Expenses:Depreciation
 - accounts:
   - Expenses:VAT Purchases:Accountant
   description: Accountancy services
@@ -173,12 +180,12 @@ computations:
   - sundries
   - telecoms
   - travel
-- description: Profit before tax
-  id: profit-before-tax
+- id: profit-before-tax
+  kind: computation
+  description: Profit before tax
   inputs:
   - gross-profit
   - total-costs
-  kind: computation
   period: in-year
 - accounts:
   - Equity:Corporation Tax
@@ -200,6 +207,32 @@ computations:
   - tax-due
   kind: computation
   period: in-year
+- id: annual-investment-allowance
+  kind: line
+  description: Annual investment allowance
+  period: in-year
+  accounts:
+  - Assets:Capital Equipment:Computer Equipment
+  segments:
+    business-type: management-expenses
+- id: reverse-annual-investment-allowance
+  kind: line
+  description: Annual investment allowance
+  period: in-year
+  reverse-sign: true
+  accounts:
+  - Assets:Capital Equipment:Computer Equipment
+  segments:
+    business-type: management-expenses
+- id: ct-profit-before-tax
+  kind: computation
+  description: Profit before tax
+  inputs:
+  - gross-profit
+  - reverse-depreciation
+  - total-costs
+  - reverse-annual-investment-allowance
+  period: in-year
 worksheets:
 - computations:
   - turnover
@@ -216,7 +249,18 @@ elements:
   kind: composite
   elements:
   - profit-and-loss
+  - notes
 - id: profit-and-loss
   kind: worksheet
   title: Detailed Profit and Loss
   worksheet: profit-and-loss
+- id: notes
+  kind: notes
+  title: Notes
+  notes:
+  - 'note:For the purpose of corporation tax, trading profit is calculated as
+    gross profit (£~(gross-profit)) minus a capital allowance for
+    AIA (£~(annual-investment-allowance)).  Management costs are calculated
+    as total costs (£~(total-costs)) minus depreciation costs
+    (£~(depreciation)). This gives a profit before tax of
+    £~(ct-profit-before-tax).'
