@@ -90,8 +90,6 @@ computations:
   period: in-year
   inputs:
   - turnover
-  segments:
-    business-type: company
 - accounts:
   - Assets:Capital Equipment:Computer Equipment
   description: Annual investment allowance
@@ -114,6 +112,8 @@ computations:
   - allowances
   kind: computation
   period: in-year
+  segments:
+    business-type: company
 - accounts:
   - Expenses:Emoluments:Employees
   description: Salaries
@@ -213,48 +213,62 @@ computations:
 - id: tax-owed
   description: Corporation tax owed
   kind: group
-  hide-breakdown: true
+  period: in-year
   inputs:
   - corporation-tax
-  period: in-year
 - id: profit-before-tax-fy1
   kind: computation
   description: Profit before tax FY1
+  period: in-year
   inputs:
   - input: profit-before-tax
     operation: apportion
     whole-period: metadata.report.periods.0
     proportion-period: metadata.report.fy1
+  segments:
+    business-type: company
 - id: profit-before-tax-fy2
   kind: computation
   description: Profit before tax FY2
+  period: in-year
   inputs:
   - input: profit-before-tax
     operation: apportion
     whole-period: metadata.report.periods.0
     proportion-period: metadata.report.fy2
+  segments:
+    business-type: company
 - id: profit-before-tax-total
   description: Profit before tax
   kind: group
+  period: in-year
   inputs:
   - profit-before-tax-fy1
   - profit-before-tax-fy2
+  segments:
+    business-type: company
 - id: tax-fy1
   kind: computation
   description: Corporation tax FY1 (19%)
+  period: in-year
   inputs:
   - input: tax-owed
     operation: apportion
     whole-period: metadata.report.periods.0
     proportion-period: metadata.report.fy1
+  segments:
+    business-type: company
 - id: tax-fy2
   kind: computation
   description: Corporation tax FY2 (19%)
+  period: in-year
   inputs:
   - input: tax-owed
     operation: apportion
     whole-period: metadata.report.periods.0
     proportion-period: metadata.report.fy2
+  segments:
+    business-type: company
 - id: tax-total
   description: Corporation tax total
   kind: group
@@ -262,12 +276,16 @@ computations:
   - tax-fy1
   - tax-fy2
   period: in-year
+  segments:
+    business-type: company
 - id: profit
   kind: computation
   description: Profit after tax
   inputs:
   - profit-before-tax
   - tax-owed
+  segments:
+    business-type: company
 worksheets:
 - computations:
   - turnover
@@ -284,6 +302,7 @@ worksheets:
 elements:
 - elements:
   - about
+  - capital-allowances
   - profits
   - tax-chargeable
   - tax-calculation
@@ -335,6 +354,18 @@ elements:
     id: partner-in-a-firm
     kind: bool
     value: 'false'
+- id: capital-allowances
+  kind: facttable
+  title: Capital allowances and balancing charges
+  facts:
+  - id: annual-investment-allowance
+    context: report-period
+    description: Annual investment allowance
+    field: '690'
+    computation: annual-investment-allowance
+    kind: computation
+    period-config: metadata.tax.period
+    context: management-expenses-period
 - id: profits
   kind: facttable
   title: Profits and gains

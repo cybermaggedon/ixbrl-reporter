@@ -1,21 +1,21 @@
 taxonomy:
   corptax:
     contexts:
-    - entity: metadata.business.company-number
-      id: business
+    - id: business
+      entity: metadata.business.company-number
       scheme: http://www.companieshouse.gov.uk/
-    - from: business
-      id: report-period
+    - id: report-period
+      from: business
       period: metadata.report.periods.0
       segments:
         business-type: company
-    - from: business
-      id: management-expenses-period
+    - id: management-expenses-period
+      from: business
       period: metadata.report.periods.0
       segments:
         business-type: management-expenses
-    - from: business
-      id: report-date
+    - id: report-date
+      from: business
       instant: metadata.report.date
       segments:
         business-type: company
@@ -62,8 +62,19 @@ taxonomy:
       corporation-tax-chargeable-payable: true
       fy1-tax-at-first-rate: true
       fy2-tax-at-first-rate: true
+      tax-fy1: true
+      tax-fy2: true
+      tax-total: true
       management-expenses: true
       total-deductions-and-reliefs: true
+      salaries: true
+      pensions: true
+      legal-and-professional: true
+      bank-charges: true
+      office: true
+      software-expenses: true
+      sundries: true
+      travel: true
     tags:
       profit-before-tax-fy1: ct-comp:FY1AmountOfProfitChargeableAtFirstRate
       profit-before-tax-fy2: ct-comp:FY2AmountOfProfitChargeableAtFirstRate
@@ -71,7 +82,18 @@ taxonomy:
       tax-fy2: ct-comp:FY2TaxAtFirstRate
       tax-total: ct-comp:CorporationTaxChargeable
       profit-before-tax-total: ct-comp:TotalProfitsChargeableToCorporationTax
-      trading-profit: ct-comp:AdjustedTradingProfitOfThisPeriod      
+      trading-profit: ct-comp:AdjustedTradingProfitOfThisPeriod
+      salaries: ct-comp:ManagementExpensesEmploymentCosts
+      pensions: ct-comp:ManagementExpensesPensionCosts
+      legal-and-professional: ct-comp:ManagementExpensesLegalAndProfessional
+      bank-charges: ct-comp:ManagementExpensesBankChargesCommission
+      office: ct-comp:AdjustmentsTelephoneFaxStationeryAndOtherOfficeCosts
+      software: ct-comp:NameOfProductionSoftware
+      software-version: ct-comp:VersionOfProductionSoftware
+      software-expenses: ct-comp:ManagementExpensesComputerCosts
+      sundries: ct-comp:ManagementExpensesSundries
+      travel: ct-comp:ManagementExpensesTravelAndSubsistence
+
       account-period-end: ct-comp:PeriodOfAccountEndDate
       account-period-start: ct-comp:PeriodOfAccountStartDate
       act-set-against-corporation-tax: ct-comp:ACTSetAgainstCorporationTax
@@ -196,7 +218,6 @@ taxonomy:
       annual-payments: ct-comp:AnnualPayments
       balance-of-losses-brought-forward-carried-forward: ct-comp:BalanceOfLossesBroughtForwardCarriedForward
       balance-of-non-resident-company-landlord-income-tax-losses-brought-forward-carried-forward: ct-comp:BalanceOfNonResidentCompanyLandlordIncomeTaxLossesBroughtForwardCarriedForward
-      bank-charges: ct-comp:ManagementExpensesBankChargesCommission
       bank-compensation-payments-restriction: ct-comp:BankCompensationPaymentsRestriction
       bank-levy-chargeable: ct-comp:BankLevyChargeable
       bank-levy-double-taxation-relief: ct-comp:BankLevyDoubleTaxationRelief
@@ -499,7 +520,6 @@ taxonomy:
       know-how-writing-down-allowance: ct-comp:Know-howWritingDownAllowance
       know-how-written-down-value: ct-comp:Know-howWrittenDownValue
       land-remediation-tax-credit-payable: ct-comp:LandRemediationTaxCreditPayable
-      legal-and-professional: ct-comp:ManagementExpensesLegalAndProfessional
       loan-brought-forward-carried-forward: ct-comp:LoanBroughtForwardCarriedForward
       loan-relationships-balancing-payments-made: ct-comp:LoanRelationshipsBalancingPaymentsMade
       loan-relationships-balancing-payments-received: ct-comp:LoanRelationshipsBalancingPaymentsReceived
@@ -668,7 +688,6 @@ taxonomy:
       nrcgt-or-ated--related-cgt-loss-brought-forward-carried-forward: ct-comp:NRCGTOrATED-RelatedCGTLossBroughtForwardCarriedForward
       number-of51-percent-group-companies: ct-comp:NumberOf51PercentGroupCompanies
       off-payroll-working-applicable: ct-comp:OffPayrollWorkingApplicable
-      office: ct-comp:AdjustmentsTelephoneFaxStationeryAndOtherOfficeCosts
       orchestra-tax-credits-payable: ct-comp:OrchestraTaxCreditsPayable
       other-blagab-income: ct-comp:OtherBLAGABIncome
       other-capital-allowances-balancing-charges: ct-comp:OtherCapitalAllowancesBalancingCharges
@@ -823,7 +842,6 @@ taxonomy:
       payable-rd-credit-calculation-amount-used-to-discharge-payment-of-any-other-liability-to-commissioners: ct-comp:PayableRDCreditCalculationAmountUsedToDischargePaymentOfAnyOtherLiabilityToCommissioners
       payable-rd-credit-calculation-net-value-of-set-off-amount: ct-comp:PayableRDCreditCalculationNetValueOfSetOffAmount
       payable-rd-credit-calculation-the-relevant-proportion-of-a-companys-staffing-costs-for-an-ap: ct-comp:PayableRDCreditCalculationTheRelevantProportionOfACompanysStaffingCostsForAnAP
-      pensions: ct-comp:ManagementExpensesPensionCosts
       period-from-which-loss-brought-back: ct-comp:PeriodFromWhichLossBroughtBack
       policyholder-tax: ct-comp:PolicyholderTax
       policyholder-tax-deduction: ct-comp:PolicyholderTaxDeduction
@@ -884,7 +902,6 @@ taxonomy:
       ring-fence-corporation-tax-included: ct-comp:RingFenceCorporationTaxIncluded
       ring-fence-profits-included: ct-comp:RingFenceProfitsIncluded
       s92-income-miscellaneous-receipts: ct-comp:S92IncomeMiscellaneousReceipts
-      salaries: ct-comp:ManagementExpensesEmploymentCosts
       share-loss-relief-allowable-costs: ct-comp:ShareLossReliefAllowableCosts
       share-loss-relief-allowable-loss: ct-comp:ShareLossReliefAllowableLoss
       share-loss-relief-claimed: ct-comp:ShareLossReliefClaimed
@@ -927,9 +944,6 @@ taxonomy:
       short-life-assets-written-down-value: ct-comp:ShortLifeAssetsWrittenDownValue
       sme-and-ni-employer-with-excluded-trade-with-back-office-election: ct-comp:SMEAndNIEmployerWithExcludedTradeWithBackOfficeElection
       smeni-large-company-rules-election: ct-comp:SMENILargeCompanyRulesElection
-      software: ct-comp:NameOfProductionSoftware
-      software-expenses: ct-comp:ManagementExpensesComputerCosts
-      software-version: ct-comp:VersionOfProductionSoftware
       special-allowance-for-decommissioning: ct-comp:SpecialAllowanceForDecommissioning
       special-leasing-capital-allowances: ct-comp:SpecialLeasingCapitalAllowances
       special-leasing-expenses: ct-comp:SpecialLeasingExpenses
@@ -967,7 +981,6 @@ taxonomy:
       subsidised-qualifying-expenditure-on-in--house-direct-rd-incurred-on-relevant-payments-to-the-subjects-of-a-clinical-trial: ct-comp:SubsidisedQualifyingExpenditureOnIn-HouseDirectRDIncurredOnRelevantPaymentsToTheSubjectsOfAClinicalTrial
       subsidised-qualifying-expenditure-on-in--house-direct-rd-incurred-on-software-or-consumable-items: ct-comp:SubsidisedQualifyingExpenditureOnIn-HouseDirectRDIncurredOnSoftwareOrConsumableItems
       subsidised-qualifying-expenditure-on-in--house-direct-rd-incurred-on-staffing-costs: ct-comp:SubsidisedQualifyingExpenditureOnIn-HouseDirectRDIncurredOnStaffingCosts
-      sundries: ct-comp:ManagementExpensesSundries
       supplementary-charge-ring-fence-trades-payable: ct-comp:SupplementaryChargeRingFenceTradesPayable
       tax-chargeable: ct-comp:TaxChargeable
       tax-ebitda-income: ct-comp:TaxEBITDAIncome
@@ -1017,7 +1030,6 @@ taxonomy:
       trading-losses-maximum-available: ct-comp:TradingLossesMaximumAvailable
       trading-losses-of-this-or-later-ap: ct-comp:TradingLossesOfThisOrLaterAP
       trading-losses-surrendered: ct-comp:TradingLossesSurrendered
-      travel: ct-comp:ManagementExpensesTravelAndSubsistence
       uk-property-business-losses-set-against-total-profits: ct-comp:UKPropertyBusinessLossesSetAgainstTotalProfits
       unlisted-share-loss-relief: ct-comp:UnlistedShareLossRelief
       unlisted-share-loss-relief-non-uk-total: ct-comp:UnlistedShareLossReliefNon-UKTotal
