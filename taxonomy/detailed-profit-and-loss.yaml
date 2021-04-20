@@ -37,7 +37,8 @@ taxonomy:
     namespaces:
       dpl: http://www.hmrc.gov.uk/schemas/ct/dpl/2019-01-01
       uk-core: http://xbrl.frc.org.uk/fr/2019-01-01/core
-    schema: http://www.hmrc.gov.uk/schemas/ct/dpl/2019-01-01/dpl-2019.xsd
+    schema:
+    - http://www.hmrc.gov.uk/schemas/ct/dpl/2019-01-01/dpl-2019.xsd
     sign-reversed:
       salaries: true
       pensions: true

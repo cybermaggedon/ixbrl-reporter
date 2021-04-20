@@ -490,7 +490,8 @@ taxonomy:
 	Act 2006 relating to small companies.}'
       software-version: These accounts were generated using
         ~[software] version ~[software-version].
-    schema: https://xbrl.frc.org.uk/FRS-102/2021-01-01/FRS-102-2021-01-01.xsd
+    schema:
+    - https://xbrl.frc.org.uk/FRS-102/2021-01-01/FRS-102-2021-01-01.xsd
     sign-reversed:
       accruals-and-deferred-income: true
       administrative-expenses: true

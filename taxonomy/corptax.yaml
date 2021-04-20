@@ -50,7 +50,8 @@ taxonomy:
           england-and-wales: uk-geo:EnglandWales
     namespaces:
       ct-comp: http://www.hmrc.gov.uk/schemas/ct/comp/2020-04-01
-    schema: http://www.hmrc.gov.uk/schemas/ct/comp/2020-04-01/ct-comp-2020.xsd
+    schema:
+    - http://www.hmrc.gov.uk/schemas/ct/comp/2020-04-01/ct-comp-2020.xsd
     sign-reversed:
       administrative-expenses: true
       annual-investment-allowance: true
