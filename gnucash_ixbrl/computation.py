@@ -25,6 +25,7 @@ class Computable:
         if kind == "group":
             return Group.load(cfg, comps, context, data)
 
+        # FIXME: Call this Total?
         if kind == "computation":
             return Computation.load(cfg, comps, context, data)
 
@@ -105,7 +106,12 @@ class Line(Computable):
 
     def get_output(self, result):
 
-        return SimpleValue(self, self.description, result.get(self.id))
+        if len(self.accounts) == 0:
+            output = NilValue(self, self.description, result.get(self.id))
+            return output
+
+        output = Total(self, self.description, result.get(self.id),
+                       items=[])
 
         return output
 
@@ -370,6 +376,8 @@ class Computation(Computable):
             output = NilValue(self, self.description, result.get(self.id))
             return output
 
+        # FIXME: Don't need AddOperation.
+        # FIXME: Also, make apportion a Computable.
         # Assume item contains AddOperations x.item provides value.
         # Needs rework if we do something more complicated.
         output = Total(self, self.description, result.get(self.id),

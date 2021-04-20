@@ -167,18 +167,20 @@ computations:
   kind: line
   period: in-year
 - id: ct-management-expenses
-  kind: computation
+  kind: line
   description: Management Expenses
   period: in-year
-  inputs:
-  - salaries
-  - pensions
-  - legal-and-professional
-  - bank-charges
-  - office
-  - software-expenses
-  - sundries
-  - travel
+  accounts:
+  - Expenses:Emoluments:Employees
+  - Expenses:Emoluments:Employer Pension Contribution
+  - Expenses:VAT Purchases:Accountant
+  - Expenses:VAT Purchases:Bank Charges
+  - Expenses:VAT Purchases:Office
+  - Expenses:VAT Purchases:Software
+  - Expenses:VAT Purchases:Subscriptions
+  - Expenses:VAT Purchases:Sundries
+  - Expenses:VAT Purchases:Telecoms
+  - Expenses:VAT Purchases:Travel/Accom
   segments:
     business-type: management-expenses
 - description: Profit chargeable to tax

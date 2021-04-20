@@ -116,18 +116,18 @@ computations:
   reverse-sign: true
   accounts:
   - Expenses:Depreciation
-- accounts:
+- id: accountancy
+  accounts:
   - Expenses:VAT Purchases:Accountant
   description: Accountancy services
-  id: accountancy
   kind: line
   period: in-year
-- accounts:
-  - Expenses:VAT Purchases:Bank Charges
+- id: bank-charges
+  kind: line
   description: Bank charges
-  id: bank-charges
-  kind: line
   period: in-year
+  accounts:
+  - Expenses:VAT Purchases:Bank Charges
 - accounts:
   - Expenses:VAT Purchases:Office
   description: Office costs
@@ -187,26 +187,26 @@ computations:
   - gross-profit
   - total-costs
   period: in-year
-- accounts:
-  - Equity:Corporation Tax
-  description: Corporation Tax
-  id: corporation-tax
+- id: corporation-tax
   kind: line
+  description: Corporation Tax
   period: in-year
-- description: Tax Due
-  id: tax-due
+  accounts:
+  - Equity:Corporation Tax
+- id: tax-due
+  description: Tax Due
   kind: group
   period: in-year
   inputs:
   - corporation-tax
-- description: Profit (Loss)
-  id: profit
+- id: profit
+  kind: computation
+  description: Profit (Loss)
+  period: in-year
   inputs:
   - gross-profit
   - total-costs
   - tax-due
-  kind: computation
-  period: in-year
 - id: annual-investment-allowance
   kind: line
   description: Annual investment allowance

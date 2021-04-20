@@ -134,7 +134,7 @@ class Taxonomy:
         key = "taxonomy.{0}.namespaces".format(self.name)
         return self.cfg.get(key)
 
-    def get_schema(self):
+    def get_schemas(self):
         key = "taxonomy.{0}.schema".format(self.name)
         return self.cfg.get(key)
 
