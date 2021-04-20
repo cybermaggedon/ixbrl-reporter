@@ -25,7 +25,7 @@ class NotesElement(BasicElement):
 
     def to_text(self, out):
 
-        # Not putting out notes
+        # FIXME: Put notes out as text.
         pass
 
     def get_note_elts(self, n, par, taxonomy):

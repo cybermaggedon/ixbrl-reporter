@@ -1,7 +1,7 @@
 accounts:
   file: example.gnucash
 taxonomy:
-  file: taxonomy/corptax.yaml
+  file: taxonomy/ct-dpl.yaml
   id: corptax
 metadata:
   business:
@@ -105,13 +105,13 @@ computations:
   inputs:
   - annual-investment-allowance
   period: in-year
-- description: Trading Profit
-  id: trading-profit
+- id: ct-trading-profit
+  kind: group
+  description: Trading Profit
+  period: in-year
   inputs:
   - gross-profit
-  - allowances
-  kind: computation
-  period: in-year
+  - annual-investment-allowance
   segments:
     business-type: company
 - accounts:
@@ -120,16 +120,12 @@ computations:
   id: salaries
   kind: line
   period: in-year
-  segments:
-    business-type: management-expenses
 - accounts:
   - Expenses:Emoluments:Employer Pension Contribution
   description: Pension contributions
   id: pensions
   kind: line
   period: in-year
-  segments:
-    business-type: management-expenses
 - accounts:
   - Expenses:VAT Purchases:Accountant
   description: Legal and professional services
@@ -148,41 +144,32 @@ computations:
     business-type: management-expenses
 - accounts:
   - Expenses:VAT Purchases:Office
-  - Expenses:VAT Purchases:Telecoms
   description: Office costs
   id: office
   kind: line
   period: in-year
-  segments:
-    business-type: management-expenses
 - accounts:
   - Expenses:VAT Purchases:Software
   description: Software
   id: software-expenses
   kind: line
   period: in-year
-  segments:
-    business-type: management-expenses
 - accounts:
-  - Expenses:VAT Purchases:Subscriptions
   - Expenses:VAT Purchases:Sundries
   description: Sundries
   id: sundries
   kind: line
   period: in-year
-  segments:
-    business-type: management-expenses
 - accounts:
   - Expenses:VAT Purchases:Travel/Accom
   description: Travel
   id: travel
   kind: line
   period: in-year
-  segments:
-    business-type: management-expenses
-- description: Management Expenses
-  id: management-expenses
-  kind: group
+- id: ct-management-expenses
+  kind: computation
+  description: Management Expenses
+  period: in-year
   inputs:
   - salaries
   - pensions
@@ -192,14 +179,13 @@ computations:
   - software-expenses
   - sundries
   - travel
-  period: in-year
   segments:
     business-type: management-expenses
-- description: Profit before tax
-  id: profit-before-tax
+- description: Profit chargeable to tax
+  id: ct-profit-before-tax
   inputs:
-  - trading-profit
-  - management-expenses
+  - ct-trading-profit
+  - ct-management-expenses
   kind: computation
   period: in-year
   segments:
@@ -210,95 +196,182 @@ computations:
   id: corporation-tax
   kind: line
   period: in-year
-- id: tax-owed
+- id: ct-tax-owed
   description: Corporation tax owed
   kind: group
   period: in-year
   inputs:
   - corporation-tax
-- id: profit-before-tax-fy1
+- id: ct-profit-before-tax-fy1
   kind: computation
-  description: Profit before tax FY1
+  description: FY1
   period: in-year
   inputs:
-  - input: profit-before-tax
+  - input: ct-profit-before-tax
     operation: apportion
     whole-period: metadata.report.periods.0
     proportion-period: metadata.report.fy1
   segments:
     business-type: company
-- id: profit-before-tax-fy2
+- id: ct-profit-before-tax-fy2
   kind: computation
-  description: Profit before tax FY2
+  description: FY2
   period: in-year
   inputs:
-  - input: profit-before-tax
+  - input: ct-profit-before-tax
     operation: apportion
     whole-period: metadata.report.periods.0
     proportion-period: metadata.report.fy2
   segments:
     business-type: company
-- id: profit-before-tax-total
-  description: Profit before tax
+- id: ct-profit-before-tax-total
+  description: Profit chargeable to corporation tax
   kind: group
   period: in-year
   inputs:
-  - profit-before-tax-fy1
-  - profit-before-tax-fy2
+  - ct-profit-before-tax-fy1
+  - ct-profit-before-tax-fy2
   segments:
     business-type: company
-- id: tax-fy1
+- id: ct-tax-fy1
   kind: computation
-  description: Corporation tax FY1 (19%)
+  description: FY1 (19%)
   period: in-year
   inputs:
-  - input: tax-owed
+  - input: ct-tax-owed
     operation: apportion
     whole-period: metadata.report.periods.0
     proportion-period: metadata.report.fy1
   segments:
     business-type: company
-- id: tax-fy2
+- id: ct-tax-fy2
   kind: computation
-  description: Corporation tax FY2 (19%)
+  description: FY2 (19%)
   period: in-year
   inputs:
-  - input: tax-owed
+  - input: ct-tax-owed
     operation: apportion
     whole-period: metadata.report.periods.0
     proportion-period: metadata.report.fy2
   segments:
     business-type: company
-- id: tax-total
-  description: Corporation tax total
+- id: ct-tax-total
+  description: Corporation tax due
   kind: group
   inputs:
-  - tax-fy1
-  - tax-fy2
+  - ct-tax-fy1
+  - ct-tax-fy2
   period: in-year
   segments:
     business-type: company
-- id: profit
+- id: ct-profit
   kind: computation
   description: Profit after tax
   inputs:
-  - profit-before-tax
-  - tax-owed
+  - ct-profit-before-tax
+  - ct-tax-owed
   segments:
     business-type: company
+- id: accountancy
+  accounts:
+  - Expenses:VAT Purchases:Accountant
+  description: Accountancy services
+  kind: line
+  period: in-year
+- id: bank-charges
+  kind: line
+  description: Bank charges
+  period: in-year
+  accounts:
+  - Expenses:VAT Purchases:Bank Charges
+- accounts:
+  - Expenses:VAT Purchases:Subscriptions
+  description: Subscriptions
+  id: subscriptions-costs
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Telecoms
+  description: Telecoms
+  id: telecoms
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Travel/Accom
+  description: Travel
+  id: travel
+  kind: line
+  period: in-year
+- id: depreciation
+  kind: line
+  description: Depreciation
+  period: in-year
+  accounts:
+  - Expenses:Depreciation
+- id: total-costs
+  description: Total costs
+  kind: group
+  period: in-year
+  inputs:
+  - salaries
+  - pensions
+  - depreciation
+  - accountancy
+  - bank-charges
+  - office
+  - software-expenses
+  - subscriptions-costs
+  - sundries
+  - telecoms
+  - travel
+- id: profit-before-tax
+  kind: computation
+  description: Profit before tax
+  inputs:
+  - gross-profit
+  - total-costs
+  period: in-year
+- id: corporation-tax
+  kind: line
+  description: Corporation Tax
+  period: in-year
+  accounts:
+  - Equity:Corporation Tax
+- id: tax-due
+  description: Tax Due
+  kind: group
+  period: in-year
+  inputs:
+  - corporation-tax
+- id: profit
+  kind: computation
+  description: Profit (Loss) after tax
+  period: in-year
+  inputs:
+  - gross-profit
+  - total-costs
+  - tax-due
+
 worksheets:
-- computations:
+- id: tax-calculation
+  kind: multi-period
+  description: Tax Calculation
+  computations:
+  - ct-trading-profit
+  - ct-management-expenses
+  - ct-profit-before-tax-total
+  - ct-tax-total
+  - ct-profit
+- id: detailed-profit-and-loss
+  kind: multi-period
+  description: Detailed Profit-and-Loss
+  computations:
   - turnover
   - gross-profit
-  - allowances
-  - trading-profit
-  - management-expenses
-  - profit-before-tax-total
-  - tax-total
+  - total-costs
+  - profit-before-tax
+  - tax-due
   - profit
-  description: Tax Calculation
-  id: tax-calculation
-  kind: multi-period
 elements:
 - elements:
   - about
@@ -306,6 +379,7 @@ elements:
   - profits
   - tax-chargeable
   - tax-calculation
+  - detailed-profit-and-loss
   id: report
   kind: composite
 - id: about
@@ -374,7 +448,7 @@ elements:
     context: report-period
     description: Trading profits
     field: '155'
-    computation: trading-profit
+    computation: ct-trading-profit
     kind: computation
     period-config: metadata.tax.period
   - id: trading-losses-brought-forward
@@ -384,7 +458,7 @@ elements:
     kind: money
     value: 0
   - id: net-trading-profits
-    computation: trading-profit
+    computation: ct-trading-profit
     context: report-period
     description: Net trading profits
     field: '165'
@@ -397,27 +471,27 @@ elements:
     kind: money
     value: 0
   - id: profits-before-other-deductions-and-reliefs
-    computation: trading-profit
+    computation: ct-trading-profit
     context: report-period
     description: Profits before other deductions and reliefs
     field: '235'
     kind: computation
     period-config: metadata.tax.period
-  - computation: management-expenses
+  - computation: ct-management-expenses
     context: management-expenses-period
     description: Management expenses
     field: '245'
     id: management-expenses
     kind: computation
     period-config: metadata.tax.period
-  - computation: management-expenses
+  - computation: ct-management-expenses
     context: report-period
     description: Total deductions and reliefs
     field: '295'
     id: total-deductions-and-reliefs
     kind: computation
     period-config: metadata.tax.period
-  - computation: profit-before-tax
+  - computation: ct-profit-before-tax
     context: report-period
     description: Profits before donations and group relief
     field: '300'
@@ -442,7 +516,7 @@ elements:
     id: group-relief-claimed-for-carried-forward-losses
     kind: money
     value: 0
-  - computation: profit-before-tax
+  - computation: ct-profit-before-tax
     context: report-period
     description: Profits chargeable to Corporation Tax
     field: '315'
@@ -469,14 +543,14 @@ elements:
     context: report-period
     description: FY1 amount of profit chargable at first rate
     field: '335'
-    computation: profit-before-tax-fy1
+    computation: ct-profit-before-tax-fy1
     kind: computation
     period-config: metadata.tax.period
   - id: fy2-amount-of-profit-chargeable-at-first-rate
     context: report-period
     description: FY2 amount of profit chargable at first rate
     field: '385'
-    computation: profit-before-tax-fy2
+    computation: ct-profit-before-tax-fy2
     kind: computation
     period-config: metadata.tax.period
   - id: fy1-first-rate-of-tax
@@ -492,21 +566,21 @@ elements:
     kind: number
     value: 19
   - id: fy1-tax-at-first-rate
-    computation: tax-fy1
+    computation: ct-tax-fy1
     context: report-period
     description: FY1 tax at first rate
     field: '345'
     kind: computation
     period-config: metadata.tax.period
   - id: fy2-tax-at-first-rate
-    computation: tax-fy2
+    computation: ct-tax-fy2
     context: report-period
     description: FY2 tax at first rate
     field: '395'
     kind: computation
     period-config: metadata.tax.period
   - id: corporation-tax-chargeable
-    computation: tax-total
+    computation: ct-tax-total
     context: report-period
     description: Corporation tax
     field: '430'
@@ -518,7 +592,7 @@ elements:
     id: marginal-rate-relief-for-ring-fence-trades-payable
     kind: money
     value: 0
-  - computation: tax-owed
+  - computation: ct-tax-owed
     context: report-period
     description: Corporation tax chargeable
     field: '440'
@@ -535,32 +609,36 @@ elements:
   - id: net-corporation-tax-payable
     kind: computation
     context: report-period
-    computation: tax-owed
+    computation: ct-tax-owed
     description: Net Corporation Tax liability
     field: '475'
     period-config: metadata.tax.period
   - id: tax-chargeable
     kind: computation
     context: report-period
-    computation: tax-owed
+    computation: ct-tax-owed
     description: Tax chargable
     field: '510'
     period-config: metadata.tax.period
   - id: tax-payable
     kind: computation
     context: report-period
-    computation: tax-owed
+    computation: ct-tax-owed
     description: Tax payable
     field: '528'
     period-config: metadata.tax.period
-  - id: tax-outstanding
-    kind: computation
-    context: report-period
-    computation: tax-owed
-    description: Tax outstanding
-    field: '600'
-    period-config: metadata.tax.period
+#  - id: tax-outstanding
+#    kind: computation
+#    context: report-period
+#    computation: ct-tax-owed
+#    description: Tax outstanding
+#    field: '600'
+#    period-config: metadata.tax.period
 - id: tax-calculation
   kind: worksheet
   title: Tax calculation
   worksheet: tax-calculation
+- id: detailed-profit-and-loss
+  kind: worksheet
+  title: Detailed Profit-and-Loss
+  worksheet: detailed-profit-and-loss

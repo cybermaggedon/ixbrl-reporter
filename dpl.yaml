@@ -234,16 +234,16 @@ computations:
   - reverse-annual-investment-allowance
   period: in-year
 worksheets:
-- computations:
+- id: profit-and-loss
+  kind: multi-period
+  description: Detailed Profit and Loss
+  computations:
   - turnover
   - gross-profit
   - total-costs
   - profit-before-tax
   - tax-due
   - profit
-  description: Detailed Profit and Loss
-  id: profit-and-loss
-  kind: multi-period
 elements:
 - id: report
   kind: composite
