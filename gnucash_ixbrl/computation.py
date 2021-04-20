@@ -25,9 +25,8 @@ class Computable:
         if kind == "group":
             return Group.load(cfg, comps, context, data)
 
-        # FIXME: Call this Total?
-        if kind == "computation":
-            return Computation.load(cfg, comps, context, data)
+        if kind == "sum":
+            return Sum.load(cfg, comps, context, data)
 
         if kind == "line":
             return Line.load(cfg, comps, context, data)
@@ -296,7 +295,7 @@ class Result:
     def get(self, id):
         return self.values[id]
 
-class Computation(Computable):
+class Sum(Computable):
     def __init__(self, id, description, context, period, segments={}):
         self.id = id
         self.description = description
@@ -321,7 +320,7 @@ class Computation(Computable):
 
         segs = cfg.get("segments", {})
 
-        comp = Computation(id, cfg.get("description"), context, pid, segs)
+        comp = Sum(id, cfg.get("description"), context, pid, segs)
 
         for item in cfg.get("inputs"):
             if isinstance(item, str):
