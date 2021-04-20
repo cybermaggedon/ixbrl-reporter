@@ -355,12 +355,13 @@ h2 {
         # This creates some contexts, hence do this first.
         self.create_metadata(taxonomy)
 
-        schema_url = taxonomy.get_schema()
-        schema = doc.createElement("link:schemaRef")
-        schema.setAttribute("xlink:type", "simple")
-        schema.setAttribute("xlink:href", schema_url)
-        schema.appendChild(doc.createTextNode(""))
-        refs.appendChild(schema)
+        schemas = taxonomy.get_schemas()
+        for url in schemas:
+            schema = doc.createElement("link:schemaRef")
+            schema.setAttribute("xlink:type", "simple")
+            schema.setAttribute("xlink:href", url)
+            schema.appendChild(doc.createTextNode(""))
+            refs.appendChild(schema)
 
         elt = self.to_ixbrl_elt(self, taxonomy)
         body.appendChild(elt)
