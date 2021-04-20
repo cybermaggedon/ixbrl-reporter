@@ -99,12 +99,6 @@ computations:
   - Assets:Capital Equipment:Computer Equipment
   segments:
     business-type: management-expenses
-- description: Allowances
-  id: allowances
-  kind: group
-  inputs:
-  - annual-investment-allowance
-  period: in-year
 - id: ct-trading-profit
   kind: group
   description: Trading Profit
@@ -114,18 +108,18 @@ computations:
   - annual-investment-allowance
   segments:
     business-type: company
-- accounts:
-  - Expenses:Emoluments:Employees
+- id: salaries
+  kind: line
   description: Salaries
-  id: salaries
-  kind: line
   period: in-year
-- accounts:
-  - Expenses:Emoluments:Employer Pension Contribution
+  accounts:
+  - Expenses:Emoluments:Employees
+- id: pensions
+  kind: line
   description: Pension contributions
-  id: pensions
-  kind: line
   period: in-year
+  accounts:
+  - Expenses:Emoluments:Employer Pension Contribution
 - accounts:
   - Expenses:VAT Purchases:Accountant
   description: Legal and professional services
@@ -280,30 +274,18 @@ computations:
   description: Accountancy services
   kind: line
   period: in-year
-- id: bank-charges
+- id: subscriptions-costs
   kind: line
-  description: Bank charges
+  description: Subscriptions
   period: in-year
   accounts:
-  - Expenses:VAT Purchases:Bank Charges
-- accounts:
   - Expenses:VAT Purchases:Subscriptions
-  description: Subscriptions
-  id: subscriptions-costs
+- id: telecoms
   kind: line
-  period: in-year
-- accounts:
-  - Expenses:VAT Purchases:Telecoms
   description: Telecoms
-  id: telecoms
-  kind: line
   period: in-year
-- accounts:
-  - Expenses:VAT Purchases:Travel/Accom
-  description: Travel
-  id: travel
-  kind: line
-  period: in-year
+  accounts:
+  - Expenses:VAT Purchases:Telecoms
 - id: depreciation
   kind: line
   description: Depreciation
