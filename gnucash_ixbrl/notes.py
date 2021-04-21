@@ -1,6 +1,5 @@
 
 from . basicelement import BasicElement
-from . basicelement import software, software_version
 from . fact import *
 from . note_parse import *
 

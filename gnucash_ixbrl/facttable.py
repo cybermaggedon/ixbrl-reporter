@@ -12,9 +12,6 @@ from xml.dom import XHTML_NAMESPACE
 from datetime import datetime, date
 import json
 
-software = "gnucash-uk-reports"
-software_version = "0.0.1"
-
 class Box:
     def __init__(self, number, description, value, tag=None):
         self.number = number
@@ -111,16 +108,3 @@ class FactTable(BasicElement):
         fact.append(par.doc, valelt)
 
         return row
-
-    def create_metadata(self, taxonomy):
-
-        period = self.data.get_report_period()
-        rpc = self.data.business_context.with_period(period)
-
-        datum = StringDatum("software", software, rpc)
-        fact = taxonomy.create_fact(datum)
-        fact.append(self.doc, self.hidden)
-
-        datum = StringDatum("software-version", software_version, rpc)
-        fact = taxonomy.create_fact(datum)
-        fact.append(self.doc, self.hidden)

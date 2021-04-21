@@ -8,9 +8,6 @@ from xml.dom import XHTML_NAMESPACE
 import json
 from datetime import datetime
 
-software = "gnucash-uk-reports"
-software_version = "0.0.1"
-
 class BasicElement:
 
     def __init__(self, data):
