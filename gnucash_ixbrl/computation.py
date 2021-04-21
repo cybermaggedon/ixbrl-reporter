@@ -28,6 +28,9 @@ class Computable:
         if kind == "sum":
             return Sum.load(cfg, comps, context, data)
 
+        if kind == "apportion":
+            return ApportionOperation.load(cfg, comps, context, data)
+
         if kind == "line":
             return Line.load(cfg, comps, context, data)
 
@@ -268,22 +271,61 @@ class Group(Computable):
 
         return output
 
-class AddOperation(Computable):
-    def __init__(self, item):
-        self.item = item
-        self.description = item.description
-    def compute(self, accounts, start, end, result):
-        # Don't put this in result
-        return self.item.compute(accounts, start, end, result)
-
 class ApportionOperation(Computable):
-    def __init__(self, item, proportion, whole):
+    def __init__(self, id, description, context, period, segments,
+                 item, part, whole):
+        self.id = id
+        self.description = description
+        self.context = context
+        self.period = period
+        self.segments = segments
         self.item = item
-        self.fraction = proportion.days() / whole.days()
-        self.description = item.description
+        self.fraction = part.days() / whole.days()
+
+    @staticmethod
+    def load(cfg, comps, context, data):
+
+        id = cfg.get("id")
+        description = cfg.get("description")
+        whole_key = cfg.get("whole-period")
+        whole = Period.load(data.get_config(whole_key))
+        proportion_key = cfg.get("proportion-period")
+        proportion = Period.load(data.get_config(proportion_key))
+        segs = cfg.get("segments", {})
+
+        pspec = cfg.get("period")
+
+        pid = {
+            "in-year": IN_YEAR,
+            "at-start": AT_START,
+            "at-end": AT_END
+        }.get(pspec, AT_END)
+
+        item = comps[cfg.get("input")]
+
+        return ApportionOperation(id, description, context, pid, segs,
+                                  item, proportion, whole)
+
     def compute(self, accounts, start, end, result):
-        # Don't put this in result
-        return self.item.compute(accounts, start, end, result) * self.fraction
+
+        if self.period == AT_START:
+            context = self.context.with_instant(start)
+        elif self.period == AT_END:
+            context = self.context.with_instant(start)
+        else:
+            context = self.context.with_period(Period("", start, end))
+
+        val = self.item.compute(accounts, start, end, result) * self.fraction
+
+        result.set(self.id, context.create_money_datum(self.id, val))
+        return val
+
+    def get_output(self, result):
+
+        output = Total(self, self.description, result.get(self.id),
+                       items=[])
+
+        return output
 
 class Result:
     def __init__(self):
@@ -323,29 +365,12 @@ class Sum(Computable):
         comp = Sum(id, cfg.get("description"), context, pid, segs)
 
         for item in cfg.get("inputs"):
-            if isinstance(item, str):
-                comp.add(comps[item])
-            else:
-                operation = item.get("operation")
-                if operation == "add":
-                    comp.add(comps[item.get("input")])
-                elif operation == "apportion":
-
-                    whole_key = item.get("whole-period")
-                    whole = Period.load(data.get_config(whole_key))
-                    proportion_key = item.get("proportion-period")
-                    proportion = Period.load(data.get_config(proportion_key))
-
-                    comp.steps.append(
-                        ApportionOperation(
-                            comps[item.get("input")], proportion, whole
-                        )
-                    )
+            comp.add(comps[item])
 
         return comp
 
     def add(self, item):
-        self.steps.append(AddOperation(item))
+        self.steps.append(item)
 
     def compute(self, accounts, start, end, result):
 
@@ -375,14 +400,8 @@ class Sum(Computable):
             output = NilValue(self, self.description, result.get(self.id))
             return output
 
-        # FIXME: Don't need AddOperation.
-        # FIXME: Also, make apportion a Computable.
-        # Assume item contains AddOperations x.item provides value.
-        # Needs rework if we do something more complicated.
         output = Total(self, self.description, result.get(self.id),
-                       items=[
-                           item.item for item in self.steps
-                       ])
+                       items=self.steps)
 
         return output
 
