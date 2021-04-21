@@ -85,7 +85,7 @@ computations:
   - consultancy
   period: in-year
 - id: gross-profit
-  kind: computation
+  kind: sum
   description: Gross Profit
   period: in-year
   inputs:
@@ -182,7 +182,7 @@ computations:
   inputs:
   - ct-trading-profit
   - ct-management-expenses
-  kind: computation
+  kind: sum
   period: in-year
   segments:
     business-type: company
@@ -199,7 +199,7 @@ computations:
   inputs:
   - corporation-tax
 - id: ct-profit-before-tax-fy1
-  kind: computation
+  kind: sum
   description: FY1
   period: in-year
   inputs:
@@ -210,7 +210,7 @@ computations:
   segments:
     business-type: company
 - id: ct-profit-before-tax-fy2
-  kind: computation
+  kind: sum
   description: FY2
   period: in-year
   inputs:
@@ -230,7 +230,7 @@ computations:
   segments:
     business-type: company
 - id: ct-tax-fy1
-  kind: computation
+  kind: sum
   description: FY1 (19%)
   period: in-year
   inputs:
@@ -241,7 +241,7 @@ computations:
   segments:
     business-type: company
 - id: ct-tax-fy2
-  kind: computation
+  kind: sum
   description: FY2 (19%)
   period: in-year
   inputs:
@@ -252,7 +252,7 @@ computations:
   segments:
     business-type: company
 - id: ct-tax-total
-  description: Corporation tax due
+  description: Corporation tax chargeable
   kind: group
   inputs:
   - ct-tax-fy1
@@ -261,7 +261,7 @@ computations:
   segments:
     business-type: company
 - id: ct-profit
-  kind: computation
+  kind: sum
   description: Profit after tax
   inputs:
   - ct-profit-before-tax
@@ -309,7 +309,7 @@ computations:
   - telecoms
   - travel
 - id: profit-before-tax
-  kind: computation
+  kind: sum
   description: Profit before tax
   inputs:
   - gross-profit
@@ -328,7 +328,7 @@ computations:
   inputs:
   - corporation-tax
 - id: profit
-  kind: computation
+  kind: sum
   description: Profit (Loss) after tax
   period: in-year
   inputs:
@@ -611,13 +611,6 @@ elements:
     description: Tax payable
     field: '528'
     period-config: metadata.tax.period
-#  - id: tax-outstanding
-#    kind: computation
-#    context: report-period
-#    computation: ct-tax-owed
-#    description: Tax outstanding
-#    field: '600'
-#    period-config: metadata.tax.period
 - id: tax-calculation
   kind: worksheet
   title: Tax calculation
