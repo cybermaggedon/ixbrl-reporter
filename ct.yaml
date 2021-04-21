@@ -199,25 +199,21 @@ computations:
   inputs:
   - corporation-tax
 - id: ct-profit-before-tax-fy1
-  kind: sum
+  kind: apportion
   description: FY1
   period: in-year
-  inputs:
-  - input: ct-profit-before-tax
-    operation: apportion
-    whole-period: metadata.report.periods.0
-    proportion-period: metadata.report.fy1
+  input: ct-profit-before-tax
+  whole-period: metadata.report.periods.0
+  proportion-period: metadata.report.fy1
   segments:
     business-type: company
 - id: ct-profit-before-tax-fy2
-  kind: sum
+  kind: apportion
   description: FY2
   period: in-year
-  inputs:
-  - input: ct-profit-before-tax
-    operation: apportion
-    whole-period: metadata.report.periods.0
-    proportion-period: metadata.report.fy2
+  input: ct-profit-before-tax
+  whole-period: metadata.report.periods.0
+  proportion-period: metadata.report.fy2
   segments:
     business-type: company
 - id: ct-profit-before-tax-total
@@ -230,25 +226,21 @@ computations:
   segments:
     business-type: company
 - id: ct-tax-fy1
-  kind: sum
+  kind: apportion
   description: FY1 (19%)
   period: in-year
-  inputs:
-  - input: ct-tax-owed
-    operation: apportion
-    whole-period: metadata.report.periods.0
-    proportion-period: metadata.report.fy1
+  input: ct-tax-owed
+  whole-period: metadata.report.periods.0
+  proportion-period: metadata.report.fy1
   segments:
     business-type: company
 - id: ct-tax-fy2
-  kind: sum
+  kind: apportion
   description: FY2 (19%)
   period: in-year
-  inputs:
-  - input: ct-tax-owed
-    operation: apportion
-    whole-period: metadata.report.periods.0
-    proportion-period: metadata.report.fy2
+  input: ct-tax-owed
+  whole-period: metadata.report.periods.0
+  proportion-period: metadata.report.fy2
   segments:
     business-type: company
 - id: ct-tax-total
