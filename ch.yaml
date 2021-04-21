@@ -12,7 +12,7 @@ metadata:
     - 2
     - 1
     company-name: Example Biz Ltd.
-    company-number: 012345678
+    company-number: '12345678'
     company-formation:
       country: england-and-wales
       date: '2017-04-05'
@@ -84,7 +84,7 @@ computations:
   inputs:
   - consultancy
 - id: gross-profit
-  kind: computation
+  kind: sum
   description: Gross Profit
   period: in-year
   inputs:
@@ -173,7 +173,7 @@ computations:
   - travel
   period: in-year
 - id: profit
-  kind: computation
+  kind: sum
   description: Profit (Loss)
   period: in-year
   inputs:
@@ -242,7 +242,7 @@ computations:
   segments:
     matures: within-1-year
 - id: net-current-assets
-  kind: computation
+  kind: sum
   description: Net Current Assets
   inputs:
   - current-assets
@@ -255,7 +255,7 @@ computations:
   - current-assets
   - prepayments-and-accrued-income
   - creditors-within-1-year
-  kind: computation
+  kind: sum
 - description: 'Creditors: falling due after one year'
   id: creditors-after-1-year
   kind: group
@@ -284,7 +284,7 @@ computations:
   - creditors-after-1-year
   - provisions-for-liabilities
   - accruals-and-deferred-income
-  kind: computation
+  kind: sum
 - accounts:
   - Equity:Shareholdings
   description: Share Capital
@@ -322,7 +322,7 @@ computations:
   id: total-capital-and-reserves
   inputs:
   - capital-and-reserves
-  kind: computation
+  kind: sum
 - accounts:
   - Assets:Capital Equipment:Computer Equipment
   description: At start of period
@@ -364,7 +364,7 @@ computations:
   inputs:
   - fixed-assets-total
   - depreciation-total
-  kind: computation
+  kind: sum
 - id: ordinary-shares-at-start
   accounts:
   - Equity:Shareholdings:Ordinary Shares

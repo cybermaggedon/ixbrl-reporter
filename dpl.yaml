@@ -14,7 +14,7 @@ metadata:
       date: '2019-03-01'
       form: private-limited-company
     company-name: Example Biz Ltd.
-    company-number: 012345678
+    company-number: '12345678'
     contact:
       address:
       - 123 Leadbarton Street
@@ -89,7 +89,7 @@ computations:
   id: gross-profit
   inputs:
   - turnover
-  kind: computation
+  kind: sum
   period: in-year
 - accounts:
   - Expenses:Emoluments:Employees
@@ -181,7 +181,7 @@ computations:
   - telecoms
   - travel
 - id: profit-before-tax
-  kind: computation
+  kind: sum
   description: Profit before tax
   inputs:
   - gross-profit
@@ -200,7 +200,7 @@ computations:
   inputs:
   - corporation-tax
 - id: profit
-  kind: computation
+  kind: sum
   description: Profit (Loss)
   period: in-year
   inputs:
@@ -225,7 +225,7 @@ computations:
   segments:
     business-type: management-expenses
 - id: ct-profit-before-tax
-  kind: computation
+  kind: sum
   description: Profit before tax
   inputs:
   - gross-profit
