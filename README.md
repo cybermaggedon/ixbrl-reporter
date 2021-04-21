@@ -3,28 +3,51 @@
 
 ## Introduction
 
-This is a utility which allows gnucash accounts to be presented as iXBRL
-report output.  iXBRL is XHTML with embedded XBRL tags so that the document
-can be viewed in an HTML browser, but embedded tags all the underlying data to
-be extracted by automated tools.  This allows the same accounts to be usable
-by a human, and also by automated data extraction tools.
+This is a utility which allows accounts managed by the excellent
+[GnuCash](gnucash.org) accounting software to be presented as iXBRL
+report output.  iXBRL is commonly used to describe regulatory account
+information which companies must publish annually.  Different schemas are
+in use in different places in the world.  The example account and report
+data included in this project uses schemas which are used in the UK
+reporting regime.
+
+iXBRL stands for "Inline XBRL".  It was inspired by the XBRL standard
+(Extensible Business Reporting Language).  iXBRL is HTML with embedded XBRL
+tags so that the document can be viewed in an HTML browser and read by
+a human, but the tags are also machine-readable.  This allows the same
+accounts to be usable by a human, and also by automated data extraction tools.
 
 Included in this repo are example accounts and configuration files exist
 which output:
 - Company accounts for UK Companies House filing using the FRS-101 taxonomy.
-- UK HMRC corporation tax filing using the CT600 schema.
+- UK HMRC corporation tax filing using the CT600 schema and Detailed Profit
+  and Loss schema in a single document.
 - UK HMRC detailed-profit-and-loss filing using the DPL schema.
 
 With the right configuration files, other taxonomies would work, the
-configuration files are complex.
+configuration files are complex to write.  This code is all command line,
+and largely only work in Linux.
 
-Plain-text report output is also supported as a byproduct.
+Incidentally, plain-text report output is also supported as a byproduct of
+creating the reports.  This is useful in the workflow of constructing
+report configuration.
 
-This code comes with no warranty whatsoever.  See the [LICENSE] file for
-details.
+This code comes with no warranty whatsoever.  See the [LICENSE](LICENCE) file
+for details.  Further, I am not an accountant.  It is possible that this code
+could be useful to you in meeting regulatory reporting requirements for your
+business.  It is also possible that the software could report misleading
+information which could land you in a lot of trouble if used for regulatory
+purposes.  Really, you should check with a qualified accountant.
 
-This can be used to automate production of account information so that you
-can get an up-to-date balance sheet out of gnucash.  
+## Configuration overview
+
+`gnucash-ixbrl` is not simple to configure.  If the configuration files
+supplied work for your business (and you should assume that they won't),
+you could get accounts with little work.
+
+However, it is very likely that you'll need to tailor the reports to work
+with your business.  This configuration is not trivial.  It is described
+in [Configuration Workflow](docs/configuration-workflow.md).
 
 ## Installing
 
@@ -60,19 +83,19 @@ HTML in a browser.
 
 
 ```
-gnucash-ixbrl ch.yaml report ixbrl > out.html
+gnucash-ixbrl company-accounts.yaml report ixbrl > out.html
 ```
 
 Corporation tax filing:
 
 ```
-gnucash-ixbrl ct.yaml report ixbrl > ct600.html
+gnucash-ixbrl corporation-tax.yaml report ixbrl > ct600.html
 ```
 
 Detailed profit-and-loss:
 
 ```
-gnucash-ixbrl dpl.yaml report ixbrl > dpl.html
+gnucash-ixbrl profit-and-loss.yaml report ixbrl > dpl.html
 ```
 
 ## Configuration

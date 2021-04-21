@@ -158,6 +158,11 @@ Specifies the pre-defined note tokens.
 
 ## `taxonomy.TAXONOMY.sign-reversed`
 
+In gnucash, things that cause money to go away (e.g. liabilities) are negative.
+In iXBRL they are normally positive, so you can set the `sign` field to
+`reversed` to turn something which is normally a Gnucash negative into an
+iXBRL positive.  This is done in the taxonomy configuration file.
+
 Specifies a set of fact identifiers whose values have a reverse meaning
 to what they do in GnuCash.  e.g. expenses come out as negative in GnuCash
 to describe cash leaving the business.

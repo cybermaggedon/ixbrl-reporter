@@ -96,6 +96,10 @@ Some report configuration.  Notice that report periods are defined.
     title: Unaudited Micro-Entity Accounts
 ```
 
+The `signing-officer` element is a reference to which director signed off the
+report in `metadata.business.directors`.  The value `director1` means the
+first director did so, `director2`, the 2nd etc.
+
 ### `metadata.tax`
 
 This configuration is referenced in other bits of the `ct.yaml` configuration
@@ -112,77 +116,109 @@ file, and provides some configuration for tax reports:
 
 ## `computations`
 
-This sections describes a set of report computations.  These can be
-types: `group` which fetches information from gnucash accounts.
-Also, `computation` which sums information from other `group` and `computation`
-elements.
+This sections describes the flow information which makes up the computations.
+The types are:
+- `line` which fetches information from GnuCash accounts.
+- `group` describes the combination of a set of computations in a sum with
+  a total.
+- The `sum` type is similar to `group`, but presents only a total.
+- The `constant` describes data which is taken from the configuration file,
+  not a GnuCash account.
+- The `apportion` type takes a computation and works out a proportion
+  based on a number of days in a period.
+
+The type of computation is described in the `kind` element in its
+configuration.
+
+When examining Gnucash accounts, by default the computation looks at
+transactions from time immemorial (1970) up until the end of the accounting
+period.  This is correct for balance sheets where you are analysing
+accumulation and want to analyse at a point in time.  But not correct for
+income/expenses where you are analysing flow, and only want to look at
+transactions in-year.  The `period` attribute is used to configure the
+time period:  Set to `at-end` to examine
+transactions from the beginning of time immemorial to the end of the period,
+`at-start` to examine transactions prior to the accounting period, and
+`in-year` to examine transactions only within the accounting period.
+
+The `period` output affects the time information provided in iXBRL
+contexts related to that data element.  `at-start` and `at-end`
+results in association of contexts with an instant of time.  `in-year`
+results in association of contexts with a period of time.  `at-end` is
+the default.
+
+### `line` type
+
+An example:
+```
+lines:
+- id: tangible-assets
+  kind: line
+  description: Tangible Assets
+  period: at-end
+  accounts:
+  - Assets:Machine Equipment
+  - Assets:Plant Equipment
+```
+
+This computation adds up relevant transactions in the period in all
+accounts listed in the `accounts` element and forms a total.  In an
+accounting table, it might appear as:
+
+```
+Tangible Assets                         :    512.00
+```
+
+As with all computations, there is an `id` element which is used to
+identify the computation in configuration files.  There is also a
+`period` element which describes the timeframe which is examined.
+
+If a `line` computation has an empty account list, the value is zero.
 
 ### `group` type
 
-Here's an example.  The group is called `fixed-assets`, with an appropriate
-description.  A group consists of zero or more lines, each line has a list
-of Gnucash accounts to access.  When the group is displayed each line is
-shown with its total for that set of accounts, and then there's a total for
-all the lines.
+The `group` computation takes a set of other computations (of any type)
+and combines them in a sum.  When included in an accounting table, they
+are presented as an itemised list of values with a total.  Here's an example.
+The group is called `current-assets`, with an appropriate
+description.  An `inputs` element references a set of computations by ID.
+Note that computation references can only reference computations earlier
+in the configuration file.
+
 ```
-computations:
-- id: fixed-assets
-  description: Fixed Assets
+- description: Current Assets
+  id: current-assets
   kind: group
   period: at-end
-  lines:
-  - accounts:
-    - Assets:Capital Equipment
-    description: Tangible Assets
-    id: tangible-assets
-    kind: line
-    period: at-end
+  inputs:
+  - debtors
+  - vat-refund-owed
+  - bank
 ```
-
 The output might look like this:
 
 ```
-Fixed Assets:
-  Tangible Assets                       :    512.00
-Total                                   :    512.00
+Current Assets:
+  Debtors                               :    234.12
+  VAT Refund Owed                       :    102.81
+  Bank                                  :   4001.20
+Total                                   :   4338.13
 ```
 
-In gnucash, things that cause money to go away (e.g. liabilities) are negative.
-In iXBRL they are normally positive, so you can set the `sign` field to
-`reversed` to turn something which is normally a Gnucash negative into an
-iXBRL positive.  This is done in the taxonomy configuration file.
-
-When examining Gnucash accounts the `group` normally looks at transactions
-from time immemorial (1970) up until the end of the account period.
-This is correct for balance sheets where you are analysing accumulation and
-want to analyse at a point in time.  But not correct for income/expenses where
-you are analysing flow, and only want to account in-year.
-This is controlled with the `period` attribute.  Set to `at-end` to examine
-transactions from the beginning from time immemorial to the end of the period,
-`at-start` to examine transactions prior to the accounting period, and
-`in-year` to examine transactions only within the accounting period.  The
-`period` output affects the time information provided in iXBRL contexts
-related to that data element.  `at-start` and `at-end` results in association
-of contexts with an instant of time.  `in-year` results in association of
-contexts with a period of time.  `at-end` is the default.
-
-If the `line` list is empty i.e. there are no line items, the group
-will collapse down to a nil line.
-
-Regarding iXBRL output, the taxonomy configuration file is used to map
-computations (by the `id` attribute) to iXBRL tag names.
+If the `inputs` list is empty i.e. there are no line items, the group
+will collapse down to a single line zero total.
 
 The `hide-breakdown` attribute causes a group to be shown as a total
-without individual lines shown.
+without individual lines shown, which makes it the same as a `sum` type.
 
-### `computation` type
+### `sum` type
 
-The computation type sums information from other groups or computations.
+The computation type sums information from other computations.
 e.g. we can compute net current assets by summing current assets etc.:
 
 ```
 - id: net-current-assets
-  kind: computation
+  kind: sum
   description: Net Current Assets
   inputs:
   - current-assets
@@ -196,16 +232,49 @@ The output is a single line e.g.
 Net Current Assets                      :   8080.00
 ```
 
+### Sign
+
+Normally, transactions have the "correct" sign applied to them.  Income,
+Equity and Assets are positive.  Expenses and Liabilities are negative.
+That way, when information is combined (e.g. Income and Expenses) the sum is
+useful (e.g. Profit).  You can reverse the sign on any computation:
+
+```
+reverse-sign: true
+```
+
+This is rarely needed.  One example of usage would be to 'correct' a value
+which has been included in a computation.  For example, management expenses
+typically includes depreciation.  If I want to see management expenses
+without depreciation, adding `management-expenses` and `depreciaton`
+will give the wrong result.  `management-expenses` is negative, and 
+adding the `depreciation` expense will make the expense larger.
+So, the computation can be made by taking a 'reversed' depreciation expense
+and adding it to management expenses.
+
+### iXBRL
+
+Regarding iXBRL output, the taxonomy configuration file is used to map
+computations (by the `id` attribute) to iXBRL tag names.  See
+[Taxonomy Configuration](taxonomy.md).
+
+### Segments
+
+FIXME: Describe
+
 ## `worksheets`
 
 Computations describe internal data flows, but don't cause any output.
-The next layer up from computations is worksheet, which describe a set
-of computations which should be tabulated together.
+Worksheets are a collection of computations. The worksheet specifies a
+set of computations to output.  Worksheets just describe a set
+of computations to show, not how any of the information is linked.  It is
+possible to construct a worksheet that uses computations that aren't shown,
+which may be confusing to the reader.  It's down to you to select a set of
+computations that make sense together.
 
 Here's a balance sheet exmaple:
 
 ```
-worksheets:
 - id: balance-sheet
   kind: multi-period
   computations:
@@ -223,10 +292,14 @@ worksheets:
   - total-capital-and-reserves
 ```
 
+The only currently supported worksheet type is `multi-period`.
+
 ## `elements`
 
-Worksheets don't produce any output, either.  It is the `elements`
-configuration describes what goes into a report.
+Elements describe the structure of a report.  When `gnucash-ixbrl` is
+invoked, the user selects an element to invoke.  Elements have
+different types - the `composite` element is a container, and can combine a
+set of elements into a single output.
 
 ```
 elements:
