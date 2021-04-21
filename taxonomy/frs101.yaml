@@ -476,7 +476,7 @@ taxonomy:
 	~[contact-location:: ] ~[contact-postcode].'
       directors-acknowledge: '~{directors-duty=The directors acknowledge
         their responsibilities for complying with the requirements of the
-	Act withrespect to accounting records and the preparation of
+	Act with respect to accounting records and the preparation of
 	financial statements.}'
       micro-entity-provisions: '~{accounts-prepared-small-company-regime=These
         financial statements have been prepared in accordance with the
