@@ -32,6 +32,18 @@ Incidentally, plain-text report output is also supported as a byproduct of
 creating the reports.  This is useful in the workflow of constructing
 report configuration.
 
+## Motivation
+
+The overheads in configuring report and iXBRL output with `gnucash-ixbrl`
+is not small, but that's an up-front cost.
+
+The motivation is that once set up, it is trivial to generate reports,
+and not difficult to generate them dynamically.  Automating business
+report for low on-going costs, and real-time delivery of information
+is the motivation here.
+
+## Warranty
+
 This code comes with no warranty whatsoever.  See the [LICENSE](LICENCE) file
 for details.  Further, I am not an accountant.  It is possible that this code
 could be useful to you in meeting regulatory reporting requirements for your
