@@ -55,10 +55,10 @@ metadata:
     fy1:
       name: FY1
       start: '2020-09-01'
-      end: '2021-04-05'
+      end: '2021-03-31'
     fy2:
       name: FY2
-      start: '2021-04-06'
+      start: '2021-04-01'
       end: '2021-08-31'
     periods:
     - name: '2021'
@@ -67,37 +67,54 @@ metadata:
     signed-by: B Smith
     title: Unaudited Micro-Entity Accounts
   tax:
-    utr: 0123456789
+    utr: '8596148860'
     period:
       name: '2021'
       start: '2020-09-01'
       end: '2021-08-31'
 computations:
-- accounts:
-  - Income
-  description: Consultancy
-  id: consultancy
+- id: consultancy-raw
   kind: line
+  description: Consultancy
   period: in-year
+  accounts:
+  - Income
+- id: consultancy
+  kind: round
+  description: Consultancy
+  period: in-year
+  input: consultancy-raw
 - description: Turnover / revenue
   id: turnover
   kind: group
   inputs:
   - consultancy
   period: in-year
-- id: gross-profit
+- id: gross-profit-raw
   kind: sum
   description: Gross Profit
   period: in-year
   inputs:
   - turnover
-- id: annual-investment-allowance
+- id: gross-profit
+  kind: round
+  description: Gross Profit
+  period: in-year
+  input: gross-profit-raw
+- id: annual-investment-allowance-raw
   kind: line
   description: Annual investment allowance
   period: in-year
   reverse-sign: true
   accounts:
   - Assets:Capital Equipment:Computer Equipment
+  segments:
+    business-type: management-expenses
+- id: annual-investment-allowance
+  kind: round
+  description: Annual investment allowance
+  period: in-year
+  input: annual-investment-allowance-raw
   segments:
     business-type: management-expenses
 - id: ct-trading-profit
@@ -151,7 +168,7 @@ computations:
   id: travel
   kind: line
   period: in-year
-- id: ct-management-expenses
+- id: ct-management-expenses-raw
   kind: line
   description: Management Expenses
   period: in-year
@@ -166,6 +183,13 @@ computations:
   - Expenses:VAT Purchases:Sundries
   - Expenses:VAT Purchases:Telecoms
   - Expenses:VAT Purchases:Travel/Accom
+  segments:
+    business-type: management-expenses
+- id: ct-management-expenses
+  kind: round
+  description: Management Expenses
+  period: in-year
+  input: ct-management-expenses-raw
   segments:
     business-type: management-expenses
 - description: Profit chargeable to tax
@@ -189,7 +213,7 @@ computations:
   period: in-year
   inputs:
   - corporation-tax
-- id: ct-profit-before-tax-fy1
+- id: ct-profit-before-tax-fy1-raw
   kind: apportion
   description: FY1
   period: in-year
@@ -198,13 +222,27 @@ computations:
   proportion-period: metadata.report.fy1
   segments:
     business-type: company
-- id: ct-profit-before-tax-fy2
+- id: ct-profit-before-tax-fy1
+  kind: round
+  description: FY1
+  period: in-year
+  input: ct-profit-before-tax-fy1-raw
+  segments:
+    business-type: company
+- id: ct-profit-before-tax-fy2-raw
   kind: apportion
   description: FY2
   period: in-year
   input: ct-profit-before-tax
   whole-period: metadata.report.periods.0
   proportion-period: metadata.report.fy2
+  segments:
+    business-type: company
+- id: ct-profit-before-tax-fy2
+  kind: round
+  description: FY2
+  period: in-year
+  input: ct-profit-before-tax-fy2-raw
   segments:
     business-type: company
 - id: ct-profit-before-tax-total
@@ -217,21 +255,21 @@ computations:
   segments:
     business-type: company
 - id: ct-tax-fy1
-  kind: apportion
+  kind: factor
   description: FY1 (19%)
+  factor: -0.19
   period: in-year
-  input: ct-tax-owed
-  whole-period: metadata.report.periods.0
-  proportion-period: metadata.report.fy1
+  input: ct-profit-before-tax-fy1
+  reverse-sign: true
   segments:
     business-type: company
 - id: ct-tax-fy2
-  kind: apportion
+  kind: factor
   description: FY2 (19%)
+  factor: -0.19
   period: in-year
-  input: ct-tax-owed
-  whole-period: metadata.report.periods.0
-  proportion-period: metadata.report.fy2
+  input: ct-profit-before-tax-fy2
+  reverse-sign: true
   segments:
     business-type: company
 - id: ct-tax-total
@@ -326,6 +364,9 @@ worksheets:
   computations:
   - ct-trading-profit
   - ct-management-expenses
+  - ct-profit-before-tax
+  - ct-profit-before-tax-fy1-raw
+  - ct-profit-before-tax-fy2-raw
   - ct-profit-before-tax-total
   - ct-tax-total
   - ct-profit

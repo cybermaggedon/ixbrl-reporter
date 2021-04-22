@@ -31,6 +31,13 @@ class Computable:
         if kind == "apportion":
             return ApportionOperation.load(cfg, comps, context, data)
 
+        # For UK corporation tax.  >:-O
+        if kind == "round":
+            return RoundOperation.load(cfg, comps, context, data)
+
+        if kind == "factor":
+            return FactorOperation.load(cfg, comps, context, data)
+
         if kind == "line":
             return Line.load(cfg, comps, context, data)
 
@@ -318,7 +325,119 @@ class ApportionOperation(Computable):
         if len(self.segments) != 0:
             context = context.with_segments(self.segments)
 
-        val = self.item.compute(accounts, start, end, result) * self.fraction
+        val = self.item.compute(accounts, start, end, result)
+        val *= self.fraction
+
+        result.set(self.id, context.create_money_datum(self.id, val))
+        return val
+
+    def get_output(self, result):
+
+        output = Total(self, self.description, result.get(self.id),
+                       items=[])
+
+        return output
+
+class RoundOperation(Computable):
+    def __init__(self, id, description, context, period, segments, item):
+        self.id = id
+        self.description = description
+        self.context = context
+        self.period = period
+        self.segments = segments
+        self.item = item
+
+    @staticmethod
+    def load(cfg, comps, context, data):
+
+        id = cfg.get("id")
+        description = cfg.get("description")
+        segs = cfg.get("segments", {})
+
+        pspec = cfg.get("period", "at-end")
+
+        pid = {
+            "in-year": IN_YEAR,
+            "at-start": AT_START,
+            "at-end": AT_END
+        }.get(pspec, AT_END)
+
+        item = comps[cfg.get("input")]
+
+        return RoundOperation(id, description, context, pid, segs, item)
+
+    def compute(self, accounts, start, end, result):
+
+        if self.period == AT_START:
+            context = self.context.with_instant(start)
+        elif self.period == AT_END:
+            context = self.context.with_instant(start)
+        else:
+            context = self.context.with_period(Period("", start, end))
+
+        if len(self.segments) != 0:
+            context = context.with_segments(self.segments)
+
+        val = self.item.compute(accounts, start, end, result)
+        val = round(val)
+
+        result.set(self.id, context.create_money_datum(self.id, val))
+        return val
+
+    def get_output(self, result):
+
+        output = Total(self, self.description, result.get(self.id),
+                       items=[])
+
+        return output
+
+class FactorOperation(Computable):
+    def __init__(self, id, description, context, period, segments, item,
+                 factor):
+        self.id = id
+        self.description = description
+        self.context = context
+        self.period = period
+        self.segments = segments
+        self.item = item
+        self.factor = factor
+
+    @staticmethod
+    def load(cfg, comps, context, data):
+
+        id = cfg.get("id")
+        description = cfg.get("description")
+        segs = cfg.get("segments", {})
+
+        pspec = cfg.get("period", "at-end")
+
+        pid = {
+            "in-year": IN_YEAR,
+            "at-start": AT_START,
+            "at-end": AT_END
+        }.get(pspec, AT_END)
+
+        factor = float(cfg.get("factor"))
+
+        item = comps[cfg.get("input")]
+
+        return FactorOperation(id, description, context, pid, segs, item,
+                               factor)
+
+    def compute(self, accounts, start, end, result):
+
+        if self.period == AT_START:
+            context = self.context.with_instant(start)
+        elif self.period == AT_END:
+            context = self.context.with_instant(start)
+        else:
+            context = self.context.with_period(Period("", start, end))
+
+        if len(self.segments) != 0:
+            context = context.with_segments(self.segments)
+
+        val = self.item.compute(accounts, start, end, result)
+        val = val * self.factor
 
         result.set(self.id, context.create_money_datum(self.id, val))
         return val

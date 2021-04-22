@@ -464,10 +464,10 @@ taxonomy:
       context: website
       id: website-description
     namespaces:
-      uk-bus: http://xbrl.frc.org.uk/cd/2021-01-01/business
-      uk-core: http://xbrl.frc.org.uk/fr/2021-01-01/core
-      uk-direp: http://xbrl.frc.org.uk/reports/2021-01-01/direp
-      uk-geo: http://xbrl.frc.org.uk/cd/2021-01-01/countries
+      uk-bus: http://xbrl.frc.org.uk/cd/2019-01-01/business
+      uk-core: http://xbrl.frc.org.uk/fr/2019-01-01/core
+      uk-direp: http://xbrl.frc.org.uk/reports/2019-01-01/direp
+      uk-geo: http://xbrl.frc.org.uk/cd/2019-01-01/countries
     notes:
       company: 'The company is a private company limited by shares and is
         registered in England and Wales number ~[company-number].
@@ -481,7 +481,7 @@ taxonomy:
       micro-entity-provisions: '~{accounts-prepared-small-company-regime=These
         financial statements have been prepared in accordance with the
 	micro-entity provisions.}'
-      no-audit-required: '~{small-company-exempt-from-audit=The members have
+      no-audit-required: '~{members-not-required-audit=The members have
         not required the company to obtain an audit of its financial
 	statements for the accounting period in accordance with section 476.}'
       small-company-audit-exempt: '~{small-company-exempt-from-audit=For the
@@ -491,7 +491,7 @@ taxonomy:
       software-version: These accounts were generated using
         ~[software] version ~[software-version].
     schema:
-    - https://xbrl.frc.org.uk/FRS-102/2021-01-01/FRS-102-2021-01-01.xsd
+    - https://xbrl.frc.org.uk/FRS-101/2019-01-01/FRS-101-2019-01-01.xsd
     sign-reversed:
       accruals-and-deferred-income: true
       administrative-expenses: true
@@ -569,7 +569,6 @@ taxonomy:
       small-company-exempt-from-audit: uk-direp:StatementThatCompanyEntitledToExemptionFromAuditUnderSection477CompaniesAct2006RelatingToSmallCompanies
       software: uk-bus:NameProductionSoftware
       software-version: uk-bus:VersionProductionSoftware
-      supplementary-note: uk-bus:SupplementaryNote
       tangible-assets: uk-core:PropertyPlantEquipmentIncludingRight-of-useAssets
       total-assets-less-liabilities: uk-core:TotalAssetsLessCurrentLiabilities
       total-capital-and-reserves: uk-core:Equity

@@ -65,7 +65,7 @@ metadata:
     signing-officer: director2
     title: Unaudited Micro-Entity Accounts
   tax:
-    utr: 0123456789
+    utr: '8596148860'
     period:
       name: '2021'
       start: '2020-09-01'
@@ -467,5 +467,5 @@ elements:
   - company
   - directors-acknowledge
   - software-version
-  - 'note:~{supplementary-note:report-period=These are fictional accounts,
-    references to real-world entities or persons is unintentional.}'
+  - 'note:These are fictional accounts,
+    references to real-world entities or persons is unintentional.'
