@@ -112,7 +112,7 @@ produces:
                                                2021       2020  
 ```
 
-This is an empty worksheet.  There are two columns for the time period,
+This is an empty worksheet.  There are two columns for the time periods,
 but no values are displayed as there are no computations.
 
 ### Some computations
@@ -170,7 +170,8 @@ elements:
   worksheet: profit
 ```
 
-Now the output is useful:
+Now the output is useful.  The reference to `Income` in GnuCash pulls in all
+transactions in that account and subaccounts:
 ```
 *** Profit ***
                                                2021       2020  
@@ -320,6 +321,157 @@ Profit:
 Total                                   :   1445.49    1473.88  
 ```
 
-### iXBRL
+### Getting started with iXBRL
 
-FIXME: explain tagging etc.
+As before, let's do the minimal structure for useless output.
+
+Changes:
+- Added `taxonomy` section and reference to a file.
+- Added `metadata.report.currency` which is needed.
+
+```
+accounts:
+  # Filename of GnuCash accounts
+  file: example.gnucash
+taxonomy:
+  file: tax.yaml
+  id: my-taxonomy
+metadata:
+  business:
+    company-number: '12345678'
+    company-name: 'Example Biz Ltd.'
+  report:
+    currency: GBP
+    periods:
+    - name: '2021'
+      start: '2020-09-01'
+      end: '2021-08-31'
+    - name: '2020'
+      start: '2019-09-01'
+      end: '2020-08-31'
+computations:
+- id: income
+  kind: line
+  description: Income
+  period: in-year
+  accounts:
+  - Income
+- id: expenses
+  kind: line
+  description: Expenses
+  period: in-year
+  accounts:
+  - Expenses
+- id: profit
+  kind: group
+  description: Profit
+  period: in-year
+  inputs:
+  - income
+  - expenses
+worksheets:
+- id: profit
+  kind: multi-period
+  computations:
+  - profit
+elements:
+- id: report
+  kind: composite
+  elements:
+  - profit
+- id: profit
+  kind: worksheet
+  title: Profit
+  worksheet: profit
+```
+
+The basic useless taxonomy goes in a file called `tax.yaml` because that
+is the filename we used in the other configuration file:
+
+```
+taxonomy:
+  my-taxonomy:
+    namespaces: []
+    schema: []
+    contexts: []
+    metadata: []
+    document-metadata: []
+```
+
+The output *is* useful.  :)
+
+```
+scripts/gnucash-ixbrl docs/simple1.yaml report ixbrl > out.html
+```
+
+If you view that page in a web browser, you should see the Profit worksheet
+presented properly.  However, there is no iXBRL tagging.  The values
+presented are not known in the taxonomy so are not tagged.
+
+### iXBRL tagging of report data
+
+We're going to use the FRS-102 taxonomy here.  You can view that here:
+[FRS-101](https://uk-taxonomies-tdp.corefiling.com/yeti/resources/yeti-gwt/Yeti.jsp).
+
+Changes:
+- Added `schema` reference for the FRS-102 taxonomy. This should appear in the
+  taxonomy documentation.
+- Added `namespaces` section which declares a set of XML namespaces required
+  by this schema.  Again, should be in the documentation - the data is
+  in the taxonomy schema.
+- Tags mapping our computations (income, expenses, profit) to iXBRL tags.
+  The closest things in FRS-102 are `GrossProfit`, `AdminstrativeExpenses`
+  and `ProfitLoss`, which will do for this simple example.
+
+```
+taxonomy:
+  my-taxonomy:
+    namespaces:
+      uk-bus: http://xbrl.frc.org.uk/cd/2021-01-01/business
+      uk-core: http://xbrl.frc.org.uk/fr/2021-01-01/core
+      uk-direp: http://xbrl.frc.org.uk/reports/2021-01-01/direp
+      uk-geo: http://xbrl.frc.org.uk/cd/2021-01-01/countries
+    schema:
+    - https://xbrl.frc.org.uk/FRS-102/2021-01-01/FRS-102-2021-01-01.xsd
+    contexts: []
+    metadata: []
+    document-metadata: []
+    tags:
+      income: uk-core:GrossProfit
+      expenses: uk-core:AdministrativeExpenses
+      profit: uk-core:ProfitLoss
+```
+
+The HTML output won't look any different in a browser, but if you peek
+in the file with a text editor, you should see some iXBRL tags. e.g.
+```
+  <div class="period value">
+    <ix:nonFraction name="uk-core:GrossProfit" contextRef="ctxt-1"
+        format="ixt2:numdotdecimal" unitRef="GBP"
+	decimals="2">4,212.00</ix:nonFraction>
+  </div>
+```
+
+### Document metadata
+
+The report has all the account fields tagged, but doesn't mention the
+company name anywhere, so we can add that to the hidden tags section.
+
+Changes go in `tax.yaml`:
+- Added `company-name` field to `document-metadata`.
+- Define the `company-name` field in the `metadata` section by referencing
+  configuration value `metadata.business.company-name`.
+- Define an XBRL context called `business` which references the company
+  number.
+- Define an XBRL context called `report-period` which is derived from
+  `business`, but adds a time period to the `business` context.
+
+The result is a hidden iXBRL tag:
+```
+    <ix:hidden>
+        <ix:nonNumeric name="uk-bus:EntityCurrentLegalOrRegisteredName"
+	contextRef="ctxt-0">Example Biz Ltd.</ix:nonNumeric>
+    </ix:hidden>
+```
+
+
