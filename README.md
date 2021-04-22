@@ -38,9 +38,10 @@ The overheads in configuring report and iXBRL output with `gnucash-ixbrl`
 is not small, but that's an up-front cost.
 
 The motivation is that once set up, it is trivial to generate reports,
-and not difficult to generate them dynamically.  Automating business
-report for low on-going costs, and real-time delivery of information
-is the motivation here.
+with the latest, accurate information without constantly copying boiler-plate
+text into reports.  It isn't difficult to generate reports dynamically.
+Automating business report for low on-going costs, and real-time delivery of
+information.
 
 ## Warranty
 
