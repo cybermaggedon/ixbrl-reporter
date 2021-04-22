@@ -465,6 +465,37 @@ Changes go in `tax.yaml`:
   number.
 - Define an XBRL context called `report-period` which is derived from
   `business`, but adds a time period to the `business` context.
+- Define a mapping from the `company-name` identifier to a tag name.
+
+```
+taxonomy:
+  my-taxonomy:
+    namespaces:
+      uk-bus: http://xbrl.frc.org.uk/cd/2021-01-01/business
+      uk-core: http://xbrl.frc.org.uk/fr/2021-01-01/core
+      uk-direp: http://xbrl.frc.org.uk/reports/2021-01-01/direp
+      uk-geo: http://xbrl.frc.org.uk/cd/2021-01-01/countries
+    schema:
+    - https://xbrl.frc.org.uk/FRS-102/2021-01-01/FRS-102-2021-01-01.xsd
+    contexts:
+    - id: business
+      entity: metadata.business.company-number
+      scheme: http://www.companieshouse.gov.uk/
+    - from: business
+      id: report-period
+      period: metadata.report.periods.0
+    metadata:
+    - id: company-name
+      config: metadata.business.company-name
+      context: report-period
+    document-metadata:
+    - company-name
+    tags:
+      income: uk-core:GrossProfit
+      expenses: uk-core:AdministrativeExpenses
+      profit: uk-core:ProfitLoss
+      company-name: uk-bus:EntityCurrentLegalOrRegisteredName
+```
 
 The result is a hidden iXBRL tag:
 ```
