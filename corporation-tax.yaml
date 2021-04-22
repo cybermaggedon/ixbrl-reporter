@@ -15,6 +15,7 @@ metadata:
       form: private-limited-company
     company-name: Example Biz Ltd.
     company-number: '12345678'
+    entity-scheme: http://www.companieshouse.gov.uk/
     contact:
       address:
       - 123 Leadbarton Street
@@ -120,22 +121,12 @@ computations:
   period: in-year
   accounts:
   - Expenses:Emoluments:Employer Pension Contribution
-- accounts:
-  - Expenses:VAT Purchases:Accountant
-  description: Legal and professional services
-  id: legal-and-professional
+- id: bank-charges
   kind: line
-  period: in-year
-  segments:
-    business-type: management-expenses
-- accounts:
-  - Expenses:VAT Purchases:Bank Charges
   description: Bank charges
-  id: bank-charges
-  kind: line
   period: in-year
-  segments:
-    business-type: management-expenses
+  accounts:
+  - Expenses:VAT Purchases:Bank Charges
 - accounts:
   - Expenses:VAT Purchases:Office
   description: Office costs
@@ -362,12 +353,12 @@ elements:
   kind: facttable
   title: Corporation Tax Return
   facts:
-  - context: report-date
+  - id: company-name
+    kind: config
     description: Company name
     field: '1'
-    id: company-name
+    context: report-date
     key: metadata.business.company-name
-    kind: config
   - context: report-date
     description: Tax reference
     field: '3'

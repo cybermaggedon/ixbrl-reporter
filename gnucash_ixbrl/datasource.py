@@ -18,7 +18,7 @@ class DataSource:
 
         self.root_context = Context(None)
         self.business_context = self.root_context.with_entity(
-            "http://www.companieshouse.gov.uk/",
+            self.cfg.get("metadata.business.entity-scheme"),
             self.cfg.get("metadata.business.company-number")
         )
         self.computations = get_computations(cfg, self.business_context, self)
@@ -98,11 +98,11 @@ class DataSource:
 
         raise RuntimeError("Could not find element '%s'" % id)
 
-    def get_config(self, key, deflt=None):
-        return self.cfg.get(key, deflt)
+    def get_config(self, key, deflt=None, mandatory=True):
+        return self.cfg.get(key, deflt, mandatory)
 
-    def get_config_date(self, key, deflt=None):
-        return self.cfg.get_date(key, deflt)
+    def get_config_date(self, key, deflt=None, mandatory=True):
+        return self.cfg.get_date(key, deflt, mandatory)
 
     def to_datum(self, defn, context):
 

@@ -56,7 +56,7 @@ class Line(Computable):
         id = cfg.get("id")
         if id == None: id = create_uuid()
 
-        pspec = cfg.get("period")
+        pspec = cfg.get("period", "at-end")
 
         pid = {
             "in-year": IN_YEAR,
@@ -67,7 +67,7 @@ class Line(Computable):
         segs = cfg.get("segments", {})
 
         return Line(id, cfg.get("description"), cfg.get("accounts"), context,
-                    pid, cfg.get_bool("reverse-sign"), segs)
+                    pid, cfg.get_bool("reverse-sign", False), segs)
 
     def compute(self, session, start, end, result):
 
@@ -132,7 +132,7 @@ class Constant(Computable):
         id = cfg.get("id")
         if id == None: id = create_uuid()
 
-        pspec = cfg.get("period")
+        pspec = cfg.get("period", "at-end")
 
         pid = {
             "in-year": IN_YEAR,
@@ -191,7 +191,7 @@ class Group(Computable):
         id = cfg.get("id")
         if id == None: id = create_uuid()
 
-        pspec = cfg.get("period")
+        pspec = cfg.get("period", "at-end")
 
         pid = {
             "in-year": IN_YEAR,
@@ -293,7 +293,7 @@ class ApportionOperation(Computable):
         proportion = Period.load(data.get_config(proportion_key))
         segs = cfg.get("segments", {})
 
-        pspec = cfg.get("period")
+        pspec = cfg.get("period", "at-end")
 
         pid = {
             "in-year": IN_YEAR,
@@ -314,6 +314,9 @@ class ApportionOperation(Computable):
             context = self.context.with_instant(start)
         else:
             context = self.context.with_period(Period("", start, end))
+
+        if len(self.segments) != 0:
+            context = context.with_segments(self.segments)
 
         val = self.item.compute(accounts, start, end, result) * self.fraction
 
@@ -352,7 +355,7 @@ class Sum(Computable):
         id = cfg.get("id")
         if id == None: id = create_uuid()
 
-        pspec = cfg.get("period")
+        pspec = cfg.get("period", "at-end")
 
         pid = {
             "in-year": IN_YEAR,

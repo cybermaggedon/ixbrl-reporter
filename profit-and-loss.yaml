@@ -15,6 +15,7 @@ metadata:
       form: private-limited-company
     company-name: Example Biz Ltd.
     company-number: '12345678'
+    entity-scheme: http://www.companieshouse.gov.uk/
     contact:
       address:
       - 123 Leadbarton Street

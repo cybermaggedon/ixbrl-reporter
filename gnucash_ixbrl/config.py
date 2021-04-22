@@ -38,31 +38,42 @@ class Config(dict):
         if isinstance(val, float):
             return FloatValue(val)
         raise RuntimeError("Can't help with type {0}".format(type(val)))
-    def get(self, key, deflt=None):
+    def get(self, key, deflt=None, mandatory=True):
         if "." not in key:
             if key in self:
                 nav = self[key]
             else:
+                if deflt == None and mandatory:
+                    raise RuntimeError("Config value %s not known" % key)
                 nav = deflt
         else:
             keys = key.split(".")
             nav = self
-            for key in keys:
-                if key in nav:
-                    nav = nav[key]
+            for k in keys:
+                if k in nav:
+                    nav = nav[k]
                 elif isinstance(nav, list):
-                    pos = int(key)
+                    pos = int(k)
                     if pos >= len(nav):
+                        if deflt == None and mandatory:
+                            raise RuntimeError(
+                                "Config value %s not known" % key
+                            )
                         return Config.makevalue(deflt)
-                    nav = nav[int(key)]
+                    nav = nav[int(k)]
                 else:
+                    if deflt == None and mandatory:
+                        raise RuntimeError("Config value %s not known" % key)
+
                     return Config.makevalue(deflt)
         return Config.makevalue(nav)
-    def get_date(self, key, dflt=None):
-        val = self.get(key, dflt)
+    def get_date(self, key, dflt=None, mandatory=True):
+        val = self.get(key, dflt, mandatory)
+        if val == None: return None
         return DateValue.fromisoformat(val)
-    def get_bool(self, key, dflt=None):
-        val = self.get(key, dflt)
+    def get_bool(self, key, dflt=None, mandatory=True):
+        val = self.get(key, dflt, mandatory)
+        if val == None: return False
         return BoolValue(val == True)
     def use(self, fn):
         return fn(self)

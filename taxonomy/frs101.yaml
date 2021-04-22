@@ -3,7 +3,7 @@ taxonomy:
     contexts:
     - entity: metadata.business.company-number
       id: business
-      scheme: http://www.companieshouse.gov.uk/
+      scheme: metadata.business.entity-scheme
     - from: business
       id: report-period
       period: metadata.report.periods.0

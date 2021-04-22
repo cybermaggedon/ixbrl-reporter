@@ -42,7 +42,7 @@ class FactTable(BasicElement):
 
         c = FactTable(
             elt_def.get("facts"),
-            elt_def.get("title"),
+            elt_def.get("title", "Fact table"),
             data
         )
         return c

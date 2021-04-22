@@ -11,27 +11,34 @@ if len(sys.argv) < 4:
     sys.stderr.write("Usage:\n    report <config> <report> <format>\n")
     sys.exit(1)
 
-cfg = Config.load(sys.argv[1])
-cfg.set("internal.software", "gnucash-ixbrl")
-cfg.set("internal.software-version", "0.0.1")
+try:
 
-file = cfg.get("accounts.file")
+    cfg = Config.load(sys.argv[1])
+    cfg.set("internal.software", "gnucash-ixbrl")
+    cfg.set("internal.software-version", "0.0.1")
 
-session = accounts.Accounts(file)
+    file = cfg.get("accounts.file")
 
-d = DataSource(cfg, session)
+    session = accounts.Accounts(file)
 
-elt = d.get_element(sys.argv[2])
+    d = DataSource(cfg, session)
 
-if sys.argv[3] == "ixbrl":
-    tx_cfg = Config.load(cfg.get("taxonomy.file"))
-    tx_id = cfg.get("taxonomy.id")
-    tx = Taxonomy(tx_cfg, tx_id)
-    elt.to_ixbrl(tx, sys.stdout)
-elif sys.argv[3] == "html":
-    elt.to_html(sys.stdout)
-elif sys.argv[3] == "text":
-    elt.to_text(sys.stdout)
-else:
-    raise RuntimeError("Output type '%s' not known." % sys.argv[3])
+    elt = d.get_element(sys.argv[2])
+
+    if sys.argv[3] == "ixbrl":
+        tx_cfg = Config.load(cfg.get("taxonomy.file"))
+        tx_id = cfg.get("taxonomy.id")
+        tx = Taxonomy(tx_cfg, tx_id)
+        elt.to_ixbrl(tx, sys.stdout)
+    elif sys.argv[3] == "html":
+        elt.to_html(sys.stdout)
+    elif sys.argv[3] == "text":
+        elt.to_text(sys.stdout)
+    else:
+        raise RuntimeError("Output type '%s' not known." % sys.argv[3])
+
+except Exception as e:
+    sys.stderr.write("Exception: %s\n" % str(e))
+    sys.exit(1)
+
 

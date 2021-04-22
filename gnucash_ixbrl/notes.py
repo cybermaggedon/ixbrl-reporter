@@ -15,7 +15,7 @@ class NotesElement(BasicElement):
     def load(elt_def, data):
 
         e = NotesElement(
-            elt_def.get("title"),
+            elt_def.get("title", "Notes"),
             elt_def.get("notes"),
             data
         )

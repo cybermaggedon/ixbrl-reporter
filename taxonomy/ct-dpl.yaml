@@ -3,7 +3,7 @@ taxonomy:
     contexts:
     - id: business
       entity: metadata.business.company-number
-      scheme: http://www.companieshouse.gov.uk/
+      scheme: metadata.business.entity-scheme
     - id: report-period
       from: business
       period: metadata.report.periods.0
@@ -20,18 +20,18 @@ taxonomy:
       segments:
         business-type: company
     metadata:
-    - config: internal.software
+    - id: software
+      config: internal.software
       context: report-date
-      id: software
-    - config: internal.software-version
+    - id: software-version
+      config: internal.software-version
       context: report-date
-      id: software-version
-    - config: metadata.business.company-name
+    - id: company-name
       context: report-date
-      id: company-name
-    - config: metadata.tax.utr
+      config: metadata.business.company-name
+    - id: tax-reference
+      config: metadata.tax.utr
       context: report-date
-      id: tax-reference
     document-metadata:
     - software
     - software-version
@@ -117,6 +117,9 @@ taxonomy:
       software: ct-comp:NameOfProductionSoftware
       software-version: ct-comp:VersionOfProductionSoftware
       ct-management-expenses: ct-comp:TotalManagementExpenses
+
+
+
 
       account-period-end: ct-comp:PeriodOfAccountEndDate
       account-period-start: ct-comp:PeriodOfAccountStartDate

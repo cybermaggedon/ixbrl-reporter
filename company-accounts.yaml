@@ -13,6 +13,7 @@ metadata:
     - 1
     company-name: Example Biz Ltd.
     company-number: '12345678'
+    entity-scheme: http://www.companieshouse.gov.uk/
     company-formation:
       country: england-and-wales
       date: '2017-04-05'

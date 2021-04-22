@@ -52,15 +52,15 @@ class Taxonomy:
 
     def get_tag_name(self, id):
         key = "taxonomy.{0}.tags.{1}".format(self.name, id)
-        return self.cfg.get(key)
+        return self.cfg.get(key, mandatory=False)
 
     def get_sign_reversed(self, id):
         key = "taxonomy.{0}.sign-reversed.{1}".format(self.name, id)
-        return self.cfg.get_bool(key)
+        return self.cfg.get_bool(key, False)
 
     def get_tag_dimensions(self, id):
         key = "taxonomy.{0}.segments.{1}".format(self.name, id)
-        return self.cfg.get(key)
+        return self.cfg.get(key, mandatory=False)
 
     def lookup_dimension(self, id, val):
         k1 = "taxonomy.{0}.lookup.{1}.dimension".format(self.name, id)
@@ -165,29 +165,29 @@ class Taxonomy:
 
         ctxt = None
 
-        if defn.get("from"):
+        if defn.get("from", mandatory=False):
             ctxt = contexts[defn.get("from")]
         else:
             ctxt = data.get_root_context()
 
-        if defn.get("entity"):
+        if defn.get("entity", mandatory=False):
             scheme_def = defn.get("scheme")
             scheme = data.get_config(scheme_def, scheme_def)
             entity_def = defn.get("entity")
             entity = data.get_config(entity_def, entity_def)
             ctxt = ctxt.with_entity(scheme, entity)
 
-        if defn.get("period"):
+        if defn.get("period", mandatory=False):
             period_def = defn.get("period")
             period = Period.load(data.get_config(period_def))
             ctxt = ctxt.with_period(period)
 
-        if defn.get("instant"):
+        if defn.get("instant", mandatory=False):
             instant_def = defn.get("instant")
             instant = data.get_config_date(instant_def)
             ctxt = ctxt.with_instant(instant)
 
-        if defn.get("segments"):
+        if defn.get("segments", mandatory=False):
             segments = defn.get("segments")
 
             for k, v in segments.items():
@@ -270,9 +270,9 @@ class Taxonomy:
         id = defn.get("id")
         context = ctxts[defn.get("context")]
 
-        if defn.get("config"):
+        if defn.get("config", mandatory=False):
             value_def = defn.get("config")
-            value = data.get_config(value_def)
+            value = data.get_config(value_def, mandatory=False)
         else:
             value = defn.get("value")
 
@@ -280,7 +280,7 @@ class Taxonomy:
         if isinstance(value, NoneValue):
             return NoneValue()
 
-        kind = defn.get("kind")
+        kind = defn.get("kind", mandatory=False)
         if kind == "date":
             value = datetime.fromisoformat(value).date()
             datum = DateDatum(id, value, context)
@@ -299,6 +299,3 @@ class Taxonomy:
 
         return fact
 
-#class FRS101(Taxonomy):
-#    def __init__(self, cfg):
-#        super().__init__(cfg, "frs-101")
