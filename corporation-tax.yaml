@@ -48,30 +48,34 @@ metadata:
     accounting-standards: micro-entities
     accounts-status: audit-exempt-no-accountants-report
     accounts-type: abridged-accounts
-    authorised-date: '2021-08-31'
-    balance-sheet-date: '2021-08-31'
+    authorised-date: '2021-01-01'
+    balance-sheet-date: '2020-12-31'
     currency: GBP
-    date: '2021-08-31'
+    date: '2021-01-01'
     fy1:
       name: FY1
-      start: '2020-09-01'
-      end: '2021-03-31'
+      start: '2020-01-01'
+      end: '2020-03-31'
     fy2:
       name: FY2
-      start: '2021-04-01'
-      end: '2021-08-31'
+      start: '2020-04-01'
+      end: '2020-12-31'
     periods:
-    - name: '2021'
-      start: '2020-09-01'
-      end: '2021-08-31'
+    - name: '2020'
+      start: '2020-01-01'
+      end: '2020-12-31'
+#    - name: '2019'
+#      start: '2019-01-01'
+#      end: '2019-12-31'
     signed-by: B Smith
+    signing-officer: director2
     title: Unaudited Micro-Entity Accounts
   tax:
     utr: '8596148860'
     period:
-      name: '2021'
-      start: '2020-09-01'
-      end: '2021-08-31'
+      name: '2020'
+      start: '2020-01-01'
+      end: '2020-12-31'
 computations:
 - id: consultancy-raw
   kind: line
@@ -365,8 +369,6 @@ worksheets:
   - ct-trading-profit
   - ct-management-expenses
   - ct-profit-before-tax
-  - ct-profit-before-tax-fy1-raw
-  - ct-profit-before-tax-fy2-raw
   - ct-profit-before-tax-total
   - ct-tax-total
   - ct-profit
@@ -540,13 +542,13 @@ elements:
     description: Financial year 1 covered by the return
     field: '330'
     kind: string
-    value: '2020'
+    value: '2019'
   - id: financial-year2-covered-by-the-return
     context: report-period
     description: Financial year 2 covered by the return
     field: '380'
     kind: string
-    value: '2021'
+    value: '2020'
   - id: fy1-amount-of-profit-chargeable-at-first-rate
     context: report-period
     description: FY1 amount of profit chargable at first rate
