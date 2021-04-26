@@ -62,9 +62,9 @@ class Taxonomy:
         key = "taxonomy.{0}.segments.{1}".format(self.name, id)
         return self.cfg.get(key, mandatory=False)
 
-    def lookup_dimension(self, id, val):
-        k1 = "taxonomy.{0}.lookup.{1}.dimension".format(self.name, id)
-        k2 = "taxonomy.{0}.lookup.{1}.map.{2}".format(self.name, id, val)
+    def lookup_segment(self, id, val):
+        k1 = "taxonomy.{0}.segment.{1}.dimension".format(self.name, id)
+        k2 = "taxonomy.{0}.segment.{1}.map.{2}".format(self.name, id, val)
         return self.cfg.get(k1), self.cfg.get(k2)
 
     def observe_fact(self, fact):

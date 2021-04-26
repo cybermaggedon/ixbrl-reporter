@@ -1,0 +1,465 @@
+
+# Specifies GnuCash accounts source
+accounts:
+  # Filename of GnuCash accounts
+  file: example.gnucash
+
+# This sets up the iXBRL taxonomy.  There should be a filename and a
+# taxonomy ID.
+taxonomy:
+  file: taxonomy/frs101.yaml
+  id: frs101
+
+metadata:
+  business:
+    activities: Computer security consultancy and development services
+    average-employees:
+    - 2
+    - 1
+    company-name: Example Biz Ltd.
+    company-number: '12345678'
+    entity-scheme: http://www.companieshouse.gov.uk/
+    company-formation:
+      country: england-and-wales
+      date: '2017-04-05'
+      form: private-limited-company
+    vat-registration: GB012345678
+    contact:
+      name: Corporate Enquiries
+      address:
+      - 123 Leadbarton Street
+      - Dumpston Trading Estate
+      county: Minchingshire
+      location: Threapminchington
+      country: UK
+      email: corporate@example.org
+      phone:
+        area: '7900'
+        country: '+44'
+        number: '0123456'
+        type: landline
+      postcode: QQ99 9ZZ
+    directors:
+    - A Bloggs
+    - B Smith
+    - C Jones
+    industry-sector: m
+    is-dormant: false
+    sic-codes:
+    - '62020'
+    - '62021'
+    website:
+      description: Corporate website
+      url: https://example.org/corporate
+  report:
+    accounting-standards: micro-entities
+    accounts-status: audit-exempt-no-accountants-report
+    accounts-type: abridged-accounts
+    authorised-date: '2021-01-01'
+    balance-sheet-date: '2020-12-31'
+    currency: GBP
+    date: '2021-01-01'
+    periods:
+    - name: '2020'
+      start: '2020-01-01'
+      end: '2020-12-31'
+    - name: '2019'
+      start: '2019-01-01'
+      end: '2019-12-31'
+    signed-by: B Smith
+    signing-officer: director2
+    title: Unaudited Micro-Entity Accounts
+  tax:
+    utr: '8596148860'
+    period:
+      name: '2021'
+      start: '2020-02-01'
+      end: '2021-01-31'
+computations:
+- id: consultancy
+  kind: line
+  description: Consultancy
+  period: in-year
+  accounts:
+  - Income
+- id: turnover
+  kind: group
+  description: Turnover / revenue
+  hide-breakdown: true
+  period: in-year
+  inputs:
+  - consultancy
+- id: gross-profit
+  kind: sum
+  description: Gross Profit
+  period: in-year
+  inputs:
+  - turnover
+- id: salaries
+  kind: line
+  accounts:
+  - Expenses:Emoluments:Employees
+  description: Salaries
+  period: in-year
+- id: pensions
+  kind: line
+  accounts:
+  - Expenses:Emoluments:Employer Pension Contribution
+  description: Pension contributions
+  period: in-year
+- id: depreciation
+  kind: line
+  description: Depreciation
+  accounts:
+  - Expenses:Depreciation
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Accountant
+  description: Accountancy services
+  id: accountancy
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Bank Charges
+  description: Bank charges
+  id: bank-charges
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Office
+  description: Office costs
+  id: office
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Software
+  description: Software
+  id: software
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Subscriptions
+  description: Subscriptions
+  id: subscriptions
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Sundries
+  description: Sundries
+  id: sundries
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Telecoms
+  description: Telecoms
+  id: telecoms
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Travel/Accom
+  description: Travel
+  id: travel
+  kind: line
+  period: in-year
+- id: administrative-expenses
+  kind: group
+  description: Administrative Expenses
+  hide-breakdown: true
+  inputs:
+  - salaries
+  - pensions
+  - depreciation
+  - accountancy
+  - bank-charges
+  - office
+  - software
+  - subscriptions
+  - sundries
+  - telecoms
+  - travel
+  period: in-year
+- id: profit
+  kind: sum
+  description: Profit (Loss)
+  period: in-year
+  inputs:
+  - gross-profit
+  - administrative-expenses
+- accounts:
+  - Assets:Capital Equipment
+  description: Tangible Assets
+  id: tangible-assets
+  kind: line
+  period: at-end
+- id: fixed-assets
+  description: Fixed Assets
+  kind: sum
+  period: at-end
+  inputs:
+  - tangible-assets
+- accounts:
+  - Accounts Receivable
+  - Assets:Owed To Us
+  description: Debtors
+  id: debtors
+  kind: line
+  period: at-end
+- accounts:
+  - VAT:Input
+  description: VAT Refund Due
+  id: vat-refund-owed
+  kind: line
+  period: at-end
+- accounts:
+  - Bank Accounts
+  description: Bank
+  id: bank
+  kind: line
+  period: at-end
+- description: Current Assets
+  id: current-assets
+  kind: sum
+  inputs:
+  - debtors
+  - vat-refund-owed
+  - bank
+- description: Prepayments and Accrued Income
+  id: prepayments-and-accrued-income
+  kind: group
+  inputs: []
+- accounts:
+  - Accounts Payable
+  description: Trade Creditors
+  id: trade-creditors
+  kind: line
+  period: at-end
+- accounts:
+  - VAT:Output
+  description: Other Creditors
+  id: other-creditors
+  kind: line
+  period: at-end
+- description: 'Creditors: falling due within one year'
+  id: creditors-within-1-year
+  kind: sum
+  inputs:
+  - trade-creditors
+  - other-creditors
+  segments:
+    matures: within-1-year
+- id: net-current-assets
+  kind: sum
+  description: Net Current Assets
+  inputs:
+  - current-assets
+  - prepayments-and-accrued-income
+  - creditors-within-1-year
+- description: Total Assets Less Liabilities
+  id: total-assets-less-liabilities
+  inputs:
+  - fixed-assets
+  - current-assets
+  - prepayments-and-accrued-income
+  - creditors-within-1-year
+  kind: sum
+- description: 'Creditors: falling due after one year'
+  id: creditors-after-1-year
+  kind: group
+  inputs: []
+  segments:
+    matures: after-1-year
+- accounts:
+  - Liabilities:Owed Corporation Tax
+  description: Corporation Tax
+  id: corporation-tax-owed
+  kind: line
+  period: at-end
+- description: Provisions For Liabilities
+  id: provisions-for-liabilities
+  kind: sum
+  inputs:
+  - corporation-tax-owed
+- description: Accrued liabilities and deferred income
+  id: accruals-and-deferred-income
+  kind: group
+  inputs: []
+- description: Net Assets
+  id: net-assets
+  inputs:
+  - total-assets-less-liabilities
+  - creditors-after-1-year
+  - provisions-for-liabilities
+  - accruals-and-deferred-income
+  kind: sum
+- accounts:
+  - Equity:Shareholdings
+  description: Share Capital
+  id: share-capital
+  kind: line
+  period: at-end
+- accounts:
+  - Income
+  - Expenses
+  description: Retained Profit
+  id: profit-loss
+  kind: line
+  period: at-end
+- accounts:
+  - Equity:Dividends
+  description: Dividends
+  id: dividends
+  kind: line
+  period: at-end
+- id: corporation-tax
+  accounts:
+  - Equity:Corporation Tax
+  description: Corporation Tax
+  kind: line
+  period: at-end
+- description: Capital and Reserves
+  id: capital-and-reserves
+  kind: group
+  inputs:
+  - share-capital
+  - profit-loss
+  - dividends
+  - corporation-tax
+- description: Total Capital and Reserves
+  id: total-capital-and-reserves
+  inputs:
+  - capital-and-reserves
+  kind: sum
+- accounts:
+  - Assets:Capital Equipment:Computer Equipment
+  description: At start of period
+  id: fixed-assets-initial
+  kind: line
+  period: at-start
+- accounts:
+  - Assets:Capital Equipment:Computer Equipment
+  description: Additions
+  id: fixed-assets-additions
+  kind: line
+  period: in-year
+- description: Fixed Assets
+  id: fixed-assets-total
+  kind: group
+  inputs:
+  - fixed-assets-initial
+  - fixed-assets-additions
+- id: depreciation-initial
+  accounts:
+  - Assets:Capital Equipment:Depreciation
+  description: At start of period
+  kind: line
+  period: at-start
+- accounts:
+  - Assets:Capital Equipment:Depreciation
+  description: Charge
+  id: depreciation-charge
+  kind: line
+  period: in-year
+- description: Depreciation
+  id: depreciation-total
+  kind: group
+  inputs:
+  - depreciation-initial
+  - depreciation-charge
+- description: Carrying at end of period
+  id: carrying-final
+  inputs:
+  - fixed-assets-total
+  - depreciation-total
+  kind: sum
+- id: ordinary-shares-at-start
+  accounts:
+  - Equity:Shareholdings:Ordinary Shares
+  description: Ordinary Shares
+  kind: line
+  period: at-start
+- id: preference-shares-at-start
+  accounts:
+  - Equity:Shareholdings:Preference Shares
+  description: Preference Shares
+  kind: line
+  period: at-start
+- id: shares-issued
+  accounts:
+  - Equity:Shareholdings
+  description: Shares Issued
+  kind: line
+  period: in-year
+- description: Share Capital
+  id: share-capital
+  kind: group
+  period: at-end
+  inputs:
+  - ordinary-shares-at-start
+  - preference-shares-at-start
+  - shares-issued
+worksheets:
+- id: balance-sheet
+  kind: multi-period
+  computations:
+  - fixed-assets
+  - current-assets
+  - prepayments-and-accrued-income
+  - creditors-within-1-year
+  - net-current-assets
+  - total-assets-less-liabilities
+  - creditors-after-1-year
+  - provisions-for-liabilities
+  - accruals-and-deferred-income
+  - net-assets
+  - total-capital-and-reserves
+- id: profit-and-loss
+  kind: multi-period
+  description: Profit and Loss
+  computations:
+  - turnover
+  - gross-profit
+  - administrative-expenses
+  - profit
+- id: fixed-assets
+  kind: multi-period
+  description: Fixed Assets
+  computations:
+  - fixed-assets-total
+  - depreciation-total
+  - carrying-final
+- id: share-capital
+  kind: multi-period
+  description: Share Capital
+  computations:
+  - share-capital
+elements:
+- id: report
+  kind: composite
+  elements:
+  - title
+  - balance-sheet
+  - profit-and-loss
+  - notes
+- id: title
+  kind: title
+  signature-image: signature.png
+  signature-type: image/png
+- id: balance-sheet
+  kind: worksheet
+  title: Balance Sheet
+  worksheet: balance-sheet
+- id: profit-and-loss
+  kind: worksheet
+  title: Income Statement
+  worksheet: profit-and-loss
+- id: notes
+  kind: notes
+  notes:
+  - micro-entity-provisions
+  - small-company-audit-exempt
+  - no-audit-required
+  - company
+  - directors-acknowledge
+  - software-version
+  - 'note:These are fictional accounts,
+    references to real-world entities or persons is unintentional.'

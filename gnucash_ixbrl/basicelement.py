@@ -415,7 +415,7 @@ h2 {
             segs = []
 
             for k, v in segments.items():
-                k2, v2 = taxonomy.lookup_dimension(k, v)
+                k2, v2 = taxonomy.lookup_segment(k, v)
                 if k2 and v2:
                     segs.append(self.create_segment_member(k2, v2))
 
