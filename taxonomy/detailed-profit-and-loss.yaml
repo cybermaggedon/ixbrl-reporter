@@ -15,7 +15,7 @@ taxonomy:
     - context: current-item1
       id: comment
       value: Consultancy services
-    lookup:
+    segment:
       countries-regions:
         dimension: uk-geo:CountriesRegionsDimension
         map:
