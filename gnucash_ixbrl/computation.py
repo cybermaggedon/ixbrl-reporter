@@ -1,4 +1,5 @@
 
+# Computations used to compute values from GnuCash accounts.
 import json
 import datetime
 import uuid

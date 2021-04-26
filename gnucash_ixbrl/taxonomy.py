@@ -1,4 +1,5 @@
 
+# Mapping taxonomy-free datums to facts so that iXBRL tagging can take place.
 from . datum import (
     StringDatum, DateDatum, MoneyDatum, BoolDatum, CountDatum, NumberDatum
 )

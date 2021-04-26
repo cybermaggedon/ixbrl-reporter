@@ -1,4 +1,8 @@
 
+# iXBRL support for facts.  A Fact is a Datum mapped into the appropriate
+# taxonomy.  So, context name will be a real iXBRL context.  Name will be the
+# iXBRL tag name.
+
 import json
 import copy
 from . period import Period

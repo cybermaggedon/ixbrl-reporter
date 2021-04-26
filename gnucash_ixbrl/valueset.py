@@ -1,4 +1,6 @@
 
+# A ValueSet is a set of values referenced by id.
+
 from . config import StringValue, NoneValue
 from . datum import *
 

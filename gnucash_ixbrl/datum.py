@@ -1,4 +1,6 @@
 
+# A datum is representation of a data value in a taxonomy-free way.  A datum
+# has an identifier e.g. company-name, a value and a context.
 class Datum:
     def describe(self):
         print("%-20s: %s" % (self.id, str(self.value)))

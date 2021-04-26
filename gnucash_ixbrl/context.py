@@ -1,4 +1,9 @@
 
+# This is generic context management.  Inside gnucash-ixbrl, contexts are
+# managed in a taxonomy-free way, structured in terms of entities, time periods,
+# and segments.  The taxonomy maps these taxonomy-free contexts into the real
+# tags.
+
 from . datum import *
 
 class Context:

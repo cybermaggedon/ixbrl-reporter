@@ -1,4 +1,6 @@
 
+# A Composite element is used to wrap several elements into a single document.
+
 from . basicelement import BasicElement
 
 class Composite(BasicElement):

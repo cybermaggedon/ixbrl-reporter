@@ -1,4 +1,5 @@
 
+# Fact table is an Element which lists a set of facts.
 from . period import Period
 from . basicelement import BasicElement
 from . fact import *

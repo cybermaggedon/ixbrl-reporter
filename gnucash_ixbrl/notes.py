@@ -1,4 +1,5 @@
 
+# Notes element is a report element which displays notes.
 from . basicelement import BasicElement
 from . fact import *
 from . note_parse import *

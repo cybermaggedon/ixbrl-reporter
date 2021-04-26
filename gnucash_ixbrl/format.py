@@ -1,4 +1,7 @@
 
+# Number formatting, accountancy style.  Negative numbers appear in
+# parentheses.
+
 import string
 
 class NegativeParenFormatter(string.Formatter):

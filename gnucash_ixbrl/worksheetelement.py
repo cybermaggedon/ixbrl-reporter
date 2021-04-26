@@ -1,4 +1,6 @@
 
+# A worksheet element is an element of a report which displays a worksheet.
+
 from . basicelement import BasicElement
 from . report import TextReporter
 from . ixbrl import IxbrlReporter

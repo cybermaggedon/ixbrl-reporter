@@ -1,6 +1,8 @@
 
+# Base class for elements.  Any element can be output as an iXBRL document.
+# There is code here which handles the standard 'outer' iXBRL document
+# and global context management.
 from . period import Period
-
 from . fact import *
 
 from xml.dom.minidom import getDOMImplementation

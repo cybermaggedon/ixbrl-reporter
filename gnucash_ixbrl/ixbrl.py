@@ -1,4 +1,6 @@
 
+# Converts a worksheet into iXBRL.
+
 from . format import NegativeParenFormatter
 from xml.dom.minidom import getDOMImplementation
 from xml.dom import XHTML_NAMESPACE

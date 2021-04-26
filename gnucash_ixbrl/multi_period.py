@@ -1,4 +1,6 @@
 
+# A worksheet with multiple periods.
+
 from . period import Period
 from . computation import Result
 from . worksheet_model import Worksheet, SimpleValue, Breakdown, NilValue, Total

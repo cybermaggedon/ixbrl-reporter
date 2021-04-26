@@ -1,4 +1,6 @@
 
+# Note markup parser.
+
 class TextToken:
     def __init__(self, text):
         self.text = text

@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 
 #
 # Wrapper for GnuCash Python API, extracts account structure, splits, and

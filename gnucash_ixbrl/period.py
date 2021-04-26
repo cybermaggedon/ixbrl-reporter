@@ -1,4 +1,7 @@
 
+# A period of time.  Periods have a name, start and end date.  The convention
+# used in gnucash-ixbrl is that periods are bounded by dates inclusively.
+# i.e. an event which occurs on the end date is *included in* the period.
 from datetime import datetime
 
 class Period:

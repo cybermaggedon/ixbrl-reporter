@@ -1,4 +1,7 @@
 
+# Entry point for Elements, Element.load calls out to appropriate code to
+# construct elements.
+
 from . worksheet import get_worksheet
 from . worksheetelement import WorksheetElement
 from . period import Period
@@ -6,7 +9,6 @@ from . composite import Composite
 from . title import Title
 from . notes import NotesElement
 
-# FIXME: BasicElement and Element have this duped code.
 class Element:
 
     @staticmethod
