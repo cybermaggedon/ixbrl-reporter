@@ -12,7 +12,8 @@ from datetime import datetime
 
 class BasicElement:
 
-    def __init__(self, data):
+    def __init__(self, id, data):
+        self.id = id
         self.data = data
 
     @staticmethod

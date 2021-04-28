@@ -7,8 +7,8 @@ from . note_parse import *
 from datetime import datetime
 
 class NotesElement(BasicElement):
-    def __init__(self, title, notes, data):
-        super().__init__(data)
+    def __init__(self, id, title, notes, data):
+        super().__init__(id, data)
         self.title = title
         self.notes = notes
 
@@ -16,6 +16,7 @@ class NotesElement(BasicElement):
     def load(elt_def, data):
 
         e = NotesElement(
+            elt_def.get("id"),
             elt_def.get("title", "Notes"),
             elt_def.get("notes"),
             data
@@ -125,6 +126,7 @@ class NotesElement(BasicElement):
 
         div = par.doc.createElement("div")
         div.setAttribute("class", "notes page")
+        div.setAttribute("id", self.id + "-element")
 
         title = par.doc.createElement("h2")
         if self.title:

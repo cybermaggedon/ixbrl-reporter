@@ -6,8 +6,8 @@ from . report import TextReporter
 from . ixbrl import IxbrlReporter
 
 class WorksheetElement(BasicElement):
-    def __init__(self, title, worksheet, data):
-        super().__init__(data)
+    def __init__(self, id, title, worksheet, data):
+        super().__init__(id, data)
         self.title = title
         self.worksheet = worksheet
         self.data = data
@@ -16,6 +16,7 @@ class WorksheetElement(BasicElement):
     def load(elt_def, data):
 
         e = WorksheetElement(
+            elt_def.get("id"),
             elt_def.get("title"),
             data.get_worksheet(elt_def.get("worksheet")),
             data
@@ -40,6 +41,7 @@ class WorksheetElement(BasicElement):
 
         div = par.doc.createElement("div")
         div.setAttribute("class", "worksheet page")
+        elt.setAttribute("id", self.id + "-element")
 
         title = par.doc.createElement("h2")
         title.appendChild(par.doc.createTextNode(self.title))

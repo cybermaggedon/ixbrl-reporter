@@ -9,8 +9,8 @@ from . fact import *
 import base64
 
 class Title(BasicElement):
-    def __init__(self, img, type, data):
-        super().__init__(data)
+    def __init__(self, id, img, type, data):
+        super().__init__(id, data)
         self.title = data.get_config("metadata.report.title")
         self.date = data.get_config("metadata.report.date")
         self.img = img
@@ -20,6 +20,7 @@ class Title(BasicElement):
     def load(elt_def, data):
 
         e = Title(
+            elt_def.get("id"),
             elt_def.get("signature-image"),
             elt_def.get("signature-type"),
             data
@@ -36,6 +37,7 @@ class Title(BasicElement):
 
         div = doc.createElement("div")
         div.setAttribute("class", "title page")
+        div.setAttribute("id", self.id + "-element")
 
         def add_company_name(fact):
             div2 = doc.createElement("h1")

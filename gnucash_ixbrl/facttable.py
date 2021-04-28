@@ -33,8 +33,8 @@ business_type = {
 
 class FactTable(BasicElement):
 
-    def __init__(self, elts, title, data):
-        super().__init__(data)
+    def __init__(self, id, elts, title, data):
+        super().__init__(id, data)
         self.elements = elts
         self.title = title
 
@@ -42,6 +42,7 @@ class FactTable(BasicElement):
     def load(elt_def, data):
 
         c = FactTable(
+            elt_def.get("id"),
             elt_def.get("facts"),
             elt_def.get("title", "Fact table"),
             data
@@ -61,6 +62,7 @@ class FactTable(BasicElement):
 
         div = par.doc.createElement("div")
         div.setAttribute("class", "facts page")
+        div.setAttribute("id", self.id + "-element")
 
         title = par.doc.createElement("h2")
         title.appendChild(par.doc.createTextNode(self.title))

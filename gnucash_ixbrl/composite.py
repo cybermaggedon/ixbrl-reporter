@@ -4,14 +4,15 @@
 from . basicelement import BasicElement
 
 class Composite(BasicElement):
-    def __init__(self, elts, data):
-        super().__init__(data)
+    def __init__(self, id, elts, data):
+        super().__init__(id, data)
         self.elements = elts
 
     @staticmethod
     def load(elt_def, data):
 
         c = Composite(
+            elt_def.get("id"),
             [
                 data.get_element(v)
                 for v in elt_def.get("elements")
@@ -30,6 +31,7 @@ class Composite(BasicElement):
 
         elt = par.doc.createElement("div")
         elt.setAttribute("class", "composite")
+        elt.setAttribute("id", self.id + "-element")
 
         for v in self.elements:
 
