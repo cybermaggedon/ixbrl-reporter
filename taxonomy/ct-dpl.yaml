@@ -59,6 +59,7 @@ taxonomy:
       accountancy: true
       administrative-expenses: true
       annual-investment-allowance: true
+      ct-annual-investment-allowance: true
       corporation-tax-chargeable: true
       net-corporation-tax-payable: true
       tax-chargeable: true
@@ -112,14 +113,19 @@ taxonomy:
       ct-tax-fy2: ct-comp:FY2TaxAtFirstRate
       ct-tax-total: ct-comp:CorporationTaxChargeable
       ct-profit-before-tax-total: ct-comp:TotalProfitsChargeableToCorporationTax
-      ct-trading-profit: ct-comp:AdjustedTradingProfitOfThisPeriod
+      ct-trading-profits: ct-comp:AdjustedTradingProfitOfThisPeriod
       legal-and-professional: ct-comp:ManagementExpensesLegalAndProfessional
       software: ct-comp:NameOfProductionSoftware
       software-version: ct-comp:VersionOfProductionSoftware
       ct-management-expenses: ct-comp:TotalManagementExpenses
-
-
-
+      ct-profits-before-other-deductions-and-reliefs: ct-comp:ProfitsBeforeOtherDeductionsAndReliefs
+      ct-annual-investment-allowance: ct-comp:MainPoolAnnualInvestmentAllowance
+      annual-investment-allowance: ct-comp:MainPoolAnnualInvestmentAllowance
+      ct-trading-losses-brought-forward: ct-comp:TradingLossesBroughtForward
+      ct-net-trading-profits: ct-comp:NetTradingProfits
+      ct-net-chargeable-gains: ct-comp:NetChargeableGains
+      ct-profits-before-deductions-and-reliefs: ct-comp:ProfitsBeforeOtherDeductionsAndReliefs
+      ct-profits-chargeable-to-corporation-tax: ct-comp:TotalProfitsChargeableToCorporationTax
 
       account-period-end: ct-comp:PeriodOfAccountEndDate
       account-period-start: ct-comp:PeriodOfAccountStartDate
@@ -241,7 +247,6 @@ taxonomy:
       allocated-interest-reactivated-for-period: ct-comp:AllocatedInterestReactivatedForPeriod
       amount-of-interest-available-for-reactivation: ct-comp:AmountOfInterestAvailableForReactivation
       amount-of-rd-expenditure-credit: ct-comp:AmountOfRDExpenditureCredit
-      annual-investment-allowance: ct-comp:MainPoolAnnualInvestmentAllowance
       annual-payments: ct-comp:AnnualPayments
       balance-of-losses-brought-forward-carried-forward: ct-comp:BalanceOfLossesBroughtForwardCarriedForward
       balance-of-non-resident-company-landlord-income-tax-losses-brought-forward-carried-forward: ct-comp:BalanceOfNonResidentCompanyLandlordIncomeTaxLossesBroughtForwardCarriedForward

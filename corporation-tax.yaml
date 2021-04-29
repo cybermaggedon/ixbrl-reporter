@@ -45,6 +45,7 @@ metadata:
       description: Corporate website
       url: https://example.org/corporate
   report:
+    pretty-print: false
     accounting-standards: micro-entities
     accounts-status: audit-exempt-no-accountants-report
     accounts-type: abridged-accounts
@@ -74,59 +75,47 @@ metadata:
       start: '2020-01-01'
       end: '2020-12-31'
 computations:
-- id: consultancy-raw
-  kind: line
-  description: Consultancy
-  period: in-year
-  accounts:
-  - Income
-- id: consultancy
-  kind: round
-  description: Consultancy
-  period: in-year
-  input: consultancy-raw
+
 - description: Turnover / revenue
   id: turnover
   kind: group
   inputs:
-  - consultancy
+  - kind: round
+    description: Income
+    period: in-year
+    input:
+      kind: line
+      description: Income from main trade
+      period: in-year
+      accounts:
+      - Income
   period: in-year
-- id: gross-profit-raw
-  kind: sum
-  description: Gross Profit
+
+- id: ct-annual-investment-allowance
+  kind: round
+  description: Annual investment allowance
   period: in-year
-  inputs:
-  - turnover
+  segments:
+    business-type: management-expenses
+  input:
+    kind: line
+    period: in-year
+    reverse-sign: true
+    segments:
+      business-type: management-expenses
+    accounts:
+    - Assets:Capital Equipment:Computer Equipment
+
 - id: gross-profit
   kind: round
   description: Gross Profit
   period: in-year
-  input: gross-profit-raw
-- id: annual-investment-allowance-raw
-  kind: line
-  description: Annual investment allowance
-  period: in-year
-  reverse-sign: true
-  accounts:
-  - Assets:Capital Equipment:Computer Equipment
-  segments:
-    business-type: management-expenses
-- id: annual-investment-allowance
-  kind: round
-  description: Annual investment allowance
-  period: in-year
-  input: annual-investment-allowance-raw
-  segments:
-    business-type: management-expenses
-- id: ct-trading-profit
-  kind: group
-  description: Trading Profit
-  period: in-year
-  inputs:
-  - gross-profit
-  - annual-investment-allowance
-  segments:
-    business-type: company
+  input:
+    kind: sum
+    description:
+    period: in-year
+    inputs:
+    - turnover
 - id: salaries
   kind: line
   description: Salaries
@@ -169,85 +158,113 @@ computations:
   id: travel
   kind: line
   period: in-year
-- id: ct-management-expenses-raw
-  kind: line
-  description: Management Expenses
-  period: in-year
-  accounts:
-  - Expenses:Emoluments:Employees
-  - Expenses:Emoluments:Employer Pension Contribution
-  - Expenses:VAT Purchases:Accountant
-  - Expenses:VAT Purchases:Bank Charges
-  - Expenses:VAT Purchases:Office
-  - Expenses:VAT Purchases:Software
-  - Expenses:VAT Purchases:Subscriptions
-  - Expenses:VAT Purchases:Sundries
-  - Expenses:VAT Purchases:Telecoms
-  - Expenses:VAT Purchases:Travel/Accom
-  segments:
-    business-type: management-expenses
 - id: ct-management-expenses
   kind: round
   description: Management Expenses
   period: in-year
-  input: ct-management-expenses-raw
+  input:
+    kind: line
+    period: in-year
+    accounts:
+    - Expenses:Emoluments:Employees
+    - Expenses:Emoluments:Employer Pension Contribution
+    - Expenses:VAT Purchases:Accountant
+    - Expenses:VAT Purchases:Bank Charges
+    - Expenses:VAT Purchases:Office
+    - Expenses:VAT Purchases:Software
+    - Expenses:VAT Purchases:Subscriptions
+    - Expenses:VAT Purchases:Sundries
+    - Expenses:VAT Purchases:Telecoms
+    - Expenses:VAT Purchases:Travel/Accom
   segments:
     business-type: management-expenses
-- description: Profit chargeable to tax
-  id: ct-profit-before-tax
-  inputs:
-  - ct-trading-profit
-  - ct-management-expenses
-  kind: sum
-  period: in-year
-  segments:
-    business-type: company
-- accounts:
-  - Equity:Corporation Tax
-  description: Other
-  id: corporation-tax
-  kind: line
-  period: in-year
-- id: ct-tax-owed
-  description: Corporation tax owed
+
+- id: ct-trading-profits
   kind: group
+  description: Trading profits
   period: in-year
-  inputs:
-  - corporation-tax
-- id: ct-profit-before-tax-fy1-raw
-  kind: apportion
-  description: FY1
-  period: in-year
-  input: ct-profit-before-tax
-  whole-period: metadata.report.periods.0
-  proportion-period: metadata.report.fy1
   segments:
     business-type: company
+  inputs:
+  - gross-profit
+  - ct-annual-investment-allowance
+
+- id: ct-trading-losses-brought-forward
+  kind: sum
+  description: Trading losses brought forward
+  period: in-year
+  segments:
+    business-type: company
+  inputs: []
+
+- id: ct-net-trading-profits
+  kind: group
+  description: Net trading profits
+  period: in-year
+  segments:
+    business-type: company
+  inputs:
+  - ct-trading-profits
+  - ct-trading-losses-brought-forward
+
+- id: ct-net-chargeable-gains
+  kind: sum
+  description: Net chargeable gains
+  inputs: []
+  period: in-year
+  segments:
+    business-type: company
+
+- id: ct-profits-before-deductions-and-reliefs
+  kind: group
+  description: Profits before deductions and reliefs
+  period: in-year
+  segments:
+    business-type: company
+  inputs:
+  - ct-net-trading-profits
+  - ct-net-chargeable-gains
+
+- id: ct-profits-chargeable-to-corporation-tax
+  kind: group
+  description: Profits chargeable to corporation tax
+  period: in-year
+  segments:
+    business-type: company
+  inputs:
+  - ct-profits-before-deductions-and-reliefs
+  - ct-management-expenses
+  
 - id: ct-profit-before-tax-fy1
   kind: round
   description: FY1
   period: in-year
-  input: ct-profit-before-tax-fy1-raw
+  input:
+    kind: apportion
+    description: FY1
+    period: in-year
+    input: ct-profits-chargeable-to-corporation-tax
+    whole-period: metadata.report.periods.0
+    proportion-period: metadata.report.fy1
   segments:
     business-type: company
-- id: ct-profit-before-tax-fy2-raw
-  kind: apportion
-  description: FY2
-  period: in-year
-  input: ct-profit-before-tax
-  whole-period: metadata.report.periods.0
-  proportion-period: metadata.report.fy2
-  segments:
-    business-type: company
+
 - id: ct-profit-before-tax-fy2
   kind: round
   description: FY2
   period: in-year
-  input: ct-profit-before-tax-fy2-raw
+  input:
+    kind: apportion
+    description: FY2
+    period: in-year
+    input: ct-profits-chargeable-to-corporation-tax
+    whole-period: metadata.report.periods.0
+    proportion-period: metadata.report.fy2
   segments:
     business-type: company
+
 - id: ct-profit-before-tax-total
-  description: Profit chargeable to corporation tax
+  description: Profits chargeable to corporation tax
   kind: group
   period: in-year
   inputs:
@@ -255,6 +272,7 @@ computations:
   - ct-profit-before-tax-fy2
   segments:
     business-type: company
+
 - id: ct-tax-fy1
   kind: factor
   description: FY1 (19%)
@@ -282,14 +300,9 @@ computations:
   period: in-year
   segments:
     business-type: company
-- id: ct-profit
+- id: ct-tax-owed
   kind: sum
-  description: Profit after tax
-  inputs:
-  - ct-profit-before-tax
-  - ct-tax-owed
-  segments:
-    business-type: company
+  inputs: [ct-tax-total]
 - id: accountancy
   accounts:
   - Expenses:VAT Purchases:Accountant
@@ -357,18 +370,17 @@ computations:
   - gross-profit
   - total-costs
   - tax-due
-
 worksheets:
 - id: tax-calculation
   kind: multi-period
   description: Tax Calculation
   computations:
-  - ct-trading-profit
-  - ct-management-expenses
-  - ct-profit-before-tax
+  - ct-trading-profits
+  - ct-net-trading-profits
+  - ct-profits-before-deductions-and-reliefs
+  - ct-profits-chargeable-to-corporation-tax
   - ct-profit-before-tax-total
   - ct-tax-total
-  - ct-profit
 - id: detailed-profit-and-loss
   kind: multi-period
   description: Detailed Profit-and-Loss
@@ -443,7 +455,7 @@ elements:
     context: report-period
     description: Annual investment allowance
     field: '690'
-    computation: annual-investment-allowance
+    computation: ct-annual-investment-allowance
     kind: computation
     period-config: metadata.tax.period
     context: management-expenses-period
@@ -455,7 +467,7 @@ elements:
     context: report-period
     description: Trading profits
     field: '155'
-    computation: ct-trading-profit
+    computation: ct-trading-profits
     kind: computation
     period-config: metadata.tax.period
   - id: trading-losses-brought-forward
@@ -465,7 +477,7 @@ elements:
     kind: money
     value: 0
   - id: net-trading-profits
-    computation: ct-trading-profit
+    computation: ct-net-trading-profits
     context: report-period
     description: Net trading profits
     field: '165'
@@ -475,10 +487,11 @@ elements:
     description: Net chargeable gains
     field: '220'
     id: net-chargeable-gains
-    kind: money
-    value: 0
+    kind: computation
+    computation: ct-net-chargeable-gains
+    period-config: metadata.tax.period
   - id: profits-before-other-deductions-and-reliefs
-    computation: ct-trading-profit
+    computation: ct-profits-before-deductions-and-reliefs
     context: report-period
     description: Profits before other deductions and reliefs
     field: '235'
@@ -498,17 +511,17 @@ elements:
     id: total-deductions-and-reliefs
     kind: computation
     period-config: metadata.tax.period
-  - computation: ct-profit-before-tax
+  - computation: ct-profits-before-deductions-and-reliefs
     context: report-period
     description: Profits before donations and group relief
     field: '300'
     id: profits-before-charges-and-group-relief
     kind: computation
     period-config: metadata.tax.period
-  - context: report-period
+  - id: qualifying-donations
+    context: report-period
     description: Qualifying donations
     field: '305'
-    id: qualifying-donations
     kind: money
     value: 0
   - context: report-period
@@ -523,7 +536,7 @@ elements:
     id: group-relief-claimed-for-carried-forward-losses
     kind: money
     value: 0
-  - computation: ct-profit-before-tax
+  - computation: ct-profits-chargeable-to-corporation-tax
     context: report-period
     description: Profits chargeable to Corporation Tax
     field: '315'
@@ -548,14 +561,14 @@ elements:
     value: '2020'
   - id: fy1-amount-of-profit-chargeable-at-first-rate
     context: report-period
-    description: FY1 amount of profit chargable at first rate
+    description: FY1 amount of profit chargeable at first rate
     field: '335'
     computation: ct-profit-before-tax-fy1
     kind: computation
     period-config: metadata.tax.period
   - id: fy2-amount-of-profit-chargeable-at-first-rate
     context: report-period
-    description: FY2 amount of profit chargable at first rate
+    description: FY2 amount of profit chargeable at first rate
     field: '385'
     computation: ct-profit-before-tax-fy2
     kind: computation
@@ -624,7 +637,7 @@ elements:
     kind: computation
     context: report-period
     computation: ct-tax-owed
-    description: Tax chargable
+    description: Tax chargeable
     field: '510'
     period-config: metadata.tax.period
   - id: tax-payable

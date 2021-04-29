@@ -288,9 +288,10 @@ h2 {
 
         body.appendChild(elt)
 
-#        out.write(doc.toprettyxml())
-        out.write(doc.toxml())
-
+        if self.cfg.get_bool("metadata.report.pretty-print"):
+            out.write(doc.toprettyxml())
+        else:
+            out.write(doc.toxml())
 
     def to_ixbrl(self, taxonomy, out):
 
@@ -385,8 +386,11 @@ h2 {
         unit.appendChild(measure)
         resources.appendChild(unit)
        
-#        out.write(doc.toprettyxml())
-        out.write(doc.toxml())
+        if self.data.get_config_bool("metadata.report.pretty-print",
+                                     mandatory=False):
+            out.write(doc.toprettyxml())
+        else:
+            out.write(doc.toxml())
 
     def create_contexts(self, taxonomy):
 

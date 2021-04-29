@@ -104,6 +104,9 @@ class DataSource:
     def get_config_date(self, key, deflt=None, mandatory=True):
         return self.cfg.get_date(key, deflt, mandatory)
 
+    def get_config_bool(self, key, deflt=None, mandatory=True):
+        return self.cfg.get_bool(key, deflt, mandatory)
+
     def to_datum(self, defn, context):
 
         if defn.get("kind") == "config":
