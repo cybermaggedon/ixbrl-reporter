@@ -225,6 +225,17 @@ computations:
   - ct-net-trading-profits
   - ct-net-chargeable-gains
 
+- id: ct-profits-before-donations-and-group-relief
+  kind: group
+  description: Profits before donations and group relief
+  period: in-year
+  segments:
+    business-type: company
+  inputs:
+  - ct-profits-before-deductions-and-reliefs
+  - ct-management-expenses
+
+# profits before donations???
 - id: ct-profits-chargeable-to-corporation-tax
   kind: group
   description: Profits chargeable to corporation tax
@@ -232,9 +243,8 @@ computations:
   segments:
     business-type: company
   inputs:
-  - ct-profits-before-deductions-and-reliefs
-  - ct-management-expenses
-  
+   - ct-profits-before-donations-and-group-relief
+
 - id: ct-profit-before-tax-fy1
   kind: round
   description: FY1
@@ -378,7 +388,7 @@ worksheets:
   - ct-trading-profits
   - ct-net-trading-profits
   - ct-profits-before-deductions-and-reliefs
-  - ct-profits-chargeable-to-corporation-tax
+  - ct-profits-before-donations-and-group-relief
   - ct-profit-before-tax-total
   - ct-tax-total
 - id: detailed-profit-and-loss
@@ -511,12 +521,12 @@ elements:
     id: total-deductions-and-reliefs
     kind: computation
     period-config: metadata.tax.period
-  - computation: ct-profits-before-deductions-and-reliefs
+  - id: profits-before-charges-and-group-relief
+    kind: computation
+    computation: ct-profits-before-donations-and-group-relief
     context: report-period
     description: Profits before donations and group relief
     field: '300'
-    id: profits-before-charges-and-group-relief
-    kind: computation
     period-config: metadata.tax.period
   - id: qualifying-donations
     context: report-period
