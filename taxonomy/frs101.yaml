@@ -246,6 +246,7 @@ taxonomy:
       context: report-date
       config: metadata.report.date
     - id: authorised-date
+      kind: date
       context: report-date
       config: metadata.report.authorised-date
     - id: period-start
@@ -272,6 +273,7 @@ taxonomy:
       context: report-period
       config: internal.software-version
     - id: balance-sheet-date
+      kind: date
       context: report-date
       config: metadata.report.balance-sheet-date
     - id: activities
