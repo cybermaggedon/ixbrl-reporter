@@ -52,6 +52,11 @@ taxonomy:
       from: business
       instant: metadata.report.date
 
+    # The 'end-of-reporting-period' context describes the last day of reporting
+    # period.
+    - id: end-of-reporting-period
+      from: business
+      instant: metadata.report.periods.0.end
 
     # The industry sector takes 'report-date' and adds in the industry
     # sector dimension.
@@ -247,7 +252,7 @@ taxonomy:
       config: metadata.report.date
     - id: authorised-date
       kind: date
-      context: report-date
+      context: end-of-reporting-period
       config: metadata.report.authorised-date
     - id: period-start
       kind: date
@@ -274,7 +279,7 @@ taxonomy:
       config: internal.software-version
     - id: balance-sheet-date
       kind: date
-      context: report-date
+      context: end-of-reporting-period
       config: metadata.report.balance-sheet-date
     - id: activities
       context: report-period
