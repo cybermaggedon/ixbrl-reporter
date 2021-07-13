@@ -20,8 +20,8 @@ taxonomy:
       segments:
         business-type: company
     metadata:
-    - id: software
-      config: internal.software
+    - id: software-name
+      config: internal.software-name
       context: report-date
     - id: software-version
       config: internal.software-version
@@ -33,7 +33,7 @@ taxonomy:
       config: metadata.tax.utr
       context: report-date
     document-metadata:
-    - software
+    - software-name
     - software-version
     - company-name
     - tax-reference
@@ -115,7 +115,7 @@ taxonomy:
       ct-profit-before-tax-total: ct-comp:TotalProfitsChargeableToCorporationTax
       ct-trading-profits: ct-comp:AdjustedTradingProfitOfThisPeriod
       legal-and-professional: ct-comp:ManagementExpensesLegalAndProfessional
-      software: ct-comp:NameOfProductionSoftware
+      software-name: ct-comp:NameOfProductionSoftware
       software-version: ct-comp:VersionOfProductionSoftware
       ct-management-expenses: ct-comp:TotalManagementExpenses
       ct-profits-before-other-deductions-and-reliefs: ct-comp:ProfitsBeforeOtherDeductionsAndReliefs
