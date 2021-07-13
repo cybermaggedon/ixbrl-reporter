@@ -202,7 +202,7 @@ taxonomy:
     - company-name
     - company-number
     - vat-registration
-    - software
+    - software-name
     - software-version
     - balance-sheet-date
     - activities
@@ -271,9 +271,9 @@ taxonomy:
     - id: vat-registration
       context: report-period
       config: metadata.business.vat-registration
-    - id: software
+    - id: software-name
       context: report-period
-      config: internal.software
+      config: internal.software-name
     - id: software-version
       context: report-period
       config: internal.software-version
@@ -463,7 +463,7 @@ taxonomy:
         entitled to exemption from audit under section 477 of the Companies
 	Act 2006 relating to small companies.}'
       software-version: These accounts were generated using
-        ~[software] version ~[software-version].
+        ~[software-name] version ~[software-version].
 
     # If sign-reversed is true for a field, it's value is negated.  We
     # normally treat things which cause money to 'go away' (e.g. expenses)
@@ -547,7 +547,7 @@ taxonomy:
       sic4: uk-bus:SICCodeRecordedUKCompaniesHouse4
       signing-officer: uk-core:DirectorSigningFinancialStatements
       small-company-exempt-from-audit: uk-direp:StatementThatCompanyEntitledToExemptionFromAuditUnderSection477CompaniesAct2006RelatingToSmallCompanies
-      software: uk-bus:NameProductionSoftware
+      software-name: uk-bus:NameProductionSoftware
       software-version: uk-bus:VersionProductionSoftware
       tangible-assets: uk-core:PropertyPlantEquipmentIncludingRight-of-useAssets
       total-assets-less-liabilities: uk-core:TotalAssetsLessCurrentLiabilities
