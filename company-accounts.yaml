@@ -148,7 +148,7 @@ metadata:
   # Tax details, used by the Corporation tax profile
   tax:
 
-    # Unique Taxpayer Reference (HMRC issuedn)
+    # Unique Taxpayer Reference (HMRC issued)
     utr: '8596148860'
 
     # Tax period
@@ -285,7 +285,7 @@ computations:
 - id: administrative-expenses
   kind: group
   description: Administrative Expenses
-  hide-breakdown: true
+  hide-breakdown: false
   inputs:
   - salaries
   - pensions
