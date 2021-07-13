@@ -655,7 +655,7 @@ elements:
     context: report-period
     computation: ct-tax-owed
     description: Tax payable
-    field: '528'
+    field: '525'
     period-config: metadata.tax.period
 - id: tax-calculation
   kind: worksheet
