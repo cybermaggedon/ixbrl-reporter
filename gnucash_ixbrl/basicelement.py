@@ -200,23 +200,25 @@ h2 {
 }
 
 .fact DIV {
-  margin: 0rem 1rem 0rem 1rem;
+  margin: 0rem 0rem 0rem 1rem;
   padding: 4px;
 }
 
 .fact .ref {
-  width: 5rem;
+  width: 5em;
   text-align: center;
   color: white;
   background-color: #2ca469;
   border: 2px solid #104020;
   font-weight: bold;
-  padding-left: 0.2rem;
-  padding-right: 0.2rem;
+  font-size: small;
+  padding-left: 0.1rem;
+  padding-right: 0.1rem;
 }
 
 .fact .description {
-  width: 25em;
+  width: 22em;
+  font-size: small;
 }
 
 .fact .value {

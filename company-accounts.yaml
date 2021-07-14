@@ -378,7 +378,7 @@ computations:
   accounts:
   - Accounts Payable
 
-# Other creditrs
+# Other creditors
 - id: other-creditors
   kind: line
   description: Other Creditors

@@ -571,14 +571,14 @@ elements:
     value: '2020'
   - id: fy1-amount-of-profit-chargeable-at-first-rate
     context: report-period
-    description: FY1 amount of profit chargeable at first rate
+    description: FY1 profit chargeable at first rate
     field: '335'
     computation: ct-profit-before-tax-fy1
     kind: computation
     period-config: metadata.tax.period
   - id: fy2-amount-of-profit-chargeable-at-first-rate
     context: report-period
-    description: FY2 amount of profit chargeable at first rate
+    description: FY2 profit chargeable at first rate
     field: '385'
     computation: ct-profit-before-tax-fy2
     kind: computation
