@@ -20,9 +20,9 @@ taxonomy:
       segments:
         business-type: company
     metadata:
-    - config: internal.software
+    - config: internal.software-name
       context: report-date
-      id: software
+      id: software-name
     - config: internal.software-version
       context: report-date
       id: software-version
@@ -33,7 +33,7 @@ taxonomy:
       context: report-date
       id: tax-reference
     document-metadata:
-    - software
+    - software-name
     - software-version
     - company-name
     - tax-reference
@@ -89,7 +89,7 @@ taxonomy:
       legal-and-professional: ct-comp:ManagementExpensesLegalAndProfessional
       bank-charges: ct-comp:ManagementExpensesBankChargesCommission
       office: ct-comp:AdjustmentsTelephoneFaxStationeryAndOtherOfficeCosts
-      software: ct-comp:NameOfProductionSoftware
+      software-name: ct-comp:NameOfProductionSoftware
       software-version: ct-comp:VersionOfProductionSoftware
       software-expenses: ct-comp:ManagementExpensesComputerCosts
       sundries: ct-comp:ManagementExpensesSundries
