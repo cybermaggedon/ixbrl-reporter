@@ -12,6 +12,25 @@ from . config import NoneValue
 
 from datetime import datetime
 
+class Named:
+    def describe(self, doc):
+        expmem = doc.createElement("xbrldi:explicitMember")
+        expmem.setAttribute("dimension", self.dim)
+        expmem.appendChild(doc.createTextNode(self.value))
+        return expmem
+
+class Typed:
+    def describe(self, doc):
+
+        # FIXME: Assumes single tag, containing single value
+        elt = doc.createElement(self.content["tag"])
+        elt.appendChild(doc.createTextNode(self.value))
+
+        mem = doc.createElement("xbrldi:typedMember")
+        mem.setAttribute("dimension", self.dim)
+        mem.appendChild(elt)
+        return mem
+
 class Taxonomy:
     def __init__(self, cfg, name):
         self.cfg = cfg
@@ -63,10 +82,28 @@ class Taxonomy:
         key = "taxonomy.{0}.segments.{1}".format(self.name, id)
         return self.cfg.get(key, mandatory=False)
 
-    def lookup_segment(self, id, val):
+    def lookup_dimension(self, id, val):
+
+        try:
+
+            k1 = "taxonomy.{0}.segment.{1}.typed-dimension".format(
+                self.name, id
+            )
+            k2 = "taxonomy.{0}.segment.{1}.content".format(self.name, id)
+            dim = Typed()
+            dim.dim = self.cfg.get(k1)
+            dim.content = self.cfg.get(k2)
+            dim.value = val
+            return dim
+        except:
+            pass
+
         k1 = "taxonomy.{0}.segment.{1}.dimension".format(self.name, id)
         k2 = "taxonomy.{0}.segment.{1}.map.{2}".format(self.name, id, val)
-        return self.cfg.get(k1), self.cfg.get(k2)
+        dim = Named()
+        dim.dim = self.cfg.get(k1)
+        dim.value = self.cfg.get(k2)
+        return dim
 
     def observe_fact(self, fact):
         # Keep track of which contexts are used.  Contexts which are

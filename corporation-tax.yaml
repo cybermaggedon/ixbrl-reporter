@@ -1,22 +1,62 @@
+
+#############################################################################
+### GnuCash accounts source #################################################
+#############################################################################
 accounts:
+  # Filename of GnuCash accounts
   file: example.gnucash
+
+#############################################################################
+### Taxonomy configuration ##################################################
+#############################################################################
+# This sets up the iXBRL taxonomy.  There should be a filename and a
+# taxonomy ID.
 taxonomy:
   file: taxonomy/ct-dpl.yaml
   id: corptax
+
+#############################################################################
+### Report metadata #########################################################
+#############################################################################
+# Metadata used in reports.  Note that some of the metadata here is only
+# referenced from the taxonomy files, so different taxonomies will demand
+# different metadata.
 metadata:
+
+  # Metadata about the business
   business:
+
+    # Summary of business activities
     activities: Computer security consultancy and development services
+
+    # Average number of employees over the previous 2 accounting periods
     average-employees:
     - 2
     - 1
+
+    # Business name
+    company-name: Example Biz Ltd.
+
+    # Registered company number
+    company-number: '12345678'
+
+    # VAT registration number
+    vat-registration: GB012345678
+
+    # iXBRL entity scheme, Companies House
+    entity-scheme: http://www.companieshouse.gov.uk/
+
+    # Legal entity formation information
     company-formation:
       country: england-and-wales
       date: '2019-03-01'
       form: private-limited-company
-    company-name: Example Biz Ltd.
-    company-number: '12345678'
-    entity-scheme: http://www.companieshouse.gov.uk/
+
+    # Company contact details
     contact:
+
+      # Contact name, address, county, location (city), country, email
+      name: Corporate Enquiries
       address:
       - 123 Leadbarton Street
       - Dumpston Trading Estate
@@ -24,35 +64,75 @@ metadata:
       county: Minchingshire
       email: corporate@example.org
       location: Threapminchington
-      name: Corporate Enquiries
+
+      # Phone number
       phone:
         area: '7900'
         country: '+44'
         number: '0123456'
         type: landline
       postcode: QQ99 9ZZ
+
+    # Directors of the business
     directors:
     - A Bloggs
     - B Smith
     - C Jones
+
+    # Industry sector.  Search for uk-bus:MainIndustrySectorDimension in the
+    # taxonomy file.
     industry-sector: m
+
+    # Is the company dormant?
     is-dormant: false
+
+    # SIC codes registered with Companies House.
     sic-codes:
     - '62020'
     - '62021'
-    vat-registration: GB012345678
+
+    # Contact website description and URL
     website:
       description: Corporate website
       url: https://example.org/corporate
+
+  # Report metadata
   report:
-    pretty-print: false
+
+    pretty-print: true
+
+    # The accounting-standards applied.  One of:
+    #   frs101, frs102, frsse, full-irs, micro-entities, other-standards,
+    #   small-entities-regime.
     accounting-standards: micro-entities
+
+    # Accounts status, one of:
+    #   audit-exempt-no-accountants-report,
+    #   audit-exempt-with-accountants-report, audited,
+    #   independent-examination, other-reporting-regime
     accounts-status: audit-exempt-no-accountants-report
+
+    # Accounts type, one of:
+    #   abbreviated-accounts, abridged-accounts, full-accounts
     accounts-type: abridged-accounts
+
+    # Date report was authorised for issue
     authorised-date: '2021-01-01'
+
+    # Date of the balance sheet data pull
     balance-sheet-date: '2020-12-31'
+
+    # Accounts currency
     currency: GBP
+
+    # Report issue date
     date: '2021-01-01'
+
+    # Tax years over which the accounts are calculated.  A company's tax year
+    # is defined by the company's accounting period.  This usually falls
+    # across two UK tax years (which start on the 1st April).  This is needed
+    # to allow for a change in tax rates, which are always applied to a tax
+    # year.
     fy1:
       name: FY1
       start: '2020-01-01'
@@ -61,24 +141,49 @@ metadata:
       name: FY2
       start: '2020-04-01'
       end: '2020-12-31'
+
+    # Accounting periods
     periods:
     - name: '2020'
       start: '2020-01-01'
       end: '2020-12-31'
+
+    # Name of director who signed the reports
     signed-by: B Smith
+
+    # Context segment of the director who signed the report.  director2
+    # means the second director in the list metadata.business.directors.
     signing-officer: director2
-    title: Unaudited Micro-Entity Accounts
+
+    # Report title
+    title: Corporation tax filing
+
+  # Tax details, used by the Corporation tax profile
   tax:
+
+    # Unique Taxpayer Reference (HMRC issued)
     utr: '8596148860'
+
+    # Tax period
     period:
       name: '2020'
       start: '2020-01-01'
       end: '2020-12-31'
+
+#############################################################################
+### Report computations #####################################################
+#############################################################################
 computations:
 
-- description: Turnover / revenue
-  id: turnover
+##############################
+# Detailed Profit and Loss ###
+##############################
+
+# Turnover
+- id: turnover
   kind: group
+  description: Turnover / revenue
+  period: in-year
   inputs:
   - kind: round
     description: Income
@@ -89,8 +194,243 @@ computations:
       period: in-year
       accounts:
       - Income
+
+# Gross profit
+- id: gross-profit
+  kind: round
+  description: Gross Profit
+  period: in-year
+  input:
+    kind: sum
+    description:
+    period: in-year
+    inputs:
+    - turnover
+
+# Salaries expenditure
+- id: salaries
+  kind: line
+  description: Salaries
+  period: in-year
+  accounts:
+  - Expenses:Emoluments:Employees
+
+# Pension contributions
+- id: pensions
+  kind: line
+  description: Pension contributions
+  period: in-year
+  accounts:
+  - Expenses:Emoluments:Employer Pension Contribution
+
+# Bank charges
+- id: bank-charges
+  kind: line
+  description: Bank charges
+  period: in-year
+  accounts:
+  - Expenses:VAT Purchases:Bank Charges
+
+# Office costs
+- id: office
+  kind: line
+  description: Office costs
+  period: in-year
+  accounts:
+  - Expenses:VAT Purchases:Office
+
+# Software expenses
+- id: software-expenses
+  kind: line
+  description: Software
+  period: in-year
+  accounts:
+  - Expenses:VAT Purchases:Software
+
+# Sundries expenses
+- accounts:
+  - Expenses:VAT Purchases:Sundries
+  description: Sundries
+  id: sundries
+  kind: line
   period: in-year
 
+# Travel / accomodation expenses
+- accounts:
+  - Expenses:VAT Purchases:Travel/Accom
+  description: Travel
+  id: travel
+  kind: line
+  period: in-year
+
+# Depreciation.  This is included in expenses, and is then 'added back in'
+# in the tax calculation.
+- id: depreciation
+  kind: line
+  description: Depreciation
+  period: in-year
+  accounts:
+  - Expenses:Depreciation
+
+# Accountancy costs
+- id: accountancy
+  accounts:
+  - Expenses:VAT Purchases:Accountant
+  description: Accountancy services
+  kind: line
+  period: in-year
+
+# Subscriptions
+- id: subscriptions-costs
+  kind: line
+  description: Subscriptions
+  period: in-year
+  accounts:
+  - Expenses:VAT Purchases:Subscriptions
+
+# Telecoms
+- id: telecoms
+  kind: line
+  description: Telecoms
+  period: in-year
+  accounts:
+  - Expenses:VAT Purchases:Telecoms
+
+# Total costs, the sum of the above.
+- id: total-costs
+  description: Total costs
+  kind: group
+  period: in-year
+  inputs:
+  - salaries
+  - pensions
+  - accountancy
+  - bank-charges
+  - office
+  - depreciation
+  - software-expenses
+  - subscriptions-costs
+  - sundries
+  - telecoms
+  - travel
+
+# Profit before tax
+- id: profit-before-tax
+  kind: group
+  description: Net profit before tax
+  inputs:
+  - gross-profit
+  - total-costs
+  period: in-year
+
+# Corporation tax, from the accounts
+- id: corporation-tax
+  kind: line
+  description: Corporation tax
+  period: in-year
+  accounts:
+  - Equity:Corporation Tax
+
+# Tax due (just the above)
+- id: tax-due
+  description: Corporation tax
+  kind: sum
+  period: in-year
+  inputs:
+  - corporation-tax
+
+- id: profit
+  kind: sum
+  description: Profit (Loss) after tax
+  period: in-year
+  inputs:
+  - profit-before-tax
+  - tax-due
+#  - gross-profit
+#  - total-costs
+#  - ct-annual-investment-allowance
+#  - tax-due
+
+##############################
+# R&D expenditure at 130% ####
+##############################
+
+# First project staffing
+- id: rnd-proj1-enhanced-staffing
+  description: Staffing (@ 130%)
+  kind: line
+  period: in-year
+  segments:
+    business-name: Cyberapocalypse Limited
+    business-type: trade
+    detailed-analysis: item1
+    loss-reform: post-loss-reform
+    territory: uk
+  accounts:
+  - Expenses:R&D Enhanced Expenditure:Project Iguana:Staffing Costs
+
+# First project external workers
+- id: rnd-proj1-enhanced-external
+  description: External workers (@ 130%)
+  kind: line
+  period: in-year
+  segments:
+    business-name: Cyberapocalypse Limited
+    business-type: trade
+    detailed-analysis: item1
+    loss-reform: post-loss-reform
+    territory: uk
+  accounts:
+  - Expenses:R&D Enhanced Expenditure:Project Iguana:External Workers
+
+# First project external software/consumable
+- id: rnd-proj1-enhanced-software
+  description: Software/Consumables (@ 130%)
+  kind: line
+  period: in-year
+  segments:
+    business-name: Cyberapocalypse Limited
+    business-type: trade
+    detailed-analysis: item1
+    loss-reform: post-loss-reform
+    territory: uk
+  accounts:
+  - Expenses:R&D Enhanced Expenditure:Project Iguana:Software/Consumables
+
+# First project total
+- id: rnd-proj1-enhanced-expenditure
+  kind: group
+  description: Project Iguana
+  period: in-year
+  segments:
+    business-name: Cyberapocalypse Limited
+    business-type: trade
+    detailed-analysis: item1
+    loss-reform: post-loss-reform
+    territory: uk
+  inputs:
+  - rnd-proj1-enhanced-staffing
+  - rnd-proj1-enhanced-software
+  - rnd-proj1-enhanced-external
+
+# All R&D total
+- id: rnd-enhanced-expenditure
+  kind: group
+  description: SME R&D tax relief (130%)
+  period: in-year
+  segments:
+    business-name: Cyberapocalypse Limited
+    business-type: trade
+    loss-reform: post-loss-reform
+    territory: uk
+  inputs:
+  - rnd-proj1-enhanced-expenditure
+
+##############################
+# Tax computation ############
+##############################
+
+# Annual investment allowance
 - id: ct-annual-investment-allowance
   kind: round
   description: Annual investment allowance
@@ -106,82 +446,10 @@ computations:
     accounts:
     - Assets:Capital Equipment:Computer Equipment
 
-- id: gross-profit
-  kind: round
-  description: Gross Profit
-  period: in-year
-  input:
-    kind: sum
-    description:
-    period: in-year
-    inputs:
-    - turnover
-- id: salaries
-  kind: line
-  description: Salaries
-  period: in-year
-  accounts:
-  - Expenses:Emoluments:Employees
-- id: pensions
-  kind: line
-  description: Pension contributions
-  period: in-year
-  accounts:
-  - Expenses:Emoluments:Employer Pension Contribution
-- id: bank-charges
-  kind: line
-  description: Bank charges
-  period: in-year
-  accounts:
-  - Expenses:VAT Purchases:Bank Charges
-- accounts:
-  - Expenses:VAT Purchases:Office
-  description: Office costs
-  id: office
-  kind: line
-  period: in-year
-- accounts:
-  - Expenses:VAT Purchases:Software
-  description: Software
-  id: software-expenses
-  kind: line
-  period: in-year
-- accounts:
-  - Expenses:VAT Purchases:Sundries
-  description: Sundries
-  id: sundries
-  kind: line
-  period: in-year
-- accounts:
-  - Expenses:VAT Purchases:Travel/Accom
-  description: Travel
-  id: travel
-  kind: line
-  period: in-year
-- id: ct-management-expenses
-  kind: round
-  description: Management Expenses
-  period: in-year
-  input:
-    kind: line
-    period: in-year
-    accounts:
-    - Expenses:Emoluments:Employees
-    - Expenses:Emoluments:Employer Pension Contribution
-    - Expenses:VAT Purchases:Accountant
-    - Expenses:VAT Purchases:Bank Charges
-    - Expenses:VAT Purchases:Office
-    - Expenses:VAT Purchases:Software
-    - Expenses:VAT Purchases:Subscriptions
-    - Expenses:VAT Purchases:Sundries
-    - Expenses:VAT Purchases:Telecoms
-    - Expenses:VAT Purchases:Travel/Accom
-  segments:
-    business-type: management-expenses
-
+# Trading profits
 - id: ct-trading-profits
   kind: group
-  description: Trading profits
+  description: Taxable profits
   period: in-year
   segments:
     business-type: company
@@ -189,62 +457,49 @@ computations:
   - gross-profit
   - ct-annual-investment-allowance
 
-- id: ct-trading-losses-brought-forward
-  kind: sum
-  description: Trading losses brought forward
-  period: in-year
-  segments:
-    business-type: company
-  inputs: []
 
-- id: ct-net-trading-profits
+# Sign-reversed depreciation to add back in
+- id: reversed-depreciation
+  kind: line
+  description: Depreciation cost added back
+  period: in-year
+  reverse-sign: true
+  accounts:
+  - Expenses:Depreciation
+
+# Management expenses, basic figure
+- id: ct-management-expenses-raw
   kind: group
-  description: Net trading profits
+  description: Management Expenses
   period: in-year
-  segments:
-    business-type: company
   inputs:
-  - ct-trading-profits
-  - ct-trading-losses-brought-forward
-
-- id: ct-net-chargeable-gains
-  kind: sum
-  description: Net chargeable gains
-  inputs: []
-  period: in-year
+  - total-costs
+  - reversed-depreciation
+  - rnd-enhanced-expenditure
   segments:
-    business-type: company
+    business-type: management-expenses
 
-- id: ct-profits-before-deductions-and-reliefs
-  kind: group
-  description: Profits before deductions and reliefs
+# Management expenses, rounded
+- id: ct-management-expenses
+  kind: round
+  description: Management Expenses
   period: in-year
+  input: ct-management-expenses-raw
   segments:
-    business-type: company
-  inputs:
-  - ct-net-trading-profits
-  - ct-net-chargeable-gains
+    business-type: management-expenses
 
-- id: ct-profits-before-donations-and-group-relief
-  kind: group
-  description: Profits before donations and group relief
-  period: in-year
-  segments:
-    business-type: company
-  inputs:
-  - ct-profits-before-deductions-and-reliefs
-  - ct-management-expenses
-
-# profits before donations???
-- id: ct-profits-chargeable-to-corporation-tax
+# Profits chargeable to corp tax
+- id: ct-profits
   kind: group
   description: Profits chargeable to corporation tax
   period: in-year
   segments:
     business-type: company
   inputs:
-   - ct-profits-before-donations-and-group-relief
+  - ct-trading-profits
+  - ct-management-expenses
 
+# Profits apportioned to first FY
 - id: ct-profit-before-tax-fy1
   kind: round
   description: FY1
@@ -253,12 +508,13 @@ computations:
     kind: apportion
     description: FY1
     period: in-year
-    input: ct-profits-chargeable-to-corporation-tax
+    input: ct-profits
     whole-period: metadata.report.periods.0
     proportion-period: metadata.report.fy1
   segments:
     business-type: company
 
+# Profits apportioned to second FY
 - id: ct-profit-before-tax-fy2
   kind: round
   description: FY2
@@ -267,14 +523,16 @@ computations:
     kind: apportion
     description: FY2
     period: in-year
-    input: ct-profits-chargeable-to-corporation-tax
+    input: ct-profits
     whole-period: metadata.report.periods.0
     proportion-period: metadata.report.fy2
   segments:
     business-type: company
 
+# Total of FY1 and FY2 profits.  Visual check on the worksheet, should be the
+# same as profits chargeable to corp tax
 - id: ct-profit-before-tax-total
-  description: Profits chargeable to corporation tax
+  description: Profits, by financial year
   kind: group
   period: in-year
   inputs:
@@ -283,6 +541,7 @@ computations:
   segments:
     business-type: company
 
+# Tax due on FY1
 - id: ct-tax-fy1
   kind: factor
   description: FY1 (19%)
@@ -292,6 +551,8 @@ computations:
   reverse-sign: true
   segments:
     business-type: company
+
+# Tax due in FY2
 - id: ct-tax-fy2
   kind: factor
   description: FY2 (19%)
@@ -301,6 +562,8 @@ computations:
   reverse-sign: true
   segments:
     business-type: company
+
+# Total tax due
 - id: ct-tax-total
   description: Corporation tax chargeable
   kind: group
@@ -310,87 +573,37 @@ computations:
   period: in-year
   segments:
     business-type: company
+
+# Tax owed
 - id: ct-tax-owed
   kind: sum
   inputs: [ct-tax-total]
-- id: accountancy
-  accounts:
-  - Expenses:VAT Purchases:Accountant
-  description: Accountancy services
-  kind: line
-  period: in-year
-- id: subscriptions-costs
-  kind: line
-  description: Subscriptions
-  period: in-year
-  accounts:
-  - Expenses:VAT Purchases:Subscriptions
-- id: telecoms
-  kind: line
-  description: Telecoms
-  period: in-year
-  accounts:
-  - Expenses:VAT Purchases:Telecoms
-- id: depreciation
-  kind: line
-  description: Depreciation
-  period: in-year
-  accounts:
-  - Expenses:Depreciation
-- id: total-costs
-  description: Total costs
-  kind: group
-  period: in-year
-  inputs:
-  - salaries
-  - pensions
-  - depreciation
-  - accountancy
-  - bank-charges
-  - office
-  - software-expenses
-  - subscriptions-costs
-  - sundries
-  - telecoms
-  - travel
-- id: profit-before-tax
-  kind: sum
-  description: Profit before tax
-  inputs:
-  - gross-profit
-  - total-costs
-  period: in-year
-- id: corporation-tax
-  kind: line
-  description: Corporation Tax
-  period: in-year
-  accounts:
-  - Equity:Corporation Tax
-- id: tax-due
-  description: Tax Due
-  kind: group
-  period: in-year
-  inputs:
-  - corporation-tax
-- id: profit
-  kind: sum
-  description: Profit (Loss) after tax
-  period: in-year
-  inputs:
-  - gross-profit
-  - total-costs
-  - tax-due
+
+#############################################################################
+### Worksheets ##############################################################
+#############################################################################
 worksheets:
+
+# Research and development costs
+- id: rnd
+  kind: multi-period
+  description: SME R&D
+  computations:
+  - rnd-proj1-enhanced-expenditure
+  - rnd-enhanced-expenditure
+
+# Tax calculation
 - id: tax-calculation
   kind: multi-period
   description: Tax Calculation
   computations:
   - ct-trading-profits
-  - ct-net-trading-profits
-  - ct-profits-before-deductions-and-reliefs
-  - ct-profits-before-donations-and-group-relief
+  - ct-management-expenses-raw
+  - ct-profits
   - ct-profit-before-tax-total
   - ct-tax-total
+
+# Detailed profit and loss
 - id: detailed-profit-and-loss
   kind: multi-period
   description: Detailed Profit-and-Loss
@@ -401,16 +614,21 @@ worksheets:
   - profit-before-tax
   - tax-due
   - profit
+
+# Report elements
 elements:
 - elements:
   - about
   - capital-allowances
   - profits
   - tax-chargeable
-  - tax-calculation
+  - rnd-creative-enhanced-expenditure
+  - rnd
   - detailed-profit-and-loss
+  - tax-calculation
   id: report
   kind: composite
+
 - id: about
   kind: facttable
   title: Corporation Tax Return
@@ -456,7 +674,7 @@ elements:
     field: '-'
     id: partner-in-a-firm
     kind: bool
-    value: 'false'
+    value: false
 - id: capital-allowances
   kind: facttable
   title: Capital allowances and balancing charges
@@ -487,7 +705,7 @@ elements:
     kind: money
     value: 0
   - id: net-trading-profits
-    computation: ct-net-trading-profits
+    computation: ct-trading-profits
     context: report-period
     description: Net trading profits
     field: '165'
@@ -497,11 +715,11 @@ elements:
     description: Net chargeable gains
     field: '220'
     id: net-chargeable-gains
-    kind: computation
-    computation: ct-net-chargeable-gains
+    kind: money
+    value: 0
     period-config: metadata.tax.period
   - id: profits-before-other-deductions-and-reliefs
-    computation: ct-profits-before-deductions-and-reliefs
+    computation: ct-trading-profits
     context: report-period
     description: Profits before other deductions and reliefs
     field: '235'
@@ -523,7 +741,7 @@ elements:
     period-config: metadata.tax.period
   - id: profits-before-charges-and-group-relief
     kind: computation
-    computation: ct-profits-before-donations-and-group-relief
+    computation: ct-profits
     context: report-period
     description: Profits before donations and group relief
     field: '300'
@@ -546,7 +764,7 @@ elements:
     id: group-relief-claimed-for-carried-forward-losses
     kind: money
     value: 0
-  - computation: ct-profits-chargeable-to-corporation-tax
+  - computation: ct-profits
     context: report-period
     description: Profits chargeable to Corporation Tax
     field: '315'
@@ -657,10 +875,68 @@ elements:
     description: Tax payable
     field: '525'
     period-config: metadata.tax.period
+
+- id: rnd-creative-enhanced-expenditure
+  kind: facttable
+  title: R&D / Creative enhanced expenditure
+  facts:
+
+  - id: rnd-enhanced-sme
+    description: Small or medium-sized enterprise
+    field: '650'
+    context: report-period
+    kind: bool
+    value: true
+
+  - id: rnd-enhanced-large
+    description: Large company
+    field: '655'
+    context: report-period
+    kind: bool
+    value: false
+
+  # - id: rnd-enhanced-expenditure
+  #   kind: computation
+  #   description: R&D enhanced expenditure
+  #   field: '660'
+  #   context: report-period
+  #   computation: rnd-enhanced-expenditure
+  #   period-config: metadata.tax.period
+
+  # - id: creative-enhanced-expenditure
+  #   kind: money
+  #   description: Creative enhanced expenditure
+  #   field: '665'
+  #   context: report-period
+  #   value: 0
+  #   period-config: metadata.tax.period
+
+  - id: rnd-creative-enhanced-expenditure
+    kind: computation
+    description: R&D / Creative enhanced expenditure
+    field: '670'
+    context: report-period
+    computation: rnd-enhanced-expenditure
+    period-config: metadata.tax.period
+
+  - id: rnd-enhanced-expenditure-subcontracted
+    kind: money
+    description: R&D subcontracted by a large company
+    field: '675'
+    context: report-period
+    value: 0
+    period-config: metadata.tax.period
+
+- id: rnd
+  kind: worksheet
+  title: SME R&D
+  worksheet: rnd
+
 - id: tax-calculation
   kind: worksheet
   title: Tax calculation
   worksheet: tax-calculation
+
 - id: detailed-profit-and-loss
   kind: worksheet
   title: Detailed Profit-and-Loss

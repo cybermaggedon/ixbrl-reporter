@@ -421,12 +421,19 @@ h2 {
                 else:
                     raise RuntimeError("Should not happen in create_contexts")
 
+
             segs = []
 
-            for k, v in segments.items():
-                k2, v2 = taxonomy.lookup_segment(k, v)
-                if k2 and v2:
-                    segs.append(self.create_segment_member(k2, v2))
+            if len(segments) == 0:
+                segs = []
+            else:
+                segs = [
+                    self.doc.createElement("xbrli:segment")
+                ]
+                for k, v in segments.items():
+                    dim = taxonomy.lookup_dimension(k, v)
+                    if dim:
+                        segs[0].appendChild(dim.describe(self.doc))
 
             crit = []
             if entity:
@@ -504,14 +511,11 @@ h2 {
 
     def create_segment_member(self, dim, value):
 
-        seg = self.doc.createElement("xbrli:segment")
-
         expmem = self.doc.createElement("xbrldi:explicitMember")
         expmem.setAttribute("dimension", dim)
         expmem.appendChild(self.doc.createTextNode(value))
-        seg.appendChild(expmem)
 
-        return seg
+        return expmem
 
     def create_metadata(self, taxonomy):
 

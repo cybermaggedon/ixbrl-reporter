@@ -38,16 +38,36 @@ taxonomy:
     - company-name
     - tax-reference
     segment:
+      business-name:
+        typed-dimension: ct-comp:BusinessNameDimension
+        content:
+          tag: ct-comp:BusinessNameDomain
+          kind: string
       business-type:
         dimension: ct-comp:BusinessTypeDimension
         map:
           company: ct-comp:Company
+          trade: ct-comp:Trade
           management-expenses: ct-comp:ManagementExpenses
       countries-regions:
         dimension: uk-geo:CountriesRegionsDimension
         map:
           UK: uk-geo:UnitedKingdom
           england-and-wales: uk-geo:EnglandWales
+      detailed-analysis:
+        dimension: ct-comp:DetailedAnalysisDimension
+        map:
+          item1: ct-comp:Item1
+          item2: ct-comp:Item2
+          item3: ct-comp:Item3
+      territory:
+        dimension: ct-comp:TerritoryDimension
+        map:
+          uk: ct-comp:UK
+      loss-reform:
+        dimension: ct-comp:LossReformDimension
+        map:
+          post-loss-reform: ct-comp:Post-lossReform
     namespaces:
       ct-comp: http://www.hmrc.gov.uk/schemas/ct/comp/2020-04-01
       dpl: http://www.hmrc.gov.uk/schemas/ct/dpl/2019-01-01
@@ -87,6 +107,14 @@ taxonomy:
       total-costs: true
       tax-due: true
       telecoms: true
+      rnd-proj1-enhanced-staffing: true
+      rnd-proj1-enhanced-software: true
+      rnd-proj1-enhanced-external: true
+      rnd-proj1-enhanced-expenditure: true
+      rnd-enhanced-expenditure: true
+      rnd-proj1-enhanced-expenditure: true
+      creative-enhanced-expenditure: true
+      rnd-creative-enhanced-expenditure: true
     tags:
       subscriptions-costs: dpl:SubscriptionsCosts
       turnover: uk-core:TurnoverRevenue
@@ -105,7 +133,12 @@ taxonomy:
       travel: dpl:TravelSubsistenceCosts
       tax-due: uk-core:IncomeTaxExpenseCredit
       profit: uk-core:ProfitLoss
-
+      rnd-proj1-enhanced-staffing: ct-comp:SubsidisedQualifyingExpenditureOnIn-HouseDirectRDIncurredOnStaffingCosts
+      rnd-proj1-enhanced-software: ct-comp:SubsidisedQualifyingExpenditureOnIn-HouseDirectRDIncurredOnSoftwareOrConsumableItems
+      rnd-proj1-enhanced-external: ct-comp:SubsidisedQualifyingExpenditureOnIn-HouseDirectRDExpenditureOfExternallyProvidedWorkers
+      rnd-enhanced-expenditure: ct-comp:AdjustmentsAdditionalDeductionForQualifyingRDExpenditureSME
+      rnd-proj1-enhanced-expenditure: ct-comp:AdjustmentsAdditionalDeductionForQualifyingRDExpenditureSME
+      creative-enhanced-expenditure: ct-comp:AdjustmentsCreativeProductionCompanyAdjustment
 
       ct-profit-before-tax-fy1: ct-comp:FY1AmountOfProfitChargeableAtFirstRate
       ct-profit-before-tax-fy2: ct-comp:FY2AmountOfProfitChargeableAtFirstRate
