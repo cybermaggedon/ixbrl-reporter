@@ -114,7 +114,15 @@ class IxbrlReporter:
 
             div = doc.createElement("div")
             div.setAttribute("class", "label header")
-            div.appendChild(doc.createTextNode(section.header))
+
+            if len(section.total.values) > 0 and section.total.values[0].id:
+                desc = taxonomy.create_description_fact(
+                    section.total.values[0], section.header
+                )
+                desc.append(doc, div)
+            else:
+                div.appendChild(doc.createTextNode(section.header))
+
             grid.appendChild(div)
 
             for i in range(0, len(periods)):
@@ -128,7 +136,15 @@ class IxbrlReporter:
 
             div = doc.createElement("div")
             div.setAttribute("class", "label header total")
-            div.appendChild(doc.createTextNode(section.header))
+
+            if len(section.total.values) > 0 and section.total.values[0].id:
+                desc = taxonomy.create_description_fact(
+                    section.total.values[0], section.header
+                )
+                desc.append(doc, div)
+            else:
+                div.appendChild(doc.createTextNode(section.header))
+
             grid.appendChild(div)
 
             for i in range(0, len(periods)):
@@ -148,7 +164,14 @@ class IxbrlReporter:
 
             div = doc.createElement("div")
             div.setAttribute("class", "label breakdown header")
-            div.appendChild(doc.createTextNode(section.header))
+
+            if len(section.total.values) > 0 and section.total.values[0].id:
+                desc = taxonomy.create_description_fact(
+                    section.total.values[0], section.header
+                )
+                desc.append(doc, div)
+            else:
+                div.appendChild(doc.createTextNode(section.header))
             grid.appendChild(div)
 
             for item in section.items:
