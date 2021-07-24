@@ -185,11 +185,7 @@ computations:
   description: Income from main trade
   period: in-year
   segments:
-    business-name: metadata.business.company-name
-    business-type: trade
     detailed-analysis: item1
-    loss-reform: post-loss-reform
-    territory: uk
   accounts:
   - Income
 
@@ -361,7 +357,7 @@ computations:
   segments:
     business-name: metadata.business.company-name
     business-type: trade
-    detailed-analysis: item1
+    ct-detailed-analysis: item1
     loss-reform: post-loss-reform
     territory: uk
   accounts:
@@ -375,7 +371,7 @@ computations:
   segments:
     business-name: metadata.business.company-name
     business-type: trade
-    detailed-analysis: item1
+    ct-detailed-analysis: item1
     loss-reform: post-loss-reform
     territory: uk
   accounts:
@@ -389,7 +385,7 @@ computations:
   segments:
     business-name: metadata.business.company-name
     business-type: trade
-    detailed-analysis: item1
+    ct-detailed-analysis: item1
     loss-reform: post-loss-reform
     territory: uk
   accounts:
@@ -403,7 +399,7 @@ computations:
   segments:
     business-name: metadata.business.company-name
     business-type: trade
-    detailed-analysis: item1
+    ct-detailed-analysis: item1
     loss-reform: post-loss-reform
     territory: uk
   inputs:

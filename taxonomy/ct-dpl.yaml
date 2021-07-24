@@ -62,12 +62,18 @@ taxonomy:
         map:
           UK: uk-geo:UnitedKingdom
           england-and-wales: uk-geo:EnglandWales
-      detailed-analysis:
+      ct-detailed-analysis:
         dimension: ct-comp:DetailedAnalysisDimension
         map:
           item1: ct-comp:Item1
           item2: ct-comp:Item2
           item3: ct-comp:Item3
+      detailed-analysis:
+        dimension: dpl:DetailedAnalysisDimension
+        map:
+          item1: dpl:Item1
+          item2: dpl:Item2
+          item3: dpl:Item3
       territory:
         dimension: ct-comp:TerritoryDimension
         map:
@@ -123,6 +129,9 @@ taxonomy:
       rnd-proj1-enhanced-expenditure: true
       creative-enhanced-expenditure: true
       rnd-creative-enhanced-expenditure: true
+    description-tags:
+      rnd-proj1-enhanced-expenditure: ct-comp:TextNote
+      income: dpl:DetailedProfitLossFree-textComment
     tags:
       subscriptions-costs: dpl:SubscriptionsCosts
       turnover: uk-core:TurnoverRevenue

@@ -155,7 +155,15 @@ class IxbrlReporter:
 
                 div = doc.createElement("div")
                 div.setAttribute("class", "label breakdown item")
-                div.appendChild(doc.createTextNode(item.description))
+
+                if len(item.values) > 0 and item.values[0].id:
+                    desc = taxonomy.create_description_fact(
+                        item.values[0], item.description
+                    )
+                    desc.append(doc, div)
+                else:
+                    div.appendChild(doc.createTextNode(item.description))
+
                 grid.appendChild(div)
 
                 for i in range(0, len(periods)):

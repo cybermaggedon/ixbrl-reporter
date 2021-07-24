@@ -12,14 +12,14 @@ from . config import NoneValue
 
 from datetime import datetime
 
-class Named:
+class NamedDimension:
     def describe(self, doc):
         expmem = doc.createElement("xbrldi:explicitMember")
         expmem.setAttribute("dimension", self.dim)
         expmem.appendChild(doc.createTextNode(self.value))
         return expmem
 
-class Typed:
+class TypedDimension:
     def describe(self, doc):
 
         # FIXME: Assumes single tag, containing single value
@@ -82,6 +82,17 @@ class Taxonomy:
         key = "taxonomy.{0}.segments.{1}".format(self.name, id)
         return self.cfg.get(key, mandatory=False)
 
+    def get_description_tag_name(self, id):
+        key = "taxonomy.{0}.description-tags.{1}".format(self.name, id)
+        return self.cfg.get(key, mandatory=False)
+
+    def create_description_fact(self, val, desc):
+        fact = StringFact(self.get_context_id(val.context),
+                          self.get_description_tag_name(val.id), desc)
+        fact.dimensions = self.get_tag_dimensions(val.id)
+        self.observe_fact(fact)
+        return fact
+
     def lookup_dimension(self, id, val):
 
         try:
@@ -90,7 +101,7 @@ class Taxonomy:
                 self.name, id
             )
             k2 = "taxonomy.{0}.segment.{1}.content".format(self.name, id)
-            dim = Typed()
+            dim = TypedDimension()
             dim.dim = self.cfg.get(k1)
             dim.content = self.cfg.get(k2)
             dim.value = val
@@ -100,7 +111,7 @@ class Taxonomy:
 
         k1 = "taxonomy.{0}.segment.{1}.dimension".format(self.name, id)
         k2 = "taxonomy.{0}.segment.{1}.map.{2}".format(self.name, id, val)
-        dim = Named()
+        dim = NamedDimension()
         dim.dim = self.cfg.get(k1)
         dim.value = self.cfg.get(k2)
         return dim
