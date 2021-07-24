@@ -361,7 +361,7 @@ computations:
   kind: line
   period: in-year
   segments:
-    business-name: Example Biz Limited
+    business-name: metadata.business.company-name
     business-type: trade
     detailed-analysis: item1
     loss-reform: post-loss-reform
@@ -375,7 +375,7 @@ computations:
   kind: line
   period: in-year
   segments:
-    business-name: Example Biz Limited
+    business-name: metadata.business.company-name
     business-type: trade
     detailed-analysis: item1
     loss-reform: post-loss-reform
@@ -389,7 +389,7 @@ computations:
   kind: line
   period: in-year
   segments:
-    business-name: Example Biz Limited
+    business-name: metadata.business.company-name
     business-type: trade
     detailed-analysis: item1
     loss-reform: post-loss-reform
@@ -403,7 +403,7 @@ computations:
   description: Project Iguana
   period: in-year
   segments:
-    business-name: Example Biz Limited
+    business-name: metadata.business.company-name
     business-type: trade
     detailed-analysis: item1
     loss-reform: post-loss-reform
@@ -419,7 +419,7 @@ computations:
   description: SME R&D tax relief (130%)
   period: in-year
   segments:
-    business-name: Example Biz Limited
+    business-name: metadata.business.company-name
     business-type: trade
     loss-reform: post-loss-reform
     territory: uk

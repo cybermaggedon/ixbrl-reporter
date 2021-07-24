@@ -23,7 +23,7 @@ taxonomy:
       from: business
       period: metadata.report.periods.0
       segments:
-        business-name: Example Biz Limited
+        business-name: metadata.business.company-name
         business-type: trade
         loss-reform: post-loss-reform
         territory: uk
