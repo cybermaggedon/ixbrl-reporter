@@ -126,6 +126,7 @@ taxonomy:
     tags:
       subscriptions-costs: dpl:SubscriptionsCosts
       turnover: uk-core:TurnoverRevenue
+      income: uk-core:TurnoverRevenue
       gross-profit: uk-core:GrossProfitLoss
       software-expenses: dpl:ITComputingCosts
       profit-before-tax: uk-core:ProfitLossBeforeTax

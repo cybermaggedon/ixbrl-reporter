@@ -179,33 +179,35 @@ computations:
 # Detailed Profit and Loss ###
 ##############################
 
+# Income 1
+- id: income
+  kind: line
+  description: Income from main trade
+  period: in-year
+  segments:
+    business-name: metadata.business.company-name
+    business-type: trade
+    detailed-analysis: item1
+    loss-reform: post-loss-reform
+    territory: uk
+  accounts:
+  - Income
+
 # Turnover
 - id: turnover
   kind: group
   description: Turnover / revenue
   period: in-year
   inputs:
-  - kind: round
-    description: Income
-    period: in-year
-    input:
-      kind: line
-      description: Income from main trade
-      period: in-year
-      accounts:
-      - Income
+  - income
 
 # Gross profit
 - id: gross-profit
-  kind: round
+  kind: sum
   description: Gross Profit
   period: in-year
-  input:
-    kind: sum
-    description:
-    period: in-year
-    inputs:
-    - turnover
+  inputs:
+  - turnover
 
 # Salaries expenditure
 - id: salaries
@@ -346,10 +348,6 @@ computations:
   inputs:
   - profit-before-tax
   - tax-due
-#  - gross-profit
-#  - total-costs
-#  - ct-annual-investment-allowance
-#  - tax-due
 
 ##############################
 # R&D expenditure at 130% ####
@@ -454,7 +452,9 @@ computations:
   segments:
     business-type: company
   inputs:
-  - gross-profit
+  - kind: round
+    description: Gross Profit
+    input: gross-profit
   - ct-annual-investment-allowance
 
 
