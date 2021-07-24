@@ -179,15 +179,19 @@ computations:
 # Detailed Profit and Loss ###
 ##############################
 
-# Income 1
+# Income 1.  Rounded, because the down-stream corptax service needs turnover
+# to be rounded.
 - id: income
-  kind: line
+  kind: round
   description: Income from main trade
   period: in-year
   segments:
     detailed-analysis: item1
-  accounts:
-  - Income
+  input:
+    kind: line
+    period: in-year
+    accounts:
+    - Income
 
 # Turnover
 - id: turnover
