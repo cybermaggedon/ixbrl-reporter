@@ -7,10 +7,10 @@ import uuid
 from . worksheet_model import SimpleValue, Breakdown, NilValue, Total
 from . period import Period
 
-def get_computation(item, comps, context, data):
+def get_computation(item, comps, context, data, gcfg):
     if isinstance(item, str):
         return comps[item]
-    return Computable.load(item, comps, context, data)
+    return Computable.load(item, comps, context, data, gcfg)
 
 def create_uuid():
     return str(uuid.uuid4())
@@ -24,31 +24,31 @@ class Computable:
         raise RuntimeError("Not implemented")
 
     @staticmethod
-    def load(cfg, comps, context, data):
+    def load(cfg, comps, context, data, gcfg):
 
         kind = cfg.get("kind")
 
         if kind == "group":
-            return Group.load(cfg, comps, context, data)
+            return Group.load(cfg, comps, context, data, gcfg)
 
         if kind == "sum":
-            return Sum.load(cfg, comps, context, data)
+            return Sum.load(cfg, comps, context, data, gcfg)
 
         if kind == "apportion":
-            return ApportionOperation.load(cfg, comps, context, data)
+            return ApportionOperation.load(cfg, comps, context, data, gcfg)
 
         # For UK corporation tax.  >:-O
         if kind == "round":
-            return RoundOperation.load(cfg, comps, context, data)
+            return RoundOperation.load(cfg, comps, context, data, gcfg)
 
         if kind == "factor":
-            return FactorOperation.load(cfg, comps, context, data)
+            return FactorOperation.load(cfg, comps, context, data, gcfg)
 
         if kind == "line":
-            return Line.load(cfg, comps, context, data)
+            return Line.load(cfg, comps, context, data, gcfg)
 
         if kind == "constant":
-            return Constant.load(cfg, comps, context, data)
+            return Constant.load(cfg, comps, context, data, gcfg)
 
         raise RuntimeError("Don't understand computable type '%s'" % kind)
 
@@ -65,7 +65,7 @@ class Line(Computable):
         self.segments = segments
 
     @staticmethod
-    def load(cfg, comps, context, data):
+    def load(cfg, comps, context, data, gcfg):
         id = cfg.get("id", None, mandatory=False)
         if id == None: id = create_uuid()
 
@@ -78,6 +78,7 @@ class Line(Computable):
         }.get(pspec, AT_END)
 
         segs = cfg.get("segments", {})
+        segs = {k: gcfg.get(v, v) for k, v in segs.items()}
 
         return Line(id, cfg.get("description", "?"), cfg.get("accounts"),
                     context, pid, cfg.get_bool("reverse-sign", False), segs)
@@ -141,7 +142,7 @@ class Constant(Computable):
         self.segments = segments
 
     @staticmethod
-    def load(cfg, comps, context, data):
+    def load(cfg, comps, context, data, gcfg):
         id = cfg.get("id")
         if id == None: id = create_uuid()
 
@@ -154,6 +155,7 @@ class Constant(Computable):
         }.get(pspec, AT_END)
 
         segs = cfg.get("segments", {})
+        segs = {k: gcfg.get(v, v) for k, v in segs.items()}
 
         return Constant(id, cfg.get("description", "?"), cfg.get("values"),
                         context, pid, segs)
@@ -199,7 +201,7 @@ class Group(Computable):
         self.segments = segments
 
     @staticmethod
-    def load(cfg, comps, context, data):
+    def load(cfg, comps, context, data, gcfg):
 
         id = cfg.get("id", None, mandatory=False)
         if id == None: id = create_uuid()
@@ -213,11 +215,12 @@ class Group(Computable):
         }.get(pspec, AT_END)
 
         segs = cfg.get("segments", {})
+        segs = {k: gcfg.get(v, v) for k, v in segs.items()}
 
         comp = Group(id, cfg.get("description", "?"), [], context, pid, segs)
 
         for item in cfg.get("inputs"):
-            comp.add(get_computation(item, comps, context, data))
+            comp.add(get_computation(item, comps, context, data, gcfg))
 
         def set_hide(x):
             comp.hide_breakdown = x
@@ -296,7 +299,7 @@ class ApportionOperation(Computable):
         self.fraction = part.days() / whole.days()
 
     @staticmethod
-    def load(cfg, comps, context, data):
+    def load(cfg, comps, context, data, gcfg):
 
         id = cfg.get("id", None, mandatory=False)
         if id == None: id = create_uuid()
@@ -306,7 +309,9 @@ class ApportionOperation(Computable):
         whole = Period.load(data.get_config(whole_key))
         proportion_key = cfg.get("proportion-period")
         proportion = Period.load(data.get_config(proportion_key))
+
         segs = cfg.get("segments", {})
+        segs = {k: gcfg.get(v, v) for k, v in segs.items()}
 
         pspec = cfg.get("period", "at-end")
 
@@ -356,12 +361,14 @@ class RoundOperation(Computable):
         self.item = item
 
     @staticmethod
-    def load(cfg, comps, context, data):
+    def load(cfg, comps, context, data, gcfg):
 
         id = cfg.get("id", None, mandatory=False)
         if id == None: id = create_uuid()
         description = cfg.get("description", "?")
+
         segs = cfg.get("segments", {})
+        segs = {k: gcfg.get(v, v) for k, v in segs.items()}
 
         pspec = cfg.get("period", "at-end")
 
@@ -375,7 +382,7 @@ class RoundOperation(Computable):
 
         return RoundOperation(
             id, description, context, pid, segs,
-            get_computation(item, comps, context, data)
+            get_computation(item, comps, context, data, gcfg)
         )
 
     def compute(self, accounts, start, end, result):
@@ -415,11 +422,13 @@ class FactorOperation(Computable):
         self.factor = factor
 
     @staticmethod
-    def load(cfg, comps, context, data):
+    def load(cfg, comps, context, data, gcfg):
 
         id = cfg.get("id")
         description = cfg.get("description", "?")
+
         segs = cfg.get("segments", {})
+        segs = {k: gcfg.get(v, v) for k, v in segs.items()}
 
         pspec = cfg.get("period", "at-end")
 
@@ -481,7 +490,7 @@ class Sum(Computable):
         self.segments = segments
 
     @staticmethod
-    def load(cfg, comps, context, data):
+    def load(cfg, comps, context, data, gcfg):
 
         id = cfg.get("id", None, mandatory=False)
         if id == None: id = create_uuid()
@@ -495,11 +504,12 @@ class Sum(Computable):
         }.get(pspec, AT_END)
 
         segs = cfg.get("segments", {})
+        segs = {k: gcfg.get(v, v) for k, v in segs.items()}
 
         comp = Sum(id, cfg.get("description", "?"), context, pid, segs)
 
         for item in cfg.get("inputs"):
-            comp.add(get_computation(item, comps, context, data))
+            comp.add(get_computation(item, comps, context, data, gcfg))
 
         return comp
 
@@ -539,13 +549,13 @@ class Sum(Computable):
 
         return output
 
-def get_computations(cfg, context, data):
+def get_computations(gcfg, context, data):
 
-    comp_defs = cfg.get("computations")
+    comp_defs = gcfg.get("computations")
 
     comps = {}
     for comp_def in comp_defs:
-        comp =  Computable.load(comp_def, comps, context, data)
+        comp =  Computable.load(comp_def, comps, context, data, gcfg)
         comps[comp.id] = comp
     
     return comps
