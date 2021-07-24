@@ -19,6 +19,14 @@ taxonomy:
       instant: metadata.report.date
       segments:
         business-type: company
+    - id: trade-period
+      from: business
+      period: metadata.report.periods.0
+      segments:
+        business-name: Example Biz Limited
+        business-type: trade
+        loss-reform: post-loss-reform
+        territory: uk
     metadata:
     - id: software-name
       config: internal.software-name

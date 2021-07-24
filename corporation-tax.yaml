@@ -361,7 +361,7 @@ computations:
   kind: line
   period: in-year
   segments:
-    business-name: Cyberapocalypse Limited
+    business-name: Example Biz Limited
     business-type: trade
     detailed-analysis: item1
     loss-reform: post-loss-reform
@@ -375,7 +375,7 @@ computations:
   kind: line
   period: in-year
   segments:
-    business-name: Cyberapocalypse Limited
+    business-name: Example Biz Limited
     business-type: trade
     detailed-analysis: item1
     loss-reform: post-loss-reform
@@ -389,7 +389,7 @@ computations:
   kind: line
   period: in-year
   segments:
-    business-name: Cyberapocalypse Limited
+    business-name: Example Biz Limited
     business-type: trade
     detailed-analysis: item1
     loss-reform: post-loss-reform
@@ -403,7 +403,7 @@ computations:
   description: Project Iguana
   period: in-year
   segments:
-    business-name: Cyberapocalypse Limited
+    business-name: Example Biz Limited
     business-type: trade
     detailed-analysis: item1
     loss-reform: post-loss-reform
@@ -419,7 +419,7 @@ computations:
   description: SME R&D tax relief (130%)
   period: in-year
   segments:
-    business-name: Cyberapocalypse Limited
+    business-name: Example Biz Limited
     business-type: trade
     loss-reform: post-loss-reform
     territory: uk
@@ -895,21 +895,21 @@ elements:
     kind: bool
     value: false
 
-  # - id: rnd-enhanced-expenditure
-  #   kind: computation
-  #   description: R&D enhanced expenditure
-  #   field: '660'
-  #   context: report-period
-  #   computation: rnd-enhanced-expenditure
-  #   period-config: metadata.tax.period
+  - id: rnd-enhanced-expenditure
+    kind: computation
+    description: R&D enhanced expenditure
+    field: '660'
+    context: trade-period
+    computation: rnd-enhanced-expenditure
+    period-config: metadata.tax.period
 
-  # - id: creative-enhanced-expenditure
-  #   kind: money
-  #   description: Creative enhanced expenditure
-  #   field: '665'
-  #   context: report-period
-  #   value: 0
-  #   period-config: metadata.tax.period
+  - id: creative-enhanced-expenditure
+    kind: money
+    description: Creative enhanced expenditure
+    field: '665'
+    context: trade-period
+    value: 0
+    period-config: metadata.tax.period
 
   - id: rnd-creative-enhanced-expenditure
     kind: computation
