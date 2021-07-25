@@ -186,7 +186,9 @@ computations:
   description: Income from main trade
   period: in-year
   segments:
+    activity: m
     detailed-analysis: item1
+    countries-regions: UK
   input:
     kind: line
     period: in-year
@@ -204,7 +206,7 @@ computations:
 # Gross profit
 - id: gross-profit
   kind: sum
-  description: Gross Profit
+  description: Gross profit
   period: in-year
   inputs:
   - turnover
@@ -214,6 +216,8 @@ computations:
   kind: line
   description: Salaries
   period: in-year
+  segments:
+    expense-type: administrative-expenses
   accounts:
   - Expenses:Emoluments:Employees
 
@@ -222,6 +226,8 @@ computations:
   kind: line
   description: Pension contributions
   period: in-year
+  segments:
+    expense-type: administrative-expenses
   accounts:
   - Expenses:Emoluments:Employer Pension Contribution
 
@@ -238,6 +244,8 @@ computations:
   kind: line
   description: Office costs
   period: in-year
+  segments:
+    expense-type: administrative-expenses
   accounts:
   - Expenses:VAT Purchases:Office
 
@@ -246,24 +254,30 @@ computations:
   kind: line
   description: Software
   period: in-year
+  segments:
+    expense-type: administrative-expenses
   accounts:
   - Expenses:VAT Purchases:Software
 
 # Sundries expenses
-- accounts:
-  - Expenses:VAT Purchases:Sundries
+- id: sundries
   description: Sundries
-  id: sundries
   kind: line
   period: in-year
+  segments:
+    expense-type: administrative-expenses
+  accounts:
+  - Expenses:VAT Purchases:Sundries
 
 # Travel / accomodation expenses
-- accounts:
-  - Expenses:VAT Purchases:Travel/Accom
+- id: travel
   description: Travel
-  id: travel
   kind: line
   period: in-year
+  segments:
+    expense-type: administrative-expenses
+  accounts:
+  - Expenses:VAT Purchases:Travel/Accom
 
 # Depreciation.  This is included in expenses, and is then 'added back in'
 # in the tax calculation.
@@ -271,22 +285,28 @@ computations:
   kind: line
   description: Depreciation
   period: in-year
+  segments:
+    expense-type: administrative-expenses
   accounts:
   - Expenses:Depreciation
 
 # Accountancy costs
 - id: accountancy
-  accounts:
-  - Expenses:VAT Purchases:Accountant
   description: Accountancy services
   kind: line
   period: in-year
+  segments:
+    expense-type: administrative-expenses
+  accounts:
+  - Expenses:VAT Purchases:Accountant
 
 # Subscriptions
 - id: subscriptions-costs
   kind: line
   description: Subscriptions
   period: in-year
+  segments:
+    expense-type: administrative-expenses
   accounts:
   - Expenses:VAT Purchases:Subscriptions
 
@@ -295,6 +315,8 @@ computations:
   kind: line
   description: Telecoms
   period: in-year
+  segments:
+    expense-type: administrative-expenses
   accounts:
   - Expenses:VAT Purchases:Telecoms
 
@@ -453,7 +475,7 @@ computations:
     business-type: company
   inputs:
   - kind: round
-    description: Gross Profit
+    description: Gross profit
     input: gross-profit
   - ct-annual-investment-allowance
 

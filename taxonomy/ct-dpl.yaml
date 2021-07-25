@@ -74,10 +74,29 @@ taxonomy:
           item1: dpl:Item1
           item2: dpl:Item2
           item3: dpl:Item3
+          item4: dpl:Item4
+          item5: dpl:Item5
+          item6: dpl:Item6
+          item7: dpl:Item7
+          item8: dpl:Item8
+          item9: dpl:Item9
+          item10: dpl:Item10
+          item11: dpl:Item11
+          item12: dpl:Item12
+      expense-type:
+        dimension: dpl:ExpenseTypeDimension
+        map:
+          cost-of-sales: dpl:CostSales
+          distribution-costs: dpl:DistributionCosts
+          administrative-expenses: dpl:AdministrativeExpenses
       territory:
         dimension: ct-comp:TerritoryDimension
         map:
           uk: ct-comp:UK
+      activity:
+        dimension: dpl:ActivityDimension
+        map:
+          m: uk-bus:M-ProfessionalScientificTechnicalActivities
       loss-reform:
         dimension: ct-comp:LossReformDimension
         map:
@@ -86,6 +105,8 @@ taxonomy:
       ct-comp: http://www.hmrc.gov.uk/schemas/ct/comp/2020-04-01
       dpl: http://www.hmrc.gov.uk/schemas/ct/dpl/2019-01-01
       uk-core: http://xbrl.frc.org.uk/fr/2019-01-01/core
+      uk-bus: http://xbrl.frc.org.uk/cd/2019-01-01/business
+      uk-geo: http://xbrl.frc.org.uk/cd/2019-01-01/countries
     schema:
     - http://www.hmrc.gov.uk/schemas/ct/comp/2020-04-01/ct-comp-2020.xsd
     - http://www.hmrc.gov.uk/schemas/ct/dpl/2019-01-01/dpl-2019.xsd
@@ -131,7 +152,7 @@ taxonomy:
       rnd-creative-enhanced-expenditure: true
     description-tags:
       rnd-proj1-enhanced-expenditure: ct-comp:TextNote
-      income: dpl:DetailedProfitLossFree-textComment
+      income: dpl:DescriptionActivity
     tags:
       subscriptions-costs: dpl:SubscriptionsCosts
       turnover: uk-core:TurnoverRevenue
