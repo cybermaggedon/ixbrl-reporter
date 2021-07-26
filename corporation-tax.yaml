@@ -378,7 +378,7 @@ computations:
 # First project staffing
 - id: rnd-proj1-enhanced-staffing
   description: Staffing (@ 130%)
-  kind: line
+  kind: round
   period: in-year
   segments:
     business-name: metadata.business.company-name
@@ -386,13 +386,16 @@ computations:
     ct-detailed-analysis: item1
     loss-reform: post-loss-reform
     territory: uk
-  accounts:
-  - R&D Enhanced Expenditure:Expenditure:Project Iguana:Staffing Costs
+  input:
+    kind: line
+    period: in-year
+    accounts:
+    - R&D Enhanced Expenditure:Expenditure:Project Iguana:Staffing Costs
 
 # First project external workers
 - id: rnd-proj1-enhanced-external
   description: External workers (@ 130%)
-  kind: line
+  kind: round
   period: in-year
   segments:
     business-name: metadata.business.company-name
@@ -400,13 +403,16 @@ computations:
     ct-detailed-analysis: item1
     loss-reform: post-loss-reform
     territory: uk
-  accounts:
-  - R&D Enhanced Expenditure:Expenditure:Project Iguana:External Workers
+  input:
+    kind: line
+    period: in-year
+    accounts:
+    - R&D Enhanced Expenditure:Expenditure:Project Iguana:External Workers
 
 # First project external software/consumable
 - id: rnd-proj1-enhanced-software
   description: Software/Consumables (@ 130%)
-  kind: line
+  kind: round
   period: in-year
   segments:
     business-name: metadata.business.company-name
@@ -414,8 +420,11 @@ computations:
     ct-detailed-analysis: item1
     loss-reform: post-loss-reform
     territory: uk
-  accounts:
-  - R&D Enhanced Expenditure:Expenditure:Project Iguana:Software/Consumables
+  input:
+    kind: line
+    period: in-year
+    accounts:
+    - R&D Enhanced Expenditure:Expenditure:Project Iguana:Software/Consumables
 
 # First project total
 - id: rnd-proj1-enhanced-expenditure
