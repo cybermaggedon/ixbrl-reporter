@@ -387,7 +387,7 @@ computations:
     loss-reform: post-loss-reform
     territory: uk
   accounts:
-  - Expenses:R&D Enhanced Expenditure:Project Iguana:Staffing Costs
+  - R&D Enhanced Expenditure:Expenditure:Project Iguana:Staffing Costs
 
 # First project external workers
 - id: rnd-proj1-enhanced-external
@@ -401,7 +401,7 @@ computations:
     loss-reform: post-loss-reform
     territory: uk
   accounts:
-  - Expenses:R&D Enhanced Expenditure:Project Iguana:External Workers
+  - R&D Enhanced Expenditure:Expenditure:Project Iguana:External Workers
 
 # First project external software/consumable
 - id: rnd-proj1-enhanced-software
@@ -415,7 +415,7 @@ computations:
     loss-reform: post-loss-reform
     territory: uk
   accounts:
-  - Expenses:R&D Enhanced Expenditure:Project Iguana:Software/Consumables
+  - R&D Enhanced Expenditure:Expenditure:Project Iguana:Software/Consumables
 
 # First project total
 - id: rnd-proj1-enhanced-expenditure
