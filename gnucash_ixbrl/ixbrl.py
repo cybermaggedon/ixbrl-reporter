@@ -99,10 +99,13 @@ class IxbrlReporter:
 
                 return elt
 
-            # Sign and negativity of value is not the same.
-            if value.value < 0:
+            val = value.value
+            if abs(val) < 0.005: val = 0
 
-                txt = doc.createTextNode("{0:,.2f}".format(-value.value))
+            # Sign and negativity of value is not the same.
+            if val < 0:
+
+                txt = doc.createTextNode("{0:,.2f}".format(-val))
 
                 span = doc.createElement("span")
                 span.appendChild(doc.createTextNode("( "))
@@ -110,7 +113,7 @@ class IxbrlReporter:
                 span.appendChild(doc.createTextNode(" )"))
                 return span
 
-            txt = doc.createTextNode("{0:,.2f}".format(value.value))
+            txt = doc.createTextNode("{0:,.2f}".format(val))
             return txt
 
         def add_nil_section(grid, section, periods):
