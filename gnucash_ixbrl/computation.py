@@ -96,7 +96,7 @@ class Line(Computable):
             context = self.context.with_instant(end)
             history = datetime.date(1970, 1, 1)
             start, end = history, end
-        else:
+        else: # IN_YEAR
             context = self.context.with_period(Period("", start, end))
             
         for acct_name in self.accounts:
@@ -164,11 +164,9 @@ class Constant(Computable):
 
         if self.period == AT_START:
             context = self.context.with_instant(start)
-            cdef.set_instant(start, end)
         elif self.period == AT_END:
             context = self.context.with_instant(end)
-            cdef.set_period(end)
-        else:
+        else: # IN_YEAR
             context = self.context.with_period(Period("", start, end))
 
         val = self.values[str(end)]
@@ -238,7 +236,7 @@ class Group(Computable):
             context = self.context.with_instant(start)
         elif self.period == AT_END:
             context = self.context.with_instant(end)
-        else:
+        else: # IN_YEAR
             context = self.context.with_period(Period("", start, end))
 
         total = 0
@@ -331,8 +329,8 @@ class ApportionOperation(Computable):
         if self.period == AT_START:
             context = self.context.with_instant(start)
         elif self.period == AT_END:
-            context = self.context.with_instant(start)
-        else:
+            context = self.context.with_instant(end)
+        else: # IN_YEAR
             context = self.context.with_period(Period("", start, end))
 
         if len(self.segments) != 0:
@@ -390,8 +388,8 @@ class RoundOperation(Computable):
         if self.period == AT_START:
             context = self.context.with_instant(start)
         elif self.period == AT_END:
-            context = self.context.with_instant(start)
-        else:
+            context = self.context.with_instant(end)
+        else: # IN_YEAR
             context = self.context.with_period(Period("", start, end))
 
         if len(self.segments) != 0:
@@ -450,8 +448,8 @@ class FactorOperation(Computable):
         if self.period == AT_START:
             context = self.context.with_instant(start)
         elif self.period == AT_END:
-            context = self.context.with_instant(start)
-        else:
+            context = self.context.with_instant(end)
+        else: # IN_YEAR
             context = self.context.with_period(Period("", start, end))
 
         if len(self.segments) != 0:
@@ -526,8 +524,8 @@ class Sum(Computable):
         if self.period == AT_START:
             context = self.context.with_instant(start)
         elif self.period == AT_END:
-            context = self.context.with_instant(start)
-        else:
+            context = self.context.with_instant(end)
+        else: # IN_YEAR
             context = self.context.with_period(Period("", start, end))
 
         if len(self.segments) != 0:
