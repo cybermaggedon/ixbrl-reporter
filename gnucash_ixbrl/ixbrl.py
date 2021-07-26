@@ -64,10 +64,13 @@ class IxbrlReporter:
                 elt.setAttribute("unitRef", "GBP")
                 elt.setAttribute("decimals", "2")
 
-                if abs(value.value) < 0.001:
+                val = value.value
+                if abs(val) < 0.005: val = 0
+
+                if abs(val) < 0.005:
                     sign = False
                 else:
-                    if value.value < 0:
+                    if val < 0:
                         sign = True
                     else:
                         sign = False
@@ -80,9 +83,9 @@ class IxbrlReporter:
 
                 # Sign and negativity of value is not the same.
 
-                if value.value < 0:
+                if val < 0:
 
-                    txt = doc.createTextNode("{0:,.2f}".format(-value.value))
+                    txt = doc.createTextNode("{0:,.2f}".format(-val))
                     elt.appendChild(txt)
 
                     span = doc.createElement("span")
@@ -91,7 +94,7 @@ class IxbrlReporter:
                     span.appendChild(doc.createTextNode(" )"))
                     return span
 
-                txt = doc.createTextNode("{0:,.2f}".format(value.value))
+                txt = doc.createTextNode("{0:,.2f}".format(val))
                 elt.appendChild(txt)
 
                 return elt
