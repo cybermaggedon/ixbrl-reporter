@@ -99,7 +99,7 @@ metadata:
   # Report metadata
   report:
 
-    pretty-print: true
+#    pretty-print: true
 
     # The accounting-standards applied.  One of:
     #   frs101, frs102, frsse, full-irs, micro-entities, other-standards,
