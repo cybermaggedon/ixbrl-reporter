@@ -31,7 +31,10 @@ try:
         tx = Taxonomy(tx_cfg, tx_id)
         elt.to_ixbrl(tx, sys.stdout)
     elif sys.argv[3] == "html":
-        elt.to_html(sys.stdout)
+        tx_cfg = Config.load(cfg.get("taxonomy.file"))
+        tx_id = cfg.get("taxonomy.id")
+        tx = Taxonomy(tx_cfg, tx_id)
+        elt.to_html(tx, sys.stdout)
     elif sys.argv[3] == "text":
         elt.to_text(sys.stdout)
     else:

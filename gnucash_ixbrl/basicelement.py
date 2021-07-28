@@ -233,16 +233,12 @@ h2 {
 
         style.appendChild(doc.createTextNode(style_text))
 
-    def to_html(self, out):
+    def to_html(self, taxonomy, out):
 
         impl = getDOMImplementation()
-
-        self.periods = [
-            Period.load(v)
-            for v in self.cfg.get("metadata.report.periods")
-        ]
         
         doc = impl.createDocument(None, "html", None)
+
         self.doc = doc
 
         html = self.doc.documentElement
@@ -254,12 +250,19 @@ h2 {
         head = doc.createElement("head")
         html.appendChild(head)
 
+        def add_title(val):
+            t = doc.createElement("title");
+            t.appendChild(doc.createTextNode(val));
+            head.appendChild(t)
+
+        self.data.get_config("metadata.report.title").use(add_title)
+
         self.add_style(head)
 
         body = doc.createElement("body")
         html.appendChild(body)
 
-        elt = self.to_ixbrl_elt(self)
+        elt = self.to_ixbrl_elt(self, taxonomy)
 
         def walk(elt):
             if elt.nodeType == elt.ELEMENT_NODE:
@@ -287,10 +290,10 @@ h2 {
                         walk(e)
 
         walk(elt)
-
         body.appendChild(elt)
 
-        if self.cfg.get_bool("metadata.report.pretty-print"):
+        if self.data.get_config_bool("metadata.report.pretty-print",
+                                     mandatory=False):
             out.write(doc.toprettyxml())
         else:
             out.write(doc.toxml())
