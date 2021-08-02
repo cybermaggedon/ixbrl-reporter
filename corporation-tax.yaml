@@ -281,17 +281,6 @@ computations:
   accounts:
   - Expenses:VAT Purchases:Travel/Accom
 
-# Depreciation.  This is included in expenses, and is then 'added back in'
-# in the tax calculation.
-- id: depreciation
-  kind: line
-  description: Depreciation
-  period: in-year
-  segments:
-    expense-type: administrative-expenses
-  accounts:
-  - Expenses:Depreciation
-
 # Accountancy costs
 - id: accountancy
   description: Accountancy services
@@ -333,7 +322,6 @@ computations:
   - accountancy
   - bank-charges
   - office
-  - depreciation
   - software-expenses
   - subscriptions-costs
   - sundries
@@ -477,15 +465,6 @@ computations:
     accounts:
     - Assets:Capital Equipment:Computer Equipment
 
-# Sign-reversed depreciation to add back in
-- id: reversed-depreciation
-  kind: line
-  description: Depreciation cost added back
-  period: in-year
-  reverse-sign: true
-  accounts:
-  - Expenses:Depreciation
-
 # Trading profits
 - id: ct-trading-profits-raw
   kind: group
@@ -497,7 +476,6 @@ computations:
   - gross-profit
   - total-costs
   - ct-annual-investment-allowance
-  - reversed-depreciation
   - rnd-enhanced-expenditure
 
 - id: ct-trading-profits
