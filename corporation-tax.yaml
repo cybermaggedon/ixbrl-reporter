@@ -236,6 +236,8 @@ computations:
   kind: line
   description: Bank charges
   period: in-year
+  segments:
+    expense-type: administrative-expenses
   accounts:
   - Expenses:VAT Purchases:Bank Charges
 
@@ -475,20 +477,6 @@ computations:
     accounts:
     - Assets:Capital Equipment:Computer Equipment
 
-# Trading profits
-- id: ct-trading-profits
-  kind: group
-  description: Taxable profits
-  period: in-year
-  segments:
-    business-type: company
-  inputs:
-  - kind: round
-    description: Gross profit
-    input: gross-profit
-  - ct-annual-investment-allowance
-
-
 # Sign-reversed depreciation to add back in
 - id: reversed-depreciation
   kind: line
@@ -498,26 +486,24 @@ computations:
   accounts:
   - Expenses:Depreciation
 
-# Management expenses, basic figure
-- id: ct-management-expenses-raw
+# Trading profits
+- id: ct-trading-profits-raw
   kind: group
-  description: Management Expenses
+  description: Taxable profits
   period: in-year
+  segments:
+    business-type: company
   inputs:
+  - gross-profit
   - total-costs
+  - ct-annual-investment-allowance
   - reversed-depreciation
   - rnd-enhanced-expenditure
-  segments:
-    business-type: management-expenses
 
-# Management expenses, rounded
-- id: ct-management-expenses
+- id: ct-trading-profits
   kind: round
-  description: Management Expenses
-  period: in-year
-  input: ct-management-expenses-raw
-  segments:
-    business-type: management-expenses
+  description: Taxable profits
+  input: ct-trading-profits-raw
 
 # Profits chargeable to corp tax
 - id: ct-profits
@@ -528,7 +514,6 @@ computations:
     business-type: company
   inputs:
   - ct-trading-profits
-  - ct-management-expenses
 
 # Profits apportioned to first FY
 - id: ct-profit-before-tax-fy1
@@ -628,8 +613,8 @@ worksheets:
   kind: multi-period
   description: Tax Calculation
   computations:
-  - ct-trading-profits
-  - ct-management-expenses-raw
+  - ct-trading-profits-raw
+#  - ct-management-expenses-raw
   - ct-profits
   - ct-profit-before-tax-total
   - ct-tax-total
@@ -754,20 +739,6 @@ elements:
     context: report-period
     description: Profits before other deductions and reliefs
     field: '235'
-    kind: computation
-    period-config: metadata.tax.period
-  - computation: ct-management-expenses
-    context: management-expenses-period
-    description: Management expenses
-    field: '245'
-    id: management-expenses
-    kind: computation
-    period-config: metadata.tax.period
-  - computation: ct-management-expenses
-    context: report-period
-    description: Total deductions and reliefs
-    field: '295'
-    id: total-deductions-and-reliefs
     kind: computation
     period-config: metadata.tax.period
   - id: profits-before-charges-and-group-relief
