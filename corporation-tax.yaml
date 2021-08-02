@@ -504,6 +504,9 @@ computations:
   kind: round
   description: Taxable profits
   input: ct-trading-profits-raw
+  period: in-year
+  segments:
+    business-type: company
 
 # Profits chargeable to corp tax
 - id: ct-profits
@@ -614,7 +617,6 @@ worksheets:
   description: Tax Calculation
   computations:
   - ct-trading-profits-raw
-#  - ct-management-expenses-raw
   - ct-profits
   - ct-profit-before-tax-total
   - ct-tax-total
