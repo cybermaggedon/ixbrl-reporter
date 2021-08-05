@@ -270,13 +270,6 @@ class IxbrlReporter:
         periods = ds.periods
         sections = ds.sections
 
-        self.max_rank = 0
-        for section in sections:
-            if section.total:
-                self.max_rank = max(self.max_rank, section.total.rank)
-            if section.items:
-                self.max_rank = max(self.max_rank, section.items[0].rank)
-
         grid = self.doc.createElement("div")
         grid.setAttribute("class", "sheet")
 
