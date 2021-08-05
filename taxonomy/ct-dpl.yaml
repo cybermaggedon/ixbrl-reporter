@@ -138,6 +138,7 @@ taxonomy:
       sundries: true
       travel: true
       depreciation: true
+      entertainment: true
       subscriptions-costs: true
       total-costs: true
       tax-due: true
@@ -165,6 +166,7 @@ taxonomy:
       total-costs: dpl:TotalCosts
       pensions: uk-core:PensionCostsDefinedContributionPlan
       depreciation: uk-core:DepreciationExpensePropertyPlantEquipment
+      entertainment: dpl:ClientEntertainingCosts
       accountancy: dpl:AuditAccountancyCosts
       bank-charges: dpl:BankCharges
       office: dpl:PrintingPostageStationeryCosts
