@@ -10,264 +10,281 @@ class IxbrlReporter:
 
     def get_elt(self, worksheet, par, taxonomy):
 
-        fmt = NegativeParenFormatter()
+        self.doc = par.doc
+        self.taxonomy = taxonomy
 
-        def format_number(n):
-            return fmt.format("{0:,.2f}", n)
+        return self.create_report(worksheet)
 
-        doc = par.doc
+    def add_header(self, grid, periods):
 
-        def add_header(grid, periods):
+        # Blank header cell
+        blank = self.doc.createElement("div")
+        blank.setAttribute("class", "label")
+        grid.appendChild(blank)
+        blank.appendChild(self.doc.createTextNode(" "))
 
-            # Blank header cell
-            blank = doc.createElement("div")
-            blank.setAttribute("class", "label")
-            grid.appendChild(blank)
-            blank.appendChild(doc.createTextNode(" "))
+        # Header cells for period names
+        for period in periods:
 
-            # Header cells for period names
-            for period in periods:
+            elt = self.doc.createElement("div")
+            grid.appendChild(elt)
+            elt.setAttribute("class", "period periodname")
+            elt.appendChild(self.doc.createTextNode(period.name))
 
-                elt = doc.createElement("div")
-                grid.appendChild(elt)
-                elt.setAttribute("class", "period periodname")
-                elt.appendChild(doc.createTextNode(period.name))
+        # Blank header cell
+        blank = self.doc.createElement("div")
+        blank.setAttribute("class", "label")
+        grid.appendChild(blank)
+        blank.appendChild(self.doc.createTextNode(" "))
 
-            # Blank header cell
-            blank = doc.createElement("div")
-            blank.setAttribute("class", "label")
-            grid.appendChild(blank)
-            blank.appendChild(doc.createTextNode(" "))
+        # Header cells for period names
+        for period in periods:
 
-            # Header cells for period names
-            for period in periods:
+            elt = self.doc.createElement("div")
+            grid.appendChild(elt)
+            elt.setAttribute("class", "period currency")
+            elt.appendChild(self.doc.createTextNode("£"))
 
-                elt = doc.createElement("div")
-                grid.appendChild(elt)
-                elt.setAttribute("class", "period currency")
-                elt.appendChild(doc.createTextNode("£"))
+    def maybe_tag(self, datum, section, pid):
 
-        def maybe_tag(datum, section, pid):
+        value = self.taxonomy.create_fact(datum)
 
-            value = taxonomy.create_fact(datum)
+        if value.name:
 
-            if value.name:
+            name = value.name
+            context = value.context
 
-                name = value.name
-                context = value.context
+            elt = self.doc.createElement("ix:nonFraction")
+            elt.setAttribute("name", name)
 
-                elt = doc.createElement("ix:nonFraction")
-                elt.setAttribute("name", name)
-
-                elt.setAttribute("contextRef", context)
-                elt.setAttribute("format", "ixt2:numdotdecimal")
-                elt.setAttribute("unitRef", "GBP")
-                elt.setAttribute("decimals", "2")
-
-                val = value.value
-                if abs(val) < 0.005: val = 0
-
-                if abs(val) < 0.005:
-                    sign = False
-                else:
-                    if val < 0:
-                        sign = True
-                    else:
-                        sign = False
-
-                    if value.reverse:
-                        sign = not sign
-
-                if sign:
-                    elt.setAttribute("sign", "-")
-
-                # Sign and negativity of value is not the same.
-
-                if val < 0:
-
-                    txt = doc.createTextNode("{0:,.2f}".format(-val))
-                    elt.appendChild(txt)
-
-                    span = doc.createElement("span")
-                    span.appendChild(doc.createTextNode("( "))
-                    span.appendChild(elt)
-                    span.appendChild(doc.createTextNode(" )"))
-                    return span
-
-                txt = doc.createTextNode("{0:,.2f}".format(val))
-                elt.appendChild(txt)
-
-                return elt
+            elt.setAttribute("contextRef", context)
+            elt.setAttribute("format", "ixt2:numdotdecimal")
+            elt.setAttribute("unitRef", "GBP")
+            elt.setAttribute("decimals", "2")
 
             val = value.value
             if abs(val) < 0.005: val = 0
 
+            if abs(val) < 0.005:
+                sign = False
+            else:
+                if val < 0:
+                    sign = True
+                else:
+                    sign = False
+
+                if value.reverse:
+                    sign = not sign
+
+            if sign:
+                elt.setAttribute("sign", "-")
+
             # Sign and negativity of value is not the same.
+
             if val < 0:
 
-                txt = doc.createTextNode("{0:,.2f}".format(-val))
+                txt = self.doc.createTextNode("{0:,.2f}".format(-val))
+                elt.appendChild(txt)
 
-                span = doc.createElement("span")
-                span.appendChild(doc.createTextNode("( "))
-                span.appendChild(txt)
-                span.appendChild(doc.createTextNode(" )"))
+                span = self.doc.createElement("span")
+                span.appendChild(self.doc.createTextNode("( "))
+                span.appendChild(elt)
+                span.appendChild(self.doc.createTextNode(" )"))
                 return span
 
-            txt = doc.createTextNode("{0:,.2f}".format(val))
-            return txt
+            txt = self.doc.createTextNode("{0:,.2f}".format(val))
+            elt.appendChild(txt)
 
-        def add_nil_section(grid, section, periods):
+            return elt
 
-            div = doc.createElement("div")
-            div.setAttribute("class", "label header")
+        val = value.value
+        if abs(val) < 0.005: val = 0
 
-            if len(section.total.values) > 0 and section.total.values[0].id:
-                desc = taxonomy.create_description_fact(
-                    section.total.values[0], section.header
+        # Sign and negativity of value is not the same.
+        if val < 0:
+
+            txt = self.doc.createTextNode("{0:,.2f}".format(-val))
+
+            span = self.doc.createElement("span")
+            span.appendChild(self.doc.createTextNode("( "))
+            span.appendChild(txt)
+            span.appendChild(self.doc.createTextNode(" )"))
+            return span
+
+        txt = self.doc.createTextNode("{0:,.2f}".format(val))
+        return txt
+
+    def add_nil_section(self, grid, section, periods):
+
+        div = self.doc.createElement("div")
+        div.setAttribute("class", "label header")
+
+        if len(section.total.values) > 0 and section.total.values[0].id:
+            desc = self.taxonomy.create_description_fact(
+                section.total.values[0], section.header
+            )
+            desc.append(self.doc, div)
+        else:
+            div.appendChild(self.doc.createTextNode(section.header))
+
+        grid.appendChild(div)
+
+        for i in range(0, len(periods)):
+            div = self.doc.createElement("div")
+            div.setAttribute(
+                "class",
+                "period total value nil rank%d" % section.total.rank
+            )
+            grid.appendChild(div)
+            content = self.maybe_tag(0, section, i)
+            div.appendChild(content)
+
+    def add_total_section(self, grid, section, periods):
+
+        div = self.doc.createElement("div")
+        div.setAttribute("class", "label header total")
+
+        if len(section.total.values) > 0 and section.total.values[0].id:
+            desc = self.taxonomy.create_description_fact(
+                section.total.values[0], section.header
+            )
+            desc.append(self.doc, div)
+        else:
+            div.appendChild(self.doc.createTextNode(section.header))
+
+        grid.appendChild(div)
+
+        for i in range(0, len(periods)):
+            div = self.doc.createElement("div")
+            grid.appendChild(div)
+            value = section.total.values[i]
+            if abs(value.value) < 0.001:
+                div.setAttribute(
+                    "class",
+                    "period total value nil rank%d" % section.total.rank
                 )
-                desc.append(doc, div)
+            elif value.value < 0:
+                div.setAttribute(
+                    "class",
+                    "period total value negative rank%d" % section.total.rank
+                )
             else:
-                div.appendChild(doc.createTextNode(section.header))
+                div.setAttribute(
+                    "class",
+                    "period total value rank%d" % section.total.rank
+                )
+            content = self.maybe_tag(value, section, i)
+            div.appendChild(content)
+
+    def add_breakdown_section(self, grid, section, periods):
+
+        div = self.doc.createElement("div")
+        div.setAttribute("class", "label breakdown header")
+
+        if len(section.total.values) > 0 and section.total.values[0].id:
+            desc = self.taxonomy.create_description_fact(
+                section.total.values[0], section.header
+            )
+            desc.append(self.doc, div)
+        else:
+            div.appendChild(self.doc.createTextNode(section.header))
+        grid.appendChild(div)
+
+        for item in section.items:
+
+            div = self.doc.createElement("div")
+            div.setAttribute("class", "label breakdown item")
+
+            if len(item.values) > 0 and item.values[0].id:
+                desc = self.taxonomy.create_description_fact(
+                    item.values[0], item.description
+                )
+                desc.append(self.doc, div)
+            else:
+                div.appendChild(self.doc.createTextNode(item.description))
 
             grid.appendChild(div)
 
             for i in range(0, len(periods)):
-                div = doc.createElement("div")
-                div.setAttribute("class", "period total value nil")
-                grid.appendChild(div)
-                content = maybe_tag(0, section, i)
-                div.appendChild(content)
 
-        def add_total_section(grid, section, periods):
+                value = item.values[i]
 
-            div = doc.createElement("div")
-            div.setAttribute("class", "label header total")
-
-            if len(section.total.values) > 0 and section.total.values[0].id:
-                desc = taxonomy.create_description_fact(
-                    section.total.values[0], section.header
-                )
-                desc.append(doc, div)
-            else:
-                div.appendChild(doc.createTextNode(section.header))
-
-            grid.appendChild(div)
-
-            for i in range(0, len(periods)):
-                div = doc.createElement("div")
-                grid.appendChild(div)
-                value = section.total.values[i]
-                if abs(value.value) < 0.001:
-                    div.setAttribute("class", "period total value nil")
-                elif value.value < 0:
-                    div.setAttribute("class", "period total value negative")
-                else:
-                    div.setAttribute("class", "period total value")
-                content = maybe_tag(value, section, i)
-                div.appendChild(content)
-
-        def add_breakdown_section(grid, section, periods):
-
-            div = doc.createElement("div")
-            div.setAttribute("class", "label breakdown header")
-
-            if len(section.total.values) > 0 and section.total.values[0].id:
-                desc = taxonomy.create_description_fact(
-                    section.total.values[0], section.header
-                )
-                desc.append(doc, div)
-            else:
-                div.appendChild(doc.createTextNode(section.header))
-            grid.appendChild(div)
-
-            for item in section.items:
-
-                div = doc.createElement("div")
-                div.setAttribute("class", "label breakdown item")
-
-                if len(item.values) > 0 and item.values[0].id:
-                    desc = taxonomy.create_description_fact(
-                        item.values[0], item.description
-                    )
-                    desc.append(doc, div)
-                else:
-                    div.appendChild(doc.createTextNode(item.description))
-
-                grid.appendChild(div)
-
-                for i in range(0, len(periods)):
-
-                    value = item.values[i]
-
-                    div = doc.createElement("div")
-                    if abs(value.value) < 0.001:
-                        div.setAttribute("class", "period value nil")
-                    elif value.value < 0:
-                        div.setAttribute("class", "period value negative")
-                    else:
-                        div.setAttribute("class", "period value")
-
-                    content = maybe_tag(value, item, i)
-
-                    div.appendChild(content)
-                    grid.appendChild(div)
-
-            div = doc.createElement("div")
-            div.setAttribute("class", "label breakdown total")
-            grid.appendChild(div)
-            div.appendChild(doc.createTextNode("Total"))
-
-            for i in range(0, len(periods)):
-
-                div = doc.createElement("div")
-
-                grid.appendChild(div)
-
-                value = section.total.values[i]
-
+                div = self.doc.createElement("div")
                 if abs(value.value) < 0.001:
                     div.setAttribute("class",
-                                     "period value nil breakdown total")
+                                     "period value nil rank%d" % item.rank )
                 elif value.value < 0:
                     div.setAttribute("class",
-                                     "period value negative breakdown total")
+                                     "period value negative rank%d" % item.rank)
                 else:
-                    div.setAttribute("class", "period value breakdown total")
+                    div.setAttribute("class",
+                                     "period value rank%d" % item.rank)
 
-                content = maybe_tag(value, section, i)
+                content = self.maybe_tag(value, item, i)
+
                 div.appendChild(content)
+                grid.appendChild(div)
 
-        def add_section(tbody, section, periods):
+        div = self.doc.createElement("div")
+        div.setAttribute("class", "label breakdown total")
+        grid.appendChild(div)
+        div.appendChild(self.doc.createTextNode("Total"))
 
-            if section.total == None and section.items == None:
+        for i in range(0, len(periods)):
 
-                add_nil_section(tbody, section, periods)
+            div = self.doc.createElement("div")
 
-            elif section.items == None:
+            grid.appendChild(div)
 
-                add_total_section(tbody, section, periods)
+            value = section.total.values[i]
 
+            if abs(value.value) < 0.001:
+                div.setAttribute("class",
+                                 "period value nil breakdown total rank%d" % section.total.rank)
+            elif value.value < 0:
+                div.setAttribute("class",
+                                 "period value negative breakdown total rank%d" % section.total.rank)
             else:
+                div.setAttribute("class", "period value breakdown total rank%d" % section.total.rank)
 
-                add_breakdown_section(tbody, section, periods)
+            content = self.maybe_tag(value, section, i)
+            div.appendChild(content)
 
-        def create_report(worksheet):
+    def add_section(self, grid, section, periods):
 
-            ds = worksheet.get_dataset()
-            periods = ds.periods
-            sections = ds.sections
+        if section.total == None and section.items == None:
 
-            grid = doc.createElement("div")
-            grid.setAttribute("class", "sheet")
+            self.add_nil_section(grid, section, periods)
 
-            add_header(grid, periods)
+        elif section.items == None:
 
-            for section in sections:
+            self.add_total_section(grid, section, periods)
 
-                add_section(grid, section, periods)
+        else:
 
-            return grid
+            self.add_breakdown_section(grid, section, periods)
 
-        return create_report(worksheet)
+    def create_report(self, worksheet):
 
+        ds = worksheet.get_dataset()
+        periods = ds.periods
+        sections = ds.sections
+
+        self.max_rank = 0
+        for section in sections:
+            if section.total:
+                self.max_rank = max(self.max_rank, section.total.rank)
+            if section.items:
+                self.max_rank = max(self.max_rank, section.items[0].rank)
+
+        grid = self.doc.createElement("div")
+        grid.setAttribute("class", "sheet")
+
+        self.add_header(grid, periods)
+
+        for section in sections:
+
+            self.add_section(grid, section, periods)
+
+        return grid
 

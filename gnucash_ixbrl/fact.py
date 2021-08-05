@@ -155,6 +155,7 @@ class Section:
     pass
 
 class Series:
-    def __init__(self, desc, values):
+    def __init__(self, desc, values, rank=0):
         self.description = desc
         self.values = values
+        self.rank = rank

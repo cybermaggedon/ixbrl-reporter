@@ -2,7 +2,6 @@
 # Entry point for Elements, Element.load calls out to appropriate code to
 # construct elements.
 
-from . worksheet import get_worksheet
 from . worksheetelement import WorksheetElement
 from . period import Period
 from . composite import Composite

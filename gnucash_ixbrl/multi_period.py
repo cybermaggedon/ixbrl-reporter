@@ -6,6 +6,12 @@ from . computation import Result
 from . worksheet_model import Worksheet, SimpleValue, Breakdown, NilValue, Total
 from . fact import *
 
+class WorksheetElement:
+    def __init__(self, id, rank=0, total_rank=0):
+        self.id = id
+        self.rank = rank
+        self.total_rank = total_rank
+
 class MultiPeriodWorksheet(Worksheet):
 
     def __init__(self, comps, periods):
@@ -16,9 +22,22 @@ class MultiPeriodWorksheet(Worksheet):
     def load(defn, data):
 
         periods = data.get_periods()
-        mpr = MultiPeriodWorksheet(
-            defn.get("computations"), periods
-        )
+
+        comps = defn.get("computations")
+
+        ws_elts = []
+
+        for comp in comps:
+            if isinstance(comp, str):
+                ws_elts.append(WorksheetElement(comp))
+            else:
+                ws_elts.append(WorksheetElement(
+                    comp.get("id"),
+                    rank=comp.get("rank", 0),
+                    total_rank=comp.get("total-rank", 0)
+                ))
+
+        mpr = MultiPeriodWorksheet(ws_elts, periods)
 
         mpr.process(data)
 
@@ -27,7 +46,7 @@ class MultiPeriodWorksheet(Worksheet):
     def process(self, data):
 
         self.inputs = [
-            data.get_computation(v)
+            data.get_computation(v.id)
             for v in self.computations
         ]
         self.outputs = {}
@@ -50,6 +69,11 @@ class MultiPeriodWorksheet(Worksheet):
         ds.periods = [v for v in self.periods]
         ds.sections = []
 
+        elts = {
+            v.id: v
+            for v in self.computations
+        }
+
         for input in self.inputs:
 
             output0 = self.outputs[self.periods[0]][input.id]
@@ -62,7 +86,7 @@ class MultiPeriodWorksheet(Worksheet):
                 sec.total = Series("Total", [
                     self.outputs[period][input.id].value
                     for period in self.periods
-                ])
+                ], rank=elts[input.id].total_rank)
 
                 items = []
                 for i in range(0, len(output0.items)):
@@ -71,7 +95,8 @@ class MultiPeriodWorksheet(Worksheet):
                         [
                             self.outputs[period][input.id].items[i].value
                             for period in self.periods
-                        ]
+                        ],
+                        rank=elts[input.id].rank
                     )
                     srs.id = output0.defn.inputs[i].id
                     items.append(srs)
@@ -88,7 +113,7 @@ class MultiPeriodWorksheet(Worksheet):
                 sec.total = Series("Total", [
                     self.outputs[period][input.id].value
                     for period in self.periods
-                ])
+                ], rank=elts[input.id].total_rank)
                 ds.sections.append(sec)
 
             elif isinstance(output0, Total):
@@ -100,7 +125,7 @@ class MultiPeriodWorksheet(Worksheet):
                 sec.total = Series("Total", [
                     self.outputs[period][input.id].value
                     for period in self.periods
-                ])
+                ], rank=elts[input.id].total_rank)
                 ds.sections.append(sec)
 
         return ds

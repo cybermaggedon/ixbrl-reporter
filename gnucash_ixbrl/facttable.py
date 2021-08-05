@@ -4,7 +4,6 @@ from . period import Period
 from . basicelement import BasicElement
 from . fact import *
 from . datum import *
-from . worksheet import get_worksheet
 import copy
 
 from xml.dom.minidom import getDOMImplementation
