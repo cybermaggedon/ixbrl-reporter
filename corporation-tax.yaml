@@ -465,6 +465,19 @@ computations:
     accounts:
     - Assets:Capital Equipment:Computer Equipment
 
+# Profit (loss) from DPL
+- id: profit-loss-per-accounts
+  kind: sum
+  description: Profit (loss) per accounts
+  period: in-year
+  segments:
+    business-name: metadata.business.company-name
+    business-type: trade
+    loss-reform: post-loss-reform
+    territory: uk
+  inputs:
+  - profit-before-tax
+
 # Trading profits
 - id: ct-trading-profits-raw
   kind: group
@@ -473,8 +486,7 @@ computations:
   segments:
     business-type: company
   inputs:
-  - gross-profit
-  - total-costs
+  - profit-loss-per-accounts
   - ct-annual-investment-allowance
   - rnd-enhanced-expenditure
 
