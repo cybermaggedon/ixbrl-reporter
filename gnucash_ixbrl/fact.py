@@ -143,10 +143,14 @@ class DateFact(Fact):
             elt.setAttribute("name", self.name)
             elt.setAttribute("contextRef", self.context)
             elt.setAttribute("format", "ixt2:datedaymonthyearen")
-            elt.appendChild(doc.createTextNode(self.value.strftime("%d %B %Y")))
+            elt.appendChild(doc.createTextNode(
+                self.value.strftime("%d\xa0%B\xa0%Y")
+            ))
             par.appendChild(elt)
         else:
-            par.appendChild(doc.createTextNode(self.value.strftime("%d %B %Y")))
+            par.appendChild(doc.createTextNode(
+                self.value.strftime("%d\xa0%B\xa0%Y")
+            ))
 
 class Dataset:
     pass

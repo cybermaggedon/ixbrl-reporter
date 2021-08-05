@@ -59,10 +59,10 @@ metadata:
       name: Corporate Enquiries
       address:
       - 123 Leadbarton Street
-      - Dumpston Trading Estate
+      - Dumpston Trading Estate
       county: Minchingshire
       location: Threapminchington
-      postcode: QQ99 9ZZ
+      postcode: QQ99 9ZZ
       country: UK
       email: corporate@example.org
 
