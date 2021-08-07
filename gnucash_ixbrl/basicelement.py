@@ -102,11 +102,6 @@ h2 {
 }
 
 .sheet {
-  display: grid;
-  grid-template-columns: 20rem repeat(10, 10rem);
-  grid-template-rows: auto;
-  column-gap: 1rem;
-  row-gap: 0.2rem;
   padding: 1rem;
 }
 
@@ -116,20 +111,24 @@ h2 {
 }
 
 .label {
-  grid-column: 1;
+  clear: left;
+  float: left;
+  width: 20rem;
 }
 
 .label.breakdown.header {
-  grid-column: 1 / span 10;
+  margin-bottom: 0.2rem;
 }
 
 .label.item {
-  padding-left: 2em;
 }
 
 .value {
   font-family: Source Code Pro, monospace;
   font-size: 10pt;
+  float: left;
+  width: 10rem;
+  margin-right: 2rem;
 }
 
 @media print {
@@ -140,8 +139,17 @@ h2 {
   * {
     font-size: 1rem;
   }
-  .sheet {
-    grid-template-columns: 40% repeat(10, 20%);
+  .label {
+    width: 40%; 
+  }
+  .value {
+    width: 18%;
+  }
+  .periodname {
+    width: 18%;
+  }
+  .currency {
+    width: 18%;
   }
 }
 
@@ -163,24 +171,28 @@ h2 {
   padding: 0.5em 1em 0.5em 1em;
   border-bottom: 0.2em solid black;
   font-weight: bold;
-  justify-self: stretch;
-  align-self: stretch;
   text-align: center;
+  float: left;
+  width: 10rem;
+  margin-right: 1rem;
 }
 
 .currency {
-  justify-self: end;
+  text-align: right;
   padding-right: 1em;
+  float: left;
+  width: 10rem;
+  margin-right: 1rem;
 }
 
 .period.value {
   text-align: right;
-  padding-right: 2.2em;
 }
 
 .period.value.negative {
+  position: relative;
+  left: 1rem;
   color: #400000;
-  padding-right: 1em;
 }
 
 .period.value.nil {
@@ -190,8 +202,6 @@ h2 {
 .hidden {
   display: none;
 }
-
-
 
 .fact {
   display: flex;

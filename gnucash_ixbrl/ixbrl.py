@@ -21,7 +21,7 @@ class IxbrlReporter:
         blank = self.doc.createElement("div")
         blank.setAttribute("class", "label")
         grid.appendChild(blank)
-        blank.appendChild(self.doc.createTextNode(" "))
+        blank.appendChild(self.doc.createTextNode("\u00a0"))
 
         # Header cells for period names
         for period in periods:
@@ -35,7 +35,7 @@ class IxbrlReporter:
         blank = self.doc.createElement("div")
         blank.setAttribute("class", "label")
         grid.appendChild(blank)
-        blank.appendChild(self.doc.createTextNode(" "))
+        blank.appendChild(self.doc.createTextNode("\u00a0"))
 
         # Header cells for period names
         for period in periods:
