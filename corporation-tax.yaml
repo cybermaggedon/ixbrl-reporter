@@ -185,6 +185,7 @@ computations:
   kind: round
   description: Income from main trade
   period: in-year
+  direction: down
   segments:
     activity: m
     detailed-analysis: item1
@@ -369,6 +370,7 @@ computations:
 - id: rnd-proj1-enhanced-staffing
   description: Staffing (@ 130%)
   kind: round
+  direction: down
   period: in-year
   segments:
     business-name: metadata.business.company-name
@@ -387,6 +389,7 @@ computations:
   description: External workers (@ 130%)
   kind: round
   period: in-year
+  direction: down
   segments:
     business-name: metadata.business.company-name
     business-type: trade
@@ -404,6 +407,7 @@ computations:
   description: Software/Consumables (@ 130%)
   kind: round
   period: in-year
+  direction: down
   segments:
     business-name: metadata.business.company-name
     business-type: trade
@@ -454,6 +458,7 @@ computations:
   kind: round
   description: Annual investment allowance
   period: in-year
+  direction: down
   segments:
     business-type: management-expenses
   input:
@@ -494,6 +499,7 @@ computations:
   kind: round
   description: Taxable profits
   input: ct-trading-profits-raw
+  direction: down
   period: in-year
   segments:
     business-type: company
@@ -513,6 +519,7 @@ computations:
   kind: round
   description: FY1
   period: in-year
+  direction: nearest
   input:
     kind: apportion
     description: FY1
@@ -528,6 +535,7 @@ computations:
   kind: round
   description: FY2
   period: in-year
+  direction: nearest
   input:
     kind: apportion
     description: FY2

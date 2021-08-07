@@ -19,6 +19,10 @@ IN_YEAR = 1
 AT_START = 2
 AT_END = 3
 
+ROUND_DOWN = 1
+ROUND_UP = 2
+ROUND_NEAREST = 3
+
 class Computable:
     def compute(self, accounts, start, end, result):
         raise RuntimeError("Not implemented")
@@ -350,12 +354,13 @@ class ApportionOperation(Computable):
         return output
 
 class RoundOperation(Computable):
-    def __init__(self, id, description, context, period, segments, item):
+    def __init__(self, id, description, context, period, segments, dir, item):
         self.id = id
         self.description = description
         self.context = context
         self.period = period
         self.segments = segments
+        self.direc = dir
         self.item = item
 
     @staticmethod
@@ -376,10 +381,16 @@ class RoundOperation(Computable):
             "at-end": AT_END
         }.get(pspec, AT_END)
 
+        direc = {
+            "nearest": ROUND_NEAREST,
+            "down": ROUND_DOWN,
+            "up": ROUND_UP
+        }.get(cfg.get("direction", "nearest"), ROUND_NEAREST)
+
         item = cfg.get("input")
 
         return RoundOperation(
-            id, description, context, pid, segs,
+            id, description, context, pid, segs, direc,
             get_computation(item, comps, context, data, gcfg)
         )
 
@@ -396,7 +407,13 @@ class RoundOperation(Computable):
             context = context.with_segments(self.segments)
 
         val = self.item.compute(accounts, start, end, result)
-        val = round(val)
+
+        if self.direc == ROUND_NEAREST:
+            val = round(val)    # Round to nearest int
+        elif self.direc == ROUND_DOWN:
+            val = int(val)      # Round down
+        else:
+            val = int(val + 1)  # Round up
 
         result.set(self.id, context.create_money_datum(self.id, val))
         return val
