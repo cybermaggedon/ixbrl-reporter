@@ -50,7 +50,6 @@ class BasicElement:
         style = doc.createElement("style")
         style.setAttribute("type", "text/css")
         elt.appendChild(style)
-            
         style_text = """
 
 h2 {
@@ -135,15 +134,13 @@ h2 {
   .value {
     font-family: Source Code Pro, monospace;
     font-size: 1rem;
+    width: 18%;
   }
   * {
     font-size: 1rem;
   }
   .label {
     width: 40%; 
-  }
-  .value {
-    width: 18%;
   }
   .periodname {
     width: 18%;
