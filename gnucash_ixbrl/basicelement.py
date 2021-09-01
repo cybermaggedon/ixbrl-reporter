@@ -106,7 +106,7 @@ h2 {
 
 .header {
   font-weight: bold;
-  margin-top: 1em;
+  margin-top: 1rem;
 }
 
 .label {
@@ -119,15 +119,14 @@ h2 {
   margin-bottom: 0.2rem;
 }
 
-.label.item {
-}
-
 .value {
   font-family: Source Code Pro, monospace;
   font-size: 10pt;
   float: left;
   width: 10rem;
-  margin-right: 2rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin-right: 1rem;
 }
 
 @media print {
@@ -176,10 +175,12 @@ h2 {
 
 .currency {
   text-align: right;
+  padding-left: 1em;
   padding-right: 1em;
   float: left;
   width: 10rem;
   margin-right: 1rem;
+  margin-top: 0.25em;
 }
 
 .period.value {
@@ -187,8 +188,10 @@ h2 {
 }
 
 .period.value.negative {
-  position: relative;
-  left: 1rem;
+  padding-left: 2rem;
+  padding-right: 0rem;
+//  position: relative;
+//  left: 1rem;
   color: #400000;
 }
 
