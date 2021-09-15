@@ -59,13 +59,13 @@ class FactTable(BasicElement):
 
     def to_ixbrl_elt(self, par, taxonomy):
 
-        div = par.doc.createElement("div")
-        div.setAttribute("class", "facts page")
-        div.setAttribute("id", self.id + "-element")
+        div = par.maker.div()
+        div.set("class", "facts page")
+        div.set("id", self.id + "-element")
 
-        title = par.doc.createElement("h2")
-        title.appendChild(par.doc.createTextNode(self.title))
-        div.appendChild(title)
+        title = par.maker.h2()
+        title.append(objectify.StringElement(self.title))
+        div.append(title)
 
         period = self.data.get_report_period()
         period_context = self.data.get_business_context().with_period(period)
@@ -85,28 +85,28 @@ class FactTable(BasicElement):
             fact = taxonomy.create_fact(datum)
             elt = self.make_fact(par, v.get("field"),
                                  v.get("description"), fact)
-            div.appendChild(elt)
+            div.append(elt)
 
         return div
 
     def make_fact(self, par, field, desc, fact):
 
-        row = par.doc.createElement("div")
-        row.setAttribute("class", "fact")
+        row = par.maker.div()
+        row.set("class", "fact")
 
-        num = par.doc.createElement("div")
-        num.setAttribute("class", "ref")
-        row.appendChild(num)
-        num.appendChild(par.doc.createTextNode(field))
+        num = par.maker.div()
+        num.set("class", "ref")
+        row.append(num)
+        num.append(objectify.StringElement(field))
 
-        descelt = par.doc.createElement("div")
-        descelt.setAttribute("class", "description")
-        row.appendChild(descelt)
-        descelt.appendChild(par.doc.createTextNode(desc + ": "))
+        descelt = par.maker.div()
+        descelt.set("class", "description")
+        row.append(descelt)
+        descelt.append(objectify.StringElement(desc + ": "))
 
-        valelt = par.doc.createElement("div")
-        valelt.setAttribute("class", "value")
-        row.appendChild(valelt)
-        fact.append(par.doc, valelt)
+        valelt = par.maker.div()
+        valelt.set("class", "value")
+        row.append(valelt)
+        fact.append(par.ix_maker, valelt)
 
         return row

@@ -107,7 +107,9 @@ class StringFact(Fact):
             # If value is list, assume it is list of elements
             xhtml_ns = "http://www.w3.org/1999/xhtml"
             if isinstance(self.value, list):
-                elt = maker.span(self.value, namespace=xhtml_ns)
+                elt = maker.span(namespace=xhtml_ns)
+                for v in self.value:
+                    elt.append(v)
             else:
                 elt = maker.span(self.value, namespace=xhtml_ns)
             return elt
