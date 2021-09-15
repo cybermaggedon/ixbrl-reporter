@@ -12,23 +12,43 @@ from . config import NoneValue
 
 from datetime import datetime
 
+from lxml import objectify
+
+xbrldi_ns = "http://xbrl.org/2006/xbrldi"
+
 class NamedDimension:
-    def describe(self, doc):
-        expmem = doc.createElement("xbrldi:explicitMember")
-        expmem.setAttribute("dimension", self.dim)
-        expmem.appendChild(doc.createTextNode(self.value))
+    def describe(self, base):
+        expmem = base.xbrldi_maker.explicitMember(self.value)
+        expmem.set("dimension", self.dim)
         return expmem
 
 class TypedDimension:
-    def describe(self, doc):
+    def describe(self, base):
 
         # FIXME: Assumes single tag, containing single value
-        elt = doc.createElement(self.content["tag"])
-        elt.appendChild(doc.createTextNode(self.value))
 
-        mem = doc.createElement("xbrldi:typedMember")
-        mem.setAttribute("dimension", self.dim)
-        mem.appendChild(elt)
+        try:
+            # Get the namespace tag and look it up in the nsmap?
+            nstag = self.content["tag"].split(":")[0]
+            ns = base.nsmap[nstag]
+            tag = self.content["tag"].split(":")[1]
+        except Exception:
+            raise RuntimeError(
+                "Could not make sense of typed dimension tag %s" %
+                self.content["tag"]
+            )
+
+        mkr = objectify.ElementMaker(
+            annotate=False,
+            namespace=ns,
+        )
+
+        elt = mkr(tag, self.value)
+#        elt = base.xbrldi_maker(self.content["tag"])(self.value)
+
+        mem = base.xbrldi_maker.typedMember()
+        mem.set("dimension", self.dim)
+        mem.append(elt)
         return mem
 
 class Taxonomy:

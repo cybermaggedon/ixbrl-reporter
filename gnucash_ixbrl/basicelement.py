@@ -6,6 +6,8 @@ from . period import Period
 from . fact import *
 
 xhtml_ns = "http://www.w3.org/1999/xhtml"
+xbrli_ns = "http://www.xbrl.org/2003/instance"
+xbrldi_ns = "http://xbrl.org/2006/xbrldi"
 
 from lxml import objectify, etree
 
@@ -327,8 +329,8 @@ h2 {
             "ix": ix_ns,
             "link": link_ns,
             "xlink": xlink_ns,
-            "xbrli": "http://www.xbrl.org/2003/instance",
-            "xbrldi": "http://xbrl.org/2006/xbrldi",
+            "xbrli": xbrli_ns,
+            "xbrldi": xbrldi_ns,
             "ixt2":
             "http://www.xbrl.org/inlineXBRL/transformation/2011-07-31",
             "iso4217": "http://www.xbrl.org/2003/iso4217",
@@ -338,6 +340,8 @@ h2 {
         for k in ns:
             nsmap[k] = ns[k]
 
+        self.nsmap = nsmap
+
         maker = objectify.ElementMaker(
             annotate=False,
             namespace=xhtml_ns,
@@ -345,22 +349,40 @@ h2 {
         )
         self.maker = maker
 
-        ix_maker = objectify.ElementMaker(
+        self.ix_maker = objectify.ElementMaker(
             annotate=False,
             namespace=ix_ns,
-            nsmap=nsmap,
         )
-        self.ix_maker = ix_maker
+
+        self.xlink_maker = objectify.ElementMaker(
+            annotate=False,
+            namespace=xlink_ns,
+        )
+
+        self.link_maker = objectify.ElementMaker(
+            annotate=False,
+            namespace=link_ns,
+        )
+
+        self.xbrli_maker = objectify.ElementMaker(
+            annotate=False,
+            namespace=xbrli_ns,
+        )
+
+        self.xbrldi_maker = objectify.ElementMaker(
+            annotate=False,
+            namespace=xbrldi_ns,
+        )
 
         self.html = maker.html(
             maker.head(),
             maker.body(
                 maker.div(
                     {"class": "hidden"},
-                    ix_maker.header(
-                        ix_maker.hidden(),
-                        ix_maker.references(),
-                        ix_maker.resources(),
+                    self.ix_maker.header(
+                        self.ix_maker.hidden(),
+                        self.ix_maker.references(),
+                        self.ix_maker.resources(),
                     ),
                 ),
             ),
@@ -384,46 +406,44 @@ h2 {
         self.header = header_op(self.html)
 
         # This creates some contexts, hence do this first.
-        self.create_metadata(ix_maker, taxonomy)
+        self.create_metadata(self.ix_maker, taxonomy)
 
         schemas = taxonomy.get_schemas()
         for url in schemas:
-            schema = maker.schemaRef("", namespace=xlink_ns)
-            schema.set("type", "simple")
-            schema.set("href", url)
+            schema = self.link_maker.schemaRef("")
+            schema.set("{%s}type" % xlink_ns, "simple")
+            schema.set("{%s}href" % xlink_ns, url)
             self.header.references.append(schema)
 
         elt = self.to_ixbrl_elt(self, taxonomy)
         self.html.body.append(elt)
-
-        out.write(etree.tostring(self.html, pretty_print=True).decode("utf-8"))
-
-        return
 
         # Contexts get created above, hence do this last.
         self.create_contexts(taxonomy)
 
         currency = self.data.get_config("metadata.report.currency")
 
-        unit = doc.createElement("xbrli:unit")
-        unit.setAttribute("id", currency)
-        measure = doc.createElement("xbrli:measure")
-        measure.appendChild(doc.createTextNode("iso4217:" + currency))
-        unit.appendChild(measure)
-        resources.appendChild(unit)
+        unit = self.xbrli_maker.unit(
+            {"id": currency},
+            self.xbrli_maker.measure("iso4217:" + currency)
+        )
+        self.header.resources.append(unit)
 
-        unit = doc.createElement("xbrli:unit")
-        unit.setAttribute("id", "pure")
-        measure = doc.createElement("xbrli:measure")
-        measure.appendChild(doc.createTextNode("xbrli:pure"))
-        unit.appendChild(measure)
-        resources.appendChild(unit)
-       
+        unit = self.xbrli_maker.unit(
+            {"id": "pure"},
+            self.xbrli_maker.measure("xbrli:pure")
+        )
+        self.header.resources.append(unit)
+
         if self.data.get_config_bool("metadata.report.pretty-print",
                                      mandatory=False):
-            out.write(doc.toprettyxml())
+            out.write(etree.tostring(self.html).decode("utf-8"))
         else:
-            out.write(doc.toxml())
+            out.write(etree.tostring(
+                self.html, pretty_print=True
+            ).decode("utf-8"))
+
+        return
 
     def create_contexts(self, taxonomy):
 
@@ -459,12 +479,12 @@ h2 {
                 segs = []
             else:
                 segs = [
-                    self.doc.createElement("xbrli:segment")
+                    self.xbrli_maker.segment()
                 ]
                 for k, v in segments.items():
                     dim = taxonomy.lookup_dimension(k, v)
                     if dim:
-                        segs[0].appendChild(dim.describe(self.doc))
+                        segs[0].append(dim.describe(self))
 
             crit = []
             if entity:
@@ -478,7 +498,7 @@ h2 {
 
             ce = self.create_context(id, crit)
 
-            self.resources.appendChild(ce)
+            self.header.resources.append(ce)
 
     def make_div(self, par, elts):
         div = self.doc.createElement("div")
@@ -494,10 +514,12 @@ h2 {
         return self.doc.createTextNode(t)
 
     def create_context(self, id, elts):
-        ctxt = self.doc.createElement("xbrli:context")
-        ctxt.setAttribute("id", id)
+
+        ctxt = self.xbrli_maker.context({"id": id})
+
         for elt in elts:
-            ctxt.appendChild(elt)
+            ctxt.append(elt)
+
         return ctxt
 
     def create_entity(self, id, scheme, elts=None):
@@ -505,47 +527,38 @@ h2 {
         if elts == None:
             elts = []
 
-        ent = self.doc.createElement("xbrli:entity")
-        cid = self.doc.createElement("xbrli:identifier")
-        cid.setAttribute("scheme", scheme)
-        cid.appendChild(self.doc.createTextNode(id))
-        ent.appendChild(cid)
+        ent = self.xbrli_maker.entity(
+            self.xbrli_maker.identifier({
+                "scheme": scheme
+            }),
+        )
 
         for elt in elts:
-            ent.appendChild(elt)
+            ent.append(elt)
 
         return ent
 
     def create_instant(self, date):
 
-        cperiod = self.doc.createElement("xbrli:period")
-
-        instant = self.doc.createElement("xbrli:instant")
-        instant.appendChild(self.doc.createTextNode(str(date)))
-        cperiod.appendChild(instant)
+        cperiod = self.xbrli_maker.period(
+            self.xbrli_maker.instant(str(date))
+        )
 
         return cperiod
 
     def create_period(self, s, e):
 
-        cperiod = self.doc.createElement("xbrli:period")
-
-        start = self.doc.createElement("xbrli:startDate")
-        start.appendChild(self.doc.createTextNode(str(s)))
-        cperiod.appendChild(start)
-
-        end = self.doc.createElement("xbrli:endDate")
-        end.appendChild(self.doc.createTextNode(str(e)))
-        cperiod.appendChild(end)
+        cperiod = self.xbrli_maker.period(
+            self.xbrli_maker.startDate(str(s)),
+            self.xbrli_maker.endDate(str(e))
+        )
 
         return cperiod
 
     def create_segment_member(self, dim, value):
 
-        expmem = self.doc.createElement("xbrldi:explicitMember")
-        expmem.setAttribute("dimension", dim)
-        expmem.appendChild(self.doc.createTextNode(value))
-
+        expmem = self.xbrli_maker.explicitMember(value)
+        expmem.set("dimension", dim)
         return expmem
 
     def create_metadata(self, maker, taxonomy):
@@ -554,5 +567,5 @@ h2 {
 
         for fact in metadata:
             if fact.name:
-                fact.append(maker, self.header.hidden)
+                self.header.hidden.append(fact.to_elt(self))
             

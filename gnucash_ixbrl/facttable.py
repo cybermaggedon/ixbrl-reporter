@@ -63,8 +63,7 @@ class FactTable(BasicElement):
         div.set("class", "facts page")
         div.set("id", self.id + "-element")
 
-        title = par.maker.h2()
-        title.append(objectify.StringElement(self.title))
+        title = par.maker.h2(self.title)
         div.append(title)
 
         period = self.data.get_report_period()
@@ -94,19 +93,18 @@ class FactTable(BasicElement):
         row = par.maker.div()
         row.set("class", "fact")
 
-        num = par.maker.div()
+        num = par.maker.div(field)
         num.set("class", "ref")
         row.append(num)
-        num.append(objectify.StringElement(field))
 
-        descelt = par.maker.div()
+        descelt = par.maker.div(desc + ":")
         descelt.set("class", "description")
         row.append(descelt)
-        descelt.append(objectify.StringElement(desc + ": "))
 
         valelt = par.maker.div()
         valelt.set("class", "value")
         row.append(valelt)
-        fact.append(par.ix_maker, valelt)
+
+        valelt.append(fact.to_elt(par))
 
         return row

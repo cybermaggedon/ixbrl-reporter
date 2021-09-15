@@ -17,43 +17,44 @@ class IxbrlReporter:
     def add_header(self, grid, periods):
 
         # Blank header cell
-        blank = self.par.maker.div()
+        blank = self.par.maker.div("\u00a0")
         blank.set("class", "label")
         grid.append(blank)
-        blank.append(objectify.StringElement("\u00a0"))
 
         # Header cells for period names
         for period in periods:
 
-            elt = self.par.maker.div()
+            elt = self.par.maker.div(period.name)
             grid.append(elt)
             elt.set("class", "period periodname")
-            elt.append(objectify.StringElement(period.name))
 
         # Blank header cell
-        blank = self.par.maker.div()
+        blank = self.par.maker.div("\u00a0")
         blank.set("class", "label")
         grid.append(blank)
-        blank.append(objectify.StringElement("\u00a0"))
 
         # Header cells for period names
         for period in periods:
 
-            elt = self.par.maker.div()
+            elt = self.par.maker.div("£")
             grid.append(elt)
             elt.set("class", "period currency")
-            elt.append(objectify.StringElement("£"))
 
     def maybe_tag(self, datum, section, pid):
 
         value = self.taxonomy.create_fact(datum)
+        val = value.value
 
         if value.name:
 
             name = value.name
             context = value.context
 
-            elt = self.par.ix_maker.nonFraction()
+            txt = "{0:,.2f}".format(abs(val))
+
+            # Element always contains positive value.  For negative we
+            # add parentheses
+            elt = self.par.ix_maker.nonFraction(txt)
             elt.set("name", name)
 
             elt.set("contextRef", context)
@@ -61,7 +62,6 @@ class IxbrlReporter:
             elt.set("unitRef", "GBP")
             elt.set("decimals", "2")
 
-            val = value.value
             if abs(val) < 0.005: val = 0
 
             if abs(val) < 0.005:
@@ -79,39 +79,32 @@ class IxbrlReporter:
                 elt.set("sign", "-")
 
             # Sign and negativity of value is not the same.
+            # FIXME: Can't remember what the above comment means.
 
             if val < 0:
 
-                txt = objectify.StringElement("{0:,.2f}".format(-val))
-                elt.append(txt)
-
                 span = self.par.maker.span()
-                span.append(objectify.StringElement("( "))
+                span.append(self.par.maker.span("( "))
                 span.append(elt)
-                span.append(objectify.StringElement(" )"))
+                span.append(self.par.maker.span(" )"))
                 return span
-
-            txt = objectify.StringElement("{0:,.2f}".format(val))
-            elt.append(txt)
 
             return elt
 
-        val = value.value
         if abs(val) < 0.005: val = 0
 
         # Sign and negativity of value is not the same.
         if val < 0:
 
-            txt = objectify.StringElement("{0:,.2f}".format(-val))
+            txt = "{0:,.2f}".format(-val)
 
             span = self.par.maker.span()
-            span.append(objectify.StringElement("( "))
-            span.append(txt)
-            span.append(objectify.StringElement(" )"))
+            span.append(self.par.maker.span("( "))
+            span.append(self.par.maker.span(txt))
+            span.append(self.par.maker.span(" )"))
             return span
 
-        txt = objectify.StringElement("{0:,.2f}".format(val))
-        return txt
+        return self.par.maker.span("{0:,.2f}".format(val))
 
     def add_nil_section(self, grid, section, periods):
 
@@ -122,9 +115,9 @@ class IxbrlReporter:
             desc = self.taxonomy.create_description_fact(
                 section.total.values[0], section.header
             )
-            desc.append(self.par.maker, div)
+            div.append(desc.to_elt(self.par))
         else:
-            div.append(objectify.StringElement(section.header))
+            div.append(self.par.maker.span(section.header))
 
         grid.append(div)
 
@@ -147,9 +140,9 @@ class IxbrlReporter:
             desc = self.taxonomy.create_description_fact(
                 section.total.values[0], section.header
             )
-            desc.append(self.par.maker, div)
+            div.append(desc.to_elt(self.par))
         else:
-            div.append(objectify.StringElement(section.header))
+            div.append(self.par.maker.span(section.header))
 
         grid.append(div)
 
@@ -184,9 +177,9 @@ class IxbrlReporter:
             desc = self.taxonomy.create_description_fact(
                 section.total.values[0], section.header
             )
-            desc.append(self.par.maker, div)
+            div.append(desc.to_elt(self.par))
         else:
-            div.append(objectify.StringElement(section.header))
+            div.append(self.par.maker.span(section.header))
         grid.append(div)
 
         for item in section.items:
@@ -198,9 +191,9 @@ class IxbrlReporter:
                 desc = self.taxonomy.create_description_fact(
                     item.values[0], item.description
                 )
-                desc.append(self.par.maker, div)
+                div.append(desc.to_elt(self.par))
             else:
-                div.append(objectify.StringElement(item.description))
+                div.append(self.par.maker.span(item.description))
 
             grid.append(div)
 
@@ -227,7 +220,7 @@ class IxbrlReporter:
         div = self.par.maker.div()
         div.set("class", "label breakdown total")
         grid.append(div)
-        div.append(objectify.StringElement("Total"))
+        div.append(self.par.maker.span("Total"))
 
         for i in range(0, len(periods)):
 

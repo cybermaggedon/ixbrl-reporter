@@ -46,7 +46,7 @@ class NotesElement(BasicElement):
         for tk in structure:
 
             if isinstance(tk, TextToken):
-                elements[-1].append(objectify.StringElement(tk.text))
+                elements[-1].append(par.maker.span(tk.text))
 
             elif isinstance(tk, MetadataToken):
 
@@ -56,20 +56,21 @@ class NotesElement(BasicElement):
 
                     if tk.prefix != "":
                         elements[-1].append(
-                            objectify.StringElement(tk.prefix)
+                            par.maker.span(tk.prefix)
                         )
 
-                    fact.append(par.ix_maker, elements[-1])
+                    elements[-1].append(fact.to_elt(par))
 
                     if tk.suffix != "":
                         elements[-1].append(
-                            objectify.StringElement(tk.suffix)
+                            par.maker.span(tk.suffix)
                         )
 
                 else:
 
                     if tk.null != "":
-                        elements[-1].append(objectify.StringElement(tk.null))
+                        elements[-1].append(par.maker.span(tk.null))
+
             elif isinstance(tk, ComputationToken):
 
                 if tk.period == "":
@@ -84,7 +85,7 @@ class NotesElement(BasicElement):
                 fact = taxonomy.create_fact(datum)
 
                 if fact:
-                    fact.append(par.ix_maker, elements[-1])
+                    elements[-1].append(fact.to_elt(par))
 
             elif isinstance(tk, TagOpen):
 
@@ -98,7 +99,7 @@ class NotesElement(BasicElement):
 
                 datum = StringDatum(tk.name, [], ctxt)
                 fact = taxonomy.create_fact(datum)
-                e = fact.to_elt(par.ix_maker)
+                e = fact.to_elt(par)
                 elements[-1].append(e)
                 elements.append(e)
 
@@ -129,11 +130,10 @@ class NotesElement(BasicElement):
         div.set("class", "notes page")
         div.set("id", self.id + "-element")
 
-        title = par.maker.h2()
         if self.title:
-            title.append(objectify.StringElement(self.title))
+            title = par.maker.h2(self.title)
         else:
-            title.append(objectify.StringElement("Notes"))
+            title = par.maker.h2("Notes")
         div.append(title)
 
         ol = par.maker.ol()

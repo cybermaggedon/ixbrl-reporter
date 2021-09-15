@@ -41,7 +41,7 @@ class Title(BasicElement):
         def add_company_name(fact):
             div2 = par.maker.h1()
             div2.set("class", "heading")
-            fact.append(par.ix_maker, div2)
+            div2.append(fact.to_elt(par))
             div.append(div2)
 
         taxonomy.get_metadata_by_id(self.data, "company-name").use(
@@ -51,7 +51,7 @@ class Title(BasicElement):
         def add_report_title(fact):
             div2 = par.maker.div()
             div2.set("class", "subheading")
-            fact.append(par.ix_maker, div2)
+            div2.append(fact.to_elt(par))
             div.append(div2)
 
         taxonomy.get_metadata_by_id(self.data, "report-title").use(
@@ -62,7 +62,7 @@ class Title(BasicElement):
             div2 = par.maker.div("Registered number: ", {
                 "class": "information"
             })
-            fact.append(par.ix_maker, div2)
+            div2.append(fact.to_elt(par))
             div.append(div2)
 
         taxonomy.get_metadata_by_id(self.data, "company-number").use(
@@ -71,16 +71,16 @@ class Title(BasicElement):
 
         div2 = par.maker.div({"class": "information"}, "For the period: ")
         taxonomy.get_metadata_by_id(self.data, "period-start").use(
-            lambda fact: fact.append(par.ix_maker, div2)
+            lambda fact: div2.append(fact.to_elt(par))
         )
-        div2.append(objectify.StringElement(" to "))
+        div2.append(par.maker.span(" to "))
         taxonomy.get_metadata_by_id(self.data, "period-end").use(
-            lambda fact: fact.append(par.ix_maker, div2)
+            lambda fact: div2.append(fact.to_elt(par))
         )
 
         def add_report_date(fact):
             div2 = par.maker.div({"class": "information"}, "Date: ")
-            fact.append(par.ix_maker, div2)
+            div2.append(fact.to_elt(par))
             div.append(div2)
 
         taxonomy.get_metadata_by_id(self.data, "report-date").use(
@@ -94,10 +94,10 @@ class Title(BasicElement):
 
         for i in range(0, len(meta)):
             if i > 0:
-                div2.append(objectify.StringElement(", "))
-            meta[i].append(par.ix_maker, div2)
+                div2.append(par.maker.span(", "))
+            div2.append(meta[i].to_elt(par))
 
-        div2.append(objectify.StringElement("."))
+        div2.append(par.maker.span("."))
 
         sig = par.maker.div({"class": "signature"})
         div.append(sig)
@@ -105,33 +105,33 @@ class Title(BasicElement):
         p = par.maker.p()
         sig.append(p)
 
-        p.append(objectify.StringElement(
+        p.append(par.maker.span(
             "Approved by the board of directors and authorised for "
             "publication on "
         ))
 
         taxonomy.get_metadata_by_id(self.data, "authorised-date").use(
-            lambda fact: fact.append(par.ix_maker, p)
+            lambda fact: p.append(fact.to_elt(par))
         )
 
-        p.append(objectify.StringElement("."))
+        p.append(par.maker.span("."))
         sig.append(p)
 
         p = par.maker.p()
 
-        p.append(objectify.StringElement(
+        p.append(par.maker.span(
             "Signed on behalf of the directors by "
         ))
 
         taxonomy.get_metadata_by_id(self.data, "signing-officer").use(
-            lambda fact: fact.append(par.ix_maker, p)
+            lambda fact: p.append(fact.to_elt(par))
         )
 
-        p.append(objectify.StringElement(
+        p.append(par.maker.span(
             self.data.get_config("metadata.report.signed-by")
         ))
 
-        p.append(objectify.StringElement("."))
+        p.append(par.maker.span("."))
 
         sig.append(p)
 

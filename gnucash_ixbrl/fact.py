@@ -10,12 +10,11 @@ from . datum import *
 from . context import Context
 from lxml import objectify
 
+xhtml_ns = "http://www.w3.org/1999/xhtml"
+
 class Fact:
     def use(self, fn):
         return fn(self)
-    def append(self, maker, par, onlyifnamed=False):
-        if onlyifnamed and not self.name: return
-        par.append(self.to_elt(maker, onlyifnamed))
 
 class MoneyFact(Fact):
     def __init__(self, context, name, value, reverse=False, unit="GBP"):
@@ -24,12 +23,11 @@ class MoneyFact(Fact):
         self.context = context
         self.unit = unit
         self.reverse = reverse
-    def append(self, maker, par, onlyifnamed=False):
-        if onlyifnamed and not self.name: return
+    def to_elt(self, base):
         value = self.value
         if self.reverse: value *= -1
         if self.name:
-            elt = maker.nonFraction("{0:,.2f}".format(value))
+            elt = base.ix_maker.nonFraction("{0:,.2f}".format(value))
             elt.set("name", self.name)
             elt.set("contextRef", self.context)
             elt.set("unitRef", self.unit)
@@ -37,9 +35,9 @@ class MoneyFact(Fact):
             elt.set("decimals", "2")
             if value < 0:
                 elt.set("sign", "-")
-            par.append(elt)
+            return elt
         else:
-            par.append(objectify.StringElement("{0:,.2f}".format(value)))
+            return base.maker.span("{0:,.2f}".format(value))
     def copy(self):
         return copy.copy(self)
     def rename(self, id, context, tx):
@@ -54,17 +52,16 @@ class CountFact(Fact):
         self.value = value
         self.reverse = False
         self.unit = unit
-    def append(self, maker, par, onlyifnamed=False):
-        if onlyifnamed and not self.name: return
+    def to_elt(self, base):
         if self.name:
-            elt = maker.nonFraction(str(self.value))
+            elt = base.ix_maker.nonFraction(str(self.value))
             elt.set("name", self.name)
             elt.set("contextRef", self.context)
             elt.set("unitRef", self.unit)
             elt.set("decimals", "0")
-            par.append(elt)
+            return elt
         else:
-            par.append(objectify.StringElement(self.value))
+            return base.maker.span(self.value)
 
 class NumberFact(Fact):
     def __init__(self, context, name, value, unit="pure"):
@@ -73,45 +70,42 @@ class NumberFact(Fact):
         self.value = value
         self.reverse = False
         self.unit = unit
-    def append(self, maker, par, onlyifnamed=False):
-        if onlyifnamed and not self.name: return
+    def to_elt(self, base):
         if self.name:
-            elt = maker.nonFraction(str(self.value))
+            elt = base.ix_maker.nonFraction(str(self.value))
             elt.set("name", self.name)
             elt.set("contextRef", self.context)
             elt.set("unitRef", self.unit)
             elt.set("decimals", "2")
-            par.append(elt)
+            return elt
         else:
-            par.append(objectify.StringElement(str(self.value)))
+            return base.maker.span(str(self.value))
 
 class StringFact(Fact):
     def __init__(self, context, name, value):
         self.value = value
         self.context = context
         self.name = name
-    def to_elt(self, maker, onlyifnamed=False):
-        if onlyifnamed and not self.name: return
+    def to_elt(self, base):
         if self.name:
             # If value is list, assume it is list of elements
             if isinstance(self.value, list):
-                elt = maker.nonNumeric()
+                elt = base.ix_maker.nonNumeric()
                 for v in self.value:
                     elt.append(v)
             else:
-                elt = maker.nonNumeric(self.value)
+                elt = base.ix_maker.nonNumeric(self.value)
             elt.set("name", self.name)
             elt.set("contextRef", self.context)
             return elt
         else:
             # If value is list, assume it is list of elements
-            xhtml_ns = "http://www.w3.org/1999/xhtml"
             if isinstance(self.value, list):
-                elt = maker.span(namespace=xhtml_ns)
+                elt = base.maker.span()
                 for v in self.value:
                     elt.append(v)
             else:
-                elt = maker.span(self.value, namespace=xhtml_ns)
+                elt = base.maker.span(self.value)
             return elt
 
 class BoolFact(Fact):
@@ -119,33 +113,33 @@ class BoolFact(Fact):
         self.value = bool(value)
         self.name = name
         self.context = context
-    def append(self, maker, par, onlyifnamed=False):
-        if onlyifnamed and not self.name: return
+    def to_elt(self, base):
         if self.name:
-            elt = maker.nonNumeric(json.dumps(self.value))
+            elt = base.ix_maker.nonNumeric(json.dumps(self.value))
             elt.set("name", self.name)
             elt.set("contextRef", self.context)
-            par.append(elt)
+            return elt
         else:
-            par.append(maker.StringElement(json.dumps(self.value)))
+            return base.maker.span(json.dumps(self.value))
 
 class DateFact(Fact):
     def __init__(self, context, name, value):
         self.context = context
         self.name = name
         self.value = value
-    def append(self, maker, par, onlyifnamed=False):
-        if onlyifnamed and not self.name: return
+    def to_elt(self, base):
         if self.name:
-            elt = maker.nonNumeric(self.value.strftime("%d\xa0%B\xa0%Y"))
+            elt = base.ix_maker.nonNumeric(
+                self.value.strftime("%d\xa0%B\xa0%Y")
+            )
             elt.set("name", self.name)
             elt.set("contextRef", self.context)
             elt.set("format", "ixt2:datedaymonthyearen")
-            par.append(elt)
+            return elt
         else:
-            par.append(objectify.StringElement(
+            return base.maker.span(
                 self.value.strftime("%d\xa0%B\xa0%Y")
-            ))
+            )
 
 class Dataset:
     pass

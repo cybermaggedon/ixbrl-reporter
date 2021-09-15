@@ -44,8 +44,7 @@ class WorksheetElement(BasicElement):
         div.set("class", "worksheet page")
         elt.set("id", self.id + "-element")
 
-        title = par.maker.h2()
-        title.append(objectify.StringElement(self.title))
+        title = par.maker.h2(self.title)
         div.append(title)
 
         div.append(elt)
