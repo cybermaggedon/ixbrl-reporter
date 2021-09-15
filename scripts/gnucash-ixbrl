@@ -42,6 +42,7 @@ try:
 
 except Exception as e:
     sys.stderr.write("Exception: %s\n" % str(e))
+    raise e
     sys.exit(1)
 
 

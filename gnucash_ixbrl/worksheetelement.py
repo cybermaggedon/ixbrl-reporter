@@ -4,6 +4,7 @@
 from . basicelement import BasicElement
 from . report import TextReporter
 from . ixbrl import IxbrlReporter
+from lxml import objectify
 
 class WorksheetElement(BasicElement):
     def __init__(self, id, title, worksheet, data):
@@ -39,14 +40,14 @@ class WorksheetElement(BasicElement):
         rep = IxbrlReporter()
         elt = rep.get_elt(self.worksheet, par, taxonomy)
 
-        div = par.doc.createElement("div")
-        div.setAttribute("class", "worksheet page")
-        elt.setAttribute("id", self.id + "-element")
+        div = par.maker.div()
+        div.set("class", "worksheet page")
+        elt.set("id", self.id + "-element")
 
-        title = par.doc.createElement("h2")
-        title.appendChild(par.doc.createTextNode(self.title))
-        div.appendChild(title)
+        title = par.maker.h2()
+        title.append(objectify.StringElement(self.title))
+        div.append(title)
 
-        div.appendChild(elt)
+        div.append(elt)
         
         return div

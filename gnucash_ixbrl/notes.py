@@ -3,6 +3,7 @@
 from . basicelement import BasicElement
 from . fact import *
 from . note_parse import *
+from lxml import objectify
 
 from datetime import datetime
 
@@ -34,7 +35,7 @@ class NotesElement(BasicElement):
         period = self.data.get_report_period()
         rpc = self.data.business_context.with_period(period)
 
-        elt = par.doc.createElement("span")
+        elt = par.maker.span()
 
         note = self.get_note(n, taxonomy)
 
@@ -45,7 +46,7 @@ class NotesElement(BasicElement):
         for tk in structure:
 
             if isinstance(tk, TextToken):
-                elements[-1].appendChild(par.doc.createTextNode(tk.text))
+                elements[-1].append(objectify.StringElement(tk.text))
 
             elif isinstance(tk, MetadataToken):
 
@@ -54,21 +55,21 @@ class NotesElement(BasicElement):
                 if fact:
 
                     if tk.prefix != "":
-                        elements[-1].appendChild(
-                            par.doc.createTextNode(tk.prefix)
+                        elements[-1].append(
+                            objectify.StringElement(tk.prefix)
                         )
 
-                    fact.append(par.doc, elements[-1])
+                    fact.append(par.ix_maker, elements[-1])
 
                     if tk.suffix != "":
-                        elements[-1].appendChild(
-                            par.doc.createTextNode(tk.suffix)
+                        elements[-1].append(
+                            objectify.StringElement(tk.suffix)
                         )
 
                 else:
 
                     if tk.null != "":
-                        elements[-1].appendChild(par.doc.createTextNode(tk.null))
+                        elements[-1].append(objectify.StringElement(tk.null))
             elif isinstance(tk, ComputationToken):
 
                 if tk.period == "":
@@ -83,7 +84,7 @@ class NotesElement(BasicElement):
                 fact = taxonomy.create_fact(datum)
 
                 if fact:
-                    fact.append(par.doc, elements[-1])
+                    fact.append(par.ix_maker, elements[-1])
 
             elif isinstance(tk, TagOpen):
 
@@ -97,8 +98,8 @@ class NotesElement(BasicElement):
 
                 datum = StringDatum(tk.name, [], ctxt)
                 fact = taxonomy.create_fact(datum)
-                e = fact.to_elt(par.doc)
-                elements[-1].appendChild(e)
+                e = fact.to_elt(par.ix_maker)
+                elements[-1].append(e)
                 elements.append(e)
 
             elif isinstance(tk, TagClose):
@@ -124,28 +125,28 @@ class NotesElement(BasicElement):
 
     def to_ixbrl_elt(self, par, taxonomy):
 
-        div = par.doc.createElement("div")
-        div.setAttribute("class", "notes page")
-        div.setAttribute("id", self.id + "-element")
+        div = par.maker.div()
+        div.set("class", "notes page")
+        div.set("id", self.id + "-element")
 
-        title = par.doc.createElement("h2")
+        title = par.maker.h2()
         if self.title:
-            title.appendChild(par.doc.createTextNode(self.title))
+            title.append(objectify.StringElement(self.title))
         else:
-            title.appendChild(par.doc.createTextNode("Notes"))
-        div.appendChild(title)
+            title.append(objectify.StringElement("Notes"))
+        div.append(title)
 
-        ol = par.doc.createElement("ol")
-        div.appendChild(ol)
+        ol = par.maker.ol()
+        div.append(ol)
 
         for note in self.notes:
 
-            li = par.doc.createElement("li")
-            ol.appendChild(li)
+            li = par.maker.li()
+            ol.append(li)
 
-            p = par.doc.createElement("p")
-            li.appendChild(p)
+            p = par.maker.p()
+            li.append(p)
 
-            p.appendChild(self.get_note_elts(note, par, taxonomy))
+            p.append(self.get_note_elts(note, par, taxonomy))
 
         return div

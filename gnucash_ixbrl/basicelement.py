@@ -5,8 +5,10 @@
 from . period import Period
 from . fact import *
 
-from xml.dom.minidom import getDOMImplementation
-from xml.dom import XHTML_NAMESPACE
+xhtml_ns = "http://www.w3.org/1999/xhtml"
+
+from lxml import objectify, etree
+
 import json
 from datetime import datetime
 
@@ -45,11 +47,6 @@ class BasicElement:
 
     def add_style(self, elt):
 
-        doc = self.doc
-        
-        style = doc.createElement("style")
-        style.setAttribute("type", "text/css")
-        elt.appendChild(style)
         style_text = """
 
 h2 {
@@ -241,29 +238,39 @@ h2 {
 }
         """
 
-        style.appendChild(doc.createTextNode(style_text))
+        maker = objectify.ElementMaker(
+            annotate=False,
+            namespace=xhtml_ns,
+            nsmap={
+                None: xhtml_ns
+            }
+        )
+        self.maker = maker
+
+        elt.append(
+            maker.style(style_text)
+        )
+
+        elt.style.set("type", "text/css")
 
     def to_html(self, taxonomy, out):
 
-        impl = getDOMImplementation()
-        
-        doc = impl.createDocument(None, "html", None)
+        maker = objectify.ElementMaker(
+            annotate=False,
+            namespace=xhtml_ns,
+            nsmap={
+                None: xhtml_ns
+            }
+        )
 
-        self.doc = doc
-
-        html = self.doc.documentElement
-
-        html.setAttribute("xmlns", XHTML_NAMESPACE)
-
-        self.html = html
-
-        head = doc.createElement("head")
-        html.appendChild(head)
+        self.html = maker.html(
+            maker.head()
+        )
 
         def add_title(val):
-            t = doc.createElement("title");
-            t.appendChild(doc.createTextNode(val));
-            head.appendChild(t)
+            self.html.head.append(
+                maker.title(val)
+            )
 
         self.data.get_config("metadata.report.title").use(add_title)
 
@@ -310,77 +317,88 @@ h2 {
 
     def to_ixbrl(self, taxonomy, out):
 
-        impl = getDOMImplementation()
-        
-        doc = impl.createDocument(None, "html", None)
+        ix_ns = "http://www.xbrl.org/2013/inlineXBRL"
 
-        self.doc = doc
+        xlink_ns = "http://www.w3.org/1999/xlink"
+        link_ns = "http://www.xbrl.org/2003/linkbase"
 
-        html = self.doc.documentElement
-
-        html.setAttribute("xmlns", XHTML_NAMESPACE)
-
-        html.setAttribute("xmlns:ix", "http://www.xbrl.org/2013/inlineXBRL")
-        html.setAttribute("xmlns:link", "http://www.xbrl.org/2003/linkbase")
-        html.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink")
-        html.setAttribute("xmlns:xbrli", "http://www.xbrl.org/2003/instance")
-        html.setAttribute("xmlns:xbrldi", "http://xbrl.org/2006/xbrldi")
-        html.setAttribute("xmlns:ixt2",
-                          "http://www.xbrl.org/inlineXBRL/transformation/2011-07-31")
-        html.setAttribute("xmlns:iso4217", "http://www.xbrl.org/2003/iso4217")
+        nsmap={
+            None: xhtml_ns,
+            "ix": ix_ns,
+            "link": link_ns,
+            "xlink": xlink_ns,
+            "xbrli": "http://www.xbrl.org/2003/instance",
+            "xbrldi": "http://xbrl.org/2006/xbrldi",
+            "ixt2":
+            "http://www.xbrl.org/inlineXBRL/transformation/2011-07-31",
+            "iso4217": "http://www.xbrl.org/2003/iso4217",
+        }
 
         ns = taxonomy.get_namespaces()
         for k in ns:
-            html.setAttribute("xmlns:" + k, ns[k])
+            nsmap[k] = ns[k]
 
-        self.html = html
+        maker = objectify.ElementMaker(
+            annotate=False,
+            namespace=xhtml_ns,
+            nsmap=nsmap,
+        )
+        self.maker = maker
 
-        head = doc.createElement("head")
-        html.appendChild(head)
+        ix_maker = objectify.ElementMaker(
+            annotate=False,
+            namespace=ix_ns,
+            nsmap=nsmap,
+        )
+        self.ix_maker = ix_maker
+
+        self.html = maker.html(
+            maker.head(),
+            maker.body(
+                maker.div(
+                    {"class": "hidden"},
+                    ix_maker.header(
+                        ix_maker.hidden(),
+                        ix_maker.references(),
+                        ix_maker.resources(),
+                    ),
+                ),
+            ),
+        )
+
+        
 
         def add_title(val):
-            t = doc.createElement("title");
-            t.appendChild(doc.createTextNode(val));
-            head.appendChild(t)
+            self.html.head.append(
+                maker.title(val)
+            )
 
         self.data.get_config("metadata.report.title").use(add_title)
 
-        self.add_style(head)
+        self.add_style(self.html.head)
 
-        body = doc.createElement("body")
-        html.appendChild(body)
+        header_op = objectify.ObjectPath(".body.div.{%s}header" % (
+            ix_ns
+        ))
 
-        hiddev = doc.createElement("div")
-        hiddev.setAttribute("class", "hidden")
-        body.appendChild(hiddev)
-
-        hdr = doc.createElement("ix:header")
-        hiddev.appendChild(hdr)
-
-        hidden = doc.createElement("ix:hidden")
-        hdr.appendChild(hidden)
-        self.hidden = hidden
-
-        refs = doc.createElement("ix:references")
-        hdr.appendChild(refs)
-       
-        resources = doc.createElement("ix:resources")
-        hdr.appendChild(resources)
-        self.resources = resources
+        self.header = header_op(self.html)
 
         # This creates some contexts, hence do this first.
-        self.create_metadata(taxonomy)
+        self.create_metadata(ix_maker, taxonomy)
 
         schemas = taxonomy.get_schemas()
         for url in schemas:
-            schema = doc.createElement("link:schemaRef")
-            schema.setAttribute("xlink:type", "simple")
-            schema.setAttribute("xlink:href", url)
-            schema.appendChild(doc.createTextNode(""))
-            refs.appendChild(schema)
+            schema = maker.schemaRef("", namespace=xlink_ns)
+            schema.set("type", "simple")
+            schema.set("href", url)
+            self.header.references.append(schema)
 
         elt = self.to_ixbrl_elt(self, taxonomy)
-        body.appendChild(elt)
+        self.html.body.append(elt)
+
+        out.write(etree.tostring(self.html, pretty_print=True).decode("utf-8"))
+
+        return
 
         # Contexts get created above, hence do this last.
         self.create_contexts(taxonomy)
@@ -530,11 +548,11 @@ h2 {
 
         return expmem
 
-    def create_metadata(self, taxonomy):
+    def create_metadata(self, maker, taxonomy):
 
         metadata = taxonomy.get_document_metadata(self.data)
 
         for fact in metadata:
             if fact.name:
-                fact.append(self.doc, self.hidden)
+                fact.append(maker, self.header.hidden)
             

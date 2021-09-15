@@ -33,126 +33,116 @@ class Title(BasicElement):
 
     def to_ixbrl_elt(self, par, taxonomy):
 
-        doc = par.doc
-
-        div = doc.createElement("div")
-        div.setAttribute("class", "title page")
-        div.setAttribute("id", self.id + "-element")
+        div = par.maker.div({
+            "class": "title page",
+            "id": self.id + "-element",
+        })
 
         def add_company_name(fact):
-            div2 = doc.createElement("h1")
-            div2.setAttribute("class", "heading")
-            fact.append(doc, div2)
-            div.appendChild(div2)
+            div2 = par.maker.h1()
+            div2.set("class", "heading")
+            fact.append(par.maker, div2)
+            div.append(div2)
 
         taxonomy.get_metadata_by_id(self.data, "company-name").use(
             add_company_name
         )
         
         def add_report_title(fact):
-            div2 = doc.createElement("div")
-            div2.setAttribute("class", "subheading")
-            fact.append(doc, div2)
-            div.appendChild(div2)
+            div2 = par.maker.div()
+            div2.set("class", "subheading")
+            fact.append(par.maker, div2)
+            div.append(div2)
 
         taxonomy.get_metadata_by_id(self.data, "report-title").use(
             add_report_title
         )
 
         def add_company_number(fact):
-            div2 = par.doc.createElement("div")
-            div2.setAttribute("class", "information")
-            div2.appendChild(par.doc.createTextNode("Registered number: "))
-            fact.append(doc, div2)
-            div.appendChild(div2)
+            div2 = par.maker.div("Registered number: ", {
+                "class": "information"
+            })
+            fact.append(par.maker, div2)
+            div.append(div2)
 
         taxonomy.get_metadata_by_id(self.data, "company-number").use(
             add_company_number
         )
 
-        div2 = doc.createElement("div")
-        div.appendChild(div2)
-        div2.setAttribute("class", "information")
-        div2.appendChild(par.doc.createTextNode("For the period: "))
+        div2 = par.maker.div({"class": "information"}, "For the period: ")
         taxonomy.get_metadata_by_id(self.data, "period-start").use(
-            lambda fact: fact.append(doc, div2)
+            lambda fact: fact.append(par.maker, div2)
         )
-        div2.appendChild(par.doc.createTextNode(" to "))
+        div2.append(objectify.StringElement(" to "))
         taxonomy.get_metadata_by_id(self.data, "period-end").use(
-            lambda fact: fact.append(doc, div2)
+            lambda fact: fact.append(par.maker, div2)
         )
 
         def add_report_date(fact):
-            div2 = doc.createElement("div")
-            div2.setAttribute("class", "information")
-            div2.appendChild(par.doc.createTextNode("Date: "))
-            fact.append(doc, div2)
-            div.appendChild(div2)
+            div2 = par.maker.div({"class": "information"}, "Date: ")
+            fact.append(par.maker, div2)
+            div.append(div2)
 
         taxonomy.get_metadata_by_id(self.data, "report-date").use(
             add_report_date
         )
 
-        div2 = doc.createElement("div")
-        div.appendChild(div2)
-        div2.setAttribute("class", "information")
-        div2.appendChild(par.doc.createTextNode("Directors: "))
+        div.append(par.maker.div({"class": "information"}, "Directors: "))
 
         meta = taxonomy.get_all_metadata_by_id(self.data, "officer")
 
         for i in range(0, len(meta)):
             if i > 0:
-                div2.appendChild(par.doc.createTextNode(", "))
-            meta[i].append(doc, div2)
+                div2.append(objectify.StringElement(", "))
+            meta[i].append(par.maker, div2)
 
-        div2.appendChild(par.doc.createTextNode("."))
+        div2.append(objectify.StringElement("."))
 
-        sig = par.doc.createElement("div")
-        sig.setAttribute("class", "signature")
-        div.appendChild(sig)
+        sig = par.maker.div({"class": "signature"})
+        div.append(sig)
 
-        p = par.doc.createElement("p")
-        sig.appendChild(p)
+        p = par.maker.p()
+        sig.append(p)
 
-        p.appendChild(par.doc.createTextNode(
+        p.append(objectify.StringElement(
             "Approved by the board of directors and authorised for "
             "publication on "
         ))
 
         taxonomy.get_metadata_by_id(self.data, "authorised-date").use(
-            lambda fact: fact.append(doc, p)
+            lambda fact: fact.append(par.maker, p)
         )
 
-        p.appendChild(par.doc.createTextNode("."))
-        sig.appendChild(p)
+        p.append(objectify.StringElement("."))
+        sig.append(p)
 
-        p = par.doc.createElement("p")
+        p = par.maker.p()
 
-        p.appendChild(par.doc.createTextNode(
+        p.append(objectify.StringElement(
             "Signed on behalf of the directors by "
         ))
 
         taxonomy.get_metadata_by_id(self.data, "signing-officer").use(
-            lambda fact: fact.append(doc, p)
+            lambda fact: fact.append(par.maker, p)
         )
 
-        p.appendChild(par.doc.createTextNode(
+        p.append(objectify.StringElement(
             self.data.get_config("metadata.report.signed-by")
         ))
 
-        p.appendChild(par.doc.createTextNode("."))
+        p.append(objectify.StringElement("."))
 
-        sig.appendChild(p)
+        sig.append(p)
 
         if self.img and self.type:
-            img = par.doc.createElement("img")
-            img.setAttribute("alt", "Director's signature")
+            img = par.maker.img()
+            img.set("alt", "Director's signature")
             data = base64.b64encode(open(self.img, "rb").read()).decode("utf-8")
-            img.setAttribute("src",
+            img.set("src",
                              "data:{0};base64,{1}".format(self.type, data)
                              )
-            sig.appendChild(img)
+            sig.append(img)
 
-        div.appendChild(sig)
+        div.append(sig)
         
         return div

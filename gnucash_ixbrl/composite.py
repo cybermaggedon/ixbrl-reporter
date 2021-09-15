@@ -29,13 +29,14 @@ class Composite(BasicElement):
 
     def to_ixbrl_elt(self, par, taxonomy):
 
-        elt = par.doc.createElement("div")
-        elt.setAttribute("class", "composite")
-        elt.setAttribute("id", self.id + "-element")
+        elt = par.maker.div({
+            "class": "composite",
+            "id": self.id + "-element"
+        })
 
         for v in self.elements:
 
             sub = v.to_ixbrl_elt(par, taxonomy)
-            elt.appendChild(sub)
+            elt.append(sub)
         
         return elt
