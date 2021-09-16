@@ -500,19 +500,6 @@ h2 {
 
             self.header.resources.append(ce)
 
-    def make_div(self, par, elts):
-        div = self.doc.createElement("div")
-        self.add_elts(div, elts)
-        par.appendChild(div)
-        return div
-
-    def add_elts(self, par, elts):
-        for elt in elts:
-            par.appendChild(elt)
-
-    def make_text(self, t):
-        return self.doc.createTextNode(t)
-
     def create_context(self, id, elts):
 
         ctxt = self.xbrli_maker.context({"id": id})

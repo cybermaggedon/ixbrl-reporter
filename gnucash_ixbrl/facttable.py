@@ -6,9 +6,6 @@ from . fact import *
 from . datum import *
 import copy
 
-from xml.dom.minidom import getDOMImplementation
-from xml.dom import XHTML_NAMESPACE
-
 from datetime import datetime, date
 import json
 
@@ -21,14 +18,6 @@ class Box:
             self.tag = {}
         else:
             self.tag = tag
-
-business_type_name = {
-    "company": "ct-comp:Company"
-}
-
-business_type = {
-    "company": "Company"
-}
 
 class FactTable(BasicElement):
 
