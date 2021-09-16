@@ -524,7 +524,9 @@ h2 {
         ent = self.xbrli_maker.entity(
             self.xbrli_maker.identifier({
                 "scheme": scheme
-            }),
+            },
+            id
+            )
         )
 
         for elt in elts:

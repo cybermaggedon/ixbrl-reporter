@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="gnucash-ixbrl",
-    version="1.2",
+    version="1.2.1",
     author="Cybermaggedon",
     author_email="mark@cyberapocalypse.co.uk",
     description="Production of iXBRL reports from GnuCash accounts",
@@ -19,7 +19,7 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.6',
-    download_url = "https://github.com/cybermaggedon/gnucash-ixbrl/archive/refs/tags/v1.2.tar.gz",
+    download_url = "https://github.com/cybermaggedon/gnucash-ixbrl/archive/refs/tags/v1.2.1.tar.gz",
     install_requires=[
         "requests", "lxml"
     ],
