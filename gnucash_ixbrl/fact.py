@@ -37,7 +37,7 @@ class MoneyFact(Fact):
                 elt.set("sign", "-")
             return elt
         else:
-            return base.maker.span("{0:,.2f}".format(value))
+            return base.xhtml_maker.span("{0:,.2f}".format(value))
     def copy(self):
         return copy.copy(self)
     def rename(self, id, context, tx):
@@ -61,7 +61,7 @@ class CountFact(Fact):
             elt.set("decimals", "0")
             return elt
         else:
-            return base.maker.span(self.value)
+            return base.xhtml_maker.span(self.value)
 
 class NumberFact(Fact):
     def __init__(self, context, name, value, unit="pure"):
@@ -79,7 +79,7 @@ class NumberFact(Fact):
             elt.set("decimals", "2")
             return elt
         else:
-            return base.maker.span(str(self.value))
+            return base.xhtml_maker.span(str(self.value))
 
 class StringFact(Fact):
     def __init__(self, context, name, value):
@@ -101,11 +101,11 @@ class StringFact(Fact):
         else:
             # If value is list, assume it is list of elements
             if isinstance(self.value, list):
-                elt = base.maker.span()
+                elt = base.xhtml_maker.span()
                 for v in self.value:
                     elt.append(v)
             else:
-                elt = base.maker.span(self.value)
+                elt = base.xhtml_maker.span(self.value)
             return elt
 
 class BoolFact(Fact):
@@ -120,7 +120,7 @@ class BoolFact(Fact):
             elt.set("contextRef", self.context)
             return elt
         else:
-            return base.maker.span(json.dumps(self.value))
+            return base.xhtml_maker.span(json.dumps(self.value))
 
 class DateFact(Fact):
     def __init__(self, context, name, value):
@@ -137,7 +137,7 @@ class DateFact(Fact):
             elt.set("format", "ixt2:datedaymonthyearen")
             return elt
         else:
-            return base.maker.span(
+            return base.xhtml_maker.span(
                 self.value.strftime("%d\xa0%B\xa0%Y")
             )
 

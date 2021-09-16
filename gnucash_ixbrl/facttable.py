@@ -48,11 +48,11 @@ class FactTable(BasicElement):
 
     def to_ixbrl_elt(self, par, taxonomy):
 
-        div = par.maker.div()
+        div = par.xhtml_maker.div()
         div.set("class", "facts page")
         div.set("id", self.id + "-element")
 
-        title = par.maker.h2(self.title)
+        title = par.xhtml_maker.h2(self.title)
         div.append(title)
 
         period = self.data.get_report_period()
@@ -79,18 +79,18 @@ class FactTable(BasicElement):
 
     def make_fact(self, par, field, desc, fact):
 
-        row = par.maker.div()
+        row = par.xhtml_maker.div()
         row.set("class", "fact")
 
-        num = par.maker.div(field)
+        num = par.xhtml_maker.div(field)
         num.set("class", "ref")
         row.append(num)
 
-        descelt = par.maker.div(desc + ":")
+        descelt = par.xhtml_maker.div(desc + ":")
         descelt.set("class", "description")
         row.append(descelt)
 
-        valelt = par.maker.div()
+        valelt = par.xhtml_maker.div()
         valelt.set("class", "value")
         row.append(valelt)
 

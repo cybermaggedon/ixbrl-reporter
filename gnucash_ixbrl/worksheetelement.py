@@ -40,11 +40,11 @@ class WorksheetElement(BasicElement):
         rep = IxbrlReporter()
         elt = rep.get_elt(self.worksheet, par, taxonomy)
 
-        div = par.maker.div()
+        div = par.xhtml_maker.div()
         div.set("class", "worksheet page")
         elt.set("id", self.id + "-element")
 
-        title = par.maker.h2(self.title)
+        title = par.xhtml_maker.h2(self.title)
         div.append(title)
 
         div.append(elt)

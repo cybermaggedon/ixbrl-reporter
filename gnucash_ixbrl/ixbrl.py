@@ -17,26 +17,26 @@ class IxbrlReporter:
     def add_header(self, grid, periods):
 
         # Blank header cell
-        blank = self.par.maker.div("\u00a0")
+        blank = self.par.xhtml_maker.div("\u00a0")
         blank.set("class", "label")
         grid.append(blank)
 
         # Header cells for period names
         for period in periods:
 
-            elt = self.par.maker.div(period.name)
+            elt = self.par.xhtml_maker.div(period.name)
             grid.append(elt)
             elt.set("class", "period periodname")
 
         # Blank header cell
-        blank = self.par.maker.div("\u00a0")
+        blank = self.par.xhtml_maker.div("\u00a0")
         blank.set("class", "label")
         grid.append(blank)
 
         # Header cells for period names
         for period in periods:
 
-            elt = self.par.maker.div("£")
+            elt = self.par.xhtml_maker.div("£")
             grid.append(elt)
             elt.set("class", "period currency")
 
@@ -83,10 +83,10 @@ class IxbrlReporter:
 
             if val < 0:
 
-                span = self.par.maker.span()
-                span.append(self.par.maker.span("( "))
+                span = self.par.xhtml_maker.span()
+                span.append(self.par.xhtml_maker.span("( "))
                 span.append(elt)
-                span.append(self.par.maker.span(" )"))
+                span.append(self.par.xhtml_maker.span(" )"))
                 return span
 
             return elt
@@ -98,17 +98,17 @@ class IxbrlReporter:
 
             txt = "{0:,.2f}".format(-val)
 
-            span = self.par.maker.span()
-            span.append(self.par.maker.span("( "))
-            span.append(self.par.maker.span(txt))
-            span.append(self.par.maker.span(" )"))
+            span = self.par.xhtml_maker.span()
+            span.append(self.par.xhtml_maker.span("( "))
+            span.append(self.par.xhtml_maker.span(txt))
+            span.append(self.par.xhtml_maker.span(" )"))
             return span
 
-        return self.par.maker.span("{0:,.2f}".format(val))
+        return self.par.xhtml_maker.span("{0:,.2f}".format(val))
 
     def add_nil_section(self, grid, section, periods):
 
-        div = self.par.maker.div()
+        div = self.par.xhtml_maker.div()
         div.set("class", "label header")
 
         if len(section.total.values) > 0 and section.total.values[0].id:
@@ -117,12 +117,12 @@ class IxbrlReporter:
             )
             div.append(desc.to_elt(self.par))
         else:
-            div.append(self.par.maker.span(section.header))
+            div.append(self.par.xhtml_maker.span(section.header))
 
         grid.append(div)
 
         for i in range(0, len(periods)):
-            div = self.par.maker.div()
+            div = self.par.xhtml_maker.div()
             div.set(
                 "class",
                 "period total value nil rank%d" % section.total.rank
@@ -133,7 +133,7 @@ class IxbrlReporter:
 
     def add_total_section(self, grid, section, periods):
 
-        div = self.par.maker.div()
+        div = self.par.xhtml_maker.div()
         div.set("class", "label header total")
 
         if len(section.total.values) > 0 and section.total.values[0].id:
@@ -142,12 +142,12 @@ class IxbrlReporter:
             )
             div.append(desc.to_elt(self.par))
         else:
-            div.append(self.par.maker.span(section.header))
+            div.append(self.par.xhtml_maker.span(section.header))
 
         grid.append(div)
 
         for i in range(0, len(periods)):
-            div = self.par.maker.div()
+            div = self.par.xhtml_maker.div()
             grid.append(div)
             value = section.total.values[i]
             if abs(value.value) < 0.001:
@@ -170,7 +170,7 @@ class IxbrlReporter:
 
     def add_breakdown_section(self, grid, section, periods):
 
-        div = self.par.maker.div()
+        div = self.par.xhtml_maker.div()
         div.set("class", "label breakdown header")
 
         if len(section.total.values) > 0 and section.total.values[0].id:
@@ -179,12 +179,12 @@ class IxbrlReporter:
             )
             div.append(desc.to_elt(self.par))
         else:
-            div.append(self.par.maker.span(section.header))
+            div.append(self.par.xhtml_maker.span(section.header))
         grid.append(div)
 
         for item in section.items:
 
-            div = self.par.maker.div()
+            div = self.par.xhtml_maker.div()
             div.set("class", "label breakdown item")
 
             if len(item.values) > 0 and item.values[0].id:
@@ -193,7 +193,7 @@ class IxbrlReporter:
                 )
                 div.append(desc.to_elt(self.par))
             else:
-                div.append(self.par.maker.span(item.description))
+                div.append(self.par.xhtml_maker.span(item.description))
 
             grid.append(div)
 
@@ -201,7 +201,7 @@ class IxbrlReporter:
 
                 value = item.values[i]
 
-                div = self.par.maker.div()
+                div = self.par.xhtml_maker.div()
                 if abs(value.value) < 0.001:
                     div.set("class",
                                      "period value nil rank%d" % item.rank )
@@ -217,14 +217,14 @@ class IxbrlReporter:
                 div.append(content)
                 grid.append(div)
 
-        div = self.par.maker.div()
+        div = self.par.xhtml_maker.div()
         div.set("class", "label breakdown total")
         grid.append(div)
-        div.append(self.par.maker.span("Total"))
+        div.append(self.par.xhtml_maker.span("Total"))
 
         for i in range(0, len(periods)):
 
-            div = self.par.maker.div()
+            div = self.par.xhtml_maker.div()
 
             grid.append(div)
 
@@ -262,7 +262,7 @@ class IxbrlReporter:
         periods = ds.periods
         sections = ds.sections
 
-        grid = self.par.maker.div()
+        grid = self.par.xhtml_maker.div()
         grid.set("class", "sheet")
 
         self.add_header(grid, periods)

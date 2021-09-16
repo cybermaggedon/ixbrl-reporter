@@ -33,13 +33,13 @@ class Title(BasicElement):
 
     def to_ixbrl_elt(self, par, taxonomy):
 
-        div = par.maker.div({
+        div = par.xhtml_maker.div({
             "class": "title page",
             "id": self.id + "-element",
         })
 
         def add_company_name(fact):
-            div2 = par.maker.h1()
+            div2 = par.xhtml_maker.h1()
             div2.set("class", "heading")
             div2.append(fact.to_elt(par))
             div.append(div2)
@@ -49,7 +49,7 @@ class Title(BasicElement):
         )
         
         def add_report_title(fact):
-            div2 = par.maker.div()
+            div2 = par.xhtml_maker.div()
             div2.set("class", "subheading")
             div2.append(fact.to_elt(par))
             div.append(div2)
@@ -59,7 +59,7 @@ class Title(BasicElement):
         )
 
         def add_company_number(fact):
-            div2 = par.maker.div("Registered number: ", {
+            div2 = par.xhtml_maker.div("Registered number: ", {
                 "class": "information"
             })
             div2.append(fact.to_elt(par))
@@ -69,17 +69,17 @@ class Title(BasicElement):
             add_company_number
         )
 
-        div2 = par.maker.div({"class": "information"}, "For the period: ")
+        div2 = par.xhtml_maker.div({"class": "information"}, "For the period: ")
         taxonomy.get_metadata_by_id(self.data, "period-start").use(
             lambda fact: div2.append(fact.to_elt(par))
         )
-        div2.append(par.maker.span(" to "))
+        div2.append(par.xhtml_maker.span(" to "))
         taxonomy.get_metadata_by_id(self.data, "period-end").use(
             lambda fact: div2.append(fact.to_elt(par))
         )
 
         def add_report_date(fact):
-            div2 = par.maker.div({"class": "information"}, "Date: ")
+            div2 = par.xhtml_maker.div({"class": "information"}, "Date: ")
             div2.append(fact.to_elt(par))
             div.append(div2)
 
@@ -87,25 +87,25 @@ class Title(BasicElement):
             add_report_date
         )
 
-        div2 = par.maker.div({"class": "information"}, "Directors: ")
+        div2 = par.xhtml_maker.div({"class": "information"}, "Directors: ")
         div.append(div2)
 
         meta = taxonomy.get_all_metadata_by_id(self.data, "officer")
 
         for i in range(0, len(meta)):
             if i > 0:
-                div2.append(par.maker.span(", "))
+                div2.append(par.xhtml_maker.span(", "))
             div2.append(meta[i].to_elt(par))
 
-        div2.append(par.maker.span("."))
+        div2.append(par.xhtml_maker.span("."))
 
-        sig = par.maker.div({"class": "signature"})
+        sig = par.xhtml_maker.div({"class": "signature"})
         div.append(sig)
 
-        p = par.maker.p()
+        p = par.xhtml_maker.p()
         sig.append(p)
 
-        p.append(par.maker.span(
+        p.append(par.xhtml_maker.span(
             "Approved by the board of directors and authorised for "
             "publication on "
         ))
@@ -114,12 +114,12 @@ class Title(BasicElement):
             lambda fact: p.append(fact.to_elt(par))
         )
 
-        p.append(par.maker.span("."))
+        p.append(par.xhtml_maker.span("."))
         sig.append(p)
 
-        p = par.maker.p()
+        p = par.xhtml_maker.p()
 
-        p.append(par.maker.span(
+        p.append(par.xhtml_maker.span(
             "Signed on behalf of the directors by "
         ))
 
@@ -127,16 +127,16 @@ class Title(BasicElement):
             lambda fact: p.append(fact.to_elt(par))
         )
 
-        p.append(par.maker.span(
+        p.append(par.xhtml_maker.span(
             self.data.get_config("metadata.report.signed-by")
         ))
 
-        p.append(par.maker.span("."))
+        p.append(par.xhtml_maker.span("."))
 
         sig.append(p)
 
         if self.img and self.type:
-            img = par.maker.img()
+            img = par.xhtml_maker.img()
             img.set("alt", "Director's signature")
             data = base64.b64encode(open(self.img, "rb").read()).decode("utf-8")
             img.set("src",

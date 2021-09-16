@@ -29,7 +29,7 @@ class Composite(BasicElement):
 
     def to_ixbrl_elt(self, par, taxonomy):
 
-        elt = par.maker.div({
+        elt = par.xhtml_maker.div({
             "class": "composite",
             "id": self.id + "-element"
         })

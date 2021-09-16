@@ -6,6 +6,9 @@ from . period import Period
 from . fact import *
 
 xhtml_ns = "http://www.w3.org/1999/xhtml"
+ix_ns = "http://www.xbrl.org/2013/inlineXBRL"
+xlink_ns = "http://www.w3.org/1999/xlink"
+link_ns = "http://www.xbrl.org/2003/linkbase"
 xbrli_ns = "http://www.xbrl.org/2003/instance"
 xbrldi_ns = "http://xbrl.org/2006/xbrldi"
 
@@ -240,114 +243,96 @@ h2 {
 }
         """
 
-        maker = objectify.ElementMaker(
-            annotate=False,
-            namespace=xhtml_ns,
-            nsmap={
-                None: xhtml_ns
-            }
-        )
-        self.maker = maker
-
         elt.append(
-            maker.style(style_text)
+            self.xhtml_maker.style(style_text)
         )
 
         elt.style.set("type", "text/css")
 
     def to_html(self, taxonomy, out):
 
-        maker = objectify.ElementMaker(
-            annotate=False,
-            namespace=xhtml_ns,
-            nsmap={
-                None: xhtml_ns
-            }
-        )
+        nsmap={
+            None: xhtml_ns,
+        }
 
-        self.html = maker.html(
-            maker.head()
+        self.nsmap = nsmap
+
+        self.add_makers(self.nsmap)
+
+        self.html = self.xhtml_maker.html(
+            self.xhtml_maker.head(),
+            self.xhtml_maker.body(
+                self.xhtml_maker.div(
+                    {"class": "hidden"},
+                    self.ix_maker.header(
+                        self.ix_maker.hidden(),
+                        self.ix_maker.references(),
+                        self.ix_maker.resources(),
+                    ),
+                ),
+            ),
         )
 
         def add_title(val):
             self.html.head.append(
-                maker.title(val)
+                self.xhtml_maker.title(val)
             )
 
         self.data.get_config("metadata.report.title").use(add_title)
 
-        self.add_style(head)
+        self.add_style(self.html.head)
 
-        body = doc.createElement("body")
-        html.appendChild(body)
+        header_op = objectify.ObjectPath(".body.div.{%s}header" % (
+            ix_ns
+        ))
+
+        self.header = header_op(self.html)
 
         elt = self.to_ixbrl_elt(self, taxonomy)
 
-        def walk(elt):
-            if elt.nodeType == elt.ELEMENT_NODE:
+        # Deep copies the tree, converts all the ix: elements to span elements
+        def walk(elt, level=0):
+            ns = elt.nsmap[elt.prefix]
+            if ns == ix_ns:
+                elt2 = self.xhtml_maker.span(elt.text)
+            else:
+                elt2 = self.xhtml_maker(elt.tag, elt.text)
+                for k in elt.keys():
+                    elt2.set(k, elt.attrib[k])
+            for v in elt.iterchildren():
+                elt2.append(walk(v, level + 1))
+            return elt2
+        elt = walk(elt)
 
-                # Remove ixbrl stuff, just turn tags into span tags.
-                if elt.tagName[:3] == "ix:":
-                    try:
-                        elt.removeAttribute("contextRef")
-                    except: pass
-                    try:
-                        elt.removeAttribute("name")
-                    except: pass
-                    try:
-                        elt.removeAttribute("format")
-                    except: pass
-                    try:
-                        elt.removeAttribute("unitRef")
-                    except: pass
-                    try:
-                        elt.removeAttribute("decimals")
-                    except: pass
-                    elt.tagName = "span"
-                if elt.childNodes:
-                    for e in elt.childNodes:
-                        walk(e)
+        self.html.body.append(elt)
 
-        walk(elt)
-        body.appendChild(elt)
+        # Last remains of the ix: namespace are the header.  Just delete
+        # the hidden div
+        h = self.header
+        hiddiv = h.getparent()
+        hiddiv.getparent().remove(hiddiv)
 
         if self.data.get_config_bool("metadata.report.pretty-print",
                                      mandatory=False):
-            out.write(doc.toprettyxml())
+            out.write(etree.tostring(
+                self.html, xml_declaration=True
+            ).decode("utf-8"))
         else:
-            out.write(doc.toxml())
+            out.write(etree.tostring(
+                self.html, pretty_print=True, xml_declaration=True
+            ).decode("utf-8"))
 
-    def to_ixbrl(self, taxonomy, out):
+        return
 
-        ix_ns = "http://www.xbrl.org/2013/inlineXBRL"
+    def add_makers(self, nsmap):
 
-        xlink_ns = "http://www.w3.org/1999/xlink"
-        link_ns = "http://www.xbrl.org/2003/linkbase"
-
-        nsmap={
-            None: xhtml_ns,
-            "ix": ix_ns,
-            "link": link_ns,
-            "xlink": xlink_ns,
-            "xbrli": xbrli_ns,
-            "xbrldi": xbrldi_ns,
-            "ixt2":
-            "http://www.xbrl.org/inlineXBRL/transformation/2011-07-31",
-            "iso4217": "http://www.xbrl.org/2003/iso4217",
-        }
-
-        ns = taxonomy.get_namespaces()
-        for k in ns:
-            nsmap[k] = ns[k]
-
-        self.nsmap = nsmap
-
-        maker = objectify.ElementMaker(
+        xhtml_maker = objectify.ElementMaker(
             annotate=False,
             namespace=xhtml_ns,
             nsmap=nsmap,
         )
-        self.maker = maker
+
+        self.xhtml_maker = xhtml_maker
 
         self.ix_maker = objectify.ElementMaker(
             annotate=False,
@@ -374,10 +359,32 @@ h2 {
             namespace=xbrldi_ns,
         )
 
-        self.html = maker.html(
-            maker.head(),
-            maker.body(
-                maker.div(
+    def to_ixbrl(self, taxonomy, out):
+
+        nsmap={
+            None: xhtml_ns,
+            "ix": ix_ns,
+            "link": link_ns,
+            "xlink": xlink_ns,
+            "xbrli": xbrli_ns,
+            "xbrldi": xbrldi_ns,
+            "ixt2":
+            "http://www.xbrl.org/inlineXBRL/transformation/2011-07-31",
+            "iso4217": "http://www.xbrl.org/2003/iso4217",
+        }
+
+        ns = taxonomy.get_namespaces()
+        for k in ns:
+            nsmap[k] = ns[k]
+
+        self.nsmap = nsmap
+
+        self.add_makers(self.nsmap)
+
+        self.html = self.xhtml_maker.html(
+            self.xhtml_maker.head(),
+            self.xhtml_maker.body(
+                self.xhtml_maker.div(
                     {"class": "hidden"},
                     self.ix_maker.header(
                         self.ix_maker.hidden(),
@@ -388,11 +395,9 @@ h2 {
             ),
         )
 
-        
-
         def add_title(val):
             self.html.head.append(
-                maker.title(val)
+                self.xhtml_maker.title(val)
             )
 
         self.data.get_config("metadata.report.title").use(add_title)

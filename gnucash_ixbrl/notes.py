@@ -35,7 +35,7 @@ class NotesElement(BasicElement):
         period = self.data.get_report_period()
         rpc = self.data.business_context.with_period(period)
 
-        elt = par.maker.span()
+        elt = par.xhtml_maker.span()
 
         note = self.get_note(n, taxonomy)
 
@@ -46,7 +46,7 @@ class NotesElement(BasicElement):
         for tk in structure:
 
             if isinstance(tk, TextToken):
-                elements[-1].append(par.maker.span(tk.text))
+                elements[-1].append(par.xhtml_maker.span(tk.text))
 
             elif isinstance(tk, MetadataToken):
 
@@ -56,20 +56,20 @@ class NotesElement(BasicElement):
 
                     if tk.prefix != "":
                         elements[-1].append(
-                            par.maker.span(tk.prefix)
+                            par.xhtml_maker.span(tk.prefix)
                         )
 
                     elements[-1].append(fact.to_elt(par))
 
                     if tk.suffix != "":
                         elements[-1].append(
-                            par.maker.span(tk.suffix)
+                            par.xhtml_maker.span(tk.suffix)
                         )
 
                 else:
 
                     if tk.null != "":
-                        elements[-1].append(par.maker.span(tk.null))
+                        elements[-1].append(par.xhtml_maker.span(tk.null))
 
             elif isinstance(tk, ComputationToken):
 
@@ -126,25 +126,25 @@ class NotesElement(BasicElement):
 
     def to_ixbrl_elt(self, par, taxonomy):
 
-        div = par.maker.div()
+        div = par.xhtml_maker.div()
         div.set("class", "notes page")
         div.set("id", self.id + "-element")
 
         if self.title:
-            title = par.maker.h2(self.title)
+            title = par.xhtml_maker.h2(self.title)
         else:
-            title = par.maker.h2("Notes")
+            title = par.xhtml_maker.h2("Notes")
         div.append(title)
 
-        ol = par.maker.ol()
+        ol = par.xhtml_maker.ol()
         div.append(ol)
 
         for note in self.notes:
 
-            li = par.maker.li()
+            li = par.xhtml_maker.li()
             ol.append(li)
 
-            p = par.maker.p()
+            p = par.xhtml_maker.p()
             li.append(p)
 
             p.append(self.get_note_elts(note, par, taxonomy))
