@@ -44,7 +44,7 @@ class FactTable(BasicElement):
         
         for v in self.elements:
             datum = self.data.to_datum(v, None)
-            out.write("{0}: {1}\n".format(datum.id, datum.value))
+            out.write("{0}: {1}\n".format(v.get("description"), datum.value))
 
     def to_ixbrl_elt(self, par, taxonomy):
 
