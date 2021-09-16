@@ -21,7 +21,7 @@ setuptools.setup(
     python_requires='>=3.6',
     download_url = "https://github.com/cybermaggedon/gnucash-ixbrl/archive/refs/tags/v1.1.2.tar.gz",
     install_requires=[
-        "requests"
+        "requests", "lxml"
     ],
     scripts=[
         "scripts/gnucash-ixbrl"
