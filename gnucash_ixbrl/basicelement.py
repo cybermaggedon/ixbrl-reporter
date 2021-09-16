@@ -315,11 +315,11 @@ h2 {
         if self.data.get_config_bool("metadata.report.pretty-print",
                                      mandatory=False):
             out.write(etree.tostring(
-                self.html, xml_declaration=True
+                self.html, pretty_print=True, xml_declaration=True
             ).decode("utf-8"))
         else:
             out.write(etree.tostring(
-                self.html, pretty_print=True, xml_declaration=True
+                self.html, xml_declaration=True
             ).decode("utf-8"))
 
         return
@@ -442,10 +442,12 @@ h2 {
 
         if self.data.get_config_bool("metadata.report.pretty-print",
                                      mandatory=False):
-            out.write(etree.tostring(self.html).decode("utf-8"))
+            out.write(etree.tostring(
+                self.html, pretty_print=True, xml_declaration=True
+            ).decode("utf-8"))
         else:
             out.write(etree.tostring(
-                self.html, pretty_print=True
+                self.html, xml_declaration=True
             ).decode("utf-8"))
 
         return
