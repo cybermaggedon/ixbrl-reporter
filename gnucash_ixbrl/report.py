@@ -1,7 +1,6 @@
 
 from . format import NegativeParenFormatter
 from . period import Period
-from . ixbrl import IxbrlReporter
 import io
 
 class TextReporter:

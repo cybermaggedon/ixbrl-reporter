@@ -3,7 +3,7 @@
 
 from . basicelement import BasicElement
 from . report import TextReporter
-from . ixbrl import IxbrlReporter
+from . worksheet_ixbrl import IxbrlReporter
 from lxml import objectify
 
 class WorksheetElement(BasicElement):
