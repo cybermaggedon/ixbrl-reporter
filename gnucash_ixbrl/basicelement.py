@@ -111,7 +111,6 @@ h2 {
   table-layout: fixed;  
   border-spacing: 0.3rem 0rem;
   border-collapse: separate;
-  width: 100%;
 }
 
 .row {
@@ -138,7 +137,7 @@ h2 {
 .value {
   font-family: Source Code Pro, monospace;
   font-size: 10pt;
-  width: 10rem;
+  width: 8rem;
   padding-left: 1rem;
   padding-right: 1rem;
   margin-right: 1rem;
