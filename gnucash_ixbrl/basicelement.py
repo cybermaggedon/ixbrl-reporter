@@ -106,14 +106,28 @@ h2 {
   padding: 1rem;
 }
 
+.table {
+  display: table;
+  table-layout: fixed;  
+  border-spacing: 0.3rem 0rem;
+  border-collapse: separate;
+  width: 100%;
+}
+
+.row {
+  display: table-row;
+}
+
 .header {
   font-weight: bold;
   margin-top: 1rem;
 }
 
+.cell {
+  display: table-cell;
+}
+
 .label {
-  clear: left;
-  float: left;
   width: 20rem;
 }
 
@@ -124,7 +138,6 @@ h2 {
 .value {
   font-family: Source Code Pro, monospace;
   font-size: 10pt;
-  float: left;
   width: 10rem;
   padding-left: 1rem;
   padding-right: 1rem;
@@ -138,7 +151,7 @@ h2 {
     width: 18%;
   }
   * {
-    font-size: 1rem;
+    font-size: 1.1rem;
   }
   .label {
     width: 40%; 
@@ -170,7 +183,6 @@ h2 {
   border-bottom: 0.2em solid black;
   font-weight: bold;
   text-align: center;
-  float: left;
   width: 10rem;
   margin-right: 1rem;
 }
@@ -179,7 +191,6 @@ h2 {
   text-align: right;
   padding-left: 1em;
   padding-right: 1em;
-  float: left;
   width: 10rem;
   margin-right: 1rem;
   margin-top: 0.25em;
@@ -192,8 +203,6 @@ h2 {
 .period.value.negative {
   padding-left: 2rem;
   padding-right: 0rem;
-//  position: relative;
-//  left: 1rem;
   color: #400000;
 }
 
