@@ -96,24 +96,24 @@ HTML in a browser.
 
 
 ```
-gnucash-ixbrl company-accounts.yaml report ixbrl > out.html
+gnucash-ixbrl config/ch-unaudited-micro.yaml report ixbrl > accts.html
 ```
 
 Corporation tax filing:
 
 ```
-gnucash-ixbrl corporation-tax.yaml report ixbrl > ct600.html
+gnucash-ixbrl config/hmrc-corp-tax.yaml report ixbrl > ct.html
 ```
 
-Detailed profit-and-loss:
+Just the detailed Profit-and-Loss part of the CT report:
 
 ```
-gnucash-ixbrl profit-and-loss.yaml report ixbrl > dpl.html
+gnucash-ixbrl config/hmrc-corp-tax.yaml detailed-profit-and-loss ixbrl > dpl.html
 ```
 
 ## Configuration
 
-There are two configuration files: the configuration file you specify
+There are two kinds of configuration file: the configuration file you specify
 on the command line specifies the report structure.  It references a
 taxonomy configuration file which specifies the schema and field mappings.
 

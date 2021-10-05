@@ -671,7 +671,7 @@ elements:
   elements:
   - title
   - balance-sheet
-  - profit-and-loss
+#  - profit-and-loss
   - notes
 
 # Title page.
