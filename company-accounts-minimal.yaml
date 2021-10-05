@@ -12,8 +12,8 @@ accounts:
 # This sets up the iXBRL taxonomy.  There should be a filename and a
 # taxonomy ID.
 taxonomy:
-  file: taxonomy/frs101.yaml
-  id: frs101
+  file: taxonomy/frs102.yaml
+  id: frs102
 
 #############################################################################
 ### Report metadata #########################################################

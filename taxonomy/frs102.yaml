@@ -5,13 +5,13 @@
 
 taxonomy:
 
-  # Some elements from the FRS-101 taxonomy.
-  frs101:
+  # Some elements from the FRS-102 taxonomy.
+  frs102:
 
     # One or more taxonomy definitions to include.  You can have more than
     # one to mix multiple taxonomies in a document.
     schema:
-    - https://xbrl.frc.org.uk/FRS-101/2019-01-01/FRS-101-2019-01-01.xsd
+    - https://xbrl.frc.org.uk/FRS-102/2019-01-01/FRS-102-2019-01-01.xsd
 
     # XML namespaces which are added to the iXBRL output.  A bunch of
     # standard iXBRL outputs are added automatically and don't need to be
@@ -561,7 +561,7 @@ taxonomy:
       website-url: uk-bus:WebsiteMainPageURL
 
     # Segments / dimensions are mapped here.  Segments are defined with a
-    # segment identifier and a value e.g. accounting-standards = frs101.
+    # segment identifier and a value e.g. accounting-standards = frs102.
     # For each segment identifier, there is listed a dimension (which is added
     # to a context) and a map from value to dimension value.
     segment:
