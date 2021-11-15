@@ -343,6 +343,21 @@ elements:
   - software-version
   - 'note:~{supplementary-note:report-period=These are fictional accounts,
     references to real-world entities or persons is unintentional.}'
+- id: heading
+  kind: html
+  root:
+    tag: h2
+    attributes:
+      class: heading
+      style: 'font-weight: bold'
+    content:
+    - tag: span
+      content: 'Hello world'
+- id: page1
+  kind: page
+  elements:
+  - heading
+  - notes
 ```
 
 The entry point is the `report` element, at the top.  It is a `composite`

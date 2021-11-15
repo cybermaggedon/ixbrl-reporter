@@ -7,37 +7,34 @@ from lxml import objectify
 
 from datetime import datetime
 
-class NotesElement(BasicElement):
-    def __init__(self, id, title, notes, data):
-        super().__init__(id, data)
-        self.title = title
-        self.notes = notes
+class NoteExpansion:
 
-    @staticmethod
-    def load(elt_def, data):
+    def __init__(self, data):
+        self.data = data
 
-        e = NotesElement(
-            elt_def.get("id"),
-            elt_def.get("title", "Notes"),
-            elt_def.get("notes"),
-            data
-        )
+    def get_note_structure(self, n, taxonomy):
 
-        return e
+        return NoteParser.parse(n)
 
-    def to_text(self, out):
+    def get_note(self, n, taxonomy):
 
-        # FIXME: Put notes out as text.
-        pass
+        if n.startswith("note:"):
+            return n[5:]
 
-    def get_note_elts(self, n, par, taxonomy):
+        note = taxonomy.get_note(n)
+        if note:
+            return note
+
+        raise RuntimeError("Note '%s' not known." % n)
+
+    def expand(self, input, par, taxonomy):
         
         period = self.data.get_report_period()
         rpc = self.data.business_context.with_period(period)
 
         elt = par.xhtml_maker.span()
 
-        note = self.get_note(n, taxonomy)
+        note = self.get_note(input, taxonomy)
 
         structure = self.get_note_structure(note, taxonomy)
 
@@ -109,44 +106,66 @@ class NotesElement(BasicElement):
 
         return elt
 
-    def get_note_structure(self, n, taxonomy):
 
-        return NoteParser.parse(n)
+class NotesElement(BasicElement):
+    def __init__(self, id, title, notes, numbered, data):
+        super().__init__(id, data)
+        self.title = title
+        self.notes = notes
+        self.numbered = numbered
+        self.expander = NoteExpansion(data)
 
-    def get_note(self, n, taxonomy):
+    @staticmethod
+    def load(elt_def, data):
 
-        if n.startswith("note:"):
-            return n[5:]
+        e = NotesElement(
+            elt_def.get("id", mandatory=False),
+            elt_def.get("title", mandatory=False),
+            elt_def.get("notes"),
+            elt_def.get("numbered", True, mandatory=False),
+            data
+        )
 
-        note = taxonomy.get_note(n)
-        if note:
-            return note
+        return e
 
-        raise RuntimeError("Note '%s' not known." % n)
+    def to_text(self, out):
+
+        # FIXME: Put notes out as text.
+        pass
 
     def to_ixbrl_elt(self, par, taxonomy):
 
         div = par.xhtml_maker.div()
-        div.set("class", "notes page")
+        div.set("class", "notes")
         div.set("id", self.id + "-element")
 
         if self.title:
             title = par.xhtml_maker.h2(self.title)
-        else:
-            title = par.xhtml_maker.h2("Notes")
-        div.append(title)
+            div.append(title)
 
-        ol = par.xhtml_maker.ol()
-        div.append(ol)
+        if self.numbered:
+            contr = par.xhtml_maker.ol()
+        else:
+            contr = par.xhtml_maker.div()
+
+        div.append(contr)
 
         for note in self.notes:
 
-            li = par.xhtml_maker.li()
-            ol.append(li)
+            if self.numbered:
 
-            p = par.xhtml_maker.p()
-            li.append(p)
+                li = par.xhtml_maker.li()
+                contr.append(li)
 
-            p.append(self.get_note_elts(note, par, taxonomy))
+                p = par.xhtml_maker.p()
+                li.append(p)
+
+            else:
+
+                p = par.xhtml_maker.p()
+                contr.append(p)
+
+            elt = self.expander.expand(note, par, taxonomy)
+            p.append(elt)
 
         return div

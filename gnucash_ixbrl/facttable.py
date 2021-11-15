@@ -30,7 +30,7 @@ class FactTable(BasicElement):
     def load(elt_def, data):
 
         c = FactTable(
-            elt_def.get("id"),
+            elt_def.get("id", mandatory=False),
             elt_def.get("facts"),
             elt_def.get("title", "Fact table"),
             data
@@ -49,7 +49,7 @@ class FactTable(BasicElement):
     def to_ixbrl_elt(self, par, taxonomy):
 
         div = par.xhtml_maker.div()
-        div.set("class", "facts page")
+        div.set("class", "facts")
         div.set("id", self.id + "-element")
 
         title = par.xhtml_maker.h2(self.title)
@@ -91,7 +91,7 @@ class FactTable(BasicElement):
         row.append(descelt)
 
         valelt = par.xhtml_maker.div()
-        valelt.set("class", "value")
+        valelt.set("class", "factvalue")
         row.append(valelt)
 
         valelt.append(fact.to_elt(par))

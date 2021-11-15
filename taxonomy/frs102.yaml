@@ -11,16 +11,16 @@ taxonomy:
     # One or more taxonomy definitions to include.  You can have more than
     # one to mix multiple taxonomies in a document.
     schema:
-    - https://xbrl.frc.org.uk/FRS-102/2019-01-01/FRS-102-2019-01-01.xsd
+    - https://xbrl.frc.org.uk/FRS-102/2021-01-01/FRS-102-2021-01-01.xsd
 
     # XML namespaces which are added to the iXBRL output.  A bunch of
     # standard iXBRL outputs are added automatically and don't need to be
     # listed here.
     namespaces:
-      uk-bus: http://xbrl.frc.org.uk/cd/2019-01-01/business
-      uk-core: http://xbrl.frc.org.uk/fr/2019-01-01/core
-      uk-direp: http://xbrl.frc.org.uk/reports/2019-01-01/direp
-      uk-geo: http://xbrl.frc.org.uk/cd/2019-01-01/countries
+      uk-bus: http://xbrl.frc.org.uk/cd/2021-01-01/business
+      uk-core: http://xbrl.frc.org.uk/fr/2021-01-01/core
+      uk-direp: http://xbrl.frc.org.uk/reports/2021-01-01/direp
+      uk-geo: http://xbrl.frc.org.uk/cd/2021-01-01/countries
 
     # Contexts are references invoke by tagged data, they describe an
     # entity, any dimensions, and a time period/instant.  We define
@@ -333,69 +333,78 @@ taxonomy:
       context: previous-period
       config: metadata.business.average-employees.1
       kind: count
-    - id: officer
+    - id: officer1
       context: officer1
       config: metadata.business.directors.0
-    - id: officer
+    - id: officer2
       context: officer2
       config: metadata.business.directors.1
-    - id: officer
+    - id: officer3
       context: officer3
       config: metadata.business.directors.2
-    - id: officer
+    - id: officer4
       context: officer4
       config: metadata.business.directors.3
-    - id: officer
+    - id: officer5
       context: officer5
       config: metadata.business.directors.4
-    - id: officer
+    - id: officer6
       context: officer6
       config: metadata.business.directors.5
-    - id: officer
+    - id: officer7
       context: officer7
       config: metadata.business.directors.6
-    - id: officer
+    - id: officer8
       context: officer8
       config: metadata.business.directors.7
-    - id: officer
+    - id: officer9
       context: officer9
       config: metadata.business.directors.8
-    - id: officer
+    - id: officer10
       context: officer10
       config: metadata.business.directors.9
-    - id: officer
+    - id: officer11
       context: officer11
       config: metadata.business.directors.10
-    - id: officer
+    - id: officer12
       context: officer12
       config: metadata.business.directors.11
-    - id: officer
+    - id: officer13
       context: officer13
       config: metadata.business.directors.12
-    - id: officer
+    - id: officer14
       context: officer14
       config: metadata.business.directors.13
-    - id: officer
+    - id: officer15
       context: officer15
       config: metadata.business.directors.14
-    - id: officer
+    - id: officer16
       context: officer16
       config: metadata.business.directors.15
-    - id: officer
+    - id: officer17
       context: officer17
       config: metadata.business.directors.16
-    - id: officer
+    - id: officer18
       context: officer18
       config: metadata.business.directors.17
-    - id: officer
+    - id: officer19
       context: officer19
       config: metadata.business.directors.18
-    - id: officer
+    - id: officer20
       context: officer20
       config: metadata.business.directors.19
     - id: signing-officer
       context: signing-officer
       value: ''
+    - id: signed-by
+      context: signing-officer
+      value: 'FIXME'
+    - id: signers-name
+      context: report-period
+      config: metadata.report.signed-by
+    - id: jurisdiction
+      context: report-period
+      config: metadata.report.jurisdiction
     - id: contact-name
       context: contact-country
       config: metadata.business.contact.name
@@ -456,6 +465,12 @@ taxonomy:
         financial statements have been prepared in accordance with the
 	micro-entity provisions and delivered in accordance with the
 	provisions applicable under the small companies regime.}'
+      micro-entity-pl-provisions: '~{accounts-prepared-small-company-regime=These
+        financial statements have been prepared in accordance with the
+	micro-entity provisions.}'
+      small-company-provisions: '~{accounts-prepared-small-company-regime=These
+        financial statements have been prepared in accordance with the
+	small company provisions.}'
       no-audit-required: '~{members-not-required-audit=The members have
         not required the company to obtain an audit of its financial
 	statements for the accounting period in accordance with section 476.}'

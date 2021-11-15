@@ -1,0 +1,870 @@
+
+#############################################################################
+### GnuCash accounts source #################################################
+#############################################################################
+accounts:
+  # Filename of GnuCash accounts
+  file: example.gnucash
+
+#############################################################################
+### Taxonomy configuration ##################################################
+#############################################################################
+# This sets up the iXBRL taxonomy.  There should be a filename and a
+# taxonomy ID.
+taxonomy:
+  file: taxonomy/frs102.yaml
+  id: frs102
+
+#############################################################################
+### Report metadata #########################################################
+#############################################################################
+# Metadata used in reports.  Note that some of the metadata here is only
+# referenced from the taxonomy files, so different taxonomies will demand
+# different metadata.
+metadata:
+
+  # Metadata about the business
+  business:
+
+    # Summary of business activities
+    activities: Computer security consultancy and development services
+
+    # Average number of employees over the previous 2 accounting periods
+    average-employees:
+    - 2
+    - 1
+
+    # Business name
+    company-name: Example Biz Ltd.
+
+    # Registered company number
+    company-number: '12345678'
+
+    # iXBRL entity scheme, Companies House
+    entity-scheme: http://www.companieshouse.gov.uk/
+
+    # Legal entity formation information
+    company-formation:
+      country: england-and-wales
+      date: '2017-04-05'
+      form: private-limited-company
+
+    # VAT registration number
+    vat-registration: GB012345678
+
+    # Company contact details
+    contact:
+
+      # Contact name, address, county, location (city), country, email
+      name: Corporate Enquiries
+      address:
+      - 123 Leadbarton Street
+      - Dumpston Trading Estate
+      county: Minchingshire
+      location: Threapminchington
+      postcode: QQ99 9ZZ
+      country: UK
+      email: corporate@example.org
+
+      # Phone number
+      phone:
+        area: '7900'
+        country: '+44'
+        number: '0123456'
+        type: landline
+
+    # Directors of the business
+    directors:
+    - A Bloggs
+    - B Smith
+    - C Jones
+
+    # Industry sector.  Search for uk-bus:MainIndustrySectorDimension in the
+    # taxonomy file.
+    industry-sector: m
+
+    # Is the company dormant?
+    is-dormant: false
+
+    # SIC codes registered with Companies House.
+    sic-codes:
+    - '62020'
+    - '62021'
+
+    # Contact website description and URL
+    website:
+      description: Corporate website
+      url: https://example.org/corporate
+
+  # Report metadata
+  report:
+
+#    pretty-print: true
+
+    # The accounting-standards applied.  One of:
+    #   frs101, frs102, frsse, full-irs, micro-entities, other-standards,
+    #   small-entities-regime.
+    accounting-standards: micro-entities
+
+    # Accounts status, one of:
+    #   audit-exempt-no-accountants-report,
+    #   audit-exempt-with-accountants-report, audited,
+    #   independent-examination, other-reporting-regime
+    accounts-status: audit-exempt-no-accountants-report
+
+    # Accounts type, one of:
+    #   abbreviated-accounts, abridged-accounts, full-accounts
+    accounts-type: abridged-accounts
+
+    # Date report was authorised for issue
+    authorised-date: '2021-01-01'
+
+    # Date of the balance sheet data pull
+    balance-sheet-date: '2020-12-31'
+
+    # Accounts currency
+    currency: GBP
+
+    # Report issue date
+    date: '2021-01-01'
+
+    # Periods over which the account was issued.  Current period goes first.
+    periods:
+    - name: '2020'
+      start: '2020-01-01'
+      end: '2020-12-31'
+    - name: '2019'
+      start: '2019-01-01'
+      end: '2019-12-31'
+
+    # Name of director who signed the reports
+    signed-by: B Smith
+    jurisdiction: England and Wales
+
+    # Context segment of the director who signed the report.  director2
+    # means the second director in the list metadata.business.directors.
+    signing-officer: director2
+
+    # Report title
+    title: Unaudited Micro-Entity Accounts
+
+  # Tax details, used by the Corporation tax profile
+  tax:
+
+    # Unique Taxpayer Reference (HMRC issued)
+    utr: '8596148860'
+
+    # Tax period
+    period:
+      name: '2021'
+      start: '2020-02-01'
+      end: '2021-01-31'
+
+#############################################################################
+### Report computations #####################################################
+#############################################################################
+computations:
+
+
+##############################
+# Income statement ###########
+##############################
+
+# Income from consultancy
+- id: consultancy
+  kind: line
+  description: Consultancy
+  period: in-year
+  accounts:
+  - Income
+
+# Total turnover
+- id: turnover
+  kind: group
+  description: Turnover / revenue
+  hide-breakdown: true
+  period: in-year
+  inputs:
+  - consultancy
+
+# Gross profit
+- id: gross-profit
+  kind: sum
+  description: Gross Profit
+  period: in-year
+  inputs:
+  - turnover
+
+# Salaries expense
+- id: salaries
+  kind: line
+  accounts:
+  - Expenses:Emoluments:Employees
+  description: Salaries
+  period: in-year
+
+# Pension contributions expense
+- id: pensions
+  kind: line
+  accounts:
+  - Expenses:Emoluments:Employer Pension Contribution
+  description: Pension contributions
+  period: in-year
+
+# Depreciation - not calculated, just taken out of the depreciation expense
+# account
+- id: depreciation
+  kind: line
+  description: Depreciation
+  accounts:
+  - Expenses:Depreciation
+  period: in-year
+
+# Accountancy expenses
+- id: accountancy
+  kind: line
+  description: Accountancy services
+  accounts:
+  - Expenses:VAT Purchases:Accountant
+  period: in-year
+
+# Bank charges
+- id: bank-charges
+  kind: line
+  description: Bank charges
+  period: in-year
+  accounts:
+  - Expenses:VAT Purchases:Bank Charges
+
+# Office expenses
+- id: office
+  kind: line
+  description: Office costs
+  period: in-year
+  accounts:
+  - Expenses:VAT Purchases:Office
+
+# Software expenses
+- id: software
+  kind: line
+  description: Software
+  period: in-year
+  accounts:
+  - Expenses:VAT Purchases:Software
+
+# Subscriptions
+- id: subscriptions
+  kind: line
+  description: Subscriptions
+  period: in-year
+  accounts:
+  - Expenses:VAT Purchases:Subscriptions
+
+# Sundries
+- id: sundries
+  kind: line
+  description: Sundries
+  period: in-year
+  accounts:
+  - Expenses:VAT Purchases:Sundries
+
+# Telecoms
+- id: telecoms
+  kind: line
+  description: Telecoms
+  period: in-year
+  accounts:
+  - Expenses:VAT Purchases:Telecoms
+
+# Travel and accomodation
+- id: travel
+  kind: line
+  description: Travel
+  period: in-year
+  accounts:
+  - Expenses:VAT Purchases:Travel/Accom
+  
+# Administrative expenses total, sums all the expenses above.
+- id: administrative-expenses
+  kind: group
+  description: Administrative Expenses
+  hide-breakdown: true
+  inputs:
+  - salaries
+  - pensions
+  - depreciation
+  - accountancy
+  - bank-charges
+  - office
+  - software
+  - subscriptions
+  - sundries
+  - telecoms
+  - travel
+  period: in-year
+
+# Profit, computed from gross profit without the expenses
+- id: profit
+  kind: sum
+  description: Profit (Loss)
+  period: in-year
+  inputs:
+  - gross-profit
+  - administrative-expenses
+
+
+##############################
+# Balance sheet ##############
+##############################
+
+# Tanglible assets is taken from the Capital Equipment account in GnuCash
+- id: tangible-assets
+  kind: line
+  description: Tangible Assets
+  period: at-end
+  accounts:
+  - Assets:Capital Equipment
+  
+# Fixed assets is tangible assets
+- id: fixed-assets
+  description: Fixed Assets
+  kind: sum
+  period: at-end
+  inputs:
+  - tangible-assets
+
+# Debtors
+- id: debtors
+  kind: line
+  description: Debtors
+  period: at-end
+  accounts:
+  - Accounts Receivable
+  - Assets:Owed To Us
+
+# VAT due back
+- id: vat-refund-owed
+  kind: line
+  description: VAT Refund Due
+  period: at-end
+  accounts:
+  - VAT:Input
+
+# Cash in bank
+- id: bank
+  kind: line
+  description: Bank
+  period: at-end
+  accounts:
+  - Bank Accounts
+
+# Current assets
+- id: current-assets
+  kind: sum
+  description: Current Assets
+  inputs:
+  - debtors
+  - vat-refund-owed
+  - bank
+
+# These accounts don't have any prepayments / accrued income
+- id: prepayments-and-accrued-income
+  kind: group
+  description: Prepayments and Accrued Income
+  inputs: []
+
+# Trade creditors
+- id: trade-creditors
+  kind: line
+  description: Trade Creditors
+  period: at-end
+  accounts:
+  - Accounts Payable
+
+# Other creditrs
+- id: other-creditors
+  kind: line
+  description: Other Creditors
+  period: at-end
+  accounts:
+  - VAT:Output
+
+# Creditors owing amounts which are due within 1 year.
+- id: creditors-within-1-year
+  kind: sum
+  description: 'Creditors: falling due within one year'
+  inputs:
+  - trade-creditors
+  - other-creditors
+  # In the FRS taxonomies there is a dimension which partitions
+  # creditors due within 1 year from over 1 year
+  segments:
+    matures: within-1-year
+
+# Net current assets
+- id: net-current-assets
+  kind: sum
+  description: Net Current Assets
+  inputs:
+  - current-assets
+  - prepayments-and-accrued-income
+  - creditors-within-1-year
+
+# Total assets less liabilities - adds fixed assets
+- id: total-assets-less-liabilities
+  kind: sum
+  description: Total Assets Less Liabilities
+  inputs:
+  - fixed-assets
+  - current-assets
+  - prepayments-and-accrued-income
+  - creditors-within-1-year
+
+# Creditors owing amounts which are due beyond 1 year
+- id: creditors-after-1-year
+  kind: group
+  description: 'Creditors: falling due after one year'
+  inputs: []
+  segments:
+    matures: after-1-year
+
+# Corporation tax liability
+- id: corporation-tax-owed
+  kind: line
+  description: Corporation Tax
+  period: at-end
+  accounts:
+  - Liabilities:Owed Corporation Tax
+
+# Liabilities
+- description: Provisions For Liabilities
+  id: provisions-for-liabilities
+  kind: sum
+  inputs:
+  - corporation-tax-owed
+
+# Accrued liabilities and deferred income (we have none)
+- id: accruals-and-deferred-income
+  kind: group
+  description: Accrued liabilities and deferred income
+  inputs: []
+
+# Net assets
+- id: net-assets
+  kind: sum
+  description: Net Assets
+  inputs:
+  - total-assets-less-liabilities
+  - creditors-after-1-year
+  - provisions-for-liabilities
+  - accruals-and-deferred-income
+
+# Called-up share capital
+- id: share-capital
+  kind: line
+  description: Share Capital
+  period: at-end
+  accounts:
+  - Equity:Shareholdings
+
+# Profit i.e. income minus expenses.
+- id: profit-loss
+  kind: line
+  description: Retained Profit
+  period: at-end
+  accounts:
+  - Income
+  - Expenses
+
+# Dividends paid out
+- id: dividends
+  kind: line
+  description: Dividends
+  period: at-end
+  accounts:
+  - Equity:Dividends
+
+# Corporation tax drawn on the equity account
+- id: corporation-tax
+  kind: line
+  description: Corporation Tax
+  period: at-end
+  accounts:
+  - Equity:Corporation Tax
+
+# Capital and reserves is the equity total
+- description: Capital and Reserves
+  id: capital-and-reserves
+  kind: group
+  inputs:
+  - share-capital
+  - profit-loss
+  - dividends
+  - corporation-tax
+
+# Capital total
+- id: total-capital-and-reserves
+  kind: sum
+  description: Capital and Reserves
+  inputs:
+  - capital-and-reserves
+
+
+##############################
+# Fixed assets ###############
+##############################
+
+# Fixed assets at start of period
+- id: fixed-assets-initial
+  kind: line
+  description: At start of period
+  period: at-start
+  accounts:
+  - Assets:Capital Equipment:Computer Equipment
+
+# Changes to fixed assets over the period
+- id: fixed-assets-additions
+  kind: line
+  description: Additions
+  period: in-year
+  accounts:
+  - Assets:Capital Equipment:Computer Equipment
+
+# Fixed assets at end of period (sum of the above two)
+- id: fixed-assets-total
+  kind: group
+  description: Fixed Assets
+  inputs:
+  - fixed-assets-initial
+  - fixed-assets-additions
+
+# Depreciation is accrued as a charge from the outset of the business.
+# This is the initial value at the start of the period
+- id: depreciation-initial
+  kind: line
+  description: At start of period
+  period: at-start
+  accounts:
+  - Assets:Capital Equipment:Depreciation
+
+# Depreciation addition over the period
+- id: depreciation-charge
+  kind: line
+  description: Charge
+  period: in-year
+  accounts:
+  - Assets:Capital Equipment:Depreciation
+
+# Depreciation at end of period (sum of above two)
+- id: depreciation-total
+  kind: group
+  description: Depreciation
+  inputs:
+  - depreciation-initial
+  - depreciation-charge
+
+# Assets carried is fixed assets at end of period minus depreciation at end
+# of period
+- id: carrying-final
+  kind: sum
+  description: Carrying at end of period
+  inputs:
+  - fixed-assets-total
+  - depreciation-total
+
+##############################
+# Shareholdings ##############
+##############################
+
+# Ordinary shares held at start of period
+- id: ordinary-shares-at-start
+  kind: line
+  description: Ordinary Shares
+  period: at-start
+  accounts:
+  - Equity:Shareholdings:Ordinary Shares
+
+# Preference shares held at start
+- id: preference-shares-at-start
+  kind: line
+  description: Preference Shares
+  period: at-start
+  accounts:
+  - Equity:Shareholdings:Preference Shares
+
+# Shares issued
+- id: shares-issued
+  kind: line
+  description: Shares Issued
+  period: in-year
+  accounts:
+  - Equity:Shareholdings
+
+# Share capital total is sum of the above 3.
+- id: share-capital
+  kind: group
+  description: Share Capital
+  period: at-end
+  inputs:
+  - ordinary-shares-at-start
+  - preference-shares-at-start
+  - shares-issued
+
+#############################################################################
+### Worksheets ##############################################################
+#############################################################################
+# Worksheets list the computations which are shown on each accounting figure
+worksheets:
+
+# Balance sheet
+- id: balance-sheet
+  kind: multi-period
+  computations:
+  - fixed-assets
+  - current-assets
+  - prepayments-and-accrued-income
+  - creditors-within-1-year
+  - net-current-assets
+  - total-assets-less-liabilities
+  - creditors-after-1-year
+  - provisions-for-liabilities
+  - accruals-and-deferred-income
+  - net-assets
+  - total-capital-and-reserves
+
+# Profit and loss
+- id: profit-and-loss
+  kind: multi-period
+  description: Profit and Loss
+  computations:
+  - turnover
+  - gross-profit
+  - administrative-expenses
+  - profit
+
+# Fixed assets
+- id: fixed-assets
+  kind: multi-period
+  description: Fixed Assets
+  computations:
+  - fixed-assets-total
+  - depreciation-total
+  - carrying-final
+
+# Share capital
+- id: share-capital
+  kind: multi-period
+  description: Share Capital
+  computations:
+  - share-capital
+
+#############################################################################
+### Elements describe the report structure ##################################
+#############################################################################
+
+elements:
+
+# Top-level report element is a composite which invokes the other elements.
+# The top-level element adds iXBRL schema stuff and document metadata.
+# That is configurable in the taxonomy, not here.
+
+- id: report
+  kind: composite
+  elements:
+  - title
+  - company-info
+  - balance-sheet
+  - notes
+
+# Financial position page
+- id: balance-sheet
+  kind: page
+  elements:
+  - kind: html
+    root:
+      tag: div
+      content:
+      - tag: div
+        attributes: { class: heading }
+        content:
+        - tag: div
+          content: 'expand:note:~[company-name]'
+        - tag: div
+          content: Statement of financial position
+        - tag: div
+          content: 'expand:note:As at ~[balance-sheet-date]'
+        - tag: hr
+
+  - kind: worksheet
+    worksheet: balance-sheet
+  - balance-sheet-notes
+  - signature
+
+- id: balance-sheet-notes
+  kind: notes
+  numbered: false
+  notes:
+
+  # Some boilerplate notes...
+
+  # ...prepared in accordance with the micro-entity provisions...
+  - micro-entity-provisions
+
+  # ...the company was entitled to exemption from audit..
+  - small-company-audit-exempt
+
+  # ...members have not required the company to obtain an audit..
+  - no-audit-required
+
+  # ...directors acknowledge their responsibilities for complying with...
+  - directors-acknowledge
+
+# Profit and loss
+- id: profit-and-loss
+  kind: worksheet
+  title: Income Statement
+  worksheet: profit-and-loss
+
+# Fixed assets
+- id: fixed-assets
+  kind: worksheet
+  title: Fixed Assets
+  worksheet: fixed-assets
+
+# Share capital
+- id: share-capital
+  kind: worksheet
+  title: Share Capital
+  worksheet: share-capital
+
+- id: title
+  kind: page
+  elements:
+  - kind: html
+    root:
+      tag: div
+      attributes: { class: titlepage }
+      content:
+      - tag: div
+        attributes: { class: company-number }
+        content: 'expand:note:
+          Company registration no. ~[company-number] (~[jurisdiction])'
+      - tag: img
+        attributes:
+          src: data:image/png;base64,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
+          alt: Company logo
+      - tag: div
+        attributes: { class: company-name }
+        content: 'expand:note:~[company-name]'
+      - tag: div
+        attributes: { class: title }
+        content: Unaudited Financial Statements
+      - tag: div
+        attributes: { class: subtitle }
+        content: 'expand:note:For the year ended ~[period-end]'
+
+- id: company-info
+  kind: page
+  elements:
+  - id: titlepage2
+    kind: html
+    root:
+      tag: div
+      content:
+      - tag: div
+        attributes: { class: heading }
+        content:
+        - tag: div
+          content: 'expand:note:~[company-name]'
+        - tag: div
+          content: Company information
+        - tag: div
+          content: 'expand:note:For the year ended ~[period-end]'
+        - tag: hr
+      - tag: table
+        attributes:
+          class: company-info
+        content:
+        - tag: tr
+          content:
+          - tag: td
+            content: Directors
+          - tag: td
+            content:
+            - 'expand:note:~[officer1]'
+            - tag: br
+            - 'expand:note:~[officer2]'
+            - tag: br
+            - 'expand:note:~[officer3]'
+        - tag: tr
+          content:
+          - tag: td
+            content: Company number
+          - tag: td
+            content: 'expand:note:
+            ~[company-number], registered in ~[jurisdiction]'
+        - tag: tr
+          content:
+          - tag: td
+            content: Registered office
+          - tag: td
+            content:
+            - 'expand:note:~[contact-address1::, ]'
+            - tag: br
+              content: []
+            - 'expand:note:~[contact-address2::, ]'
+            - tag: br
+              content: []
+            - 'expand:note:~[contact-location::, ] ~[contact-postcode]'
+
+
+- id: signature
+  kind: html
+  root:
+    tag: div
+    content:
+    - tag: p
+      content: 'expand:note:Approved by the board of directors and
+        authorised for publication on ~[authorised-date].'
+    - tag: p
+      content: 'expand:note:Signed on behalf of the board, by
+        ~[signers-name].'
+    - tag: img
+      attributes:
+        src: data:image/png;base64,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
+        alt: Director's signature
+
+- id: notes
+  kind: page
+  elements:
+  - kind: html
+    root:
+      tag: div
+      content:
+      - tag: div
+        attributes: { class: heading }
+        content:
+        - tag: div
+          content: 'expand:note:~[company-name]'
+        - tag: div
+          content: Notes to the accounts
+        - tag: div
+          attributes: { class: subtitle }
+          content: 'expand:note:For the year ended ~[period-end]'
+        - tag: hr
+  - kind: notes
+    notes:
+
+    # Some boilerplate notes...
+
+    # Company number and address.
+    - company
+
+    # These accounts were generated using gnucash-ixbrl...  You don't need
+    # to have this one in your report.
+    - software-version
+
+    # Just showing how custom notes are created.
+    - 'note:These are fictional accounts, ~[company-name] is intended to
+      reference a fictional entity.  Any references to real-world entities or
+      persons is unintentional.'

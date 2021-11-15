@@ -633,7 +633,9 @@ worksheets:
 
 # Report elements
 elements:
-- elements:
+- id: report
+  kind: composite
+  elements:
   - about
   - capital-allowances
   - profits
@@ -642,304 +644,321 @@ elements:
   - rnd
   - detailed-profit-and-loss
   - tax-calculation
-  id: report
-  kind: composite
 
 - id: about
-  kind: facttable
-  title: Corporation Tax Return
-  facts:
-  - id: company-name
-    kind: config
-    description: Company name
-    field: '1'
-    context: report-date
-    key: metadata.business.company-name
-  - context: report-date
-    description: Tax reference
-    field: '3'
-    id: tax-reference
-    key: metadata.tax.utr
-    kind: config
-  - context: report-date
-    description: Return period start
-    field: '30'
-    id: return-period-start
-    key: metadata.tax.period.start
-    kind: config-date
-  - context: report-date
-    description: Return period end
-    field: '35'
-    id: return-period-end
-    key: metadata.tax.period.end
-    kind: config-date
-  - context: report-date
-    description: Start of accounts period
-    field: '-'
-    id: account-period-start
-    key: metadata.tax.period.start
-    kind: config-date
-  - context: report-date
-    description: End of accounts period
-    field: '-'
-    id: account-period-end
-    key: metadata.tax.period.end
-    kind: config-date
-  - context: report-period
-    description: Company is a partner in a firm
-    field: '-'
-    id: partner-in-a-firm
-    kind: bool
-    value: false
+  kind: page
+  elements:
+  - kind: facttable
+    title: Corporation Tax Return
+    facts:
+    - id: company-name
+      kind: config
+      description: Company name
+      field: '1'
+      context: report-date
+      key: metadata.business.company-name
+    - context: report-date
+      description: Tax reference
+      field: '3'
+      id: tax-reference
+      key: metadata.tax.utr
+      kind: config
+    - context: report-date
+      description: Return period start
+      field: '30'
+      id: return-period-start
+      key: metadata.tax.period.start
+      kind: config-date
+    - context: report-date
+      description: Return period end
+      field: '35'
+      id: return-period-end
+      key: metadata.tax.period.end
+      kind: config-date
+    - context: report-date
+      description: Start of accounts period
+      field: '-'
+      id: account-period-start
+      key: metadata.tax.period.start
+      kind: config-date
+    - context: report-date
+      description: End of accounts period
+      field: '-'
+      id: account-period-end
+      key: metadata.tax.period.end
+      kind: config-date
+    - context: report-period
+      description: Company is a partner in a firm
+      field: '-'
+      id: partner-in-a-firm
+      kind: bool
+      value: false
+
 - id: capital-allowances
-  kind: facttable
-  title: Capital allowances and balancing charges
-  facts:
-  - id: annual-investment-allowance
-    context: report-period
-    description: Annual investment allowance
-    field: '690'
-    computation: ct-annual-investment-allowance
-    kind: computation
-    period-config: metadata.tax.period
-    context: management-expenses-period
+  kind: page
+  elements:
+  - kind: facttable
+    title: Capital allowances and balancing charges
+    facts:
+    - id: annual-investment-allowance
+      context: report-period
+      description: Annual investment allowance
+      field: '690'
+      computation: ct-annual-investment-allowance
+      kind: computation
+      period-config: metadata.tax.period
+      context: management-expenses-period
+
 - id: profits
-  kind: facttable
-  title: Profits and gains
-  facts:
-  - id: adjusted-trading-profit-of-this-period
-    context: report-period
-    description: Trading profits
-    field: '155'
-    computation: ct-trading-profits
-    kind: computation
-    period-config: metadata.tax.period
-  - id: trading-losses-brought-forward
-    description: Trading losses brough forward
-    field: 160, 285
-    context: report-period
-    kind: money
-    value: 0
-  - id: net-trading-profits
-    computation: ct-trading-profits
-    context: report-period
-    description: Net trading profits
-    field: '165'
-    kind: computation
-    period-config: metadata.tax.period
-  - context: report-period
-    description: Net chargeable gains
-    field: '220'
-    id: net-chargeable-gains
-    kind: money
-    value: 0
-    period-config: metadata.tax.period
-  - id: profits-before-other-deductions-and-reliefs
-    computation: ct-trading-profits
-    context: report-period
-    description: Profits before other deductions and reliefs
-    field: '235'
-    kind: computation
-    period-config: metadata.tax.period
-  - id: profits-before-charges-and-group-relief
-    kind: computation
-    computation: ct-profits
-    context: report-period
-    description: Profits before donations and group relief
-    field: '300'
-    period-config: metadata.tax.period
-  - id: qualifying-donations
-    context: report-period
-    description: Qualifying donations
-    field: '305'
-    kind: money
-    value: 0
-  - context: report-period
-    description: Group relief
-    field: '310'
-    id: group-relief-claimed
-    kind: money
-    value: 0
-  - context: report-period
-    description: Group relief for carried forward losses
-    field: '312'
-    id: group-relief-claimed-for-carried-forward-losses
-    kind: money
-    value: 0
-  - computation: ct-profits
-    context: report-period
-    description: Profits chargeable to Corporation Tax
-    field: '315'
-    id: total-profits-chargeable-to-corporation-tax
-    kind: computation
-    period-config: metadata.tax.period
+  kind: page
+  elements:
+  - kind: facttable
+    title: Profits and gains
+    facts:
+    - id: adjusted-trading-profit-of-this-period
+      context: report-period
+      description: Trading profits
+      field: '155'
+      computation: ct-trading-profits
+      kind: computation
+      period-config: metadata.tax.period
+    - id: trading-losses-brought-forward
+      description: Trading losses brough forward
+      field: 160, 285
+      context: report-period
+      kind: money
+      value: 0
+    - id: net-trading-profits
+      computation: ct-trading-profits
+      context: report-period
+      description: Net trading profits
+      field: '165'
+      kind: computation
+      period-config: metadata.tax.period
+    - context: report-period
+      description: Net chargeable gains
+      field: '220'
+      id: net-chargeable-gains
+      kind: money
+      value: 0
+      period-config: metadata.tax.period
+    - id: profits-before-other-deductions-and-reliefs
+      computation: ct-trading-profits
+      context: report-period
+      description: Profits before other deductions and reliefs
+      field: '235'
+      kind: computation
+      period-config: metadata.tax.period
+    - id: profits-before-charges-and-group-relief
+      kind: computation
+      computation: ct-profits
+      context: report-period
+      description: Profits before donations and group relief
+      field: '300'
+      period-config: metadata.tax.period
+    - id: qualifying-donations
+      context: report-period
+      description: Qualifying donations
+      field: '305'
+      kind: money
+      value: 0
+    - context: report-period
+      description: Group relief
+      field: '310'
+      id: group-relief-claimed
+      kind: money
+      value: 0
+    - context: report-period
+      description: Group relief for carried forward losses
+      field: '312'
+      id: group-relief-claimed-for-carried-forward-losses
+      kind: money
+      value: 0
+    - computation: ct-profits
+      context: report-period
+      description: Profits chargeable to Corporation Tax
+      field: '315'
+      id: total-profits-chargeable-to-corporation-tax
+      kind: computation
+      period-config: metadata.tax.period
+
 - id: tax-chargeable
-  kind: facttable
-  title: Tax chargeable
-  facts:
-  - id: financial-year1-covered-by-the-return
-    context: report-period
-    description: Financial year 1 covered by the return
-    field: '330'
-    kind: string
-    value: '2019'
-  - id: financial-year2-covered-by-the-return
-    context: report-period
-    description: Financial year 2 covered by the return
-    field: '380'
-    kind: string
-    value: '2020'
-  - id: fy1-amount-of-profit-chargeable-at-first-rate
-    context: report-period
-    description: FY1 profit chargeable at first rate
-    field: '335'
-    computation: ct-profit-before-tax-fy1
-    kind: computation
-    period-config: metadata.tax.period
-  - id: fy2-amount-of-profit-chargeable-at-first-rate
-    context: report-period
-    description: FY2 profit chargeable at first rate
-    field: '385'
-    computation: ct-profit-before-tax-fy2
-    kind: computation
-    period-config: metadata.tax.period
-  - id: fy1-first-rate-of-tax
-    context: report-period
-    description: FY1 first rate of tax (%)
-    field: '340'
-    kind: number
-    value: 19
-  - id: fy2-first-rate-of-tax
-    context: report-period
-    description: FY2 first rate of tax (%)
-    field: '390'
-    kind: number
-    value: 19
-  - id: fy1-tax-at-first-rate
-    computation: ct-tax-fy1
-    context: report-period
-    description: FY1 tax at first rate
-    field: '345'
-    kind: computation
-    period-config: metadata.tax.period
-  - id: fy2-tax-at-first-rate
-    computation: ct-tax-fy2
-    context: report-period
-    description: FY2 tax at first rate
-    field: '395'
-    kind: computation
-    period-config: metadata.tax.period
-  - id: corporation-tax-chargeable
-    computation: ct-tax-total
-    context: report-period
-    description: Corporation tax
-    field: '430'
-    kind: computation
-    period-config: metadata.tax.period
-  - context: report-period
-    description: Marginal relief for ring fence trades
-    field: '435'
-    id: marginal-rate-relief-for-ring-fence-trades-payable
-    kind: money
-    value: 0
-  - computation: ct-tax-owed
-    context: report-period
-    description: Corporation tax chargeable
-    field: '440'
-    id: corporation-tax-chargeable-payable
-    kind: computation
-    period-config: metadata.tax.period
-  - id: total-reliefs-and-deductions-in-terms-of-tax-payable
-    context: report-period
-    description: Total reliefs and deduction in terms of tax
-    field: '470'
-    kind: money
-    value: 0
-    period-config: metadata.tax.period
-  - id: net-corporation-tax-payable
-    kind: computation
-    context: report-period
-    computation: ct-tax-owed
-    description: Net Corporation Tax liability
-    field: '475'
-    period-config: metadata.tax.period
-  - id: tax-chargeable
-    kind: computation
-    context: report-period
-    computation: ct-tax-owed
-    description: Tax chargeable
-    field: '510'
-    period-config: metadata.tax.period
-  - id: tax-payable
-    kind: computation
-    context: report-period
-    computation: ct-tax-owed
-    description: Tax payable
-    field: '525'
-    period-config: metadata.tax.period
+  kind: page
+  elements:
+  - kind: facttable
+    title: Tax chargeable
+    facts:
+    - id: financial-year1-covered-by-the-return
+      context: report-period
+      description: Financial year 1 covered by the return
+      field: '330'
+      kind: string
+      value: '2019'
+    - id: financial-year2-covered-by-the-return
+      context: report-period
+      description: Financial year 2 covered by the return
+      field: '380'
+      kind: string
+      value: '2020'
+    - id: fy1-amount-of-profit-chargeable-at-first-rate
+      context: report-period
+      description: FY1 profit chargeable at first rate
+      field: '335'
+      computation: ct-profit-before-tax-fy1
+      kind: computation
+      period-config: metadata.tax.period
+    - id: fy2-amount-of-profit-chargeable-at-first-rate
+      context: report-period
+      description: FY2 profit chargeable at first rate
+      field: '385'
+      computation: ct-profit-before-tax-fy2
+      kind: computation
+      period-config: metadata.tax.period
+    - id: fy1-first-rate-of-tax
+      context: report-period
+      description: FY1 first rate of tax (%)
+      field: '340'
+      kind: number
+      value: 19
+    - id: fy2-first-rate-of-tax
+      context: report-period
+      description: FY2 first rate of tax (%)
+      field: '390'
+      kind: number
+      value: 19
+    - id: fy1-tax-at-first-rate
+      computation: ct-tax-fy1
+      context: report-period
+      description: FY1 tax at first rate
+      field: '345'
+      kind: computation
+      period-config: metadata.tax.period
+    - id: fy2-tax-at-first-rate
+      computation: ct-tax-fy2
+      context: report-period
+      description: FY2 tax at first rate
+      field: '395'
+      kind: computation
+      period-config: metadata.tax.period
+    - id: corporation-tax-chargeable
+      computation: ct-tax-total
+      context: report-period
+      description: Corporation tax
+      field: '430'
+      kind: computation
+      period-config: metadata.tax.period
+    - context: report-period
+      description: Marginal relief for ring fence trades
+      field: '435'
+      id: marginal-rate-relief-for-ring-fence-trades-payable
+      kind: money
+      value: 0
+    - computation: ct-tax-owed
+      context: report-period
+      description: Corporation tax chargeable
+      field: '440'
+      id: corporation-tax-chargeable-payable
+      kind: computation
+      period-config: metadata.tax.period
+    - id: total-reliefs-and-deductions-in-terms-of-tax-payable
+      context: report-period
+      description: Total reliefs and deduction in terms of tax
+      field: '470'
+      kind: money
+      value: 0
+      period-config: metadata.tax.period
+    - id: net-corporation-tax-payable
+      kind: computation
+      context: report-period
+      computation: ct-tax-owed
+      description: Net Corporation Tax liability
+      field: '475'
+      period-config: metadata.tax.period
+    - id: tax-chargeable
+      kind: computation
+      context: report-period
+      computation: ct-tax-owed
+      description: Tax chargeable
+      field: '510'
+      period-config: metadata.tax.period
+    - id: tax-payable
+      kind: computation
+      context: report-period
+      computation: ct-tax-owed
+      description: Tax payable
+      field: '525'
+      period-config: metadata.tax.period
 
 - id: rnd-creative-enhanced-expenditure
-  kind: facttable
-  title: R&D / Creative enhanced expenditure
-  facts:
+  kind: page
+  elements:
+  - kind: facttable
+    title: R&D / Creative enhanced expenditure
+    facts:
 
-  - id: rnd-enhanced-sme
-    description: Small or medium-sized enterprise
-    field: '650'
-    context: report-period
-    kind: bool
-    value: true
+    - id: rnd-enhanced-sme
+      description: Small or medium-sized enterprise
+      field: '650'
+      context: report-period
+      kind: bool
+      value: true
 
-  - id: rnd-enhanced-large
-    description: Large company
-    field: '655'
-    context: report-period
-    kind: bool
-    value: false
+    - id: rnd-enhanced-large
+      description: Large company
+      field: '655'
+      context: report-period
+      kind: bool
+      value: false
 
-  - id: rnd-enhanced-expenditure
-    kind: computation
-    description: R&D enhanced expenditure
-    field: '660'
-    context: trade-period
-    computation: rnd-enhanced-expenditure
-    period-config: metadata.tax.period
+    - id: rnd-enhanced-expenditure
+      kind: computation
+      description: R&D enhanced expenditure
+      field: '660'
+      context: trade-period
+      computation: rnd-enhanced-expenditure
+      period-config: metadata.tax.period
 
-  - id: creative-enhanced-expenditure
-    kind: money
-    description: Creative enhanced expenditure
-    field: '665'
-    context: trade-period
-    value: 0
-    period-config: metadata.tax.period
+    - id: creative-enhanced-expenditure
+      kind: money
+      description: Creative enhanced expenditure
+      field: '665'
+      context: trade-period
+      value: 0
+      period-config: metadata.tax.period
 
-  - id: rnd-creative-enhanced-expenditure
-    kind: computation
-    description: R&D / Creative enhanced expenditure
-    field: '670'
-    context: report-period
-    computation: rnd-enhanced-expenditure
-    period-config: metadata.tax.period
+    - id: rnd-creative-enhanced-expenditure
+      kind: computation
+      description: R&D / Creative enhanced expenditure
+      field: '670'
+      context: report-period
+      computation: rnd-enhanced-expenditure
+      period-config: metadata.tax.period
 
-  - id: rnd-enhanced-expenditure-subcontracted
-    kind: money
-    description: R&D subcontracted by a large company
-    field: '675'
-    context: report-period
-    value: 0
-    period-config: metadata.tax.period
+    - id: rnd-enhanced-expenditure-subcontracted
+      kind: money
+      description: R&D subcontracted by a large company
+      field: '675'
+      context: report-period
+      value: 0
+      period-config: metadata.tax.period
 
 - id: rnd
-  kind: worksheet
-  title: SME R&D
-  worksheet: rnd
+  kind: page
+  elements:
+  - kind: worksheet
+    title: SME R&D
+    worksheet: rnd
 
 - id: tax-calculation
-  kind: worksheet
-  title: Tax calculation
-  worksheet: tax-calculation
+  kind: page
+  elements:
+  - kind: worksheet
+    title: Tax calculation
+    worksheet: tax-calculation
 
 - id: detailed-profit-and-loss
-  kind: worksheet
-  title: Detailed Profit-and-Loss
-  worksheet: detailed-profit-and-loss
+  kind: page
+  elements:
+  - kind: worksheet
+    title: Detailed Profit-and-Loss
+    worksheet: detailed-profit-and-loss

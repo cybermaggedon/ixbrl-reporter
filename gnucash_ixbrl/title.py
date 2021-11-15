@@ -20,7 +20,7 @@ class Title(BasicElement):
     def load(elt_def, data):
 
         e = Title(
-            elt_def.get("id"),
+            elt_def.get("id", mandatory=False),
             elt_def.get("signature-image"),
             elt_def.get("signature-type"),
             data
@@ -34,7 +34,7 @@ class Title(BasicElement):
     def to_ixbrl_elt(self, par, taxonomy):
 
         div = par.xhtml_maker.div({
-            "class": "title page",
+            "class": "title",
             "id": self.id + "-element",
         })
 

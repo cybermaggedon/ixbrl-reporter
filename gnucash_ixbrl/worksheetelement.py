@@ -17,8 +17,8 @@ class WorksheetElement(BasicElement):
     def load(elt_def, data):
 
         e = WorksheetElement(
-            elt_def.get("id"),
-            elt_def.get("title"),
+            elt_def.get("id", mandatory=False),
+            elt_def.get("title", mandatory=False),
             data.get_worksheet(elt_def.get("worksheet")),
             data
         )
@@ -27,8 +27,9 @@ class WorksheetElement(BasicElement):
 
     def to_text(self, out):
 
-        title = "*** {0} ***\n".format(self.title)
-        out.write(title)
+        if title:
+            title = "*** {0} ***\n".format(self.title)
+            out.write(title)
         
         rep = TextReporter()
         rep.output(self.worksheet, out)
@@ -41,11 +42,12 @@ class WorksheetElement(BasicElement):
         elt = rep.get_elt(self.worksheet, par, taxonomy)
 
         div = par.xhtml_maker.div()
-        div.set("class", "worksheet page")
+        div.set("class", "worksheet")
         elt.set("id", self.id + "-element")
 
-        title = par.xhtml_maker.h2(self.title)
-        div.append(title)
+        if self.title:
+            title = par.xhtml_maker.h2(self.title)
+            div.append(title)
 
         div.append(elt)
         

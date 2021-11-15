@@ -327,7 +327,7 @@ class Taxonomy:
         key = "taxonomy.{0}.metadata".format(self.name)
         for defn in self.cfg.get(key):
 
-            if defn.get("id") == id:
+            if defn.get("id").startswith(id):
                 fact = self.load_metadata(data, defn, ctxts)
                 if fact:
                     meta.append(fact)

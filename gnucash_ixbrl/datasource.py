@@ -87,16 +87,22 @@ class DataSource:
 
         raise RuntimeError("Could not find worksheet '%s'" % id)
 
-    def get_element(self, id):
+    def get_element(self, elt):
+
+        # This deals with inline
+        if isinstance(elt, dict):
+            if "kind" in elt:
+                return Element.load(elt, self)
+
+        # This deals with references
 
         elt_defs = self.cfg.get("elements")
 
         for elt_def in elt_defs:
-
-            if elt_def.get("id") == id:
+            if elt_def.get("id") == elt:
                 return Element.load(elt_def, self)
 
-        raise RuntimeError("Could not find element '%s'" % id)
+        raise RuntimeError("Could not find element '%s'" % elt)
 
     def get_config(self, key, deflt=None, mandatory=True):
         return self.cfg.get(key, deflt, mandatory)

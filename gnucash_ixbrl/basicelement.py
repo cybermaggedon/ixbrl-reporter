@@ -16,45 +16,22 @@ from lxml import objectify, etree
 
 import json
 from datetime import datetime
+from . computation import create_uuid
 
 class BasicElement:
 
     def __init__(self, id, data):
-        self.id = id
+        if id:
+            self.id = id
+        else:
+            self.id = "elt-" + create_uuid()
         self.data = data
-
-    @staticmethod
-    def load(elt_def, data):
-
-        kind = elt_def.get("kind")
-
-        if kind == "composite":
-            from . composite import Composite
-            return Composite.load(elt_def, data)
-
-        if kind == "title":
-            from . title import Title
-            return Title.load(elt_def, data)
-
-        if kind == "worksheet":
-            from . worksheetelement import WorksheetElement
-            return WorksheetElement.load(elt_def, data)
-
-        if kind == "notes":
-            from . notes import NotesElement
-            return NotesElement.load(elt_def, data)
-
-        if kind == "facttable":
-            from . facttable import FactTable
-            return FactTable.load(elt_def, data)
-
-        raise RuntimeError("Don't know element kind '%s'" % kind)
 
     def add_style(self, elt):
 
         style_text = """
 
-h2 {
+DIV.page:not(:first-child) {
   page-break-before: always;
 }
 
@@ -77,33 +54,59 @@ h2 {
     width: 21cm;
 
     margin: 2em 0;
-
-  }
-
-  DIV.title.page h1 {
-    margin: 4rem 4rem 0.5rem 4rem;
-    padding: 0;
-  }
-
-  DIV.title.page DIV.subheading {
-    font-weight: bold;
-    margin: 0.5rem 4em 2rem 4em;
-    padding: 0;
-  }
-
-  DIV.title.page DIV.information {
-    margin: 0.2em 4em 0.2em 4em;
-    padding: 0;
-  }
-
-  DIV.title.page DIV.signature {
-    padding: 4rem;
   }
 
 }
 
+.titlepage .company-number {
+  text-align: right;
+  font-size: small;
+  font-weight: bold;
+}
+
+.titlepage img {
+  margin: auto;
+  width: 25%;
+  display: block;
+  padding: 12rem 0rem 1rem 0rem;
+}
+
+.titlepage .company-name {
+  text-align: center;
+  font-size: xx-large;
+  font-weight: bold;
+  padding: 1rem 0rem 1rem 0rem;
+}
+
+.titlepage .title {
+  text-align: center;
+  font-size: large;
+  font-weight: bold;
+  padding: 0.5rem;
+}
+
+.titlepage .subtitle {
+  text-align: center;
+  font-size: large;
+  font-weight: bold;
+  padding: 0.5rem;
+}
+
+.page .heading {
+  text-align: center;
+  font-weight: bold;
+}
+
+.page .heading div:last-child {
+  padding-bottom: 0.5rem;
+}
+
+.page .heading hr {
+  margin-bottom: 2rem;
+}
+
 .sheet {
-  padding: 1rem;
+  padding: 0.1rem;
 }
 
 .table {
@@ -111,6 +114,23 @@ h2 {
   table-layout: fixed;  
   border-spacing: 0.3rem 0rem;
   border-collapse: separate;
+  font-size: small;
+}
+
+.company-info {
+  border-collapse: separate;
+  border-spacing: 0em 1em;
+  display: table;
+  table-layout: fixed;  
+}
+
+.company-info tr td {
+  vertical-align: top;
+}
+
+.company-info tr td:nth-child(1) {
+  width: 15em;
+  font-weight: bold;
 }
 
 .row {
@@ -136,7 +156,6 @@ h2 {
 
 .value {
   font-family: Source Code Pro, monospace;
-  font-size: 10pt;
   width: 8rem;
   padding-left: 1rem;
   padding-right: 1rem;
@@ -150,7 +169,7 @@ h2 {
     width: 18%;
   }
   * {
-    font-size: 1.1rem;
+    font-size: 0.9rem;
   }
   .label {
     width: 40%; 
@@ -241,14 +260,21 @@ h2 {
   font-size: small;
 }
 
-.fact .value {
+.fact .factvalue {
   border: 2px solid black;
   background-color: white;
+  font-family: Source Code Pro, monospace;
+  font-size: small;
+  width: 12rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin-right: 1rem;
 }
 
-.fact .value.false {
+.fact .factvalue.false {
   color: #a0a0a0;
 }
+
         """
 
         elt.append(
