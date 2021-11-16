@@ -533,6 +533,7 @@ taxonomy:
       creditors-within-1-year: uk-core:Creditors
       current-assets: uk-core:CurrentAssets
       debtors: uk-core:TradeDebtorsTradeReceivables
+      depreciation: uk-core:DepreciationAmortisationImpairmentExpense
       depreciation-total: uk-core:AccumulatedDepreciationImpairmentPropertyPlantEquipment
       depreciation-charge: uk-core:IncreaseFromDepreciationChargeForYearPropertyPlantEquipment
       directors-duty: uk-direp:StatementThatDirectorsAcknowledgeTheirResponsibilitiesUnderCompaniesAct
@@ -550,6 +551,9 @@ taxonomy:
       net-current-assets: uk-core:NetCurrentAssetsLiabilities
       officer: uk-bus:NameEntityOfficer
       other-creditors: uk-core:OtherCreditorsIncludingTaxationSocialSecurityBalanceSheetSubtotal
+      other-operating-income: uk-core:OtherOperatingIncomeFormat2
+      other-charges: uk-core:OtherOperatingExpensesFormat2
+      raw-materials-consumables: uk-core:RawMaterialsConsumablesUsed
       period-end: uk-bus:EndDateForPeriodCoveredByReport
       period-start: uk-bus:StartDateForPeriodCoveredByReport
       prepayments-and-accrued-income: uk-core:PrepaymentsAccruedIncomeNotExpressedWithinCurrentAssetSubtotal
@@ -565,7 +569,9 @@ taxonomy:
       small-company-exempt-from-audit: uk-direp:StatementThatCompanyEntitledToExemptionFromAuditUnderSection477CompaniesAct2006RelatingToSmallCompanies
       software-name: uk-bus:NameProductionSoftware
       software-version: uk-bus:VersionProductionSoftware
+      staff-costs: uk-core:StaffCostsEmployeeBenefitsExpense
       tangible-assets: uk-core:PropertyPlantEquipmentIncludingRight-of-useAssets
+      tax: uk-core:TaxTaxCreditOnProfitOrLossOnOrdinaryActivities
       total-assets-less-liabilities: uk-core:TotalAssetsLessCurrentLiabilities
       total-capital-and-reserves: uk-core:Equity
       trade-creditors: uk-core:TradeCreditorsTradePayables

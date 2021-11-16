@@ -180,11 +180,25 @@ computations:
 
 # Total turnover
 - id: turnover
-  kind: group
+  kind: sum
   description: Turnover / revenue
   period: in-year
   inputs:
   - consultancy
+
+# Other income
+- id: other-operating-income
+  kind: sum
+  description: Other income
+  period: in-year
+  inputs: []
+
+# Other income
+- id: raw-materials-consumables
+  kind: sum
+  description: Cost of raw materials
+  period: in-year
+  inputs: []
 
 # Gross profit
 - id: gross-profit
@@ -195,19 +209,12 @@ computations:
   - turnover
 
 # Salaries expense
-- id: salaries
+- id: staff-costs
   kind: line
   accounts:
   - Expenses:Emoluments:Employees
-  description: Salaries
-  period: in-year
-
-# Pension contributions expense
-- id: pensions
-  kind: line
-  accounts:
   - Expenses:Emoluments:Employer Pension Contribution
-  description: Pension contributions
+  description: Staff costs
   period: in-year
 
 # Depreciation - not calculated, just taken out of the depreciation expense
@@ -284,13 +291,10 @@ computations:
   - Expenses:VAT Purchases:Travel/Accom
   
 # Administrative expenses total, sums all the expenses above.
-- id: administrative-expenses
-  kind: group
-  description: Administrative Expenses
+- id: other-charges
+  kind: sum
+  description: Other charges
   inputs:
-  - salaries
-  - pensions
-  - depreciation
   - accountancy
   - bank-charges
   - office
@@ -301,14 +305,27 @@ computations:
   - travel
   period: in-year
 
+# Tax
+- id: tax
+  kind: line
+  description: Tax
+  period: in-year
+  accounts:
+  - Equity:Corporation Tax
+
 # Profit, computed from gross profit without the expenses
 - id: profit
-  kind: sum
+  kind: group
   description: Profit (Loss)
   period: in-year
   inputs:
-  - gross-profit
-  - administrative-expenses
+  - turnover
+  - other-operating-income
+  - raw-materials-consumables
+  - staff-costs
+  - depreciation
+  - other-charges
+  - tax
 
 
 ##############################
@@ -635,9 +652,6 @@ worksheets:
   kind: multi-period
   description: Profit and Loss
   computations:
-  - turnover
-  - gross-profit
-  - administrative-expenses
   - profit
 
 # Fixed assets
@@ -693,7 +707,6 @@ elements:
         - tag: div
           content: 'expand:note:As at ~[balance-sheet-date]'
         - tag: hr
-
   - kind: worksheet
     worksheet: balance-sheet
   - balance-sheet-notes
@@ -736,7 +749,7 @@ elements:
         - tag: div
           content: Income statement
         - tag: div
-          content: 'expand:note:As at ~[balance-sheet-date]'
+          content: 'expand:note:For the year ended ~[period-end]'
         - tag: hr
   - kind: worksheet
     worksheet: profit-and-loss
