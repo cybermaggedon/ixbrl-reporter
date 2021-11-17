@@ -732,8 +732,6 @@ elements:
   - directors-acknowledge
 
 # Profit and loss
-
-# Financial position page
 - id: profit-and-loss
   kind: page
   elements:
@@ -795,8 +793,7 @@ elements:
 - id: company-info
   kind: page
   elements:
-  - id: titlepage2
-    kind: html
+  - kind: html
     root:
       tag: div
       content:
