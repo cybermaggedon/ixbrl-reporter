@@ -74,7 +74,7 @@ class DataSource:
 
     def get_worksheet(self, id):
 
-        for ws_def in self.cfg.get("worksheets"):
+        for ws_def in self.cfg.get("report.worksheets"):
 
             if ws_def.get("id") == id:
 
@@ -96,7 +96,7 @@ class DataSource:
 
         # This deals with references
 
-        elt_defs = self.cfg.get("elements")
+        elt_defs = self.cfg.get("report.elements")
 
         for elt_def in elt_defs:
             if elt_def.get("id") == elt:

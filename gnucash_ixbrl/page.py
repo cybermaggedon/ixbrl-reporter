@@ -37,6 +37,7 @@ class PageElement(BasicElement):
         for v in self.elements:
 
             sub = v.to_ixbrl_elt(par, taxonomy)
-            elt.append(sub)
+            for sub2 in sub:
+                elt.append(sub2)
         
-        return elt
+        return [elt]

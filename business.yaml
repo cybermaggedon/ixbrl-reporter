@@ -1,0 +1,70 @@
+
+# Summary of business activities
+activities: Computer security consultancy and development services
+
+# Average number of employees over the previous 2 accounting periods
+average-employees:
+- 2
+- 1
+
+# Business name
+company-name: Example Biz Ltd.
+
+# Registered company number
+company-number: '12345678'
+
+# iXBRL entity scheme, Companies House
+entity-scheme: http://www.companieshouse.gov.uk/
+
+# Legal entity formation information
+company-formation:
+  country: england-and-wales
+  date: '2017-04-05'
+  form: private-limited-company
+
+# VAT registration number
+vat-registration: GB012345678
+
+# Company contact details
+contact:
+
+  # Contact name, address, county, location (city), country, email
+  name: Corporate Enquiries
+  address:
+  - 123 Leadbarton Street
+  - Dumpston Trading Estate
+  county: Minchingshire
+  location: Threapminchington
+  postcode: QQ99 9ZZ
+  country: UK
+  email: corporate@example.org
+
+  # Phone number
+  phone:
+    area: '7900'
+    country: '+44'
+    number: '0123456'
+    type: landline
+
+# Directors of the business
+directors:
+- A Bloggs
+- B Smith
+- C Jones
+
+# Industry sector.  Search for uk-bus:MainIndustrySectorDimension in the
+# taxonomy file.
+industry-sector: m
+
+# Is the company dormant?
+is-dormant: false
+
+# SIC codes registered with Companies House.
+sic-codes:
+- '62020'
+- '62021'
+
+# Contact website description and URL
+website:
+  description: Corporate website
+  url: https://example.org/corporate

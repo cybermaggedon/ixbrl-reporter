@@ -27,7 +27,7 @@ class WorksheetElement(BasicElement):
 
     def to_text(self, out):
 
-        if title:
+        if self.title:
             title = "*** {0} ***\n".format(self.title)
             out.write(title)
         
@@ -51,4 +51,4 @@ class WorksheetElement(BasicElement):
 
         div.append(elt)
         
-        return div
+        return [div]

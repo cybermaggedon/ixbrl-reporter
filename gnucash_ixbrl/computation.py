@@ -566,7 +566,7 @@ class Sum(Computable):
 
 def get_computations(gcfg, context, data):
 
-    comp_defs = gcfg.get("computations")
+    comp_defs = gcfg.get("report.computations")
 
     comps = {}
     for comp_def in comp_defs:

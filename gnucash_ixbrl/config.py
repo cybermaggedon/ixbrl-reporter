@@ -18,16 +18,19 @@ class Config(dict):
             value = {}
         super().__init__(value)
     @staticmethod
-    def load(file="config.yaml"):
+    def load(file="config.yaml", resolve=True):
         val = yaml.load(open(file), Loader=yaml.FullLoader)
-        c = Config(val)
+        c = Config.makevalue(val)
         c.file = file
+        if resolve: Config.resolve_refs(c, c)
         return c
     @staticmethod
     def makevalue(val):
         if val == None:
             return NoneValue()
         if isinstance(val, str):
+            if val.startswith("//import "):
+                return Config.load(val[9:], resolve=False)
             return StringValue(val)
         if isinstance(val, list):
             return ListValue([Config.makevalue(v) for v in val])
@@ -36,10 +39,67 @@ class Config(dict):
         if isinstance(val, int):
             return IntValue(val)
         if isinstance(val, dict):
-            return Config(val)
+            return Config.import_dict(val)
         if isinstance(val, float):
             return FloatValue(val)
         raise RuntimeError("Can't help with type {0}".format(type(val)))
+
+    @staticmethod
+    def import_dict(val):
+
+        rtn = {}
+
+        for k in val:
+            rtn[k] = Config.makevalue(val[k])
+            
+            # if isinstance(val[k], str):
+
+            #     if val[k].startswith("//import "):
+            #         rtn[k] = Config.load(val[k][9:], resolve=False)
+            #     else:
+            #         rtn[k] = Config.makevalue(val[k])
+            # elif isinstance(val[k], dict):
+            #     rtn[k] = Config.import_dict(val[k])
+            # elif isinstance(val[k], list):
+            #     tmp = []
+            #     for elt in val[k]:
+            #         if isinstance(val[k], dict):
+            #             tmp.append(Config.import_dict(val[k]))
+            #         else:
+            #             tmp.append(Config.makevalue(elt))
+
+            # else:
+            #     rtn[k] = Config.makevalue(val[k])
+
+        return Config(rtn)
+
+    def resolve_refs(val, root, d=""):
+
+        if isinstance(val, list):
+
+            for i in range(len(val)):
+
+                if isinstance(val[i], str):
+                    if val[i].startswith("//ref "):
+                        val[i] = root.get(val[i][6:])
+                elif isinstance(val[i], dict):
+                    Config.resolve_refs(val[i], root, d + str(i) + ".")
+                elif isinstance(val[i], list):
+                    Config.resolve_refs(val[i], root, d + str(i) + ".")
+
+        if isinstance(val, dict):
+
+            for k in val:
+
+                if isinstance(val[k], str):
+                    if val[k].startswith("//ref "):
+                        val[k] = root.get(val[k][6:])
+                        # FIXME: Resolve this now.
+                if isinstance(val[k], list):
+                    Config.resolve_refs(val[k], root, d + k + ".")
+                elif isinstance(val[k], dict):
+                    Config.resolve_refs(val[k], root, d + k + ".")
+
     def get(self, key, deflt=None, mandatory=True):
         if "." not in key:
             if key in self:

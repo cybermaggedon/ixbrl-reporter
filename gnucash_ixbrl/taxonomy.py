@@ -52,9 +52,8 @@ class TypedDimension:
         return mem
 
 class Taxonomy:
-    def __init__(self, cfg, name):
+    def __init__(self, cfg):
         self.cfg = cfg
-        self.name = name
         self.contexts = {}
         self.next_context_id = 0
         self.contexts_used = set()
@@ -91,19 +90,19 @@ class Taxonomy:
         raise RuntimeError("Not implemented: " + str(type(val)))
 
     def get_tag_name(self, id):
-        key = "taxonomy.{0}.tags.{1}".format(self.name, id)
+        key = "tags.{0}".format(id)
         return self.cfg.get(key, mandatory=False)
 
     def get_sign_reversed(self, id):
-        key = "taxonomy.{0}.sign-reversed.{1}".format(self.name, id)
+        key = "sign-reversed.{0}".format(id)
         return self.cfg.get_bool(key, False)
 
     def get_tag_dimensions(self, id):
-        key = "taxonomy.{0}.segments.{1}".format(self.name, id)
+        key = "segments.{0}".format(id)
         return self.cfg.get(key, mandatory=False)
 
     def get_description_tag_name(self, id):
-        key = "taxonomy.{0}.description-tags.{1}".format(self.name, id)
+        key = "description-tags.{0}".format(id)
         return self.cfg.get(key, mandatory=False)
 
     def create_description_fact(self, val, desc):
@@ -117,10 +116,10 @@ class Taxonomy:
 
         try:
 
-            k1 = "taxonomy.{0}.segment.{1}.typed-dimension".format(
-                self.name, id
+            k1 = "segment.{0}.typed-dimension".format(
+                id
             )
-            k2 = "taxonomy.{0}.segment.{1}.content".format(self.name, id)
+            k2 = "segment.{0}.content".format(id)
             dim = TypedDimension()
             dim.dim = self.cfg.get(k1)
             dim.content = self.cfg.get(k2)
@@ -129,8 +128,8 @@ class Taxonomy:
         except:
             pass
 
-        k1 = "taxonomy.{0}.segment.{1}.dimension".format(self.name, id)
-        k2 = "taxonomy.{0}.segment.{1}.map.{2}".format(self.name, id, val)
+        k1 = "segment.{0}.dimension".format(id)
+        k2 = "segment.{0}.map.{1}".format(id, val)
         dim = NamedDimension()
         dim.dim = self.cfg.get(k1)
         dim.value = self.cfg.get(k2)
@@ -200,22 +199,22 @@ class Taxonomy:
         return ctxt
 
     def get_namespaces(self):
-        key = "taxonomy.{0}.namespaces".format(self.name)
+        key = "namespaces"
         return self.cfg.get(key)
 
     def get_schemas(self):
-        key = "taxonomy.{0}.schema".format(self.name)
+        key = "schema"
         return self.cfg.get(key)
 
     def get_note(self, n):
-        key = "taxonomy.{0}.notes.{1}".format(self.name, n)
+        key = "notes.{0}".format(n)
         return self.cfg.get(key)
 
     def get_predefined_contexts(self, data):
 
         contexts = {}
 
-        for defn in self.cfg.get("taxonomy.{0}.contexts".format(self.name)):
+        for defn in self.cfg.get("contexts"):
 
             ctxt = self.load_context(defn, data, contexts)
             contexts[defn.get("id")] = ctxt
@@ -271,12 +270,12 @@ class Taxonomy:
 
         ctxts = self.get_predefined_contexts(data)
 
-        ids = self.cfg.get("taxonomy.{0}.document-metadata".format(self.name))
+        ids = self.cfg.get("document-metadata")
         ids = set(ids)
 
         meta = []
 
-        key = "taxonomy.{0}.metadata".format(self.name)
+        key = "metadata"
         for defn in self.cfg.get(key):
 
             if defn.get("id") in ids:
@@ -293,7 +292,7 @@ class Taxonomy:
 
         ctxts = self.get_predefined_contexts(data)
 
-        key = "taxonomy.{0}.metadata".format(self.name)
+        key = "metadata"
         for defn in self.cfg.get(key):
 
             if defn.get("id") == id:
@@ -308,7 +307,7 @@ class Taxonomy:
 
         meta = []
 
-        key = "taxonomy.{0}.metadata".format(self.name)
+        key = "metadata"
         for defn in self.cfg.get(key):
 
             if defn.get("id") == id:
@@ -324,7 +323,7 @@ class Taxonomy:
 
         meta = []
 
-        key = "taxonomy.{0}.metadata".format(self.name)
+        key = "metadata"
         for defn in self.cfg.get(key):
 
             if defn.get("id").startswith(id):

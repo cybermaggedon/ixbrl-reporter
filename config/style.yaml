@@ -1,0 +1,256 @@
+"
+
+DIV.page:not(:first-child) {
+  page-break-before: always;
+}
+
+body {
+  font-family: Helvetica, Georgia, sans-serif;
+  font-size: medium;
+}
+
+@media screen, projection, tv {
+
+  body {
+    margin: 2% 4% 2% 4%;
+    background-color: gray; 
+  }
+
+  DIV.page {
+
+    background-color: white;
+    padding: 2em;
+
+    /* CSS hack for cross browser minimum height */
+    min-height: 29.7cm;
+
+    height: 29.7cm;
+    width: 21cm;
+
+    margin: 2em 0;
+  }
+
+}
+
+.titlepage .company-number {
+  text-align: right;
+  font-size: small;
+  font-weight: bold;
+}
+
+.titlepage img {
+  margin: auto;
+  width: 25%;
+  display: block;
+  padding: 12rem 0rem 1rem 0rem;
+}
+
+.titlepage .company-name {
+  text-align: center;
+  font-size: xx-large;
+  font-weight: bold;
+  padding: 1rem 0rem 1rem 0rem;
+}
+
+.titlepage .title {
+  text-align: center;
+  font-size: large;
+  font-weight: bold;
+  padding: 0.5rem;
+}
+
+.titlepage .subtitle {
+  text-align: center;
+  font-size: large;
+  font-weight: bold;
+  padding: 0.5rem;
+}
+
+.page .heading {
+  text-align: center;
+  font-weight: bold;
+}
+
+.page .heading div:last-child {
+  padding-bottom: 0.5rem;
+}
+
+.page .heading hr {
+  margin-bottom: 2rem;
+}
+
+.sheet {
+  padding: 0.1rem;
+}
+
+.table {
+  display: table;
+  table-layout: fixed;  
+  border-spacing: 0.2rem 0rem;
+  border-collapse: separate;
+  font-size: medium;
+}
+
+.company-info {
+  border-collapse: separate;
+  border-spacing: 0em 1em;
+  display: table;
+  table-layout: fixed;  
+}
+
+.company-info tr td {
+  vertical-align: top;
+}
+
+.company-info tr td:nth-child(1) {
+  width: 15em;
+  font-weight: bold;
+}
+
+.row {
+  display: table-row;
+}
+
+.header {
+  font-weight: bold;
+  margin-top: 1rem;
+}
+
+.cell {
+  display: table-cell;
+}
+
+.label {
+  width: 20rem;
+}
+
+.label.breakdown.header {
+  margin-bottom: 0.2rem;
+}
+
+.value {
+  font-family: Source Code Pro, monospace, Courier New;
+  width: 8rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin-right: 1rem;
+  font-size: smaller;
+}
+
+@media print {
+  .label {
+    font-size: 0.9rem;
+    width: auto;
+  }
+  .value {
+    font-family: Source Code Pro, monospace;
+    width: 10rem;
+    font-size: 0.9rem;
+  }
+  .company-info {
+    font-size: 1.1rem;
+  }
+  TABLE.sheet {
+    margin: auto;
+  }
+  body {
+    font-size: 1rem;
+  }
+  .period {
+    width: 8rem;
+  }
+}
+
+.total.value {
+  margin-top: 1em;
+}
+
+.breakdown.total {
+  margin-top: 0.2em;
+  padding-top: 4px;
+  border-top: 1px solid white;
+}
+
+.breakdown.total.value {
+  border-top: 1px solid #808080;
+}
+
+.periodname {
+  padding: 0.5em 1em 0.5em 1em;
+  border-bottom: 0.2em solid black;
+  font-weight: bold;
+  text-align: center;
+  width: 10rem;
+  margin-right: 1rem;
+}
+
+.currency {
+  text-align: right;
+  padding-left: 1em;
+  padding-right: 1em;
+  width: 10rem;
+  margin-right: 1rem;
+  margin-top: 0.25em;
+}
+
+.period.value {
+  text-align: right;
+}
+
+.period.value.negative {
+  padding-left: 2rem;
+  padding-right: 0rem;
+  color: #400000;
+}
+
+.period.value.nil {
+  color: #a0a0a0;
+}
+
+.hidden {
+  display: none;
+}
+
+.fact {
+  display: flex;
+  flex-direction: row;
+  margin: 2px;
+}
+
+.fact DIV {
+  margin: 0rem 0rem 0rem 1rem;
+  padding: 4px;
+}
+
+.fact .ref {
+  width: 5em;
+  text-align: center;
+  color: white;
+  background-color: #2ca469;
+  border: 2px solid #104020;
+  font-weight: bold;
+  font-size: small;
+  padding-left: 0.1rem;
+  padding-right: 0.1rem;
+}
+
+.fact .description {
+  width: 22em;
+  font-size: small;
+}
+
+.fact .factvalue {
+  border: 2px solid black;
+  background-color: white;
+  font-family: Source Code Pro, monospace;
+  font-size: small;
+  width: 12rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin-right: 1rem;
+}
+
+.fact .factvalue.false {
+  color: #a0a0a0;
+}
+"

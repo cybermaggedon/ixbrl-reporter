@@ -1,0 +1,49 @@
+
+#pretty-print: true
+
+# The accounting-standards applied.  One of:
+#   frs101, frs102, frsse, full-irs, micro-entities, other-standards,
+#   small-entities-regime.
+accounting-standards: micro-entities
+
+# Accounts status, one of:
+#   audit-exempt-no-accountants-report,
+#   audit-exempt-with-accountants-report, audited,
+#   independent-examination, other-reporting-regime
+accounts-status: audit-exempt-no-accountants-report
+
+# Accounts type, one of:
+#   abbreviated-accounts, abridged-accounts, full-accounts
+accounts-type: abridged-accounts
+
+# Date report was authorised for issue
+authorised-date: '2021-01-01'
+
+# Date of the balance sheet data pull
+balance-sheet-date: '2020-12-31'
+
+# Accounts currency
+currency: GBP
+
+# Report issue date
+date: '2021-01-01'
+
+# Periods over which the account was issued.  Current period goes first.
+periods:
+- name: '2020'
+  start: '2020-01-01'
+  end: '2020-12-31'
+- name: '2019'
+  start: '2019-01-01'
+  end: '2019-12-31'
+
+# Name of director who signed the reports
+signed-by: B Smith
+jurisdiction: England and Wales
+
+# Context segment of the director who signed the report.  director2
+# means the second director in the list metadata.business.directors.
+signing-officer: director2
+
+# Report title
+title: Unaudited Micro-Entity Accounts

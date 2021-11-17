@@ -75,7 +75,7 @@ class FactTable(BasicElement):
                                  v.get("description"), fact)
             div.append(elt)
 
-        return div
+        return [div]
 
     def make_fact(self, par, field, desc, fact):
 

@@ -19,8 +19,32 @@ class HtmlElement(BasicElement):
         )
         return c
 
+    def write_text(self, root, out):
+
+        content = root.get("content", mandatory=False)
+
+        if not content:
+            content = []
+            
+        if isinstance(content, str):
+            out.write(content + "\n")
+            return
+
+        for child in content:
+            if isinstance(child, str):
+                out.write(child + "\n")
+
+            elif isinstance(child, dict):
+                self.write_text(child, out)
+            else:
+                raise RuntimeError(
+                    "HTMLElement can't work with content of type %s" %
+                    str(type(child))
+                )
+
     def to_text(self, out):
-        raise RuntimeError("Not implemented")
+
+        self.write_text(self.root, out)
 
     def expand_text(self, text, par, taxonomy):
 
@@ -65,5 +89,5 @@ class HtmlElement(BasicElement):
 
         root = self.root
 
-        return self.to_html(root, par, taxonomy)
+        return [self.to_html(root, par, taxonomy)]
 

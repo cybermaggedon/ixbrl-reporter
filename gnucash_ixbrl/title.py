@@ -146,4 +146,4 @@ class Title(BasicElement):
 
         div.append(sig)
         
-        return div
+        return [div]
