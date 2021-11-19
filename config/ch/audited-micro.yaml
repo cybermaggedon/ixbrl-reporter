@@ -694,6 +694,8 @@ elements:
             content:
             - expand:note:~[auditor.name]
             - tag: br
+            - expand:note:~[auditor.business]
+            - tag: br
             - expand:note:~[auditor.address]
             - tag: br
             - expand:note:~[auditor.city], ~[auditor.postcode]

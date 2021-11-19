@@ -466,8 +466,8 @@ notes:
     financial statements have been prepared in accordance with the
     micro-entity provisions.}'
   small-company-provisions: '~{accounts-prepared-small-company-regime=These
-    financial statements have been prepared in accordance with the
-    small company provisions.}'
+    accounts have been prepared in accordance with the provisions applicable
+    to companies subject to the small companies regime.}'
   no-audit-required: '~{members-not-required-audit=The members have
     not required the company to obtain an audit of its financial
     statements for the accounting period in accordance with section 476.}'

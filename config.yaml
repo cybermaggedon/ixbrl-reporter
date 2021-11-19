@@ -7,8 +7,9 @@ accounts:
   file: example.gnucash
 
 #report: //import config/ch/unaudited-micro.yaml
-report: //import config/ch/audited-micro.yaml
+#report: //import config/ch/audited-micro.yaml
 #report: //import config/hmrc/corp-tax.yaml
+report: //import config/ch/audited-abridged.yaml
 
 #############################################################################
 ### Report metadata #########################################################
@@ -173,8 +174,18 @@ directors-report: //import directors-report.yaml
 
 auditors-report: //import auditors-report.yaml
 
+accountants-report: //import accountants-report.yaml
+
+accountant:
+  name: "Kirsty Furlong (Accountant)"
+  business: "DSKL Chartered Accountants"
+  address: "82 End Crescent Terrace"
+  city: "Threapminchington"
+  postcode: QQ99 9DF
+
 auditor:
   name: "Bunchy McGlochlain BSc FCA (Auditor)"
+  business: "Auditors-R-Us LLC"
   address: "123a High Avenue Street"
   city: "Threapminchington"
   postcode: QQ99 9AB
