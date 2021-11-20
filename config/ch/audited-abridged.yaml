@@ -636,7 +636,7 @@ elements:
         content: 'expand:note:~[company-name]'
       - tag: div
         attributes: { class: title }
-        content: Audited Filleted Abridged Financial Statements
+        content: Audited Abridged Financial Statements
       - tag: div
         attributes: { class: subtitle }
         content: 'expand:note:For the year ended ~[period-end]'

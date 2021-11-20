@@ -24,39 +24,71 @@ elements:
         content:
         - tag: p
           content: To the members of Example Limited,
-        - tag: h3
-          content: Opinion
         - tag: p
-          content: "We have audited the financial statements of Example Limited
-          for the year ended XX XX XX which comprise the Income Statement,
-          the Statement of Financial Position,
-          and notes to the financial statements, including a summary of
-          significant accounting policies."
+          content: "expand:note:
+            We have audited the financial statements of ~[company-name]
+            for the year ended ~[period-end] which comprise the
+            Statement of Income, the Statement of
+            Financial Position Flows and the
+            notes to the financial statements."
         - tag: p
           content: 'The financial reporting framework that has been applied
           in their preparation is applicable law and United
-          Kingdom Accounting Standards, including FRS 102 The Financial
+          Kingdom Accounting Standards, including FRS 102, The Financial
           Reporting Standard applicable in the UK and Republic of Ireland
           (United Kingdom Generally Accepted Accounting Practice).'
         - tag: p
+          content: "This report, including the opinions, has been
+          prepared for and only for the company's members, as a body,
+          in accordance with sections 495 and 496 of the Companies Act
+          2006 and for no other purpose. We do not, in giving those
+          opinions, accept or assume responsibility for any other
+          purpose or to any other person to whom this report is shown
+          or into whose hands it may come save where expressly agreed
+          by our prior consent in writing."
+        - tag: h3
+          content: Respective responsibilities of directors and auditors
+        - "expand:note:~{statement-on-respective-responsibilities=
+          As explained more fully in the Statement of Directors
+          Responsibilities, the directors are responsible for the
+          preparation of the financial statements and for being
+          satisfied that they give a true and fair view. Our
+          responsibility is to audit the financial statements in
+          accordance with applicable law and International Standards
+          on Auditing (UK and Ireland). Those standards require us to
+          comply with the Auditing Practices Board's (APB's) Ethical
+          Standards for Auditors.}"
+        - tag: h3
+          content: Scope of the audit of the financial statements
+
+        - "expand:note:~{statement-on-audit-scope=
+          A description of the scope of an audit of financial
+          statements is provided on the APB's website at
+          http://www.frc.org.uk/.}"
+
+        - tag: h3
+          content: Opinion
+        - tag: p
           content:
-          - "In our opinion the financial statements:"
-          - tag: ul
-            content:
-            - tag: li
-              content: "give a true and fair view of the state of the
-              company's affairs as at 31 March 2020 and of its result for the
-              year then ended;"
-            - tag: li
-              content: "have been properly prepared in accordance with United
-                Kingdom Generally Accepted Accounting Practice; and"
-            - tag: li
-              content: "have been prepared in accordance with the
-                requirements of the Companies Act 2006."
+          - "expand:note:~{opinion-of-auditors-on-entity=
+            In our opinion the financial statements:}"
+        - tag: ul
+          content:
+          - tag: li
+            content: "give a true and fair view of the state of the
+            company's affairs as at 31 March 2020 and of its result for the
+            year then ended;"
+          - tag: li
+            content: "have been properly prepared in accordance with United
+              Kingdom Generally Accepted Accounting Practice; and"
+          - tag: li
+            content: "have been prepared in accordance with the
+              requirements of the Companies Act 2006."
         - tag: h3
           content: Basis for opinion
         - tag: p
-          content: "expand:note:~{FIXME=We conducted our audit in accordance
+          content: "expand:note:~{basis-for-opinion-auditors=
+             We conducted our audit in accordance
              with International Standards on Auditing (UK) and
              applicable law. Our responsibilities under those standards are
              further described in the Auditor's responsibilities for the audit
@@ -69,6 +101,26 @@ elements:
              We believe that the audit evidence we have obtained is
              sufficient and appropriate to provide a basis for our
              opinion.}"
+
+- id: auditors-report-2
+  kind: page
+  elements:
+  - kind: html
+    root:
+      tag: div
+      content:
+      - tag: div
+        attributes: { class: heading }
+        content:
+        - tag: div
+          content: 'expand:note:~[company-name]'
+        - tag: div
+          content: Auditor's report
+        - tag: div
+          content: 'expand:note:For the year ended ~[period-end]'
+        - tag: hr
+      - tag: div
+        content:
         - tag: h3
           content: Conclusions relating to going concern
         - tag: p
@@ -90,26 +142,6 @@ elements:
                 concern basis of accounting for a period of at least
                 twelve months from the date when the financial
                 statements are authorised for issue."
-
-- id: auditors-report-2
-  kind: page
-  elements:
-  - kind: html
-    root:
-      tag: div
-      content:
-      - tag: div
-        attributes: { class: heading }
-        content:
-        - tag: div
-          content: 'expand:note:~[company-name]'
-        - tag: div
-          content: Auditor's report
-        - tag: div
-          content: 'expand:note:For the year ended ~[period-end]'
-        - tag: hr
-      - tag: div
-        content:
         - tag: h3
           content: Other information
         - tag: p
@@ -153,12 +185,13 @@ elements:
           content: Matters on which we are required to report by exception
         - tag: p
           content:
-          - "In the light of the knowledge and understanding of the
+          - "expand:note:~{statement-on-matters-on-which-auditor-reports=
+            In the light of the knowledge and understanding of the
             company and its environment obtained in the course of
             the audit, we have not identified material misstatements in the
             directors' report.  We have nothing to report in respect of the
             following matters where the Companies Act 2006 requires us to
-            report to you if, in our opinion:"
+            report to you if, in our opinion:}"
           - tag: ul
             content:
             - tag: li
@@ -240,19 +273,6 @@ elements:
             Financial Reporting Council's website at:
             http://www.frc.org.uk/auditorsresponsibilities. This
             description forms part of our auditor's report."
-        - tag: h3
-          content: Use of our report
-        - tag: p
-          content: "This report is made solely to the company's
-            members, as a body, in accordance with Chapter 3 of Part
-            16 of the Companies Act 2006. Our audit work has been
-            undertaken so that we might state to the company's members
-            those matters we are required to state to them in an
-            auditor's report and for no other purpose. To the fullest
-            extent permitted by law, we do not accept or assume
-            responsibility to anyone other than the company and the
-            company's members, as a body, for our audit work, for this
-            report, or for the opinions we have formed."
         - tag: p
           content:
           - "expand:note:~[auditor-name]"
