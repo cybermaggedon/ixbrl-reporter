@@ -7,9 +7,9 @@ accounts:
   file: example.gnucash
 
 #report: //import config/ch/unaudited-micro.yaml
-report: //import config/ch/audited-micro.yaml
+#report: //import config/ch/audited-micro.yaml
 #report: //import config/hmrc/corp-tax.yaml
-#report: //import config/ch/audited-abridged.yaml
+report: //import config/ch/audited-abridged.yaml
 
 #############################################################################
 ### Report metadata #########################################################
@@ -95,7 +95,7 @@ metadata:
   # Report metadata
   report:
 
-#    pretty-print: true
+    pretty-print: true
 
     # The accounting-standards applied.  One of:
     #   frs101, frs102, frsse, full-irs, micro-entities, other-standards,

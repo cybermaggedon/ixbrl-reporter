@@ -128,20 +128,20 @@ elements:
           - "We have nothing to report in respect of the following
             matters in relation to which the ISAs (UK) require us to
             report to you where:"
-          - tag: ul
-            content:
-            - tag: li
-              content: "the directors' use of the going concern basis of
-                accounting in the preparation of the financial statements is
-                not appropriate; or"
-            - tag: li
-              content: "the directors have not disclosed in the
-                financial statements any identified material
-                uncertainties that may cast significant doubt about
-                the company's ability to continue to adopt the going
-                concern basis of accounting for a period of at least
-                twelve months from the date when the financial
-                statements are authorised for issue."
+        - tag: ul
+          content:
+          - tag: li
+            content: "the directors' use of the going concern basis of
+              accounting in the preparation of the financial statements is
+              not appropriate; or"
+          - tag: li
+            content: "the directors have not disclosed in the
+              financial statements any identified material
+              uncertainties that may cast significant doubt about
+              the company's ability to continue to adopt the going
+              concern basis of accounting for a period of at least
+              twelve months from the date when the financial
+              statements are authorised for issue."
         - tag: h3
           content: Other information
         - tag: p
@@ -172,15 +172,15 @@ elements:
           content:
           - "In our opinion, based on the work undertaken in the course
             of our audit."
-          - tag: ul
-            content:
-            - tag: li
-              content: "the information given in the directors' report for the
-                financial year for which the financial statements are prepared
-                is consistent with the financial statements; and"
-            - tag: li
-              content: "the directors' report has been prepared in accordance
-                with applicable legal requirements."
+        - tag: ul
+          content:
+          - tag: li
+            content: "the information given in the directors' report for the
+              financial year for which the financial statements are prepared
+              is consistent with the financial statements; and"
+          - tag: li
+            content: "the directors' report has been prepared in accordance
+              with applicable legal requirements."
         - tag: h3
           content: Matters on which we are required to report by exception
         - tag: p
@@ -192,26 +192,26 @@ elements:
             directors' report.  We have nothing to report in respect of the
             following matters where the Companies Act 2006 requires us to
             report to you if, in our opinion:}"
-          - tag: ul
-            content:
-            - tag: li
-              content: "adequate accounting records have not been kept, or
-              retums adequate for our audit have not been received from
-              branches not visited by us; or"
-            - tag: li
-              content: "the financial statements are not in agreement with
-              the accounting records and retums; or certain disclosures
-              of directors' remuneration specified by law are not made; or"
-            - tag: li
-              content: "we have not received all the information and
-                explanations we require for our audit; or"
-            - tag: li
-              content: "the directors were not entitled to prepare the
-                financial statements in accordance with the small companies
-                regime and take advantage of the small companies' exemption
-                in preparing the directors' report and take advantage of
-                the small companies exemption from the requirement to
-                prepare a strategic report."
+        - tag: ul
+          content:
+          - tag: li
+            content: "adequate accounting records have not been kept, or
+            retums adequate for our audit have not been received from
+            branches not visited by us; or"
+          - tag: li
+            content: "the financial statements are not in agreement with
+            the accounting records and retums; or certain disclosures
+            of directors' remuneration specified by law are not made; or"
+          - tag: li
+            content: "we have not received all the information and
+              explanations we require for our audit; or"
+          - tag: li
+            content: "the directors were not entitled to prepare the
+              financial statements in accordance with the small companies
+              regime and take advantage of the small companies' exemption
+              in preparing the directors' report and take advantage of
+              the small companies exemption from the requirement to
+              prepare a strategic report."
 
 - id: auditors-report-3
   kind: page
