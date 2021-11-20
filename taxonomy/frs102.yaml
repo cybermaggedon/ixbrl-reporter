@@ -18,6 +18,8 @@ namespaces:
   uk-core: http://xbrl.frc.org.uk/fr/2021-01-01/core
   uk-direp: http://xbrl.frc.org.uk/reports/2021-01-01/direp
   uk-geo: http://xbrl.frc.org.uk/cd/2021-01-01/countries
+  uk-aurep: http://xbrl.frc.org.uk/reports/2014-09-01/aurep
+  uk-accrep: http://xbrl.frc.org.uk/reports/2014-09-01/accrep
 
 # Contexts are references invoke by tagged data, they describe an
 # entity, any dimensions, and a time period/instant.  We define
@@ -442,6 +444,35 @@ metadata:
   context: website
   config: metadata.business.website.description
 
+- id: accountants-report-date
+  kind: date
+  context: report-date
+  config: accountant.report-date
+- id: accountant-name
+  context: report-period
+  config: accountant.name
+- id: accountant-business
+  context: report-period
+  config: accountant.business
+- id: accountant-address
+  context: report-period
+  config: accountant.address
+
+- id: auditors-report-date
+  kind: date
+  context: report-date
+  config: auditor.report-date
+- id: auditor-name
+  context: report-period
+  config: auditor.name
+- id: auditor-business
+  context: report-period
+  config: auditor.business
+- id: auditor-address
+  context: report-period
+  config: auditor.address
+
+
 # Boiler-plate notes for the accounts notes page.  ~[...] is used to
 # insert a metadata field value.  The full form is
 # ~[fld:prefix:suffix:null].  If value is defined, the prefix and
@@ -468,6 +499,11 @@ notes:
   small-company-provisions: '~{accounts-prepared-small-company-regime=These
     accounts have been prepared in accordance with the provisions applicable
     to companies subject to the small companies regime.}'
+  members-agreed-abridged-accounts: '~{members-agreed-abridged-accounts=All
+    of the members of ~[company-name] have consented to the preparation
+    of the Abridged Statement of Financial Position and the Abridged
+    Income Statement for the year ended ~[period-end] in accordance with
+    Section 444(2A) of the Companies Act 2006.}'
   no-audit-required: '~{members-not-required-audit=The members have
     not required the company to obtain an audit of its financial
     statements for the accounting period in accordance with section 476.}'
@@ -544,6 +580,7 @@ tags:
   industry-sector: uk-bus:MainIndustrySector
   is-dormant: uk-bus:EntityDormantTruefalse
   members-not-required-audit: uk-direp:StatementThatMembersHaveNotRequiredCompanyToObtainAnAudit
+  members-agreed-abridged-accounts: uk-direp:StatementThatMembersHaveAgreedToPreparationAbridgedAccountsUnderSection444CompaniesAct2006
   net-assets: uk-core:NetAssetsLiabilities
   net-current-assets: uk-core:NetCurrentAssetsLiabilities
   officer: uk-bus:NameEntityOfficer
@@ -578,6 +615,35 @@ tags:
   vat-registration: uk-bus:VATRegistrationNumber
   website-description: uk-bus:DescriptionOrOtherInformationOnWebsite
   website-url: uk-bus:WebsiteMainPageURL
+
+  statement-on-respective-responsibilities: uk-aurep:StatementOnRespectiveResponsibilitiesDirectorsAuditors
+  opinion-of-auditors-on-entity: uk-aurep:OpinionAuditorsOnEntity
+  basis-for-opinion-auditors: uk-aurep:BasisForOpinionAuditorsOnEntity
+  opinion-of-auditors-additional-financial-reporting: uk-aurep: OpinionAuditorsInRespectAdditionalFinancialReportingFramework
+  emphasis-of-matter: uk-aurep:EmphasisMatterStatement
+  statement-on-risks-of-misstatement: uk-aurep:StatementOnRisksMaterialMisstatementIdentifiedByAuditor
+  statement-on-application-of-materiality: uk-aurep:StatementOnApplicationMaterialityToAudit
+  statement-on-scope-of-audit: uk-aurep:StatementOnScopeAuditReport
+  statement-on-matters-on-which-auditor-reports: uk-aurep:StatementOnMattersOnWhichAuditorReportsByException
+  statement-of-key-audit-matters: uk-aurep:StatementKeyAuditMatters
+  statement-of-responsibilities-of-management-corporate-governance: uk-aurep:StatementResponsibilitiesManagementThoseChargedWithCorporateGovernance
+  statement-of-auditors-responsibilities: uk-aurep:StatementAuditorsResponsibilitiesRelatingToOtherInformation
+  company-is-entitled-to-deliver-abbreviated-accounts: uk-aurep:CompanyEntitledToDeliverAbbreviatedAccountsAccountsProperlyPreparedTruefalse
+  matters-giving-rise-to-any-modified-audit: uk-aurep:DescriptionMattersGivingRiseToAnyModifiedAuditOpinion
+  directors-report-is-consistent: uk-aurep:DirectorsReportConsistentWithAccountsTruefalse
+  remuneration-report-properly-prepared: uk-aurep:AuditablePartRemunerationReportHasBeenProperlyPreparedTruefalse
+  date-of-auditors-report: uk-aurep:DateAuditorsReport
+
+  statement-on-scope-of-accountants-report: uk-accrep:StatementOnScopeAccountantsReport
+  accountants-report-on-financial-statements: uk-accrep:AccountantsReportOnFinancialStatements
+  accountants-report-date: uk-accrep:DateAccountantsReport
+  accountant-business: uk-bus:NameEntityAccountants
+  accountant-name: uk-bus:NameAccountantResponsible
+  accountant-address: uk-bus:NameOrLocationAccountantsOffice
+  auditors-report-date: uk-accrep:DateAuditorsReport
+  auditor-business: uk-bus:NameEntityAuditors
+  auditor-name: uk-bus:NameIndividualAuditor
+  auditor-address: uk-bus:NameOrLocationOfficePerformingAudit
 
 # Segments / dimensions are mapped here.  Segments are defined with a
 # segment identifier and a value e.g. accounting-standards = frs102.

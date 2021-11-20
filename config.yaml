@@ -95,7 +95,7 @@ metadata:
   # Report metadata
   report:
 
-#    pretty-print: true
+    pretty-print: true
 
     # The accounting-standards applied.  One of:
     #   frs101, frs102, frsse, full-irs, micro-entities, other-standards,
@@ -179,14 +179,16 @@ accountants-report: //import accountants-report.yaml
 accountant:
   name: "Kirsty Furlong (Accountant)"
   business: "DSKL Chartered Accountants"
-  address: "82 End Crescent Terrace"
-  city: "Threapminchington"
-  postcode: QQ99 9DF
+  address: "82 End Crescent Terrace, Threapminchington QQ99 9DF"
+
+  # Date of accountant's report
+  report-date: '2021-01-01'
 
 auditor:
   name: "Bunchy McGlochlain BSc FCA (Auditor)"
   business: "Auditors-R-Us LLC"
-  address: "123a High Avenue Street"
-  city: "Threapminchington"
-  postcode: QQ99 9AB
+  address: "123a High Avenue Street, Threapminchington QQ99 9AB"
 
+
+  # Date of auditor's report
+  report-date: '2021-01-01'

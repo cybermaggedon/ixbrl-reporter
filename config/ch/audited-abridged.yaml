@@ -641,7 +641,6 @@ elements:
         attributes: { class: subtitle }
         content: 'expand:note:For the year ended ~[period-end]'
 
-
 - id: consent
   kind: page
   elements:
@@ -665,12 +664,7 @@ elements:
           content: "Statement of consent to prepare Abridged Financial
             Statements"
         - tag: p
-          content: "expand:note:
-            All of the members of ~[company-name] have
-            consented to the preparation of the Abridged Statement of
-            Financial Position and the Abridged Income Statement for
-            the year ended ~[period-end] in accordance with Section
-            444(2A) of the Companies Act 2006."
+          content: "expand:members-agreed-abridged-accounts"
 
 - id: company-info
   kind: page
@@ -730,26 +724,22 @@ elements:
             content: Accountant
           - tag: td
             content:
-            - expand:note:~[accountant.name]
+            - expand:note:~[accountant-name]
             - tag: br
-            - expand:note:~[accountant.business]
+            - expand:note:~[accountant-business]
             - tag: br
-            - expand:note:~[accountant.address]
-            - tag: br
-            - expand:note:~[accountant.city], ~[accountant.postcode]
+            - expand:note:~[accountant-address]
         - tag: tr
           content:
           - tag: td
             content: Auditor
           - tag: td
             content:
-            - expand:note:~[auditor.name]
+            - expand:note:~[auditor-name]
             - tag: br
-            - expand:note:~[auditor.business]
+            - expand:note:~[auditor-business]
             - tag: br
-            - expand:note:~[auditor.address]
-            - tag: br
-            - expand:note:~[auditor.city], ~[auditor.postcode]
+            - expand:note:~[auditor-address]
 
 - //ref directors-report
 - //ref auditors-report

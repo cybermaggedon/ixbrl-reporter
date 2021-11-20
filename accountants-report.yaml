@@ -29,13 +29,13 @@ elements:
             Accounts  of  ~[company-name] for the
             Year Ended ~[period-end]"
         - tag: p
-          content: "expand:note:
+          content: "expand:note:~{accountants-report-on-financial-statements=
             In order to assist you to fulfil your duties under
             the Companies Act 2006, we have prepared for your approval
             the accounts of ~[company-name] for the
             year ended ~[period-end] 
             from the company’s accounting records and from information
-            and explanations you have given us."
+            and explanations you have given us.}"
         - tag: p
           content:
           - "As a member firm of the Institute of Chartered
@@ -67,27 +67,22 @@ elements:
             of ~[company-name].  You consider that ~[company-name]
             is exempt from the statutory audit requirement for the year."
         - tag: p
-          content: "expand:note:
+          content: "expand:note:~{statement-on-scope-of-accountants-report=
             We have not been instructed to carry out an audit or
             a review of the accounts of ~[company-name].  For
             this reason, we have not verified the accuracy or
             completeness of the accounting records or information and
             explanations you have given to us and we do not, therefore,
-            express any opinion on the statutory accounts."
+            express any opinion on the statutory accounts.}"
 
         - tag: p
           content:
-          - "Kirsty Furlong (Accountant)"
+          - "expand:note:~[accountant-name]"
           - tag: br
-          - "DSKL Accountants"
-          - tag: br
-          - "Chartered Accountants"
-          - tag: br
-          - "Xth Monthuary 20XX"
+          - "expand:note:~[accountants-report-date]"
         - tag: p
           content:
-          - "82 End Crescent Terrace"
+          - "expand:note:~[accountant-business]"
           - tag: br
-          - "Threapminchington"
-          - tag: br
-          - QQ99 9DF
+          - "expand:note:~[accountant-address]"
+

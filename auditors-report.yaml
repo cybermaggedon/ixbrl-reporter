@@ -56,8 +56,8 @@ elements:
         - tag: h3
           content: Basis for opinion
         - tag: p
-          content: "We conducted our audit in accordance with
-             International Standards on Auditing (UK) and
+          content: "expand:note:~{FIXME=We conducted our audit in accordance
+             with International Standards on Auditing (UK) and
              applicable law. Our responsibilities under those standards are
              further described in the Auditor's responsibilities for the audit
              of the financial statements section of our report. We are
@@ -68,7 +68,7 @@ elements:
              responsibilities in accordance with these requirements.
              We believe that the audit evidence we have obtained is
              sufficient and appropriate to provide a basis for our
-             opinion."
+             opinion.}"
         - tag: h3
           content: Conclusions relating to going concern
         - tag: p
@@ -255,17 +255,13 @@ elements:
             report, or for the opinions we have formed."
         - tag: p
           content:
-          - "Bunchy McGlochlain BSc FCA (Auditor)"
+          - "expand:note:~[auditor-name]"
           - tag: br
-          - "for and on behalf of ABC Chartered Accountants"
+          - "Auditor"
           - tag: br
-          - "Statutory Auditor"
-          - tag: br
-          - "Xth Monthuary 20XX"
+          - "expand:note:~[auditors-report-date]"
         - tag: p
           content:
-          - "123a High Avenue Street"
+          - "expand:note:~[auditor-business]"
           - tag: br
-          - "Threapminchington"
-          - tag: br
-          - QQ99 9AB
+          - "expand:note:~[auditor-address]"
