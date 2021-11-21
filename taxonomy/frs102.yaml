@@ -472,6 +472,10 @@ metadata:
   context: report-period
   config: auditor.address
 
+- id: directors-report-date
+  kind: date
+  context: report-date
+  config: directors.report-date
 
 # Boiler-plate notes for the accounts notes page.  ~[...] is used to
 # insert a metadata field value.  The full form is
@@ -536,7 +540,6 @@ sign-reversed:
 # here.
 tags:
   accounting-standards: uk-bus:AccountingStandardsApplied
-  accounts-prepared-small-company-regime: uk-direp:StatementThatAccountsHaveBeenPreparedInAccordanceWithProvisionsSmallCompaniesRegime
   accounts-status: uk-bus:AccountsStatusAuditedOrUnaudited
   accounts-type: uk-bus:AccountsTypeFullOrAbbreviated
   accruals-and-deferred-income: uk-core:AccruedLiabilitiesDeferredIncome
@@ -569,7 +572,6 @@ tags:
   depreciation: uk-core:DepreciationAmortisationImpairmentExpense
   depreciation-total: uk-core:AccumulatedDepreciationImpairmentPropertyPlantEquipment
   depreciation-charge: uk-core:IncreaseFromDepreciationChargeForYearPropertyPlantEquipment
-  directors-duty: uk-direp:StatementThatDirectorsAcknowledgeTheirResponsibilitiesUnderCompaniesAct
   entity-legal-country: uk-bus:CountryFormationOrIncorporation
   entity-legal-date: uk-bus:DateFormationOrIncorporation
   entity-legal-form: uk-bus:LegalFormEntity
@@ -579,11 +581,9 @@ tags:
   gross-profit: uk-core:GrossProfitLoss
   industry-sector: uk-bus:MainIndustrySector
   is-dormant: uk-bus:EntityDormantTruefalse
-  members-not-required-audit: uk-direp:StatementThatMembersHaveNotRequiredCompanyToObtainAnAudit
   members-agreed-abridged-accounts: uk-direp:StatementThatMembersHaveAgreedToPreparationAbridgedAccountsUnderSection444CompaniesAct2006
   net-assets: uk-core:NetAssetsLiabilities
   net-current-assets: uk-core:NetCurrentAssetsLiabilities
-  officer: uk-bus:NameEntityOfficer
   other-creditors: uk-core:OtherCreditorsIncludingTaxationSocialSecurityBalanceSheetSubtotal
   other-operating-income: uk-core:OtherOperatingIncomeFormat2
   other-charges: uk-core:OtherOperatingExpensesFormat2
@@ -600,7 +600,6 @@ tags:
   sic3: uk-bus:SICCodeRecordedUKCompaniesHouse3
   sic4: uk-bus:SICCodeRecordedUKCompaniesHouse4
   signing-officer: uk-core:DirectorSigningFinancialStatements
-  small-company-exempt-from-audit: uk-direp:StatementThatCompanyEntitledToExemptionFromAuditUnderSection477CompaniesAct2006RelatingToSmallCompanies
   software-name: uk-bus:NameProductionSoftware
   software-version: uk-bus:VersionProductionSoftware
   staff-costs: uk-core:StaffCostsEmployeeBenefitsExpense
@@ -642,6 +641,46 @@ tags:
   auditor-business: uk-bus:NameEntityAuditors
   auditor-name: uk-aurep:NameIndividualAuditor
   auditor-address: uk-aurep:NameOrLocationOfficePerformingAudit
+  description-of-principal-activities: uk-bus:DescriptionPrincipalActivities
+  officer1: uk-bus:NameEntityOfficer
+  officer2: uk-bus:NameEntityOfficer
+  officer3: uk-bus:NameEntityOfficer
+  officer4: uk-bus:NameEntityOfficer
+  officer5: uk-bus:NameEntityOfficer
+  officer6: uk-bus:NameEntityOfficer
+  officer7: uk-bus:NameEntityOfficer
+  officer8: uk-bus:NameEntityOfficer
+  officer9: uk-bus:NameEntityOfficer
+  officer10: uk-bus:NameEntityOfficer
+  officer11: uk-bus:NameEntityOfficer
+  officer12: uk-bus:NameEntityOfficer
+  officer13: uk-bus:NameEntityOfficer
+  officer14: uk-bus:NameEntityOfficer
+  officer15: uk-bus:NameEntityOfficer
+  officer16: uk-bus:NameEntityOfficer
+  officer17: uk-bus:NameEntityOfficer
+  officer18: uk-bus:NameEntityOfficer
+  officer19: uk-bus:NameEntityOfficer
+  officer20: uk-bus:NameEntityOfficer
+#  date-assumed-position: uk-direp:DateAssumedPosition
+  dividend-recommended-by-directors: uk-direp:DividendRecommendedByDirectors
+  directors-duty: uk-direp:StatementThatDirectorsAcknowledgeTheirResponsibilitiesUnderCompaniesAct
+  accounts-prepared-small-company-regime: uk-direp:StatementThatAccountsHaveBeenPreparedInAccordanceWithProvisionsSmallCompaniesRegime
+  directors-report-small-company-regime: uk-direp:StatementThatDirectorsReportHasBeenPreparedInAccordanceWithProvisionsSmallCompaniesRegime
+  abbreviated-accounts-in-accordance-special-provisions: uk-direp:AbbreviatedAccountsAreInAccordanceWithSpecialProvisionsInSection4453CompaniesActRelatingToMedium
+  entity-has-taken-exemption-not-publishing-profit-and-loss: uk-direp:EntityHasTakenExemptionUnderCompaniesActInNotPublishingItsOwnProfitLossAccountTruefalse
+  statement-on-information-provided-auditors: uk-direp:StatementOnQualityCompletenessInformationProvidedToAuditors
+  statement-qualifying-third-party-indemnity: uk-direp:StatementOnQualifyingThirdPartyIndemnityProvisions
+  statement-on matters-required-in-directors-report: uk-direp:StatementOnMattersRequiredInDirectorsReportBeingPlacedInStrategicReport
+  small-company-exempt-from-audit: uk-direp:StatementThatCompanyEntitledToExemptionFromAuditUnderSection477CompaniesAct2006RelatingToSmallCompanies
+  members-not-required-audit: uk-direp:StatementThatMembersHaveNotRequiredCompanyToObtainAnAudit
+  directors-report-date: uk-direp:DateSigningDirectorsReport
+  description-of-body-authorising-financial-statements: uk-core:DescriptionBodyAuthorisingFinancialStatements
+  statement-of-compliance-reporting-framework: uk-core:StatementComplianceWithApplicableReportingFramework
+  description-of-basis-used-in-financial-statements: uk-core:GeneralDescriptionBasisMeasurementUsedInPreparingFinancialStatements
+  financial-statements-going-concern-basis: uk-core:FinancialStatementsArePreparedOnGoing
+  description-why-entity-not-going-concern: uk-core:DescriptionWhyEntityNotGoing-concernOrUncertaintiesOverGoing-concernStatus
+
 
 # Segments / dimensions are mapped here.  Segments are defined with a
 # segment identifier and a value e.g. accounting-standards = frs102.

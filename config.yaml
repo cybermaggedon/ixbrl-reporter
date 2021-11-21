@@ -135,11 +135,12 @@ metadata:
 
     # Name of director who signed the reports
     signed-by: B Smith
-    jurisdiction: England and Wales
 
     # Context segment of the director who signed the report.  director2
     # means the second director in the list metadata.business.directors.
     signing-officer: director2
+
+    jurisdiction: England and Wales
 
     # Report title
     title: Audited Micro-Entity Accounts
@@ -191,3 +192,7 @@ auditor:
 
   # Date of auditor's report
   report-date: '2021-01-01'
+
+directors:
+  report-date: '2021-01-01'
+

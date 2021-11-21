@@ -531,15 +531,15 @@ elements:
 - id: report
   kind: composite
   elements:
-#  - title
-#  - consent
-#  - company-info
-#  - directors-report
-#  - accountants-report
+  - title
+  - consent
+  - company-info
+  - directors-report
+  - accountants-report
   - auditors-report
-#  - balance-sheet
-#  - profit-and-loss
-#  - notes
+  - balance-sheet
+  - profit-and-loss
+  - notes
 
 # Financial position page
 - id: balance-sheet
