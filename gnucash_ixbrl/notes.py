@@ -110,7 +110,7 @@ class NoteExpansion:
 
                 elements.pop()
 
-        return elt
+        return [elt]
 
 
 class NotesElement(BasicElement):
@@ -171,7 +171,8 @@ class NotesElement(BasicElement):
                 p = par.xhtml_maker.p()
                 contr.append(p)
 
-            elt = self.expander.expand(note, par, taxonomy)
-            p.append(elt)
+            elts = self.expander.expand(note, par, taxonomy)
+            for elt in elts:
+                p.append(elt)
 
         return [div]

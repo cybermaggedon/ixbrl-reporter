@@ -67,14 +67,27 @@ class HtmlElement(BasicElement):
             
         if isinstance(content, str):
             content = self.expand_text(content, par, taxonomy)
-            return par.xhtml_maker(tag, attrs, content)
+            if isinstance(content, str):
+                return par.xhtml_maker(tag, attrs, content)
+            else:
+                elt = par.xhtml_maker(tag, attrs)
+                for child in content:
+                    elt.append(child)
+                return elt
 
         elt = par.xhtml_maker(tag, attrs)
 
         for child in content:
             if isinstance(child, str):
-                content = self.expand_text(child, par, taxonomy)
-                elt.append(par.xhtml_maker.span(content))
+                child = self.expand_text(child, par, taxonomy)
+                if isinstance(child, str):
+                    elt.append(par.xhtml_maker.span(child))
+                else:
+                    for child2 in child:
+                        if isinstance(child2, str):
+                            elt.append(par.xhtml_maker.span(child2))
+                        else:
+                            elt.append(child2)
             elif isinstance(child, dict):
                 elt.append(self.to_html(child, par, taxonomy))
             else:

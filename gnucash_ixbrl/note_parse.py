@@ -167,7 +167,8 @@ class NoteParser:
                 continue
 
         if state == IN_TEXT:
-            tokens.append(TextToken(text))
+            if text != "":
+                tokens.append(TextToken(text))
         else:
             raise RuntimeError("Unbalanced note, in state %d" % state)
 
