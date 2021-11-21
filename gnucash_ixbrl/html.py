@@ -3,6 +3,7 @@
 
 from . basicelement import BasicElement
 from . notes import NoteExpansion
+from . datum import StringDatum
 
 class HtmlElement(BasicElement):
     def __init__(self, id, root, data):
@@ -55,7 +56,12 @@ class HtmlElement(BasicElement):
 
     def to_html(self, root, par, taxonomy):
 
-        tag = root.get("tag")
+        tag = root.get("tag", mandatory=False)
+        fact = root.get("fact", mandatory=False)
+
+        if tag == None and fact == None:
+            raise RuntimeError("HTML elements must have a tag or fact property")
+
         attrs = root.get("attributes", mandatory=False)
         content = root.get("content", mandatory=False)
 
@@ -64,18 +70,43 @@ class HtmlElement(BasicElement):
 
         if not content:
             content = []
-            
+
+        if fact:
+            context_id = root.get("context")
+            ctxt = taxonomy.get_context(context_id, self.data)
+
+        # The content element is a string
         if isinstance(content, str):
+
             content = self.expand_text(content, par, taxonomy)
+
             if isinstance(content, str):
-                return par.xhtml_maker(tag, attrs, content)
+
+                # Expands to a string
+                if fact:
+                    datum = StringDatum(fact, content, ctxt)
+                    fact = taxonomy.create_fact(datum)
+                    return fact.to_elt(par)
+                else:
+                    return par.xhtml_maker(tag, attrs, content)
+
             else:
+
+                # Expands to a list of elements
                 elt = par.xhtml_maker(tag, attrs)
                 for child in content:
                     elt.append(child)
                 return elt
 
-        elt = par.xhtml_maker(tag, attrs)
+        # The content element is an array of elts.
+
+        # If fact, parent elt is a fact tag
+        if fact:
+            datum = StringDatum(fact, [], ctxt)
+            fact = taxonomy.create_fact(datum)
+            elt = fact.to_elt(par)
+        else:
+            elt = par.xhtml_maker(tag, attrs)
 
         for child in content:
             if isinstance(child, str):

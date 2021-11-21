@@ -177,7 +177,7 @@ auditors-report: //import auditors-report.yaml
 accountants-report: //import accountants-report.yaml
 
 accountant:
-  name: "Kirsty Furlong (Accountant)"
+  name: "Kirsty Furlong BSc FCA"
   business: "DSKL Chartered Accountants"
   address: "82 End Crescent Terrace, Threapminchington QQ99 9DF"
 
@@ -185,10 +185,9 @@ accountant:
   report-date: '2021-01-01'
 
 auditor:
-  name: "Bunchy McGlochlain BSc FCA (Auditor)"
+  name: "Bunchy McGlochlain BSc FCA"
   business: "Auditors-R-Us LLC"
   address: "123a High Avenue Street, Threapminchington QQ99 9AB"
-
 
   # Date of auditor's report
   report-date: '2021-01-01'

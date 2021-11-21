@@ -68,22 +68,24 @@ elements:
 
         - tag: h3
           content: Opinion
-        - tag: p
+        - fact: opinion-of-auditors-on-entity
+          context: report-period
           content:
-          - "expand:note:~{opinion-of-auditors-on-entity=
-            In our opinion the financial statements:}"
-        - tag: ul
-          content:
-          - tag: li
-            content: "give a true and fair view of the state of the
-            company's affairs as at 31 March 2020 and of its result for the
-            year then ended;"
-          - tag: li
-            content: "have been properly prepared in accordance with United
-              Kingdom Generally Accepted Accounting Practice; and"
-          - tag: li
-            content: "have been prepared in accordance with the
-              requirements of the Companies Act 2006."
+          - tag: p
+            content:
+            - "In our opinion the financial statements:"
+          - tag: ul
+            content:
+            - tag: li
+              content: "give a true and fair view of the state of the
+              company's affairs as at 31 March 2020 and of its result for the
+              year then ended;"
+            - tag: li
+              content: "have been properly prepared in accordance with United
+                Kingdom Generally Accepted Accounting Practice; and"
+            - tag: li
+              content: "have been prepared in accordance with the
+                requirements of the Companies Act 2006."
         - tag: h3
           content: Basis for opinion
         - tag: p
@@ -183,35 +185,37 @@ elements:
               with applicable legal requirements."
         - tag: h3
           content: Matters on which we are required to report by exception
-        - tag: p
+        - fact: statement-on-matters-on-which-auditor-reports
+          context: report-period
           content:
-          - "expand:note:~{statement-on-matters-on-which-auditor-reports=
-            In the light of the knowledge and understanding of the
-            company and its environment obtained in the course of
-            the audit, we have not identified material misstatements in the
-            directors' report.  We have nothing to report in respect of the
-            following matters where the Companies Act 2006 requires us to
-            report to you if, in our opinion:}"
-        - tag: ul
-          content:
-          - tag: li
-            content: "adequate accounting records have not been kept, or
-            retums adequate for our audit have not been received from
-            branches not visited by us; or"
-          - tag: li
-            content: "the financial statements are not in agreement with
-            the accounting records and retums; or certain disclosures
-            of directors' remuneration specified by law are not made; or"
-          - tag: li
-            content: "we have not received all the information and
-              explanations we require for our audit; or"
-          - tag: li
-            content: "the directors were not entitled to prepare the
-              financial statements in accordance with the small companies
-              regime and take advantage of the small companies' exemption
-              in preparing the directors' report and take advantage of
-              the small companies exemption from the requirement to
-              prepare a strategic report."
+          - tag: p
+            content:
+            - "In the light of the knowledge and understanding of the
+              company and its environment obtained in the course of
+              the audit, we have not identified material misstatements in the
+              directors' report.  We have nothing to report in respect of the
+              following matters where the Companies Act 2006 requires us to
+              report to you if, in our opinion:"
+          - tag: ul
+            content:
+            - tag: li
+              content: "adequate accounting records have not been kept, or
+              retums adequate for our audit have not been received from
+              branches not visited by us; or"
+            - tag: li
+              content: "the financial statements are not in agreement with
+              the accounting records and retums; or certain disclosures
+              of directors' remuneration specified by law are not made; or"
+            - tag: li
+              content: "we have not received all the information and
+                explanations we require for our audit; or"
+            - tag: li
+              content: "the directors were not entitled to prepare the
+                financial statements in accordance with the small companies
+                regime and take advantage of the small companies' exemption
+                in preparing the directors' report and take advantage of
+                the small companies exemption from the requirement to
+                prepare a strategic report."
 
 - id: auditors-report-3
   kind: page
