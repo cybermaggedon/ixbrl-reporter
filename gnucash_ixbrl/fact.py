@@ -140,15 +140,3 @@ class DateFact(Fact):
             return base.xhtml_maker.span(
                 self.value.strftime("%d\xa0%B\xa0%Y")
             )
-
-class Dataset:
-    pass
-
-class Section:
-    pass
-
-class Series:
-    def __init__(self, desc, values, rank=0):
-        self.description = desc
-        self.values = values
-        self.rank = rank

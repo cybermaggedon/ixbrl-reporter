@@ -1,22 +1,29 @@
 
 # A worksheet with multiple periods.
 
+
+# Dataset
+#   Section
+#     Series
+
 from . period import Period
 from . computation import Result
 from . worksheet_model import Worksheet, SimpleValue, Breakdown, NilValue, Total
-from . fact import *
+from . dataset import Dataset, Section, Series
 
-class WorksheetElement:
-    def __init__(self, id, rank=0, total_rank=0):
+class WorksheetSection:
+    def __init__(self, id, rank=0, total_rank=0, hide_total=False):
         self.id = id
         self.rank = rank
         self.total_rank = total_rank
+        self.hide_total = hide_total
 
 class MultiPeriodWorksheet(Worksheet):
 
-    def __init__(self, comps, periods):
+    def __init__(self, comps, periods, data):
         self.computations = comps
         self.periods = periods
+        self.data = data
 
     @staticmethod
     def load(defn, data):
@@ -29,103 +36,56 @@ class MultiPeriodWorksheet(Worksheet):
 
         for comp in comps:
             if isinstance(comp, str):
-                ws_elts.append(WorksheetElement(comp))
+                ws_elts.append(WorksheetSection(comp))
             else:
-                ws_elts.append(WorksheetElement(
+                ws_elts.append(WorksheetSection(
                     comp.get("id"),
                     rank=comp.get("rank", 0),
-                    total_rank=comp.get("total-rank", 0)
+                    total_rank=comp.get("total-rank", 0),
+                    hide_total=comp.get("hide-total", False)
                 ))
 
-        mpr = MultiPeriodWorksheet(ws_elts, periods)
-
-        mpr.process(data)
+        mpr = MultiPeriodWorksheet(ws_elts, periods, data)
 
         return mpr
-
-    def process(self, data):
-
-        self.inputs = [
-            data.get_computation(v.id)
-            for v in self.computations
-        ]
-        self.outputs = {}
-
-        for period in self.periods:
-
-            res = data.perform_computations(period)
-
-            period_output = {}
-
-            for input in self.inputs:
-
-                period_output[input.id] = input.get_output(res)
-
-            self.outputs[period] = period_output
 
     def get_dataset(self):
 
         ds = Dataset()
-        ds.periods = [v for v in self.periods]
+        ds.periods = self.periods
         ds.sections = []
 
-        elts = {
-            v.id: v
+        computations = {
+            v.id: self.data.get_computation(v.id)
             for v in self.computations
         }
 
-        for input in self.inputs:
+        results = [
+            self.data.perform_computations(period)
+            for period in self.periods
+        ]
 
-            output0 = self.outputs[self.periods[0]][input.id]
+        results = [
+            {
+                cid: computations[cid].get_output(results[i])
+                for cid in computations
+            }
+            for i in range(0, len(self.periods))
+        ]
 
-            if isinstance(output0, Breakdown):
+        for cix in range(0, len(self.computations)):
 
-                sec = Section()
-                sec.id = input.id
-                sec.header = input.description
-                sec.total = Series("Total", [
-                    self.outputs[period][input.id].value
-                    for period in self.periods
-                ], rank=elts[input.id].total_rank)
+            comp_def = self.computations[cix]
+            cid = comp_def.id
+            computation = computations[cid]
 
-                items = []
-                for i in range(0, len(output0.items)):
-                    srs  = Series(
-                        output0.items[i].description,
-                        [
-                            self.outputs[period][input.id].items[i].value
-                            for period in self.periods
-                        ],
-                        rank=elts[input.id].rank
-                    )
-                    srs.id = output0.defn.inputs[i].id
-                    items.append(srs)
-                sec.items = items
+            sec = Section()
 
-                ds.sections.append(sec)
+            if len(results) < 1:
+                raise RuntimeError("No periods in worksheet?")
 
-            elif isinstance(output0, NilValue):
+            sec.add_data(computation, comp_def, results)
 
-                sec = Section()
-                sec.id = input.id
-                sec.header = input.description
-                sec.items = None
-                sec.total = Series("Total", [
-                    self.outputs[period][input.id].value
-                    for period in self.periods
-                ], rank=elts[input.id].total_rank)
-                ds.sections.append(sec)
-
-            elif isinstance(output0, Total):
-
-                sec = Section()
-                sec.id = input.id
-                sec.header = input.description
-                sec.items = None
-                sec.total = Series("Total", [
-                    self.outputs[period][input.id].value
-                    for period in self.periods
-                ], rank=elts[input.id].total_rank)
-                ds.sections.append(sec)
+            ds.sections.append(sec)
 
         return ds
