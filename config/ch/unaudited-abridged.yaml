@@ -1,4 +1,3 @@
-FIXME: BROKEN
 
 #############################################################################
 ### Taxonomy configuration ##################################################
@@ -484,8 +483,9 @@ worksheets:
 - id: balance-sheet
   kind: multi-period
   computations:
-  - fixed-assets
-  - current-assets
+  - id: fixed-assets
+    hide-total: true
+  - id: current-assets
   - prepayments-and-accrued-income
   - creditors-within-1-year
   - net-current-assets
@@ -533,9 +533,10 @@ elements:
   kind: composite
   elements:
   - title
+  - consent
   - company-info
   - directors-report
-  - auditors-report
+  - accountants-report
   - balance-sheet
   - profit-and-loss
   - notes
@@ -569,12 +570,17 @@ elements:
   notes:
 
   # Some boilerplate notes...
+  # ...applicable to companies subject to the small companies regime
+  - small-company-provisions
 
-  # ...prepared in accordance with the micro-entity provisions...
-  - micro-entity-provisions
+  # ...exemption from audit... small companies
+  - small-company-audit-exempt
 
   # ...directors acknowledge their responsibilities for complying with...
   - directors-acknowledge
+
+  # ...members have not required the company to obtain an audit...
+  - no-audit-required
 
 # Profit and loss
 - id: profit-and-loss
@@ -630,10 +636,35 @@ elements:
         content: 'expand:note:~[company-name]'
       - tag: div
         attributes: { class: title }
-        content: Audited Financial Statements
+        content: Unaudited Abridged Financial Statements
       - tag: div
         attributes: { class: subtitle }
         content: 'expand:note:For the year ended ~[period-end]'
+
+- id: consent
+  kind: page
+  elements:
+  - kind: html
+    root:
+      tag: div
+      content:
+      - tag: div
+        attributes: { class: heading }
+        content:
+        - tag: div
+          content: 'expand:note:~[company-name]'
+        - tag: div
+          content: Statement of Consent
+        - tag: div
+          content: 'expand:note:For the year ended ~[period-end]'
+        - tag: hr
+      - tag: div
+        content:
+        - tag: h3
+          content: "Statement of consent to prepare Abridged Financial
+            Statements"
+        - tag: p
+          content: "expand:members-agreed-abridged-accounts"
 
 - id: company-info
   kind: page
@@ -690,17 +721,29 @@ elements:
         - tag: tr
           content:
           - tag: td
+            content: Accountant
+          - tag: td
+            content:
+            - expand:note:~[accountant-name]
+            - tag: br
+            - expand:note:~[accountant-business]
+            - tag: br
+            - expand:note:~[accountant-address]
+        - tag: tr
+          content:
+          - tag: td
             content: Auditor
           - tag: td
             content:
-            - expand:note:~[auditor.name]
+            - expand:note:~[auditor-name]
             - tag: br
-            - expand:note:~[auditor.address]
+            - expand:note:~[auditor-business]
             - tag: br
-            - expand:note:~[auditor.city], ~[auditor.postcode]
+            - expand:note:~[auditor-address]
 
 - //ref directors-report
 - //ref auditors-report
+- //ref accountants-report
 
 - id: signature
   kind: html

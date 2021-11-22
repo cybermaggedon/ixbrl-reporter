@@ -483,8 +483,9 @@ worksheets:
 - id: balance-sheet
   kind: multi-period
   computations:
-  - fixed-assets
-  - current-assets
+  - id: fixed-assets
+    hide-total: true
+  - id: current-assets
   - prepayments-and-accrued-income
   - creditors-within-1-year
   - net-current-assets
@@ -535,7 +536,6 @@ elements:
   - consent
   - company-info
   - directors-report
-  - accountants-report
   - auditors-report
   - balance-sheet
   - profit-and-loss

@@ -253,4 +253,15 @@ body {
 .fact .factvalue.false {
   color: #a0a0a0;
 }
+
+.rank-1 {
+  position: relative;
+  left: -6rem;
+}
+
+.rank1 {
+  position: relative;
+  left: 4rem;
+}
+
 "

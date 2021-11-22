@@ -533,10 +533,8 @@ elements:
   elements:
   - title
   - company-info
-  - directors-report
   - auditors-report
   - balance-sheet
-  - profit-and-loss
   - notes
 
 # Financial position page
@@ -697,8 +695,6 @@ elements:
             - expand:note:~[auditor.business]
             - tag: br
             - expand:note:~[auditor.address]
-            - tag: br
-            - expand:note:~[auditor.city], ~[auditor.postcode]
 
 - //ref directors-report
 - //ref auditors-report
