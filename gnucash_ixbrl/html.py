@@ -4,6 +4,7 @@
 from . basicelement import BasicElement
 from . notes import NoteExpansion
 from . datum import StringDatum
+from . worksheetelement import WorksheetElement
 
 class HtmlElement(BasicElement):
     def __init__(self, id, root, data):
@@ -58,6 +59,14 @@ class HtmlElement(BasicElement):
 
         tag = root.get("tag", mandatory=False)
         fact = root.get("fact", mandatory=False)
+        worksheet = root.get("worksheet", mandatory=False)
+
+        if worksheet:
+            ws = self.data.get_worksheet(worksheet)
+            wse = WorksheetElement(None, None, ws, self.data)
+
+            # Assumption about WorksheetElement: Returns single element in list
+            return wse.to_ixbrl_elt(par, taxonomy)[0]
 
         if tag == None and fact == None:
             raise RuntimeError("HTML elements must have a tag or fact property")

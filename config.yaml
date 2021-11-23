@@ -6,10 +6,12 @@ accounts:
   # Filename of GnuCash accounts
   file: example.gnucash
 
-#report: //import config/ch/unaudited-micro.yaml
+report: //import config/ch/unaudited-micro.yaml
 #report: //import config/ch/audited-micro.yaml
 #report: //import config/hmrc/corp-tax.yaml
-report: //import config/ch/audited-abridged.yaml
+#report: //import config/ch/audited-abridged.yaml
+#report: //import config/ch/unaudited-abridged.yaml
+#report: //import config/ch/full.yaml
 
 #############################################################################
 ### Report metadata #########################################################
