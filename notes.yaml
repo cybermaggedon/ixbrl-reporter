@@ -39,13 +39,16 @@ elements:
         - tag: h4
           content: "a. Basis of preparation"
         - tag: p
-          content: "These financial statements have been prepared in
+          content: "expand:note:~{statement-of-compliance-reporting-framework=
+            These financial statements have been prepared in
             accordance with applicable United Kingdom accounting
             standards, including Financial Reporting Standard 102,
-            and the Companies Act 2006. The financial statements have been
+            and the Companies Act 2006.}
+            ~{description-of-basis-used-in-financial-statements=
+            The financial statements have been
             prepared on the historical cost basis except for the
             modification to a fair value basis for certain financial
-            instruments as specified in the accounting policies below."
+            instruments as specified in the accounting policies below.}"
 
         - tag: p
           content: "The financial statements are presented in Sterling
@@ -56,11 +59,12 @@ elements:
 
         - tag: p
 
-          content: "Where the company agrees to provide a service for
+          content: "expand:note:~{revenue-recognition-policy=
+            Where the company agrees to provide a service for
             a fixed period, revenue is allocated on a monthly basis,
             for the period of the contract. Revenue which is
             transactional is invoiced and recognised in the month it
-            is generated."
+            is generated.}"
 
         - tag: p
           content: "For larger development projects, revenue is
@@ -127,14 +131,18 @@ elements:
         - tag: h4
           content: "d. Plant and equipment"
         - tag: p
-          content: "Property, plant and equipment are stated in the
+          content: "expand:note:
+            ~{description-of-measurement-property-plant-equipment=
+            Property, plant and equipment are stated in the
             Statement of Financial Position at cost less accumulated
-            depreciation."
+            depreciation.}"
 
         - tag: p
-          content: "Depreciation is charged so as to write off the
+          content: "expand:note:
+            ~{description-of-depreciation-method-property-plant-equipment=
+            Depreciation is charged so as to write off the
             cost of assets over their estimated useful lives on the
-            following bases:"
+            following bases:}"
 
         - tag: table
           content:
@@ -155,14 +163,16 @@ elements:
           content: "e. Intangible assets"
         - tag: p
 
-          content: "Intangible assets include software development
+          content: "expand:note:
+            ~{description-recognition-basis-intangible-assets=
+            Intangible assets include software development
             costs that in the opinion of the directors meets the
             definition of an intangible asset.  Amortisation is
             charged to the Statement of Comprehensive Income on a
             straight-line basis over the estimated useful lives of
             intangible assets. Intangible assets are amortised from
             the day they are available for use or sale. The estimated
-            useful lives are as follows:"
+            useful lives are as follows:}"
 
         - tag: table
           content:
@@ -186,31 +196,34 @@ elements:
         - tag: h4
           content: "f. Operating leases"
         - tag: p
-          content: "Costs of operating leases are charged to the Statement
+          content: "expand:note:~{lessee-operating-lease-policy=
+            Costs of operating leases are charged to the Statement
             of Comprehensive Income on a straight line basis over the
-            lease term."
+            lease term.}"
 
 
         - tag: h4
           content: "g. Taxation"
         - tag: p
-          content: "Income tax on the profits for the year comprises
+          content: "expand:note:~{current-income-tax-policy=
+            Income tax on the profits for the year comprises
             current tax and deferred tax. Income tax is recognised in
             the Statement of Comprehensive Income except where items
             are recognised directly in equity, in which case the
-            associated income tax asset or liability is recognised."
-
+            associated income tax asset or liability is recognised.}"
 
 
         - tag: p
-          content: "Current tax is the expected tax payable on the
+          content: "
+            Current tax is the expected tax payable on the
             income for the year, using tax rates enacted or
             substantially enacted at the Statement of Financial
             Position date, and any adjustment to tax payable in
             respect of previous years."
 
         - tag: p
-          content: "Deferred tax is provided using the Statement of
+          content: "expand:note:~{deferred-tax-policy=
+            Deferred tax is provided using the Statement of
             Financial Position liability method, which recognises
             temporary differences between the carrying amounts of
             assets and liabilities for financial reporting purposes
@@ -219,7 +232,7 @@ elements:
             expected to apply in the periods in which temporary
             differences reverse, based on tax rates and laws enacted
             or substantively enacted at the Statement of Financial
-            Position date."
+            Position date.}"
 
 
 - kind: page
@@ -246,10 +259,11 @@ elements:
         - tag: h4
           content: "h. Pensions"
         - tag: p
-          content: "All company employees are entitled to be members
+          content: "expand:note:~{defined-contribution-pensions-policy=
+            All company employees are entitled to be members
             of the Example Limited stakeholder pension scheme, the
             assets of which are held in an independently administered
-            scheme."
+            scheme.}"
         - tag: p
           content: "Contributions are charged to the Statement of
             Comprehensive Income and are included in staff costs."
@@ -259,13 +273,14 @@ elements:
         - tag: h4
           content: "i. Cash and cash equivalents"
         - tag: p
-          content: "For the purpose of the Statement of Cash Flows,
+          content: "expand:note:~{cash-and-cash-equivalents-policy=
+            For the purpose of the Statement of Cash Flows,
             cash comprises cash in hand and loans and advances to
             credit institutions repayable on demand, and cash and cash
             equivalents comprise highly liquid investments that are
             convertible into cash with an insignificant risk of
             changes in value with original maturities of three months
-            or less."
+            or less.}"
             
         - tag: p
           content: "The Statement of Cash Flows has been prepared using the
@@ -275,13 +290,14 @@ elements:
           content: "j. Net financing costs"
         - tag: p
 
-          content: "Net financing costs comprise interest payable on
+          content: "~{finance-income-and-costs-policy=
+            Net financing costs comprise interest payable on
             borrowings calculated using the effective interest rate
             method, dividends on redeemable preference shares,
             interest receivable on funds invested, dividend income,
             foreign exchange gains and losses on hedging instruments
             that are recognised In the Statement of Comprehensive
-            Income."
+            Income.}"
 
           content: "Interest income is recognised in the Statement of
             Comprehensive Income as it accrues, using the effective
@@ -351,9 +367,9 @@ elements:
           - tag: tr
             content:
             - tag: td
-              content: 2
+              content: expand:note:~[average-employees-this]
             - tag: td
-              content: 1
+              content: expand:note:~[average-employees-previous]
 
         - tag: p
           content: "The aggregate payroll costs of these persons was as

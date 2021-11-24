@@ -218,8 +218,8 @@ document-metadata:
 - entity-legal-form
 - entity-legal-country
 - entity-legal-date
-- average-employees
-- average-employees
+- average-employees-this
+- average-employees-previous
 - officer
 - signing-officer
 - contact-name
@@ -324,11 +324,11 @@ metadata:
   context: report-date
   config: metadata.business.company-formation.date
   kind: date
-- id: average-employees
+- id: average-employees-this
   context: report-period
   config: metadata.business.average-employees.0
   kind: count
-- id: average-employees
+- id: average-employees-previous
   context: previous-period
   config: metadata.business.average-employees.1
   kind: count
@@ -546,7 +546,8 @@ tags:
   activities: uk-bus:DescriptionPrincipalActivities
   administrative-expenses: uk-core:AdministrativeExpenses
   authorised-date: uk-core:DateAuthorisationFinancialStatementsForIssue
-  average-employees: uk-core:AverageNumberEmployeesDuringPeriod
+  average-employees-this: uk-core:AverageNumberEmployeesDuringPeriod
+  average-employees-previous: uk-core:AverageNumberEmployeesDuringPeriod
   balance-sheet-date: uk-bus:BalanceSheetDate
   bank: uk-core:CashBankOnHand
   carrying-final: uk-core:PropertyPlantEquipmentIncludingRight-of-useAssets
@@ -680,7 +681,22 @@ tags:
   description-of-basis-used-in-financial-statements: uk-core:GeneralDescriptionBasisMeasurementUsedInPreparingFinancialStatements
   financial-statements-going-concern-basis: uk-core:FinancialStatementsArePreparedOnGoing
   description-why-entity-not-going-concern: uk-core:DescriptionWhyEntityNotGoing-concernOrUncertaintiesOverGoing-concernStatus
-
+  revenue-recognition-policy: uk-core:RevenueRecognitionPolicy
+  description-of-measurement-property-plant-equipment: uk-core:DescriptionMeasurementBasisForPropertyPlantEquipment
+  description-of-depreciation-method-property-plant-equipment: uk-core:DescriptionDepreciationMethodForPropertyPlantEquipment
+  description-recognition-basis-intangible-assets: uk-core:DescriptionRecognitionBasisMeasurementIntangibleAssets
+  lessee-operating-lease-policy: uk-core:LesseeOperatingLeasePolicy
+  current-income-tax-policy: uk-core:CurrentIncomeTaxPolicy
+  deferred-tax-policy: uk-core:DeferredTaxPolicy
+  defined-contribution-pensions-policy: uk-core:DefinedContributionPensionsPolicy
+  cash-and-cash-equivalents-policy: uk-core:CashCashEquivalentsPolicy
+  finance-income-and-costs-policy: uk-core:FinanceIncomeCostsPolicy
+  interest-income: uk-core:InterestIncome
+  interest-expense: uk-core:InterestExpense
+  nominal-value-of-shares-issued-in-the-period: uk-core:NominalValueSharesIssuedInPeriod
+  shares-issued: uk-core:NominalValueSharesIssuedInPeriod
+  equity: uk-core:Equity
+  share-capital: uk-core:Equity
 
 # Segments / dimensions are mapped here.  Segments are defined with a
 # segment identifier and a value e.g. accounting-standards = frs102.
