@@ -118,7 +118,9 @@ gnucash-ixbrl config-corptax.yaml report ixbrl > ct.html
 ## Configuration
 
 All the configuration is in YAML, and there are various configuration
-files which are linked together:
+files which are linked together.  If the templates work for you, you should
+only have to change `config.yaml` and `metadata.yaml`.
+
 - `config.yaml` is the top-level configuration file which imports the
   other configuration files.  Of interest, is the `accounts` section which
   specifies which GnuCash file to use.  There is also a `report` setting

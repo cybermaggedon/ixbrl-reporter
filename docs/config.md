@@ -12,7 +12,8 @@ This is where you specify the gnucash accounts filename:
 
 ```
 accounts:
-  file: example.gnucash
+  kind: piecash
+  file: example2.gnucash
 ```
 ## `taxonomy`
 

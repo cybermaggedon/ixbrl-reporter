@@ -4,8 +4,12 @@
 #############################################################################
 accounts:
   # Filename of GnuCash accounts
+
+# This file is in GnuCash XML format, and needs the gnucash module to read it
 #  kind: gnucash
 #  file: example.gnucash
+
+  # Sqlite format, and needs the piecash module.
   kind: piecash
   file: example2.gnucash
 

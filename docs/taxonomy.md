@@ -3,11 +3,7 @@
 
 The configuration file is in YAML format, and consists of the following parts:
 
-## `taxonomy.TAXONOMY`
-
-where TAXONOMY is the name of the taxonomy.
-
-## `taxonomy.TAXONOMY.contexts`
+## `contexts`
 
 The `contexts` section predefines contexts which are used in
 `metadata` definitions.  The definition consists of:
@@ -37,17 +33,17 @@ taxonomy:
       scheme: http://www.companieshouse.gov.uk/
     - from: business
       id: report-period
-      period: metadata.report.periods.0
+      period: metadata.accounting.periods.0
     - from: business
       id: report-date
-      instant: metadata.report.date
+      instant: metadata.accounting.date
     - from: report-period
       id: industry-sector
       segments:
         industry-sector: metadata.business.industry-sector
 ```
 
-## `taxonomy.TAXONOMY.metadata`
+## `metadata`
 
 Specifies a set of metadata fields which can be invoked from various
 places (e.g. notes).
@@ -78,7 +74,7 @@ When a `config` field is specified, it is used to get a value, otherwise
 the `value` field specifies a static value.  The `kind` field describes the
 type (one of `string`, `money`, `bool`, `number`, `count`, `date`).
 
-## `taxonomy.TAXONOMY.document-metadata`
+## `document-metadata`
 
 Specifies a list of metadata fields (defined in ...`metadata`) which are
 included in the `hidden` section in an iXBRL file.  These are metadata
@@ -97,7 +93,7 @@ e.g.
 
 Just the metadata identifiers are specified.
 
-## `taxonomy.TAXONOMY.lookup`
+## `lookup`
 
 This section maps segment information to real iXBRL tags.
 
@@ -121,7 +117,7 @@ This section maps segment information to real iXBRL tags.
           small-entities-regime: uk-bus:SmallEntities
 ```
 
-## `taxonomy.TAXONOMY.namespaces`
+## `namespaces`
 
 This section specifies namespaces which are added to the iXBRL document
 when this taxonomy is used.  A set of standard iXBRL namespaces are added by
@@ -136,14 +132,14 @@ e.g.
       uk-geo: http://xbrl.frc.org.uk/cd/2021-01-01/countries
 ```
 
-## `taxonomy.TAXONOMY.schema`
+## `schema`
 
 Specifies the taxonomy definition URL e.g.
 ```
     schema: https://xbrl.frc.org.uk/FRS-102/2021-01-01/FRS-102-2021-01-01.xsd
 ```
 
-## `taxonomy.TAXONOMY.notes`
+## `notes`
 
 Specifies the pre-defined note tokens.
 
@@ -156,7 +152,7 @@ Specifies the pre-defined note tokens.
         ~[contact-location:: ] ~[contact-postcode].'
 ```
 
-## `taxonomy.TAXONOMY.sign-reversed`
+## `sign-reversed`
 
 In gnucash, things that cause money to go away (e.g. liabilities) are negative.
 In iXBRL they are normally positive, so you can set the `sign` field to
@@ -174,7 +170,7 @@ numbers.
       accruals-and-deferred-income: true
 ```
 
-## `taxonomy.TAXONOMY.tags`
+## `tags`
 
 Maps fact identifiers to their iXBRL tag names in this taxonomy.
 ```

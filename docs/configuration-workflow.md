@@ -1,4 +1,6 @@
 
+FIXME: This is really very out of date.
+
 ## Configuration workflow
 
 `gnucash-ixbrl` is not simple to configure.  If the configuration files
@@ -504,5 +506,4 @@ The result is a hidden iXBRL tag:
 	contextRef="ctxt-0">Example Biz Ltd.</ix:nonNumeric>
     </ix:hidden>
 ```
-
 
