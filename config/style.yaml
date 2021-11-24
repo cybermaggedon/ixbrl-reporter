@@ -83,17 +83,31 @@ body {
   padding: 0.1rem;
 }
 
-table {
+ASDtable {
   border-spacing: 1rem 1rem;
   border-collapse: separate;
 }
 
 .table {
-  display: table;
-  table-layout: fixed;  
   border-spacing: 0.2rem 0rem;
   border-collapse: separate;
   font-size: medium;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.spacetable {
+  border-spacing: 5rem 1rem;
+  border-collapse: separate;
+  font-size: medium;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.spacetableheading TD {
+  font-weight: bold;
+  border-bottom: 2px solid black;
 }
 
 .company-info {
@@ -126,7 +140,8 @@ table {
 }
 
 .label {
-  width: 20rem;
+  width: 14rem;
+  font-size: smaller;
 }
 
 .label.breakdown.header {
@@ -139,17 +154,17 @@ table {
   padding-left: 1rem;
   padding-right: 1rem;
   margin-right: 1rem;
-  font-size: smaller;
+  font-size: small;
 }
 
 @media print {
   .label {
     font-size: small;
-    width: auto;
+    width: 14rem;
   }
   .value {
     font-family: Source Code Pro, monospace;
-    width: 10rem;
+    width: 6rem;
     font-size: small;
   }
   .company-info {
@@ -162,7 +177,7 @@ table {
     font-size: 11pt;
   }
   .period {
-    width: 8rem;
+    width: 6rem;
   }
 }
 

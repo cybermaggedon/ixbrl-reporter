@@ -351,17 +351,14 @@ elements:
 
         - tag: table
           attributes:
-            style: "border-spacing: 5rem 1rem; text-align: center;"
+            class: spacetable
           content:
           - tag: tr
+            attributes: { class: spacetableheading }
             content:
             - tag: td
-              attributes: 
-                style: "font-weight: bold; border-bottom: 2px solid black;"
               content: 2020
             - tag: td
-              attributes: 
-                style: "font-weight: bold; border-bottom: 2px solid black;"
               content: 2019
           - tag: tr
             content:
