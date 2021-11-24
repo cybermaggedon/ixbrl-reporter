@@ -7,12 +7,12 @@
 taxonomy: //import taxonomy/frs102.yaml
 
 # CSS style
-style: //import config/style.yaml
+style: //import report/style.yaml
 
 # The accounting-standards applied.  One of:
 #   frs101, frs102, frsse, full-irs, micro-entities, other-standards,
 #   small-entities-regime.
-accounting-standards: small-entities-regime
+accounting-standards: frs102
 
 # Accounts status, one of:
 #   audit-exempt-no-accountants-report,
@@ -22,10 +22,10 @@ accounts-status: audit-exempt-with-accountants-report
 
 # Accounts type, one of:
 #   abbreviated-accounts, abridged-accounts, full-accounts
-accounts-type: abridged-accounts
+accounts-type: full-accounts
 
 # Report title
-title: Unaudited Abridged Accounts
+title: Unaudited Full Accounts
 
 #############################################################################
 ### Report computations #####################################################
@@ -193,6 +193,32 @@ computations:
   - other-charges
   - tax
 
+- id: charges
+  kind: group
+  description: Charges against profits
+  period: in-year
+  inputs:
+  - depreciation
+  - staff-costs
+  - other-charges
+
+- id: interest-income
+  kind: group
+  description: Interest income
+  period: in-year
+  inputs: []
+
+- id: interest-expense
+  kind: group
+  description: Interest expense
+  period: in-year
+  inputs: []
+
+- id: zero
+  kind: group
+  description: No information
+  period: in-year
+  inputs: []
 
 ##############################
 # Balance sheet ##############
@@ -347,6 +373,8 @@ computations:
   period: at-end
   accounts:
   - Equity:Shareholdings
+  segments:
+    equity: ordinary-shares
 
 # Profit i.e. income minus expenses.
 - id: profit-loss
@@ -458,25 +486,18 @@ computations:
 ##############################
 
 # Ordinary shares held at start of period
-- id: ordinary-shares-at-start
+- id: shares-at-start
   kind: line
-  description: Ordinary Shares
+  description: Ordinary Shares held at start
   period: at-start
   accounts:
   - Equity:Shareholdings:Ordinary Shares
-
-# Preference shares held at start
-- id: preference-shares-at-start
-  kind: line
-  description: Preference Shares
-  period: at-start
-  accounts:
   - Equity:Shareholdings:Preference Shares
 
 # Shares issued
 - id: shares-issued
   kind: line
-  description: Shares Issued
+  description: Shares Issued in period
   period: in-year
   accounts:
   - Equity:Shareholdings
@@ -487,9 +508,10 @@ computations:
   description: Share Capital
   period: at-end
   inputs:
-  - ordinary-shares-at-start
-  - preference-shares-at-start
+  - shares-at-start
   - shares-issued
+  segments:
+    equity: ordinary-shares
 
 #############################################################################
 ### Worksheets ##############################################################
@@ -501,9 +523,8 @@ worksheets:
 - id: balance-sheet
   kind: multi-period
   computations:
-  - id: fixed-assets
-    hide-total: true
-  - id: current-assets
+  - fixed-assets
+  - current-assets
   - prepayments-and-accrued-income
   - creditors-within-1-year
   - net-current-assets
@@ -537,6 +558,30 @@ worksheets:
   computations:
   - share-capital
 
+- id: charges
+  kind: multi-period
+  description: Charges
+  computations:
+  - charges
+
+- id: financial-income
+  kind: multi-period
+  description: Financial income
+  computations:
+  - interest-income
+
+- id: financial-costs
+  kind: multi-period
+  description: Financial income
+  computations:
+  - interest-expense
+
+- id: zero
+  kind: multi-period
+  description: Zero
+  computations:
+  - zero
+
 #############################################################################
 ### Elements describe the report structure ##################################
 #############################################################################
@@ -551,12 +596,11 @@ elements:
   kind: composite
   elements:
   - title
-  - consent
   - company-info
   - directors-report
   - accountants-report
   - balance-sheet
-  - profit-and-loss
+  - comprehensive-income
   - notes
 
 # Financial position page
@@ -601,7 +645,7 @@ elements:
   - no-audit-required
 
 # Profit and loss
-- id: profit-and-loss
+- id: comprehensive-income
   kind: page
   elements:
   - kind: html
@@ -614,7 +658,7 @@ elements:
         - tag: div
           content: 'expand:note:~[company-name]'
         - tag: div
-          content: Income statement
+          content: Statement of Comprehensive Income
         - tag: div
           content: 'expand:note:For the year ended ~[period-end]'
         - tag: hr
@@ -658,31 +702,6 @@ elements:
       - tag: div
         attributes: { class: subtitle }
         content: 'expand:note:For the year ended ~[period-end]'
-
-- id: consent
-  kind: page
-  elements:
-  - kind: html
-    root:
-      tag: div
-      content:
-      - tag: div
-        attributes: { class: heading }
-        content:
-        - tag: div
-          content: 'expand:note:~[company-name]'
-        - tag: div
-          content: Statement of Consent
-        - tag: div
-          content: 'expand:note:For the year ended ~[period-end]'
-        - tag: hr
-      - tag: div
-        content:
-        - tag: h3
-          content: "Statement of consent to prepare Abridged Financial
-            Statements"
-        - tag: p
-          content: "expand:members-agreed-abridged-accounts"
 
 - id: company-info
   kind: page
@@ -779,33 +798,6 @@ elements:
         src: //import signature.yaml
         alt: Director's signature
 
-- id: notes
-  kind: page
-  elements:
-  - kind: html
-    root:
-      tag: div
-      content:
-      - tag: div
-        attributes: { class: heading }
-        content:
-        - tag: div
-          content: 'expand:note:~[company-name]'
-        - tag: div
-          content: Notes to the accounts
-        - tag: div
-          attributes: { class: subtitle }
-          content: 'expand:note:For the year ended ~[period-end]'
-        - tag: hr
-  - kind: notes
-    notes:
+- //ref notes
 
-    # Some boilerplate notes...
-
-    # Company number and address.
-    - company
-
-    # These accounts were generated using gnucash-ixbrl...  You don't need
-    # to have this one in your report.
-    - software-version
 

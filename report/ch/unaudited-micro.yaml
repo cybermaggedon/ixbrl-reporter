@@ -7,7 +7,7 @@
 taxonomy: //import taxonomy/frs102.yaml
 
 # CSS style
-style: //import config/style.yaml
+style: //import report/style.yaml
 
 # The accounting-standards applied.  One of:
 #   frs101, frs102, frsse, full-irs, micro-entities, other-standards,

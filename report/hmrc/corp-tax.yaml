@@ -7,7 +7,7 @@
 taxonomy: //import taxonomy/ct-dpl.yaml
 
 # CSS style
-style: //import config/style.yaml
+style: //import report/style.yaml
 
 # Report title
 title: Corporation tax filing
