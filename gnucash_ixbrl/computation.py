@@ -104,13 +104,13 @@ class Line(Computable):
             context = self.context.with_period(Period("", start, end))
             
         for acct_name in self.accounts:
-            acct = session.get_account(session.root, acct_name)
+            acct = session.get_account(None, acct_name)
 
             splits = session.get_splits(acct, start, end)
 
             acct_total = sum([v["amount"] for v in splits])
 
-            if session.is_debit(acct.GetType()):
+            if session.is_debit(acct):
                 acct_total *= -1
 
             total += acct_total

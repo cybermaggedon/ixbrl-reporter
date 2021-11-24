@@ -4,6 +4,9 @@
 #############################################################################
 accounts:
   # Filename of GnuCash accounts
+#  kind: gnucash
+#  file: example.gnucash
+  kind: piecash
   file: example2.gnucash
 
 report: //import config/ch/unaudited-micro.yaml

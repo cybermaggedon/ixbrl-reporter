@@ -17,9 +17,11 @@ try:
     cfg.set("internal.software-name", "gnucash-ixbrl")
     cfg.set("internal.software-version", "1.5.0")
 
+    kind = cfg.get("accounts.kind")
     file = cfg.get("accounts.file")
 
-    session = accounts.Accounts(file)
+    cls = accounts.get_class(kind)
+    session = cls(file)
 
     d = DataSource(cfg, session)
 
