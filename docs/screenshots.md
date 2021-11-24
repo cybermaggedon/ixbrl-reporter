@@ -1,6 +1,28 @@
 
 # Some sample output
 
+## iXBRL output (in a browser)
+
+![Report page 1](report-page1.png)
+![Report page 2](report-page2.png)
+![Report page 3](report-page3.png)
+![Report page 4](report-page4.png)
+
+## iXBRL in Arelle
+
+The iXBRL can be loaded into Arelle to allow facts to be viewed.
+
+![alt text](arelle.png)
+
+## iXBRL in ixbrl-viewer
+
+The iXBRL can be loaded into ixbrlviewer.  Easiest way is to do follow the
+installation instructions for
+[ixbrl-viewer](https://github.com/Workiva/ixbrl-viewer) so that it is
+an Arelle plugin.
+
+![alt text](ixbrlviewer.png)
+
 ## Plain text
 
 ```
@@ -98,33 +120,3 @@ Share Capital:
   Shares Issued                         :         -    3000.00  
 Total                                   :   8000.00    8000.00  
 ```
-
-## iXBRL output (in a browser)
-
-![alt text](report-title.png)
-
-![alt text](report-bs.png)
-
-![alt text](report-income.png)
-
-![alt text](report-assets.png)
-
-![alt text](report-shares.png)
-
-![alt text](report-notes.png)
-
-## iXBRL in Arelle
-
-The iXBRL can be loaded into Arelle to allow facts to be viewed.
-
-![alt text](arelle.png)
-
-## iXBRL in ixbrl-viewer
-
-The iXBRL can be loaded into ixbrlviewer.  Easiest way is to do follow the
-installation instructions for
-[ixbrl-viewer](https://github.com/Workiva/ixbrl-viewer) so that it is
-an Arelle plugin.
-
-![alt text](ixbrlviewer.png)
-
