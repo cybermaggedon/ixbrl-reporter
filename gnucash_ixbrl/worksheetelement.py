@@ -25,7 +25,7 @@ class WorksheetElement(BasicElement):
 
         return e
 
-    def to_text(self, out):
+    def to_text(self, taxonomy, out):
 
         if self.title:
             title = "*** {0} ***\n".format(self.title)

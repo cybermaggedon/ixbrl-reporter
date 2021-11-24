@@ -21,18 +21,11 @@ class Composite(BasicElement):
         )
         return c
 
-    def to_text(self, out):
-        out.write("\n")
+    def to_text(self, taxonomy, out):
         for v in self.elements:
-            v.to_text(out)
-            out.write("\n")
+            v.to_text(taxonomy, out)
 
     def to_ixbrl_elt(self, par, taxonomy):
-
-#        elt = par.xhtml_maker.div({
-#            "class": "composite",
-#            "id": self.id + "-element"
-#        })
 
         elts = []
 

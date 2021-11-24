@@ -134,10 +134,33 @@ class NotesElement(BasicElement):
 
         return e
 
-    def to_text(self, out):
+    def html_to_text(self, root, out):
 
-        # FIXME: Put notes out as text.
-        pass
+        if root.tag == "{http://www.w3.org/1999/xhtml}span":
+            if root.text: out.write(root.text)
+        else:
+            if root.text: out.write(root.text + "\n")
+
+        for child in root.getchildren():
+            self.html_to_text(child, out)
+
+    def to_text(self, taxonomy, out):
+
+        self.init_html(taxonomy)
+        for note in self.notes:
+            note = self.expand_text(note, self, taxonomy)
+
+            if isinstance(note, str):
+                out.write(note)
+            else:
+                for elt in note:
+                    self.html_to_text(elt, out)
+            out.write("\n")
+
+    def expand_text(self, text, par, taxonomy):
+
+        ne = NoteExpansion(self.data)
+        return ne.expand(text, par, taxonomy)
 
     def to_ixbrl_elt(self, par, taxonomy):
 

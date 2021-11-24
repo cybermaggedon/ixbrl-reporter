@@ -111,7 +111,7 @@ class BasicElement:
             namespace=xbrldi_ns,
         )
 
-    def to_ixbrl_tree(self, taxonomy):
+    def init_html(self, taxonomy):
 
         nsmap={
             None: xhtml_ns,
@@ -132,6 +132,10 @@ class BasicElement:
         self.nsmap = nsmap
 
         self.add_makers(self.nsmap)
+        
+    def to_ixbrl_tree(self, taxonomy):
+
+        self.init_html(taxonomy)
 
         self.html = self.xhtml_maker.html(
             self.xhtml_maker.head(),

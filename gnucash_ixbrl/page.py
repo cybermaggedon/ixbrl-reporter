@@ -21,10 +21,10 @@ class PageElement(BasicElement):
         )
         return c
 
-    def to_text(self, out):
+    def to_text(self, taxonomy, out):
         out.write("\n")
         for v in self.elements:
-            v.to_text(out)
+            v.to_text(taxonomy, out)
             out.write("\n")
 
     def to_ixbrl_elt(self, par, taxonomy):

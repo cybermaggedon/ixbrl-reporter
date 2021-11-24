@@ -5,6 +5,7 @@ from . basicelement import BasicElement
 from . notes import NoteExpansion
 from . datum import StringDatum
 from . worksheetelement import WorksheetElement
+from lxml import objectify, etree
 
 class HtmlElement(BasicElement):
     def __init__(self, id, root, data):
@@ -21,7 +22,17 @@ class HtmlElement(BasicElement):
         )
         return c
 
-    def write_text(self, root, out):
+    def html_to_text(self, root, out):
+
+        if root.tag == "{http://www.w3.org/1999/xhtml}span":
+            if root.text: out.write(root.text)
+        else:
+            if root.text: out.write(root.text + "\n")
+
+        for child in root.getchildren():
+            self.html_to_text(child, out)
+
+    def write_text(self, root, out, taxonomy):
 
         content = root.get("content", mandatory=False)
 
@@ -29,24 +40,40 @@ class HtmlElement(BasicElement):
             content = []
             
         if isinstance(content, str):
-            out.write(content + "\n")
+
+            content = self.expand_text(content, self, taxonomy)
+
+            if isinstance(content, str):
+                out.write(content + "\n")
+            else:
+                for elt in content:
+                    self.html_to_text(elt, out)
+
             return
 
         for child in content:
+
             if isinstance(child, str):
-                out.write(child + "\n")
+                child = self.expand_text(child, self, taxonomy)
+
+                if isinstance(child, str):
+                    out.write(child + "\n")
+                else:
+                    for child2 in child:
+                        self.html_to_text(child2, out)
 
             elif isinstance(child, dict):
-                self.write_text(child, out)
+                self.write_text(child, out, taxonomy)
             else:
                 raise RuntimeError(
                     "HTMLElement can't work with content of type %s" %
                     str(type(child))
                 )
 
-    def to_text(self, out):
+    def to_text(self, taxonomy, out):
 
-        self.write_text(self.root, out)
+        self.init_html(taxonomy)
+        self.write_text(self.root, out, taxonomy)
 
     def expand_text(self, text, par, taxonomy):
 

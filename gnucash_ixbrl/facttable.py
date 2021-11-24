@@ -37,7 +37,7 @@ class FactTable(BasicElement):
         )
         return c
 
-    def to_text(self, out):
+    def to_text(self, taxonomy, out):
 
         title = "*** {0} ***\n".format(self.title)
         out.write(title)

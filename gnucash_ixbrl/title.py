@@ -28,7 +28,7 @@ class Title(BasicElement):
 
         return e
 
-    def to_text(self, out):
+    def to_text(self, out, taxonomy):
         return
 
     def to_ixbrl_elt(self, par, taxonomy):

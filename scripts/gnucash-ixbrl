@@ -36,7 +36,9 @@ try:
         tx = Taxonomy(tx_cfg)
         elt.to_html(tx, sys.stdout)
     elif sys.argv[3] == "text":
-        elt.to_text(sys.stdout)
+        tx_cfg = cfg.get("report.taxonomy")
+        tx = Taxonomy(tx_cfg)
+        elt.to_text(tx, sys.stdout)
     else:
         raise RuntimeError("Output type '%s' not known." % sys.argv[3])
 
