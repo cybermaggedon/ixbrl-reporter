@@ -83,6 +83,11 @@ body {
   padding: 0.1rem;
 }
 
+table {
+  border-spacing: 1rem 1rem;
+  border-collapse: separate;
+}
+
 .table {
   display: table;
   table-layout: fixed;  

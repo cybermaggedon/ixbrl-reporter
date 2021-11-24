@@ -4,22 +4,22 @@ contexts:
   scheme: metadata.business.entity-scheme
 - id: report-period
   from: business
-  period: metadata.report.periods.0
+  period: metadata.accounting.periods.0
   segments:
     business-type: company
 - id: management-expenses-period
   from: business
-  period: metadata.report.periods.0
+  period: metadata.accounting.periods.0
   segments:
     business-type: management-expenses
 - id: report-date
   from: business
-  instant: metadata.report.date
+  instant: metadata.accounting.date
   segments:
     business-type: company
 - id: trade-period
   from: business
-  period: metadata.report.periods.0
+  period: metadata.accounting.periods.0
   segments:
     business-name: metadata.business.company-name
     business-type: trade

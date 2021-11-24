@@ -36,7 +36,7 @@ class DataSource:
 
     def get_report_date(self):
 
-        return self.cfg.get_date("metadata.report.date")
+        return self.cfg.get_date("metadata.accounting.date")
 
     def get_computation(self, id):
         if id in self.computations:

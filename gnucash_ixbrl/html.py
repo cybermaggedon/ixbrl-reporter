@@ -84,6 +84,11 @@ class HtmlElement(BasicElement):
             context_id = root.get("context")
             ctxt = taxonomy.get_context(context_id, self.data)
 
+        if isinstance(content, int):
+            content = str(content)
+        if isinstance(content, float):
+            content = str(content)
+
         # The content element is a string
         if isinstance(content, str):
 

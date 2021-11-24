@@ -9,12 +9,12 @@ accounts:
   kind: piecash
   file: example2.gnucash
 
-report: //import config/ch/unaudited-micro.yaml
+#report: //import config/ch/unaudited-micro.yaml
 #report: //import config/ch/audited-micro.yaml
 #report: //import config/hmrc/corp-tax.yaml
 #report: //import config/ch/audited-abridged.yaml
 #report: //import config/ch/unaudited-abridged.yaml
-#report: //import config/ch/full.yaml
+report: //import config/ch/audited-full.yaml
 
 #    pretty-print: true
 
@@ -162,6 +162,8 @@ directors-report: //import directors-report.yaml
 auditors-report: //import auditors-report.yaml
 
 accountants-report: //import accountants-report.yaml
+
+notes: //import notes.yaml
 
 accountant:
   name: "Kirsty Furlong BSc FCA"

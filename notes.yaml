@@ -1,0 +1,480 @@
+
+id: notes
+kind: composite
+elements:
+- kind: page
+  elements:
+  - kind: html
+    root:
+      tag: div
+      content:
+      - tag: div
+        attributes: { class: heading }
+        content:
+        - tag: div
+          content: 'expand:note:~[company-name]'
+        - tag: div
+          content: Notes to the accounts
+        - tag: div
+          attributes: { class: subtitle }
+          content: 'expand:note:For the year ended ~[period-end]'
+        - tag: hr
+      - tag: div
+        content:
+
+        - tag: h3
+          content: "1. Company information"
+
+        - tag: p
+          content: "expand:company"
+
+        - tag: h3
+          content: "2. Accounting policies"
+
+        - tag: p
+          content: "The following accounting policies have been
+            applied consistently in dealing with items which are
+            considered material in relation to the company's accounts:"
+
+        - tag: h4
+          content: "a. Basis of preparation"
+        - tag: p
+          content: "These financial statements have been prepared in
+            accordance with applicable United Kingdom accounting
+            standards, including Financial Reporting Standard 102,
+            and the Companies Act 2006. The financial statements have been
+            prepared on the historical cost basis except for the
+            modification to a fair value basis for certain financial
+            instruments as specified in the accounting policies below."
+
+        - tag: p
+          content: "The financial statements are presented in Sterling
+            (£)."
+
+        - tag: h4
+          content: "b. Revenue recognition"
+
+        - tag: p
+
+          content: "Where the company agrees to provide a service for
+            a fixed period, revenue is allocated on a monthly basis,
+            for the period of the contract. Revenue which is
+            transactional is invoiced and recognised in the month it
+            is generated."
+
+        - tag: p
+          content: "For larger development projects, revenue is
+            recognised when all of the following has occurred:"
+
+        - tag: ul
+          content:
+          - tag: li
+            content: can be reliably measured;
+          - tag: li
+            content: "is probable that the economic benefits will flowb
+              to the company;"
+          - tag: li
+            content: "at the balance sheet date the stage of
+              completion can be measured reliably;"
+          - tag: li
+            content: " transaction costs and costs to completion can
+              be measured reliably."
+          - tag: li
+            content: "All revenue arises on the sale of products and
+              services relating to the principal activities of the
+              company."
+        - tag: p
+          content: Interest income is recognised on an accruals basis.
+
+        - tag: h4
+          content: "c. Going concern"
+        - tag: p
+          content: "The financial statements have been prepared on a
+            going concern basis assuming the continued support of the
+            company's ultimate parent undertaking. The directors have
+            reviewed the results of the company's operations in the
+            period 1 January 2009 to the date of approval of the
+            financial statements and have made forecasts of its
+            performance in the subsequent 12 months. They have also
+            received assurances of continued financial support from the
+            ultimate parent undertaking. In view of this the director's
+            consider that the company will continue to be able to meet
+            its liabilities as they fall due and that the financial
+            statements can therefore be prepared on the going concern
+            basis."
+
+- kind: page
+  elements:
+  - kind: html
+    root:
+      tag: div
+      content:
+      - tag: div
+        attributes: { class: heading }
+        content:
+        - tag: div
+          content: 'expand:note:~[company-name]'
+        - tag: div
+          content: Notes to the accounts
+        - tag: div
+          attributes: { class: subtitle }
+          content: 'expand:note:For the year ended ~[period-end]'
+        - tag: hr
+
+      - tag: div
+        content:
+
+        - tag: h4
+          content: "d. Plant and equipment"
+        - tag: p
+          content: "Property, plant and equipment are stated in the
+            Statement of Financial Position at cost less accumulated
+            depreciation."
+
+        - tag: p
+          content: "Depreciation is charged so as to write off the
+            cost of assets over their estimated useful lives on the
+            following bases:"
+
+        - tag: table
+          content:
+          - tag: tr
+            content:
+            - tag: td
+              content: Fixtures and fittings - Office Equipment
+            - tag: td
+              content: 25% reducing balance
+          - tag: tr
+            content:
+            - tag: td
+              content: Fixtures and fittings - Computer Equipment
+            - tag: td
+              content: 33% per annum 
+
+        - tag: h4
+          content: "e. Intangible assets"
+        - tag: p
+
+          content: "Intangible assets include software development
+            costs that in the opinion of the directors meets the
+            definition of an intangible asset.  Amortisation is
+            charged to the Statement of Comprehensive Income on a
+            straight-line basis over the estimated useful lives of
+            intangible assets. Intangible assets are amortised from
+            the day they are available for use or sale. The estimated
+            useful lives are as follows:"
+
+        - tag: table
+          content:
+          - tag: tr
+            content:
+            - tag: td
+              content: Deferred Development costs
+            - tag: td
+              content: 33% per annum
+
+        - tag: p
+          content: "In accordance with IAS36: Impairment, an
+            impairment review of those products under development,
+            which are not yet available for sale at the Statement of
+            Financial Position date is undertaken by the company."
+
+        - tag: p
+          content: The results of this review performed at 31 December 2020
+            confirmed there were no indications of impairment."
+
+        - tag: h4
+          content: "f. Operating leases"
+        - tag: p
+          content: "Costs of operating leases are charged to the Statement
+            of Comprehensive Income on a straight line basis over the
+            lease term."
+
+
+        - tag: h4
+          content: "g. Taxation"
+        - tag: p
+          content: "Income tax on the profits for the year comprises
+            current tax and deferred tax. Income tax is recognised in
+            the Statement of Comprehensive Income except where items
+            are recognised directly in equity, in which case the
+            associated income tax asset or liability is recognised."
+
+
+
+        - tag: p
+          content: "Current tax is the expected tax payable on the
+            income for the year, using tax rates enacted or
+            substantially enacted at the Statement of Financial
+            Position date, and any adjustment to tax payable in
+            respect of previous years."
+
+        - tag: p
+          content: "Deferred tax is provided using the Statement of
+            Financial Position liability method, which recognises
+            temporary differences between the carrying amounts of
+            assets and liabilities for financial reporting purposes
+            and the amounts used for taxation purposes. It is measured
+            on an undiscounted basis at the tax rates that are
+            expected to apply in the periods in which temporary
+            differences reverse, based on tax rates and laws enacted
+            or substantively enacted at the Statement of Financial
+            Position date."
+
+
+- kind: page
+  elements:
+  - kind: html
+    root:
+      tag: div
+      content:
+      - tag: div
+        attributes: { class: heading }
+        content:
+        - tag: div
+          content: 'expand:note:~[company-name]'
+        - tag: div
+          content: Notes to the accounts
+        - tag: div
+          attributes: { class: subtitle }
+          content: 'expand:note:For the year ended ~[period-end]'
+        - tag: hr
+
+      - tag: div
+        content:
+
+        - tag: h4
+          content: "h. Pensions"
+        - tag: p
+          content: "All company employees are entitled to be members
+            of the Example Limited stakeholder pension scheme, the
+            assets of which are held in an independently administered
+            scheme."
+        - tag: p
+          content: "Contributions are charged to the Statement of
+            Comprehensive Income and are included in staff costs."
+
+
+
+        - tag: h4
+          content: "i. Cash and cash equivalents"
+        - tag: p
+          content: "For the purpose of the Statement of Cash Flows,
+            cash comprises cash in hand and loans and advances to
+            credit institutions repayable on demand, and cash and cash
+            equivalents comprise highly liquid investments that are
+            convertible into cash with an insignificant risk of
+            changes in value with original maturities of three months
+            or less."
+            
+        - tag: p
+          content: "The Statement of Cash Flows has been prepared using the
+            indirect method."
+
+        - tag: h4
+          content: "j. Net financing costs"
+        - tag: p
+
+          content: "Net financing costs comprise interest payable on
+            borrowings calculated using the effective interest rate
+            method, dividends on redeemable preference shares,
+            interest receivable on funds invested, dividend income,
+            foreign exchange gains and losses on hedging instruments
+            that are recognised In the Statement of Comprehensive
+            Income."
+
+          content: "Interest income is recognised in the Statement of
+            Comprehensive Income as it accrues, using the effective
+            interest rate method."
+
+        - tag: h3
+          content: "3. Profit from operations"
+
+        - tag: p
+          content: "Profit from operations has been arrived at after charging:"
+        - worksheet: charges
+
+        - tag: h3
+          content: "4. Financial income"
+        - worksheet: financial-income
+
+
+
+- kind: page
+  elements:
+  - kind: html
+    root:
+      tag: div
+      content:
+      - tag: div
+        attributes: { class: heading }
+        content:
+        - tag: div
+          content: 'expand:note:~[company-name]'
+        - tag: div
+          content: Notes to the accounts
+        - tag: div
+          attributes: { class: subtitle }
+          content: 'expand:note:For the year ended ~[period-end]'
+        - tag: hr
+
+      - tag: div
+        content:
+
+        - tag: h3
+          content: "5. Finance costs"
+        - worksheet: financial-costs
+
+
+
+        - tag: h3
+          content: "6. Staff numbers and costs"
+
+        - tag: p
+          content: "The average monthly number of persons employed by the
+            company (including directors) during the period was as follows:"
+
+        - tag: table
+          attributes:
+            style: "border-spacing: 5rem 1rem; text-align: center;"
+          content:
+          - tag: tr
+            content:
+            - tag: td
+              attributes: 
+                style: "font-weight: bold; border-bottom: 2px solid black;"
+              content: 2020
+            - tag: td
+              attributes: 
+                style: "font-weight: bold; border-bottom: 2px solid black;"
+              content: 2019
+          - tag: tr
+            content:
+            - tag: td
+              content: 2
+            - tag: td
+              content: 1
+
+        - tag: p
+          content: "The aggregate payroll costs of these persons was as
+            follows:"
+
+        - worksheet: zero
+
+
+        - tag: h3
+          content: "7. Directors' renumeration and transactions"
+        - tag: p
+          content: "The remuneration of the directors was as follows:"
+        - worksheet: zero
+
+        - tag: h3
+          content: "8. Taxation"
+        - worksheet: zero
+
+- kind: page
+  elements:
+  - kind: html
+    root:
+      tag: div
+      content:
+      - tag: div
+        attributes: { class: heading }
+        content:
+        - tag: div
+          content: 'expand:note:~[company-name]'
+        - tag: div
+          content: Notes to the accounts
+        - tag: div
+          attributes: { class: subtitle }
+          content: 'expand:note:For the year ended ~[period-end]'
+        - tag: hr
+
+      - tag: div
+        content:
+
+        - tag: h3
+          content: "9. Intangible fixed assets"
+        - worksheet: zero
+
+
+        - tag: h3
+          content: "10. Property, plant and equipment"
+        - worksheet: fixed-assets
+
+        - tag: h3
+          content: "11. Trade and other receivables"
+        - worksheet: zero
+
+        - tag: h3
+          content: "12. Cash and cash equivalents"
+        - worksheet: zero
+
+- kind: page
+  elements:
+  - kind: html
+    root:
+      tag: div
+      content:
+      - tag: div
+        attributes: { class: heading }
+        content:
+        - tag: div
+          content: 'expand:note:~[company-name]'
+        - tag: div
+          content: Notes to the accounts
+        - tag: div
+          attributes: { class: subtitle }
+          content: 'expand:note:For the year ended ~[period-end]'
+        - tag: hr
+
+      - tag: div
+        content:
+
+        - tag: h3
+          content: "13. Trade and other payables"
+        - worksheet: zero
+
+        - tag: h3
+          content: "14. Deferred tax assets and liabilities"
+        - worksheet: zero
+
+        - tag: h3
+          content: "15. Share capital"
+        - worksheet: share-capital
+
+        - tag: h3
+          content: "16. Operating leases and commitments"
+        - worksheet: zero
+
+- kind: page
+  elements:
+  - kind: html
+    root:
+      tag: div
+      content:
+      - tag: div
+        attributes: { class: heading }
+        content:
+        - tag: div
+          content: 'expand:note:~[company-name]'
+        - tag: div
+          content: Notes to the accounts
+        - tag: div
+          attributes: { class: subtitle }
+          content: 'expand:note:For the year ended ~[period-end]'
+        - tag: hr
+
+      - tag: div
+        content:
+
+        - tag: h3
+          content: "17. Related party transactions"
+        - worksheet: zero
+
+        - tag: h3
+          content: "18. Software"
+
+        - tag: p
+          content: "expand:software-version"
+

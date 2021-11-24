@@ -18,14 +18,14 @@ accounting-standards: micro-entities
 #   audit-exempt-no-accountants-report,
 #   audit-exempt-with-accountants-report, audited,
 #   independent-examination, other-reporting-regime
-accounts-status: audited
+accounts-status: audit-exempt-no-accountants-report
 
 # Accounts type, one of:
 #   abbreviated-accounts, abridged-accounts, full-accounts
 accounts-type: abridged-accounts
 
 # Report title
-title: Audited Micro-Entity Accounts
+title: Unaudited Micro-Entity Accounts
 
 #############################################################################
 ### Report computations #####################################################
@@ -625,7 +625,7 @@ elements:
         content: 'expand:note:~[company-name]'
       - tag: div
         attributes: { class: title }
-        content: Unaudited Financial Statements
+        content: expand:note:~[report-title]
       - tag: div
         attributes: { class: subtitle }
         content: 'expand:note:For the year ended ~[period-end]'

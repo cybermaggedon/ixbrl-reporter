@@ -9,6 +9,9 @@ taxonomy: //import taxonomy/ct-dpl.yaml
 # CSS style
 style: //import config/style.yaml
 
+# Report title
+title: Corporation tax filing
+
 #############################################################################
 ### Report computations #####################################################
 #############################################################################
@@ -364,7 +367,7 @@ computations:
     description: FY1
     period: in-year
     input: ct-profits
-    whole-period: metadata.report.periods.0
+    whole-period: metadata.accounting.periods.0
     proportion-period: metadata.tax.fy1
   segments:
     business-type: company
@@ -380,7 +383,7 @@ computations:
     description: FY2
     period: in-year
     input: ct-profits
-    whole-period: metadata.report.periods.0
+    whole-period: metadata.accounting.periods.0
     proportion-period: metadata.tax.fy2
   segments:
     business-type: company
