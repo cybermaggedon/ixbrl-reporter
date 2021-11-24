@@ -452,30 +452,30 @@ metadata:
 - id: accountants-report-date
   kind: date
   context: end-of-reporting-period
-  config: accountant.report-date
+  config: metadata.accountant.report-date
 - id: accountant-name
   context: report-period
-  config: accountant.name
+  config: metadata.accountant.name
 - id: accountant-business
   context: report-period
-  config: accountant.business
+  config: metadata.accountant.business
 - id: accountant-address
   context: report-period
-  config: accountant.address
+  config: metadata.accountant.address
 
 - id: auditors-report-date
   kind: date
   context: end-of-reporting-period
-  config: auditor.report-date
+  config: metadata.auditor.report-date
 - id: auditor-name
   context: report-period
-  config: auditor.name
+  config: metadata.auditor.name
 - id: auditor-business
   context: report-period
-  config: auditor.business
+  config: metadata.auditor.business
 - id: auditor-address
   context: report-period
-  config: auditor.address
+  config: metadata.auditor.address
 
 - id: directors-report-date
   kind: date

@@ -1,0 +1,164 @@
+
+#############################################################################
+### Report metadata #########################################################
+#############################################################################
+# Metadata used in reports.  Note that some of the metadata here is only
+# referenced from the taxonomy files, so different taxonomies will demand
+# different metadata.
+
+# Metadata about the business
+business:
+
+  # Summary of business activities
+  activities: Computer security consultancy and development services
+
+  # Average number of employees over the previous 2 accounting periods
+  average-employees:
+  - 2
+  - 1
+
+  # Business name
+  company-name: Example Biz Ltd.
+
+  # Registered company number
+  company-number: '12345678'
+
+  # iXBRL entity scheme, Companies House
+  entity-scheme: http://www.companieshouse.gov.uk/
+
+  # Legal entity formation information
+  company-formation:
+    country: england-and-wales
+    date: '2017-04-05'
+    form: private-limited-company
+
+  # VAT registration number
+  vat-registration: GB012345678
+
+  # Company contact details
+  contact:
+
+    # Contact name, address, county, location (city), country, email
+    name: Corporate Enquiries
+    address:
+    - 123 Leadbarton Street
+    - Dumpston Trading Estate
+    county: Minchingshire
+    location: Threapminchington
+    postcode: QQ99 9ZZ
+    country: UK
+    email: corporate@example.org
+
+    # Phone number
+    phone:
+      area: '7900'
+      country: '+44'
+      number: '0123456'
+      type: landline
+
+  # Directors of the business
+  directors:
+  - A Bloggs
+  - B Smith
+  - C Jones
+
+  # Industry sector.  Search for uk-bus:MainIndustrySectorDimension in the
+  # taxonomy file.
+  industry-sector: m
+
+  # Is the company dormant?
+  is-dormant: false
+
+  # SIC codes registered with Companies House.
+  sic-codes:
+  - '62020'
+  - '62021'
+
+  # Contact website description and URL
+  website:
+    description: Corporate website
+    url: https://example.org/corporate
+
+  jurisdiction: England and Wales
+
+accountant:
+  name: "Kirsty Furlong BSc FCA"
+  business: "DSKL Chartered Accountants"
+  address: "82 End Crescent Terrace, Threapminchington QQ99 9DF"
+
+  # Date of accountant's report
+  report-date: '2021-01-01'
+
+auditor:
+  name: "Bunchy McGlochlain BSc FCA"
+  business: "Auditors-R-Us LLC"
+  address: "123a High Avenue Street, Threapminchington QQ99 9AB"
+
+  # Date of auditor's report
+  report-date: '2021-01-01'
+
+directors:
+  report-date: '2021-01-01'
+
+accounting:
+
+  # Date report was authorised for issue
+  authorised-date: '2021-01-01'
+
+  # Date of the balance sheet data pull
+  balance-sheet-date: '2020-12-31'
+
+  # Accounts currency
+  currency: GBP
+
+  # Report issue date
+  date: '2021-01-01'
+
+  # Periods over which the account was issued.  Current period goes first.
+  periods:
+  - name: '2020'
+    start: '2020-01-01'
+    end: '2020-12-31'
+  - name: '2019'
+    start: '2019-01-01'
+    end: '2019-12-31'
+
+  # Name of director who signed the reports
+  signed-by: B Smith
+
+  # Context segment of the director who signed the report.  director2
+  # means the second director in the list metadata.business.directors.
+  signing-officer: director2
+
+  # Name of director who signed the reports
+  directors-report-signed-by: A Bloggs
+
+  # Context segment of the director who signed the report.  director2
+  # means the second director in the list metadata.business.directors.
+  directors-report-signing-officer: director1
+
+# Tax details, used by the Corporation tax profile
+tax:
+
+  # Unique Taxpayer Reference (HMRC issued)
+  utr: '8596148860'
+
+  # Tax period
+  period:
+    name: '2021'
+    start: '2020-02-01'
+    end: '2021-01-31'
+
+  # Tax years over which the accounts are calculated.  A company's tax year
+  # is defined by the company's accounting period.  This usually falls
+  # across two UK tax years (which start on the 1st April).  This is needed
+  # to allow for a change in tax rates, which are always applied to a tax
+  # year.
+  fy1:
+    name: FY1
+    start: '2020-01-01'
+    end: '2020-03-31'
+  fy2:
+    name: FY2
+    start: '2020-04-01'
+    end: '2020-12-31'

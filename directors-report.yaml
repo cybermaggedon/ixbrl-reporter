@@ -24,7 +24,7 @@ elements:
       - tag: h3
         content: Principal activities
       - tag: p
-        content: 'The principal activities of the company continued to be...}'
+        content: 'The principal activities of the company continued to be...'
       - tag: h3
         content: Directors
       - tag: p
