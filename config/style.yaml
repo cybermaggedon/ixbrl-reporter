@@ -83,7 +83,7 @@ body {
   padding: 0.1rem;
 }
 
-ASDtable {
+table {
   border-spacing: 1rem 1rem;
   border-collapse: separate;
 }
@@ -97,17 +97,11 @@ ASDtable {
 }
 
 .spacetable {
-  border-spacing: 5rem 1rem;
+  border-spacing: 0.2rem 0rem;
   border-collapse: separate;
   font-size: medium;
   margin-left: auto;
   margin-right: auto;
-  text-align: center;
-}
-
-.spacetableheading TD {
-  font-weight: bold;
-  border-bottom: 2px solid black;
 }
 
 .company-info {

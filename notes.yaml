@@ -354,17 +354,26 @@ elements:
             class: spacetable
           content:
           - tag: tr
-            attributes: { class: spacetableheading }
             content:
             - tag: td
-              content: 2020
+              attributes: { class: label }
+              content: ""
             - tag: td
-              content: 2019
+              attributes: { class: period periodname }
+              content: "This period"
+            - tag: td
+              attributes: { class: period periodname }
+              content: "Previous period"
           - tag: tr
             content:
             - tag: td
+              attributes: { class: label header }
+              content: "Employees"
+            - tag: td
+              attributes: { class: period value }
               content: expand:note:~[average-employees-this]
             - tag: td
+              attributes: { class: period value }
               content: expand:note:~[average-employees-previous]
 
         - tag: p
