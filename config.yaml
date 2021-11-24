@@ -4,7 +4,7 @@
 #############################################################################
 accounts:
   # Filename of GnuCash accounts
-  file: example.gnucash
+  file: example2.gnucash
 
 report: //import config/ch/unaudited-micro.yaml
 #report: //import config/ch/audited-micro.yaml
@@ -12,6 +12,8 @@ report: //import config/ch/unaudited-micro.yaml
 #report: //import config/ch/audited-abridged.yaml
 #report: //import config/ch/unaudited-abridged.yaml
 #report: //import config/ch/full.yaml
+
+#    pretty-print: true
 
 #############################################################################
 ### Report metadata #########################################################
@@ -94,25 +96,9 @@ metadata:
       description: Corporate website
       url: https://example.org/corporate
 
-  # Report metadata
-  report:
+    jurisdiction: England and Wales
 
-#    pretty-print: true
-
-    # The accounting-standards applied.  One of:
-    #   frs101, frs102, frsse, full-irs, micro-entities, other-standards,
-    #   small-entities-regime.
-    accounting-standards: micro-entities
-
-    # Accounts status, one of:
-    #   audit-exempt-no-accountants-report,
-    #   audit-exempt-with-accountants-report, audited,
-    #   independent-examination, other-reporting-regime
-    accounts-status: audited
-
-    # Accounts type, one of:
-    #   abbreviated-accounts, abridged-accounts, full-accounts
-    accounts-type: abridged-accounts
+  accounting:
 
     # Date report was authorised for issue
     authorised-date: '2021-01-01'
@@ -141,11 +127,6 @@ metadata:
     # Context segment of the director who signed the report.  director2
     # means the second director in the list metadata.business.directors.
     signing-officer: director2
-
-    jurisdiction: England and Wales
-
-    # Report title
-    title: Audited Micro-Entity Accounts
 
   # Tax details, used by the Corporation tax profile
   tax:

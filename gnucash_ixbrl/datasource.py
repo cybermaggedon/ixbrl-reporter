@@ -32,7 +32,7 @@ class DataSource:
 
     def get_report_period(self, i=0):
 
-        return Period.load(self.cfg.get("metadata.report.periods." + str(i)))
+        return Period.load(self.cfg.get("metadata.accounting.periods." + str(i)))
 
     def get_report_date(self):
 
@@ -69,7 +69,7 @@ class DataSource:
     def get_periods(self):
         return [
             Period.load(period)
-            for period in self.cfg.get("metadata.report.periods")
+            for period in self.cfg.get("metadata.accounting.periods")
         ]
 
     def get_worksheet(self, id):

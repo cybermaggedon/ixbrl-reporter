@@ -9,6 +9,24 @@ taxonomy: //import taxonomy/frs102.yaml
 # CSS style
 style: //import config/style.yaml
 
+# The accounting-standards applied.  One of:
+#   frs101, frs102, frsse, full-irs, micro-entities, other-standards,
+#   small-entities-regime.
+accounting-standards: micro-entities
+
+# Accounts status, one of:
+#   audit-exempt-no-accountants-report,
+#   audit-exempt-with-accountants-report, audited,
+#   independent-examination, other-reporting-regime
+accounts-status: audited
+
+# Accounts type, one of:
+#   abbreviated-accounts, abridged-accounts, full-accounts
+accounts-type: abridged-accounts
+
+# Report title
+title: Audited Micro-Entity Accounts
+
 #############################################################################
 ### Report computations #####################################################
 #############################################################################

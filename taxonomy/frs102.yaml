@@ -39,23 +39,23 @@ contexts:
 # the report covers.
 - id: report-period
   from: business
-  period: metadata.report.periods.0
+  period: metadata.accounting.periods.0
 
 # The 'previous-period' context describes the previous accounting period
 - from: business
   id: previous-period
-  period: metadata.report.periods.1
+  period: metadata.accounting.periods.1
 
 # The 'report-date' context describes the report issue date.
 - id: report-date
   from: business
-  instant: metadata.report.date
+  instant: metadata.accounting.date
 
 # The 'end-of-reporting-period' context describes the last day of reporting
 # period.
 - id: end-of-reporting-period
   from: business
-  instant: metadata.report.periods.0.end
+  instant: metadata.accounting.periods.0.end
 
 # The industry sector takes 'report-date' and adds in the industry
 # sector dimension.
@@ -68,15 +68,15 @@ contexts:
 - id: accounting-standards
   from: report-period
   segments:
-    accounting-standards: metadata.report.accounting-standards
+    accounting-standards: report.accounting-standards
 - id: accounts-type
   from: report-period
   segments:
-    accounts-type: metadata.report.accounts-type
+    accounts-type: report.accounts-type
 - id: accounts-status
   from: report-period
   segments:
-    accounts-status: metadata.report.accounts-status
+    accounts-status: report.accounts-status
 - id: entity-legal-form
   from: report-period
   segments:
@@ -173,7 +173,7 @@ contexts:
 - id: signing-officer
   from: report-period
   segments:
-    officer: metadata.report.signing-officer
+    officer: metadata.accounting.signing-officer
 
 # Contact information-related dimensions
 - from: report-period
@@ -244,23 +244,23 @@ document-metadata:
 metadata:
 - id: report-title
   context: report-period
-  config: metadata.report.title
+  config: report.title
 - id: report-date
   kind: date
   context: report-date
-  config: metadata.report.date
+  config: metadata.accounting.date
 - id: authorised-date
   kind: date
   context: end-of-reporting-period
-  config: metadata.report.authorised-date
+  config: metadata.accounting.authorised-date
 - id: period-start
   kind: date
   context: report-date
-  config: metadata.report.periods.0.start
+  config: metadata.accounting.periods.0.start
 - id: period-end
   kind: date
   context: report-date
-  config: metadata.report.periods.0.end
+  config: metadata.accounting.periods.0.end
 - id: company-name
   context: report-period
   config: metadata.business.company-name
@@ -403,7 +403,7 @@ metadata:
   config: metadata.report.signed-by
 - id: jurisdiction
   context: report-period
-  config: metadata.report.jurisdiction
+  config: metadata.business.jurisdiction
 - id: contact-name
   context: contact-country
   config: metadata.business.contact.name

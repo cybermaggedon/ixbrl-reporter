@@ -66,7 +66,7 @@ class BasicElement:
                 self.xhtml_maker.title(val)
             )
 
-        self.data.get_config("metadata.report.title").use(add_title)
+        self.data.get_config("report.title").use(add_title)
 
         self.add_style(self.html.head)
 
@@ -188,7 +188,7 @@ class BasicElement:
                 self.xhtml_maker.title(val)
             )
 
-        self.data.get_config("metadata.report.title").use(add_title)
+        self.data.get_config("report.title").use(add_title)
 
         self.add_style(self.html.head)
 
@@ -218,7 +218,7 @@ class BasicElement:
         # Contexts get created above, hence do this last.
         self.create_contexts(taxonomy)
 
-        currency = self.data.get_config("metadata.report.currency")
+        currency = self.data.get_config("metadata.accounting.currency")
 
         unit = self.xbrli_maker.unit(
             {"id": currency},
