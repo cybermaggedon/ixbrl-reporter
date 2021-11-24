@@ -44,11 +44,12 @@ information.
 ## Warranty
 
 This code comes with no warranty whatsoever.  See the [LICENSE](LICENCE) file
-for details.  Further, I am not an accountant.  It is possible that this code
-could be useful to you in meeting regulatory reporting requirements for your
-business.  It is also possible that the software could report misleading
-information which could land you in a lot of trouble if used for regulatory
-purposes.  Really, you should check with a qualified accountant.
+for details.  Further, I am not an accountant.  Even if I were, I would not be
+YOUR accountant.  It is possible that this code could be useful to you in
+meeting regulatory reporting requirements for your business.  It is also
+possible that the software could report misleading information which could
+land you in a lot of trouble if used for regulatory purposes.  Really, you
+should check with a qualified accountant.
 
 ## Configuration overview
 

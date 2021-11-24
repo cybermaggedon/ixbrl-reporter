@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="gnucash-ixbrl",
-    version="1.5.0",
+    version="1.6.0",
     author="Cybermaggedon",
     author_email="mark@cyberapocalypse.co.uk",
     description="Production of iXBRL reports from GnuCash accounts",
