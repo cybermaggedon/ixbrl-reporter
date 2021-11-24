@@ -14,9 +14,10 @@ accounts:
 #report: //import config/hmrc/corp-tax.yaml
 #report: //import config/ch/audited-abridged.yaml
 #report: //import config/ch/unaudited-abridged.yaml
+#report: //import config/ch/unaudited-full.yaml
 report: //import config/ch/audited-full.yaml
 
-#    pretty-print: true
+#pretty-print: true
 
 #############################################################################
 ### Report metadata #########################################################
@@ -130,6 +131,13 @@ metadata:
     # Context segment of the director who signed the report.  director2
     # means the second director in the list metadata.business.directors.
     signing-officer: director2
+
+    # Name of director who signed the reports
+    directors-report-signed-by: A Bloggs
+
+    # Context segment of the director who signed the report.  director2
+    # means the second director in the list metadata.business.directors.
+    directors-report-signing-officer: director1
 
   # Tax details, used by the Corporation tax profile
   tax:

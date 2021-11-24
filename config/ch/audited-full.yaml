@@ -373,6 +373,8 @@ computations:
   period: at-end
   accounts:
   - Equity:Shareholdings
+  segments:
+    equity: ordinary-shares
 
 # Profit i.e. income minus expenses.
 - id: profit-loss
@@ -508,6 +510,8 @@ computations:
   inputs:
   - shares-at-start
   - shares-issued
+  segments:
+    equity: ordinary-shares
 
 #############################################################################
 ### Worksheets ##############################################################
@@ -592,7 +596,6 @@ elements:
   kind: composite
   elements:
   - title
-  - consent
   - company-info
   - directors-report
   - auditors-report
@@ -700,31 +703,6 @@ elements:
         attributes: { class: subtitle }
         content: 'expand:note:For the year ended ~[period-end]'
 
-- id: consent
-  kind: page
-  elements:
-  - kind: html
-    root:
-      tag: div
-      content:
-      - tag: div
-        attributes: { class: heading }
-        content:
-        - tag: div
-          content: 'expand:note:~[company-name]'
-        - tag: div
-          content: Statement of Consent
-        - tag: div
-          content: 'expand:note:For the year ended ~[period-end]'
-        - tag: hr
-      - tag: div
-        content:
-        - tag: h3
-          content: "Statement of consent to prepare Abridged Financial
-            Statements"
-        - tag: p
-          content: "expand:members-agreed-abridged-accounts"
-
 - id: company-info
   kind: page
   elements:
@@ -821,4 +799,5 @@ elements:
         alt: Director's signature
 
 - //ref notes
+
 

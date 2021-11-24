@@ -100,7 +100,7 @@ class BasicElement:
         hiddiv = h.getparent()
         hiddiv.getparent().remove(hiddiv)
 
-        if self.data.get_config_bool("metadata.report.pretty-print",
+        if self.data.get_config_bool("pretty-print",
                                      mandatory=False):
             out.write(etree.tostring(
                 self.html, pretty_print=True, xml_declaration=True
@@ -232,7 +232,7 @@ class BasicElement:
         )
         self.header.resources.append(unit)
 
-        if self.data.get_config_bool("metadata.report.pretty-print",
+        if self.data.get_config_bool("pretty-print",
                                      mandatory=False):
             out.write(etree.tostring(
                 self.html, pretty_print=True, xml_declaration=True

@@ -24,8 +24,7 @@ elements:
       - tag: h3
         content: Principal activities
       - tag: p
-        content: 'expand:note:~{description-of-principal-activities=
-          The principal activities of the company continued to be...}'
+        content: 'The principal activities of the company continued to be...}'
       - tag: h3
         content: Directors
       - tag: p
@@ -57,6 +56,10 @@ elements:
       - tag: p
         content: On behalf of the board
       - tag: p
-        content: [ "expand:note:~[officer1]", { tag: br }, "Director" ]
+        content:
+        - "expand:note:~[directors-report-signing-officer]"
+        - "expand:note:~[officer1]"
+        - tag: br
+        - Director
       - tag: p
         content: expand:note:~[directors-report-date]

@@ -175,6 +175,11 @@ contexts:
   segments:
     officer: metadata.accounting.signing-officer
 
+- id: directors-report-signing-officer
+  from: report-period
+  segments:
+    officer: metadata.accounting.directors-report-signing-officer
+
 # Contact information-related dimensions
 - from: report-period
   id: contact-country
@@ -279,7 +284,7 @@ metadata:
 - id: balance-sheet-date
   kind: date
   context: end-of-reporting-period
-  config: metadata.report.balance-sheet-date
+  config: metadata.accounting.balance-sheet-date
 - id: activities
   context: report-period
   config: metadata.business.activities
@@ -446,7 +451,7 @@ metadata:
 
 - id: accountants-report-date
   kind: date
-  context: report-date
+  context: end-of-reporting-period
   config: accountant.report-date
 - id: accountant-name
   context: report-period
@@ -460,7 +465,7 @@ metadata:
 
 - id: auditors-report-date
   kind: date
-  context: report-date
+  context: end-of-reporting-period
   config: auditor.report-date
 - id: auditor-name
   context: report-period
@@ -474,8 +479,11 @@ metadata:
 
 - id: directors-report-date
   kind: date
-  context: report-date
+  context: end-of-reporting-period
   config: directors.report-date
+- id: directors-report-signing-officer
+  context: directors-report-signing-officer
+  value: ''
 
 # Boiler-plate notes for the accounts notes page.  ~[...] is used to
 # insert a metadata field value.  The full form is
@@ -601,6 +609,7 @@ tags:
   sic3: uk-bus:SICCodeRecordedUKCompaniesHouse3
   sic4: uk-bus:SICCodeRecordedUKCompaniesHouse4
   signing-officer: uk-core:DirectorSigningFinancialStatements
+  directors-report-signing-officer: uk-direp:DirectorSigningDirectorsReport
   software-name: uk-bus:NameProductionSoftware
   software-version: uk-bus:VersionProductionSoftware
   staff-costs: uk-core:StaffCostsEmployeeBenefitsExpense
@@ -697,6 +706,7 @@ tags:
   shares-issued: uk-core:NominalValueSharesIssuedInPeriod
   equity: uk-core:Equity
   share-capital: uk-core:Equity
+  nominal-value-of-allotted-share-capital: uk-core:NominalValueAllottedShareCapital
 
 # Segments / dimensions are mapped here.  Segments are defined with a
 # segment identifier and a value e.g. accounting-standards = frs102.
@@ -798,3 +808,8 @@ segment:
       fax: uk-bus:Fax
       landline: uk-bus:Landline
       mobile: uk-bus:Mobile
+  equity:
+    dimension: uk-core:EquityClassesDimension
+    map:
+      ordinary-shares: uk-core:ShareCapitalOrdinaryShares
+      preference-shares: uk-core:ShareCapitalPreferenceShares
