@@ -405,7 +405,7 @@ metadata:
   value: 'FIXME'
 - id: signers-name
   context: report-period
-  config: metadata.report.signed-by
+  config: metadata.accounting.signed-by
 - id: jurisdiction
   context: report-period
   config: metadata.business.jurisdiction
