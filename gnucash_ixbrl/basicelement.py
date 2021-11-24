@@ -39,50 +39,22 @@ class BasicElement:
 
     def to_html(self, taxonomy, out):
 
-        nsmap={
-            None: xhtml_ns,
-        }
+        # Make the HTML by removing the iXBRL stuff from the iXBRL document.
 
-        self.nsmap = nsmap
-
-        self.add_makers(self.nsmap)
-
-        self.html = self.xhtml_maker.html(
-            self.xhtml_maker.head(),
-            self.xhtml_maker.body(
-                self.xhtml_maker.div(
-                    {"class": "hidden"},
-                    self.ix_maker.header(
-                        self.ix_maker.hidden(),
-                        self.ix_maker.references(),
-                        self.ix_maker.resources(),
-                    ),
-                ),
-            ),
-        )
-
-        def add_title(val):
-            self.html.head.append(
-                self.xhtml_maker.title(val)
-            )
-
-        self.data.get_config("report.title").use(add_title)
-
-        self.add_style(self.html.head)
-
-        header_op = objectify.ObjectPath(".body.div.{%s}header" % (
-            ix_ns
-        ))
-
-        self.header = header_op(self.html)
-
-        elt = self.to_ixbrl_elt(self, taxonomy)
+        # Get the iXBRL doc.
+        html = self.to_ixbrl_tree(taxonomy)
 
         # Deep copies the tree, converts all the ix: elements to span elements
         def walk(elt, level=0):
             ns = elt.nsmap[elt.prefix]
+
             if ns == ix_ns:
+
+                if elt.tag == "{%s}header" % ix_ns:
+                    return self.xhtml_maker.span("")
+
                 elt2 = self.xhtml_maker.span(elt.text)
+
             else:
                 elt2 = self.xhtml_maker(elt.tag, elt.text)
                 for k in elt.keys():
@@ -90,27 +62,19 @@ class BasicElement:
             for v in elt.iterchildren():
                 elt2.append(walk(v, level + 1))
             return elt2
-        elt = walk(elt)
 
-        self.html.body.append(elt)
-
-        # Last remains of the ix: namespace are the header.  Just delete
-        # the hidden div
-        h = self.header
-        hiddiv = h.getparent()
-        hiddiv.getparent().remove(hiddiv)
-
+        # Remove ix elements.
+        html = walk(html)
+    
         if self.data.get_config_bool("pretty-print",
                                      mandatory=False):
             out.write(etree.tostring(
-                self.html, pretty_print=True, xml_declaration=True
+                html, pretty_print=True, xml_declaration=True
             ).decode("utf-8"))
         else:
             out.write(etree.tostring(
-                self.html, xml_declaration=True
+                html, xml_declaration=True
             ).decode("utf-8"))
-
-        return
 
     def add_makers(self, nsmap):
 
@@ -147,7 +111,7 @@ class BasicElement:
             namespace=xbrldi_ns,
         )
 
-    def to_ixbrl(self, taxonomy, out):
+    def to_ixbrl_tree(self, taxonomy):
 
         nsmap={
             None: xhtml_ns,
@@ -232,14 +196,20 @@ class BasicElement:
         )
         self.header.resources.append(unit)
 
+        return self.html
+
+    def to_ixbrl(self, taxonomy, out):
+
+        html = self.to_ixbrl_tree(taxonomy)
+
         if self.data.get_config_bool("pretty-print",
                                      mandatory=False):
             out.write(etree.tostring(
-                self.html, pretty_print=True, xml_declaration=True
+                html, pretty_print=True, xml_declaration=True
             ).decode("utf-8"))
         else:
             out.write(etree.tostring(
-                self.html, xml_declaration=True
+                html, xml_declaration=True
             ).decode("utf-8"))
 
         return
