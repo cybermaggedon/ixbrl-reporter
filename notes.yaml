@@ -221,20 +221,6 @@ elements:
             Position date, and any adjustment to tax payable in
             respect of previous years."
 
-        - tag: p
-          content: "expand:note:~{deferred-tax-policy=
-            Deferred tax is provided using the Statement of
-            Financial Position liability method, which recognises
-            temporary differences between the carrying amounts of
-            assets and liabilities for financial reporting purposes
-            and the amounts used for taxation purposes. It is measured
-            on an undiscounted basis at the tax rates that are
-            expected to apply in the periods in which temporary
-            differences reverse, based on tax rates and laws enacted
-            or substantively enacted at the Statement of Financial
-            Position date.}"
-
-
 - kind: page
   elements:
   - kind: html
@@ -255,6 +241,19 @@ elements:
 
       - tag: div
         content:
+
+        - tag: p
+          content: "expand:note:~{deferred-tax-policy=
+            Deferred tax is provided using the Statement of
+            Financial Position liability method, which recognises
+            temporary differences between the carrying amounts of
+            assets and liabilities for financial reporting purposes
+            and the amounts used for taxation purposes. It is measured
+            on an undiscounted basis at the tax rates that are
+            expected to apply in the periods in which temporary
+            differences reverse, based on tax rates and laws enacted
+            or substantively enacted at the Statement of Financial
+            Position date.}"
 
         - tag: h4
           content: "h. Pensions"
@@ -310,10 +309,6 @@ elements:
           content: "Profit from operations has been arrived at after charging:"
         - worksheet: charges
 
-        - tag: h3
-          content: "4. Financial income"
-        - worksheet: financial-income
-
 
 
 - kind: page
@@ -336,6 +331,10 @@ elements:
 
       - tag: div
         content:
+
+        - tag: h3
+          content: "4. Financial income"
+        - worksheet: financial-income
 
         - tag: h3
           content: "5. Finance costs"
@@ -384,10 +383,6 @@ elements:
           content: "The remuneration of the directors was as follows:"
         - worksheet: zero
 
-        - tag: h3
-          content: "8. Taxation"
-        - worksheet: zero
-
 - kind: page
   elements:
   - kind: html
@@ -408,6 +403,10 @@ elements:
 
       - tag: div
         content:
+
+        - tag: h3
+          content: "8. Taxation"
+        - worksheet: zero
 
         - tag: h3
           content: "9. Intangible fixed assets"
@@ -422,10 +421,6 @@ elements:
           content: "11. Trade and other receivables"
         - worksheet: zero
 
-        - tag: h3
-          content: "12. Cash and cash equivalents"
-        - worksheet: zero
-
 - kind: page
   elements:
   - kind: html
@@ -446,6 +441,10 @@ elements:
 
       - tag: div
         content:
+
+        - tag: h3
+          content: "12. Cash and cash equivalents"
+        - worksheet: zero
 
         - tag: h3
           content: "13. Trade and other payables"
@@ -459,10 +458,6 @@ elements:
           content: "15. Share capital"
         - worksheet: share-capital
 
-        - tag: h3
-          content: "16. Operating leases and commitments"
-        - worksheet: zero
-
 - kind: page
   elements:
   - kind: html
@@ -483,6 +478,10 @@ elements:
 
       - tag: div
         content:
+
+        - tag: h3
+          content: "16. Operating leases and commitments"
+        - worksheet: zero
 
         - tag: h3
           content: "17. Related party transactions"

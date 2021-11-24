@@ -1,7 +1,7 @@
 "
 
-DIV.page:not(:first-child) {
-  page-break-before: always;
+.page {
+  page-break-after: always;
 }
 
 body {
@@ -144,22 +144,22 @@ table {
 
 @media print {
   .label {
-    font-size: 0.9rem;
+    font-size: small;
     width: auto;
   }
   .value {
     font-family: Source Code Pro, monospace;
     width: 10rem;
-    font-size: 0.9rem;
+    font-size: small;
   }
   .company-info {
-    font-size: 1.1rem;
+    font-size: medium;
   }
   TABLE.sheet {
     margin: auto;
   }
   body {
-    font-size: 1rem;
+    font-size: 11pt;
   }
   .period {
     width: 8rem;
