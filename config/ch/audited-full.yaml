@@ -599,13 +599,13 @@ elements:
 - id: report
   kind: composite
   elements:
-#  - title
-#  - consent
-#  - company-info
-#  - directors-report
-#  - auditors-report
-#  - balance-sheet
-#  - comprehensive-income
+  - title
+  - consent
+  - company-info
+  - directors-report
+  - auditors-report
+  - balance-sheet
+  - comprehensive-income
   - notes
 
 # Financial position page
