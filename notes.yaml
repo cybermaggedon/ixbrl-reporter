@@ -499,3 +499,8 @@ elements:
         - tag: p
           content: "expand:software-version"
 
+
+  - kind: html
+    root:
+      iftrue: metadata.accounting.is-revised
+      content: //import supplementary-note.yaml

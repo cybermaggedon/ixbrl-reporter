@@ -84,8 +84,42 @@ class HtmlElement(BasicElement):
 
     def to_html(self, root, par, taxonomy):
 
+        # FIXME: Too many logic paths through this functiona, refactor?
+        ifdef = root.get("ifdef", mandatory=False)
+        if ifdef:
+            try:
+                self.data.get_config(ifdef)
+            except:
+                # Tag does not exist.
+                return par.xhtml_maker.span()
+
+            # No exception, the config element exists
+            content = root.get("content")
+            return self.to_html(content, par, taxonomy)
+
+        iftrue = root.get("iftrue", mandatory=False)
+        if iftrue:
+            if self.data.get_config_bool(iftrue, False, mandatory=False):
+                # No exception, the config element exists
+                content = root.get("content")
+                return self.to_html(content, par, taxonomy)
+            else:
+                # Tag is not true.
+                return par.xhtml_maker.span()
+
+        iffalse = root.get("iffalse", mandatory=False)
+        if iffalse:
+            if not self.data.get_config_bool(iffalse, False, mandatory=False):
+                # No exception, the config element exists
+                content = root.get("content")
+                return self.to_html(content, par, taxonomy)
+            else:
+                # Tag is not true.
+                return par.xhtml_maker.span()
+
         tag = root.get("tag", mandatory=False)
         fact = root.get("fact", mandatory=False)
+
         worksheet = root.get("worksheet", mandatory=False)
 
         if worksheet:
@@ -112,6 +146,8 @@ class HtmlElement(BasicElement):
             ctxt = taxonomy.get_context(context_id, self.data)
 
         if isinstance(content, int):
+            content = str(content)
+        if isinstance(content, bool):
             content = str(content)
         if isinstance(content, float):
             content = str(content)
@@ -148,7 +184,7 @@ class HtmlElement(BasicElement):
             elt = fact.to_elt(par)
         else:
             elt = par.xhtml_maker(tag, attrs)
-
+        
         for child in content:
             if isinstance(child, str):
                 child = self.expand_text(child, par, taxonomy)
@@ -175,4 +211,3 @@ class HtmlElement(BasicElement):
         root = self.root
 
         return [self.to_html(root, par, taxonomy)]
-

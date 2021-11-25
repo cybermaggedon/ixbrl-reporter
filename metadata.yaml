@@ -47,6 +47,7 @@ business:
     location: Threapminchington
     postcode: QQ99 9ZZ
     country: UK
+
     email: corporate@example.org
 
     # Phone number
@@ -136,6 +137,9 @@ accounting:
   # Context segment of the director who signed the report.  director2
   # means the second director in the list metadata.business.directors.
   directors-report-signing-officer: director1
+
+  # If true, supplementary-note.yaml is included also
+  is-revised: true
 
 # Tax details, used by the Corporation tax profile
 tax:

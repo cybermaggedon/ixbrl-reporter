@@ -762,3 +762,8 @@ elements:
     # These accounts were generated using gnucash-ixbrl...  You don't need
     # to have this one in your report.
     - software-version
+
+  - kind: html
+    root:
+      iftrue: metadata.accounting.is-revised
+      content: //import supplementary-note.yaml

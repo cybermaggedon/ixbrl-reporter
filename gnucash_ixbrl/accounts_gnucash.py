@@ -20,6 +20,7 @@ class Accounts:
     # Opens a GnuCash book.  Config object provides configuration, needs
     # to support config.get("key.name") method.
     def __init__(self, file, rw=False):
+        self.file = file
         self.session = None
         if rw:
             self.session = self.open_session(file)
@@ -160,70 +161,11 @@ class Accounts:
                                              date_opened)
 
     # Add a bill entry to a bill
-    def create_bill_entry(self, bill, date_opened):
-        entry = gnucash.gnucash_business.Entry(self.book, bill, date_opened)
-        return entry
-
-    # Get our 'special' predefined vendor for VAT returns.
-    def get_vat_vendor(self):
-
-        id = "hmrc-vat"
-
-        # If vendor does not exist, create it
-        vendor = self.get_vendor(id)
-        if vendor == None:
-
-            gbp = self.get_currency("GBP")
-            name = "HM Revenue and Customs - VAT"
-            vendor = self.create_vendor(id, gbp, name)
-
-            address = vendor.GetAddr()
-            address.SetName("VAT Written Enquiries")
-            address.SetAddr1("123 St Vincent Street")
-            address.SetAddr2("Glasgow City")
-            address.SetAddr3("Glasgow G2 5EA")
-            address.SetAddr4("UK")
-
-            self.save()
-
-        return vendor
-
-    # Post the VAT bill to a liability account.
-    def post_vat_bill(self, billing_id, bill_date, due_date, vat, notes, memo):
-
-        # Get the VAT vendor (HMRC)
-        vendor = self.get_vat_vendor()
-
-        bill_id  = self.next_bill_id(vendor)
-        bill = self.create_bill(bill_id, vendor.GetCurrency(), vendor,
-                                bill_date)
-
-        vat_due = vat.totalVatDue
-        vat_rebate = vat.vatReclaimedCurrPeriod
-        bill.SetNotes(notes)
-        bill.SetBillingID(billing_id)
-
-        liability_account_name = self.config.get("accounts.liabilities")
-        liability_acct = self.get_account(self.root, liability_account_name)
-
-        bill_account_name = self.config.get("accounts.bills")
-        bill_acct = self.get_account(self.root, bill_account_name)
-
-        description = "VAT from sales and acquisitions"
-        ent = self.create_bill_entry(bill, bill_date)
+    def create_bill_entry(self, bill, date_opened, description,
+                          liability_acct, quantity, price):
+        ent = gnucash.gnucash_business.Entry(self.book, bill, date_opened)
         ent.SetDescription(description)
         ent.SetBillAccount(liability_acct)
-        ent.SetQuantity(gnucash.GncNumeric(1.0))
-        ent.SetBillPrice(gnucash.GncNumeric(round(100 * vat_due), 100))
-
-        description = "VAT rebate on acquisitions"
-        ent = self.create_bill_entry(bill, bill_date)
-        ent.SetDescription(description)
-        ent.SetBillAccount(liability_acct)
-        ent.SetQuantity(gnucash.GncNumeric(1.0))
-        ent.SetBillPrice(gnucash.GncNumeric(-round(100 * vat_rebate), 100))
-
-        bill.PostToAccount(bill_acct, bill_date, due_date, memo, False, False)
-
-        self.save()
-
+        ent.SetQuantity(gnucash.GncNumeric(quantity))
+        ent.SetBillPrice(gnucash.GncNumeric(round(100 * price), 100))
+        return ent
