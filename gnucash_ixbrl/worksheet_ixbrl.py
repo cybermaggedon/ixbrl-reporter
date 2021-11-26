@@ -33,11 +33,27 @@ class IxbrlReporter:
         else:
             return self.par.xhtml_maker.td(text)
 
+    def fmt(self, v):
+        v = round(v, self.decimals)
+        v = v / (10 ** self.scale)
+        if self.decimals > 0:
+            fmt = "{0:,.%df}" % self.decimals
+        else:
+            fmt = "{0:,.0f}"
+        return fmt.format(v)
+
     def get_elt(self, worksheet, par, taxonomy, data):
 
         self.par = par
         self.taxonomy = taxonomy
         self.data = data
+
+        self.decimals = self.data.get_config("decimals", 2)
+        self.scale = self.data.get_config("scale", 0)
+        self.currency = self.data.get_config(
+            "metadata.accounting.currency", "EUR"
+        )
+        self.tiny = (10 ** -self.decimals) / 2
 
         return self.create_report(worksheet)
 
@@ -82,15 +98,15 @@ class IxbrlReporter:
 
     def maybe_tag(self, datum, section, pid):
 
-        value = self.taxonomy.create_fact(datum)
-        val = value.value
+        fact = self.taxonomy.create_fact(datum)
+        val = fact.value
 
-        if value.name:
+        if fact.name:
 
-            name = value.name
-            context = value.context
+            name = fact.name
+            context = fact.context
 
-            txt = "{0:,.2f}".format(abs(val))
+            txt = self.fmt(abs(val))
 
             # Element always contains positive value.  For negative we
             # add parentheses
@@ -99,12 +115,13 @@ class IxbrlReporter:
 
             elt.set("contextRef", context)
             elt.set("format", "ixt2:numdotdecimal")
-            elt.set("unitRef", "GBP")
-            elt.set("decimals", "2")
+            elt.set("unitRef", self.currency)
+            elt.set("decimals", str(self.decimals))
+            elt.set("scale", str(self.scale))
 
-            if abs(val) < 0.005: val = 0
+            if abs(val) < self.tiny: val = 0
 
-            if abs(val) < 0.005:
+            if abs(val) < self.tiny:
                 sign = False
             else:
                 if val < 0:
@@ -112,7 +129,7 @@ class IxbrlReporter:
                 else:
                     sign = False
 
-                if value.reverse:
+                if fact.reverse:
                     sign = not sign
 
             if sign:
@@ -131,7 +148,7 @@ class IxbrlReporter:
 
             return elt
 
-        if abs(val) < 0.005: val = 0
+        if abs(val) < self.tiny: val = 0
 
         # Sign and negativity of value is not the same.
         if val < 0:
@@ -199,7 +216,7 @@ class IxbrlReporter:
             div = self.create_cell()
             row.append(div)
             value = section.total.values[i]
-            if abs(value.value) < 0.001:
+            if abs(value.value) < self.tiny:
                 div.set(
                     "class",
                     "period total value nil rank%d cell" % section.total.rank
@@ -262,7 +279,7 @@ class IxbrlReporter:
                 value = item.values[i]
 
                 div = self.create_cell()
-                if abs(value.value) < 0.001:
+                if abs(value.value) < self.tiny:
                     div.set("class",
                             "period value nil rank%d cell" % item.rank )
                 elif value.value < 0:
@@ -294,7 +311,7 @@ class IxbrlReporter:
 
             value = section.total.values[i]
 
-            if abs(value.value) < 0.001:
+            if abs(value.value) < self.tiny:
                 div.set("class",
                         "period value nil breakdown total rank%d cell" % section.total.rank)
             elif value.value < 0:
