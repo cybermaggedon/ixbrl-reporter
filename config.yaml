@@ -21,7 +21,7 @@ report: //import report/ch/unaudited-micro.yaml
 #report: //import report/ch/audited-full.yaml
 #report: //import report/hmrc/corp-tax.yaml
 
-pretty-print: true
+#pretty-print: true
 
 metadata: //import metadata.yaml
 #metadata: //import metadata-revised.yaml
