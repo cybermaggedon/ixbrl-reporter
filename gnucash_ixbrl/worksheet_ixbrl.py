@@ -33,10 +33,11 @@ class IxbrlReporter:
         else:
             return self.par.xhtml_maker.td(text)
 
-    def get_elt(self, worksheet, par, taxonomy):
+    def get_elt(self, worksheet, par, taxonomy, data):
 
         self.par = par
         self.taxonomy = taxonomy
+        self.data = data
 
         return self.create_report(worksheet)
 
@@ -65,10 +66,12 @@ class IxbrlReporter:
         blank.set("class", "label cell")
         row.append(blank)
 
+        currency_label = self.data.get_config("currency-label", "€")
+
         # Header cells for currencies
         for period in periods:
 
-            elt = self.create_cell("£")
+            elt = self.create_cell(currency_label)
             row.append(elt)
             elt.set("class", "period currency cell")
 
@@ -334,8 +337,6 @@ class IxbrlReporter:
         self.add_header(grid, periods)
 
         for section in sections:
-
             self.add_section(grid, section, periods)
 
         return grid
-

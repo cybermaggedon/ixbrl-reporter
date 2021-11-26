@@ -22,6 +22,9 @@ report: //import report/ch/unaudited-micro.yaml
 #report: //import report/ch/audited-full.yaml
 
 # pretty-print: true
+# Decimal places
+rounding: 0
+currency-label: £
 
 metadata: //import metadata.yaml
 

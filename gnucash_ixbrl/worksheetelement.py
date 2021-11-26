@@ -39,7 +39,7 @@ class WorksheetElement(BasicElement):
     def to_ixbrl_elt(self, par, taxonomy):
 
         rep = IxbrlReporter()
-        elt = rep.get_elt(self.worksheet, par, taxonomy)
+        elt = rep.get_elt(self.worksheet, par, taxonomy, self.data)
 
         div = par.xhtml_maker.div()
         div.set("class", "worksheet")
