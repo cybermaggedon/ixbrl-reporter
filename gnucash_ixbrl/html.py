@@ -121,13 +121,24 @@ class HtmlElement(BasicElement):
         fact = root.get("fact", mandatory=False)
 
         worksheet = root.get("worksheet", mandatory=False)
-
         if worksheet:
             ws = self.data.get_worksheet(worksheet)
             wse = WorksheetElement(None, None, ws, self.data)
 
             # Assumption about WorksheetElement: Returns single element in list
             return wse.to_ixbrl_elt(par, taxonomy)[0]
+
+        element = root.get("element", mandatory=False)
+        if element:
+            elt = self.data.get_element(element)
+
+            cntr = par.xhtml_maker.div()
+
+            # Assumption about Element: Returns single element in list
+            for child in elt.to_ixbrl_elt(par, taxonomy):
+                cntr.append(child)
+
+            return cntr
 
         if not tag and not fact:
             raise RuntimeError(
