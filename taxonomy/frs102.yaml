@@ -241,6 +241,7 @@ document-metadata:
 - website-url
 - website-description
 - is-revised
+- directors-report-consistent-with-revised-accounts
 
 # Definitions for metadata fields.  Each field has content defined
 # using 'config' (value fetch from configuration) or 'value' (value defined
@@ -487,6 +488,14 @@ metadata:
   kind: bool
   context: report-period
   config: metadata.accounting.is-revised
+- id: revised-auditors-report-date
+  kind: date
+  context: end-of-reporting-period
+  config: metadata.auditor.revised-report-date
+- id: directors-report-consistent-with-revised-accounts
+  kind: bool
+  context: report-period
+  config: metadata.auditor.directors-report-consistent-revised-accounts
 
 # Boiler-plate notes for the accounts notes page.  ~[...] is used to
 # insert a metadata field value.  The full form is
@@ -712,6 +721,10 @@ tags:
   nominal-value-of-allotted-share-capital: uk-core:NominalValueAllottedShareCapital
   is-revised: uk-bus:ReportAnAmendedRevisedVersionPreviouslyFiledReportTruefalse
   supplementary-note: uk-bus:SupplementaryNote
+  opinion-of-auditors-on-revised-accounts: uk-aurep:OpinionAuditorsOnRevisedAccounts
+  opinion-of-auditors-failure-to-comply-companies-act: uk-aurep:OpinionAuditorsOnFailureOriginalAccountsToComplyWithCompaniesAct2006
+  directors-report-consistent-with-revised-accounts: uk-aurep:DirectorsReportConsistentWithRevisedAccountsTruefalse
+  revised-auditors-report-date: uk-aurep:DateAuditorsReportOnRevisedAccounts
 
 # Segments / dimensions are mapped here.  Segments are defined with a
 # segment identifier and a value e.g. accounting-standards = frs102.
