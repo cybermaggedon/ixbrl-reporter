@@ -153,7 +153,7 @@ class IxbrlReporter:
         # Sign and negativity of value is not the same.
         if val < 0:
 
-            txt = "{0:,.2f}".format(-val)
+            txt = self.fmt(-val)
 
             span = self.par.xhtml_maker.span()
             span.append(self.par.xhtml_maker.span("( "))
@@ -161,7 +161,7 @@ class IxbrlReporter:
             span.append(self.par.xhtml_maker.span(" )"))
             return span
 
-        return self.par.xhtml_maker.span("{0:,.2f}".format(val))
+        return self.par.xhtml_maker.span(self.fmt(val))
 
     def add_nil_section(self, table, section, periods):
 
