@@ -608,17 +608,6 @@ elements:
         element: revision-info
     - element: notes
 
-- id: report
-  kind: composite
-  elements:
-  - title
-  - company-info
-  - directors-report
-  - accountants-report
-  - balance-sheet
-  - comprehensive-income
-  - notes
-
 # Financial position page
 - id: balance-sheet
   kind: page

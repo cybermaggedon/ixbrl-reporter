@@ -53,6 +53,9 @@ class IxbrlReporter:
         self.currency = self.data.get_config(
             "metadata.accounting.currency", "EUR"
         )
+        self.currency_label = self.data.get_config(
+            "metadata.accounting.currency-label", "€"
+        )
         self.tiny = (10 ** -self.decimals) / 2
 
         return self.create_report(worksheet)
@@ -82,12 +85,10 @@ class IxbrlReporter:
         blank.set("class", "label cell")
         row.append(blank)
 
-        currency_label = self.data.get_config("currency-label", "€")
-
         # Header cells for currencies
         for period in periods:
 
-            elt = self.create_cell(currency_label)
+            elt = self.create_cell(self.currency_label)
             row.append(elt)
             elt.set("class", "period currency cell")
 

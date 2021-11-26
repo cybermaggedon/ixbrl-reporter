@@ -593,15 +593,20 @@ elements:
 # That is configurable in the taxonomy, not here.
 
 - id: report
-  kind: composite
-  elements:
-  - title
-  - company-info
-  - directors-report
-  - auditors-report
-  - balance-sheet
-  - comprehensive-income
-  - notes
+  kind: html
+  root:
+    tag: div
+    content:
+    - element: title
+    - element: company-info
+    - element: directors-report
+    - element: auditors-report
+    - element: balance-sheet
+    - element: comprehensive-income
+    - ifdef: metadata.accounting.is-revised
+      content:
+        element: revision-info
+    - element: notes
 
 # Financial position page
 - id: balance-sheet
@@ -800,4 +805,23 @@ elements:
 
 - //ref notes
 
-
+- id: revision-info
+  kind: page
+  elements:
+  - kind: html
+    root:
+      tag: div
+      content:
+      - tag: div
+        attributes: { class: heading }
+        content:
+        - tag: div
+          content: 'expand:note:~[company-name]'
+        - tag: div
+          content: Revision of the financial statements
+        - tag: div
+          attributes: { class: subtitle }
+          content: 'expand:note:For the year ended ~[period-end]'
+        - tag: hr
+  - kind: html
+    root: //import supplementary-note.yaml

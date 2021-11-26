@@ -480,7 +480,7 @@ metadata:
 - id: directors-report-date
   kind: date
   context: end-of-reporting-period
-  config: directors.report-date
+  config: metadata.directors.report-date
 - id: directors-report-signing-officer
   context: directors-report-signing-officer
   value: ''
