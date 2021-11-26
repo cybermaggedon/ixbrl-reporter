@@ -129,8 +129,10 @@ class HtmlElement(BasicElement):
             # Assumption about WorksheetElement: Returns single element in list
             return wse.to_ixbrl_elt(par, taxonomy)[0]
 
-        if tag == None and fact == None:
-            raise RuntimeError("HTML elements must have a tag or fact property")
+        if not tag and not fact:
+            raise RuntimeError(
+                "HTML elements must have tag, fact, etc. property"
+            )
 
         attrs = root.get("attributes", mandatory=False)
         content = root.get("content", mandatory=False)
