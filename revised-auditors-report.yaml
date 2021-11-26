@@ -310,10 +310,8 @@ elements:
         - tag: hr
       - tag: div
         content:
-        - tag: h2
-          content: Revised accounts
         - tag: h3
-          content: Opinion
+          content: Opinion on revised accounts
         - fact: opinion-of-auditors-on-revised-accounts
           context: report-period
           content:

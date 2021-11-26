@@ -13,9 +13,9 @@ accounts:
   kind: piecash
   file: example2.gnucash
 
-report: //import report/ch/unaudited-micro.yaml
+#report: //import report/ch/unaudited-micro.yaml
 #report: //import report/ch/audited-micro.yaml
-#report: //import report/ch/audited-small.yaml
+report: //import report/ch/audited-small.yaml
 #report: //import report/ch/unaudited-abridged.yaml
 #report: //import report/ch/unaudited-full.yaml
 #report: //import report/ch/audited-full.yaml
@@ -24,13 +24,13 @@ report: //import report/ch/unaudited-micro.yaml
 # pretty-print: true
 # Decimal places
 
-metadata: //import metadata.yaml
-#metadata: //import metadata-revised.yaml
+#metadata: //import metadata.yaml
+metadata: //import metadata-revised.yaml
 
 directors-report: //import directors-report.yaml
 
-auditors-report: //import auditors-report.yaml
-#auditors-report: //import revised-auditors-report.yaml
+#auditors-report: //import auditors-report.yaml
+auditors-report: //import revised-auditors-report.yaml
 
 accountants-report: //import accountants-report.yaml
 

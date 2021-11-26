@@ -501,9 +501,8 @@ worksheets:
 - id: balance-sheet
   kind: multi-period
   computations:
-  - id: fixed-assets
-    hide-total: true
-  - id: current-assets
+  - fixed-assets
+  - current-assets
   - prepayments-and-accrued-income
   - creditors-within-1-year
   - net-current-assets
@@ -548,16 +547,21 @@ elements:
 # That is configurable in the taxonomy, not here.
 
 - id: report
-  kind: composite
-  elements:
-  - title
-  - consent
-  - company-info
-  - directors-report
-  - accountants-report
-  - balance-sheet
-  - profit-and-loss
-  - notes
+  kind: html
+  root:
+    tag: div
+    content:
+    - element: title
+    - element: consent
+    - element: company-info
+    - element: directors-report
+    - element: accountants-report
+    - element: balance-sheet
+    - element: profit-and-loss
+    - ifdef: metadata.accounting.is-revised
+      content:
+        element: revision-info
+    - element: notes
 
 # Financial position page
 - id: balance-sheet
@@ -577,10 +581,9 @@ elements:
         - tag: div
           content: 'expand:note:As at ~[balance-sheet-date]'
         - tag: hr
-  - kind: worksheet
-    worksheet: balance-sheet
-  - balance-sheet-notes
-  - signature
+      - worksheet: balance-sheet
+      - element: balance-sheet-notes
+      - element: signature
 
 - id: balance-sheet-notes
   kind: notes
@@ -747,17 +750,6 @@ elements:
             - expand:note:~[accountant-business]
             - tag: br
             - expand:note:~[accountant-address]
-        - tag: tr
-          content:
-          - tag: td
-            content: Auditor
-          - tag: td
-            content:
-            - expand:note:~[auditor-name]
-            - tag: br
-            - expand:note:~[auditor-business]
-            - tag: br
-            - expand:note:~[auditor-address]
 
 - //ref directors-report
 - //ref auditors-report
@@ -809,7 +801,23 @@ elements:
     # to have this one in your report.
     - software-version
 
+- id: revision-info
+  kind: page
+  elements:
   - kind: html
     root:
-      iftrue: metadata.accounting.is-revised
-      content: //import supplementary-note.yaml
+      tag: div
+      content:
+      - tag: div
+        attributes: { class: heading }
+        content:
+        - tag: div
+          content: 'expand:note:~[company-name]'
+        - tag: div
+          content: Revision of the financial statements
+        - tag: div
+          attributes: { class: subtitle }
+          content: 'expand:note:For the year ended ~[period-end]'
+        - tag: hr
+  - kind: html
+    root: //import supplementary-note.yaml

@@ -48,8 +48,8 @@ class IxbrlReporter:
         self.taxonomy = taxonomy
         self.data = data
 
-        self.decimals = self.data.get_config("decimals", 2)
-        self.scale = self.data.get_config("scale", 0)
+        self.decimals = self.data.get_config("metadata.accounting.decimals", 2)
+        self.scale = self.data.get_config("metadata.accounting.scale", 0)
         self.currency = self.data.get_config(
             "metadata.accounting.currency", "EUR"
         )

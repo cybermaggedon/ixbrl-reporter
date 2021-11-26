@@ -32,7 +32,6 @@ title: Unaudited Micro-Entity Accounts
 #############################################################################
 computations:
 
-
 ##############################
 # Income statement ###########
 ##############################
@@ -536,12 +535,17 @@ elements:
 # That is configurable in the taxonomy, not here.
 
 - id: report
-  kind: composite
-  elements:
-  - title
-  - company-info
-  - balance-sheet
-  - notes
+  kind: html
+  root:
+    tag: div
+    content:
+    - element: title
+    - element: company-info
+    - element: balance-sheet
+    - ifdef: metadata.accounting.is-revised
+      content:
+        element: revision-info
+    - element: notes
 
 # Financial position page
 - id: balance-sheet
@@ -561,30 +565,35 @@ elements:
         - tag: div
           content: 'expand:note:As at ~[balance-sheet-date]'
         - tag: hr
-
-  - kind: worksheet
-    worksheet: balance-sheet
-  - balance-sheet-notes
-  - signature
+      - worksheet: balance-sheet
+      - element: balance-sheet-notes
+      - element: signature
 
 - id: balance-sheet-notes
-  kind: notes
-  numbered: false
-  notes:
+  kind: html
+  root:
+    tag: div
+    content:
+    - tag: p
+      content: 
+      # Some boilerplate notes...
+      # ...prepared in accordance with the micro-entity provisions...
+      - expand:micro-entity-provisions
 
-  # Some boilerplate notes...
+    - tag: p
+      content: 
+      # ...the company was entitled to exemption from audit..
+      - expand:small-company-audit-exempt
 
-  # ...prepared in accordance with the micro-entity provisions...
-  - micro-entity-provisions
+    - tag: p
+      content: 
+      # ...members have not required the company to obtain an audit..
+      - expand:no-audit-required
 
-  # ...the company was entitled to exemption from audit..
-  - small-company-audit-exempt
-
-  # ...members have not required the company to obtain an audit..
-  - no-audit-required
-
-  # ...directors acknowledge their responsibilities for complying with...
-  - directors-acknowledge
+    - tag: p
+      content: 
+      # ...directors acknowledge their responsibilities for complying with...
+      - expand:directors-acknowledge
 
 # Profit and loss
 - id: profit-and-loss
@@ -633,8 +642,7 @@ elements:
 - id: company-info
   kind: page
   elements:
-  - id: titlepage2
-    kind: html
+  - kind: html
     root:
       tag: div
       content:
@@ -730,7 +738,23 @@ elements:
     # to have this one in your report.
     - software-version
 
+- id: revision-info
+  kind: page
+  elements:
   - kind: html
     root:
-      iftrue: metadata.accounting.is-revised
-      content: //import supplementary-note.yaml
+      tag: div
+      content:
+      - tag: div
+        attributes: { class: heading }
+        content:
+        - tag: div
+          content: 'expand:note:~[company-name]'
+        - tag: div
+          content: Revision of the financial statements
+        - tag: div
+          attributes: { class: subtitle }
+          content: 'expand:note:For the year ended ~[period-end]'
+        - tag: hr
+  - kind: html
+    root: //import supplementary-note.yaml

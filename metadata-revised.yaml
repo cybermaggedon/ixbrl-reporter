@@ -97,8 +97,8 @@ auditor:
 
   # Date of auditor's report
   report-date: '2021-02-01'
-#  revised-report-date: '2021-02-24'
-#  directors-report-consistent-revised-accounts: true
+  revised-report-date: '2021-02-24'
+  directors-report-consistent-revised-accounts: true
 
 directors:
   report-date: '2021-01-01'
@@ -155,7 +155,7 @@ accounting:
   directors-report-signing-officer: director1
 
   # If true, supplementary-note.yaml is included also
-#  is-revised: true
+  is-revised: true
 
 # Tax details, used by the Corporation tax profile
 tax:
