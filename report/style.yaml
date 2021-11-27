@@ -42,14 +42,20 @@ body {
   margin: auto;
   width: 25%;
   display: block;
-  padding: 12rem 0rem 1rem 0rem;
+  padding-top: 12em;
+  padding-left: 0em;
+  padding-bottom: 1em;
+  padding-right: 0em;
 }
 
 .titlepage .company-name {
   text-align: center;
   font-size: xx-large;
   font-weight: bold;
-  padding: 1rem 0rem 1rem 0rem;
+  padding-top: 1em;
+  padding-left: 0em;
+  padding-bottom: 1em;
+  padding-right: 0em;
 }
 
 .titlepage .title {
