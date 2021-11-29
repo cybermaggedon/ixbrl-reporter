@@ -725,6 +725,26 @@ tags:
   opinion-of-auditors-failure-to-comply-companies-act: uk-aurep:OpinionAuditorsOnFailureOriginalAccountsToComplyWithCompaniesAct2006
   directors-report-consistent-with-revised-accounts: uk-aurep:DirectorsReportConsistentWithRevisedAccountsTruefalse
   revised-auditors-report-date: uk-aurep:DateAuditorsReportOnRevisedAccounts
+  proceeds-from-issuing-shares: uk-core:ProceedsFromIssuingShares
+  dividends-paid: uk-core:DividendsPaidClassifiedAsFinancingActivities
+  corporation-tax-paid: uk-core:IncomeTaxesPaidRefundClassifiedAsOperatingActivities
+  net-cash-from-operating-activities: uk-core:NetCashGeneratedFromOperations
+  cash-at-end-of-year: uk-core:CashCashEquivalentsCashFlowValue
+#  depreciation-adjustment: uk-core:FurtherNon-cashItemLeadingToGainLossInCashFlowsComponentTotalAdjustmentsFromNon-cashItems
+  corporation-tax-paid: uk-core:IncomeTaxesPaidRefundClassifiedAsOperatingActivities
+  trade-and-other-receivables: uk-core:GainLossInCashFlowsFromChangeInTradeDebtorsTradeReceivables
+  trade-payables: uk-core:GainLossInCashFlowsFromChangeInTradeCreditorsTradePayables
+  inventories: uk-core:GainLossInCashFlowsFromChangeInInventories
+  proceeds-sale-equipment: uk-core:ProceedsFromSalesPropertyPlantEquipment
+  purchase-equipment: uk-core:PurchasePropertyPlantEquipment
+  purchase-intangible-assets: uk-core:PurchaseIntangibleAssets
+  interest-received: uk-core:InterestReceivedClassifiedAsInvestingActivities
+  net-cash-from-investing-activities: uk-core:NetCashFlowsFromUsedInInvestingActivities
+  interest-paid: uk-core:InterestPaidClassifiedAsFinancingActivities
+  purchase-of-non-controlling-interest: uk-core:CashFlowsUsedInPurchaseNon-controllingInterests
+  net-cash-from-financing-activities: uk-core:NetCashFlowsFromUsedInFinancingActivities
+  cash-inflow: uk-core:NetCashInflowOutflowFromOperationsBeforeMovementsInWorkingCapital
+  depreciation-adjustment: uk-core:DepreciationAmortisationImpairmentExpense
 
 # Segments / dimensions are mapped here.  Segments are defined with a
 # segment identifier and a value e.g. accounting-standards = frs102.

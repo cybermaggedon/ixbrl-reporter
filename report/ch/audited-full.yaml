@@ -221,7 +221,7 @@ computations:
 - id: interest-received
   kind: line
   period: in-year
-  description: Interest received
+  description: Interest on current account
   accounts:
   - Income:Interest
 
@@ -235,7 +235,7 @@ computations:
 - id: interest-paid
   kind: line
   period: in-year
-  description: Interest paid
+  description: Interest on bank loans
   accounts:
   - Expenses:Interest Paid
 
@@ -370,7 +370,7 @@ computations:
 # Corporation tax liability
 - id: corporation-tax-owed
   kind: line
-  description: Corporation Tax
+  description: Corporation tax
   period: at-end
   accounts:
   - Liabilities:Owed Corporation Tax
@@ -428,7 +428,7 @@ computations:
 # Corporation tax drawn on the equity account
 - id: corporation-tax
   kind: line
-  description: Corporation Tax
+  description: Corporation tax
   period: at-end
   accounts:
   - Equity:Corporation Tax
@@ -549,18 +549,9 @@ computations:
 # Cash flows #################
 ##############################
 
-# Dividends paid out
-- id: dividends-paid
-  kind: line
-  description: Dividends
-  period: in-year
-  accounts:
-  - Equity:Dividends
-
-# Corporation tax drawn on the equity account
 - id: corporation-tax-paid
   kind: line
-  description: Corporation Tax
+  description: Corporation tax
   period: in-year
   accounts:
   - Equity:Corporation Tax
@@ -575,25 +566,9 @@ computations:
   - Expenses:Depreciation
 
 # Sign-reversed depreciation to add back in
-- id: amortisation-intangible-adjustment
-  kind: line
-  description: Amortisation of intangible assets
-  period: in-year
-  reverse-sign: true
-  accounts: []
-
-# Sign-reversed depreciation to add back in
-- id: profit-on-disposal-adjustment
-  kind: line
-  description: Profit on disposal of property, plant and equipment
-  period: in-year
-  reverse-sign: true
-  accounts: []
-
-# Sign-reversed depreciation to add back in
 - id: trade-and-other-receivables
   kind: line
-  description: Change in trade and other receivables
+  description: Decrease (increase) in trade and other receivables
   period: in-year
   reverse-sign: true
   accounts:
@@ -604,7 +579,7 @@ computations:
 # Sign-reversed depreciation to add back in
 - id: inventories
   kind: line
-  description: Change in inventories
+  description: Decrease (increase) in inventories
   period: in-year
   reverse-sign: true
   accounts: []
@@ -612,7 +587,7 @@ computations:
 # Sign-reversed depreciation to add back in
 - id: trade-payables
   kind: line
-  description: Change in trade payables
+  description: Increase (decrease) in trade payables
   period: in-year
   reverse-sign: true
   accounts:
@@ -620,15 +595,19 @@ computations:
   - VAT:Output
   - Liabilities:Owed Corporation Tax
 
+- id: cash-inflow
+  kind: sum
+  period: in-year
+  inputs:
+  - profit
+
 - id: cash-from-operations
   kind: group
   description: Cash from operations
   period: in-year
   inputs:
-  - profit
+  - cash-inflow
   - depreciation-adjustment
-  - amortisation-intangible-adjustment
-  - profit-on-disposal-adjustment
   - trade-and-other-receivables
   - inventories
   - trade-payables
@@ -640,8 +619,6 @@ computations:
   inputs:
   - profit
   - depreciation-adjustment
-  - amortisation-intangible-adjustment
-  - profit-on-disposal-adjustment
   - trade-and-other-receivables
   - inventories
   - trade-payables
@@ -649,6 +626,7 @@ computations:
 
 - id: proceeds-sale-equipment
   kind: line
+  period: in-year
   description: Proceeds from sale of equipment
   accounts: []
 
@@ -662,6 +640,7 @@ computations:
 
 - id: purchase-intangible-assets
   kind: line
+  period: in-year
   description: Purchase of intangible assets
   accounts: []
 
@@ -675,7 +654,7 @@ computations:
   - purchase-intangible-assets
   - interest-received
 
-- id: issue-of-share-capital
+- id: proceeds-from-issuing-shares
   kind: group
   period: in-year
   description: Issue of share capital
@@ -684,8 +663,17 @@ computations:
 
 - id: purchase-of-non-controlling-interest
   kind: line
+  period: in-year
   description: Purchase of non-controlling interest
   accounts: []
+
+# Dividends paid out
+- id: dividends-paid
+  kind: line
+  description: Dividends
+  period: in-year
+  accounts:
+  - Equity:Dividends
 
 - id: net-cash-from-financing-activities
   kind: group
@@ -693,7 +681,7 @@ computations:
   period: in-year
   inputs:
   - interest-paid
-  - issue-of-share-capital
+  - proceeds-from-issuing-shares
   - purchase-of-non-controlling-interest
   - dividends-paid
 
@@ -716,6 +704,25 @@ computations:
     - net-cash-from-operating-activities
     - net-cash-from-investing-activities
     - net-cash-from-financing-activities
+
+- id: cash
+  kind: group
+  description: Cash and cash equivalents at end of year
+  period: at-end
+  inputs:
+  - id: current-account
+    kind: line
+    description: Current account
+    period: at-end
+    accounts:
+    - Bank Accounts:Current Account
+  - id: reserve-account
+    kind: line
+    description: Reserve account
+    period: at-end
+    accounts:
+    - Bank Accounts:Reserve Account
+
 
 #############################################################################
 ### Worksheets ##############################################################
@@ -801,6 +808,18 @@ worksheets:
   description: Staff costs
   computations:
   - staff-costs
+
+- id: corporation-tax
+  kind: multi-period
+  description: Corporation tax
+  computations:
+  - corporation-tax-paid
+
+- id: cash
+  kind: multi-period
+  description: Cash
+  computations:
+  - cash
 
 #############################################################################
 ### Elements describe the report structure ##################################
