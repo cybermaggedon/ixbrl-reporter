@@ -42,7 +42,7 @@ computations:
   description: Consultancy
   period: in-year
   accounts:
-  - Income
+  - Income:Sales
 
 # Total turnover
 - id: turnover
@@ -75,11 +75,27 @@ computations:
   - turnover
 
 # Salaries expense
-- id: staff-costs
+- id: salaries-expense
   kind: line
   accounts:
   - Expenses:Emoluments:Employees
+  description: Salaries
+  period: in-year
+
+# Salaries expense
+- id: pensions-expense
+  kind: line
+  accounts:
   - Expenses:Emoluments:Employer Pension Contribution
+  description: Pension contributions
+  period: in-year
+
+# Salaries expense
+- id: staff-costs
+  kind: group
+  inputs:
+  - salaries-expense
+  - pensions-expense
   description: Staff costs
   period: in-year
 
@@ -191,7 +207,7 @@ computations:
   - staff-costs
   - depreciation
   - other-charges
-  - tax
+#  - tax
 
 - id: charges
   kind: group
@@ -202,17 +218,33 @@ computations:
   - staff-costs
   - other-charges
 
+- id: interest-received
+  kind: line
+  period: in-year
+  description: Interest received
+  accounts:
+  - Income:Interest
+
 - id: interest-income
   kind: group
   description: Interest income
   period: in-year
-  inputs: []
+  inputs:
+  - interest-received
+
+- id: interest-paid
+  kind: line
+  period: in-year
+  description: Interest paid
+  accounts:
+  - Expenses:Interest Paid
 
 - id: interest-expense
   kind: group
   description: Interest expense
   period: in-year
-  inputs: []
+  inputs:
+  - interest-paid
 
 - id: zero
   kind: group
@@ -513,6 +545,178 @@ computations:
   segments:
     equity: ordinary-shares
 
+##############################
+# Cash flows #################
+##############################
+
+# Dividends paid out
+- id: dividends-paid
+  kind: line
+  description: Dividends
+  period: in-year
+  accounts:
+  - Equity:Dividends
+
+# Corporation tax drawn on the equity account
+- id: corporation-tax-paid
+  kind: line
+  description: Corporation Tax
+  period: in-year
+  accounts:
+  - Equity:Corporation Tax
+
+# Sign-reversed depreciation to add back in
+- id: depreciation-adjustment
+  kind: line
+  description: Adjustment for depreciation
+  period: in-year
+  reverse-sign: true
+  accounts:
+  - Expenses:Depreciation
+
+# Sign-reversed depreciation to add back in
+- id: amortisation-intangible-adjustment
+  kind: line
+  description: Amortisation of intangible assets
+  period: in-year
+  reverse-sign: true
+  accounts: []
+
+# Sign-reversed depreciation to add back in
+- id: profit-on-disposal-adjustment
+  kind: line
+  description: Profit on disposal of property, plant and equipment
+  period: in-year
+  reverse-sign: true
+  accounts: []
+
+# Sign-reversed depreciation to add back in
+- id: trade-and-other-receivables
+  kind: line
+  description: Change in trade and other receivables
+  period: in-year
+  reverse-sign: true
+  accounts:
+  - Accounts Receivable
+  - Assets:Owed To Us
+  - VAT:Input
+
+# Sign-reversed depreciation to add back in
+- id: inventories
+  kind: line
+  description: Change in inventories
+  period: in-year
+  reverse-sign: true
+  accounts: []
+
+# Sign-reversed depreciation to add back in
+- id: trade-payables
+  kind: line
+  description: Change in trade payables
+  period: in-year
+  reverse-sign: true
+  accounts:
+  - Accounts Payable
+  - VAT:Output
+  - Liabilities:Owed Corporation Tax
+
+- id: cash-from-operations
+  kind: group
+  description: Cash from operations
+  period: in-year
+  inputs:
+  - profit
+  - depreciation-adjustment
+  - amortisation-intangible-adjustment
+  - profit-on-disposal-adjustment
+  - trade-and-other-receivables
+  - inventories
+  - trade-payables
+
+- id: net-cash-from-operating-activities
+  kind: group
+  description: Net cash from operating activities
+  period: in-year
+  inputs:
+  - profit
+  - depreciation-adjustment
+  - amortisation-intangible-adjustment
+  - profit-on-disposal-adjustment
+  - trade-and-other-receivables
+  - inventories
+  - trade-payables
+  - corporation-tax-paid
+
+- id: proceeds-sale-equipment
+  kind: line
+  description: Proceeds from sale of equipment
+  accounts: []
+
+- id: purchase-equipment
+  kind: line
+  period: in-year
+  reverse-sign: true
+  description: Purchase of property, plant and equipment
+  accounts:
+  - Assets:Capital Equipment:Computer Equipment
+
+- id: purchase-intangible-assets
+  kind: line
+  description: Purchase of intangible assets
+  accounts: []
+
+- id: net-cash-from-investing-activities
+  kind: group
+  description: Net cash from investing activities
+  period: in-year
+  inputs:
+  - proceeds-sale-equipment
+  - purchase-equipment
+  - purchase-intangible-assets
+  - interest-received
+
+- id: issue-of-share-capital
+  kind: group
+  period: in-year
+  description: Issue of share capital
+  inputs:
+  - shares-issued
+
+- id: purchase-of-non-controlling-interest
+  kind: line
+  description: Purchase of non-controlling interest
+  accounts: []
+
+- id: net-cash-from-financing-activities
+  kind: group
+  description: Net cash from financing activities
+  period: in-year
+  inputs:
+  - interest-paid
+  - issue-of-share-capital
+  - purchase-of-non-controlling-interest
+  - dividends-paid
+
+- id: cash-at-start-of-year
+  kind: line
+  period: at-start
+  description: Cash at start of year
+  accounts:
+  - Bank Accounts
+
+- id: cash-at-end-of-year
+  kind: group
+  description: Cash and cash equivalents at end of year
+  inputs:
+  - cash-at-start-of-year
+  - id: net-cash-change
+    kind: sum
+    description: Net change in cash and cash equivalents
+    inputs:
+    - net-cash-from-operating-activities
+    - net-cash-from-investing-activities
+    - net-cash-from-financing-activities
+
 #############################################################################
 ### Worksheets ##############################################################
 #############################################################################
@@ -534,6 +738,14 @@ worksheets:
   - accruals-and-deferred-income
   - net-assets
   - total-capital-and-reserves
+
+- id: cash-flows
+  kind: multi-period
+  computations:
+  - net-cash-from-operating-activities
+  - net-cash-from-investing-activities
+  - net-cash-from-financing-activities
+  - cash-at-end-of-year
 
 # Profit and loss
 - id: profit-and-loss
@@ -564,6 +776,8 @@ worksheets:
   computations:
   - charges
 
+# Misc
+
 - id: financial-income
   kind: multi-period
   description: Financial income
@@ -581,6 +795,12 @@ worksheets:
   description: Zero
   computations:
   - zero
+
+- id: staff-costs
+  kind: multi-period
+  description: Staff costs
+  computations:
+  - staff-costs
 
 #############################################################################
 ### Elements describe the report structure ##################################
@@ -602,6 +822,7 @@ elements:
     - element: directors-report
     - element: auditors-report
     - element: balance-sheet
+    - element: cash-flows
     - element: comprehensive-income
     - ifdef: metadata.accounting.is-revised
       content:
@@ -669,6 +890,27 @@ elements:
         - tag: hr
   - kind: worksheet
     worksheet: profit-and-loss
+
+# Cash flows
+- id: cash-flows
+  kind: page
+  elements:
+  - kind: html
+    root:
+      tag: div
+      content:
+      - tag: div
+        attributes: { class: heading }
+        content:
+        - tag: div
+          content: 'expand:note:~[company-name]'
+        - tag: div
+          content: Statement of Cash Flows
+        - tag: div
+          content: 'expand:note:For the year ended ~[period-end]'
+        - tag: hr
+  - kind: worksheet
+    worksheet: cash-flows
 
 # Fixed assets
 - id: fixed-assets

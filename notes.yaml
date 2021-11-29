@@ -380,14 +380,7 @@ elements:
           content: "The aggregate payroll costs of these persons was as
             follows:"
 
-        - worksheet: zero
-
-
-        - tag: h3
-          content: "7. Directors' renumeration and transactions"
-        - tag: p
-          content: "The remuneration of the directors was as follows:"
-        - worksheet: zero
+        - worksheet: staff-costs
 
 - kind: page
   elements:
@@ -409,6 +402,13 @@ elements:
 
       - tag: div
         content:
+
+
+        - tag: h3
+          content: "7. Directors' renumeration and transactions"
+        - tag: p
+          content: "The remuneration of the directors was as follows:"
+        - worksheet: zero
 
         - tag: h3
           content: "8. Taxation"
@@ -423,10 +423,6 @@ elements:
           content: "10. Property, plant and equipment"
         - worksheet: fixed-assets
 
-        - tag: h3
-          content: "11. Trade and other receivables"
-        - worksheet: zero
-
 - kind: page
   elements:
   - kind: html
@@ -447,6 +443,10 @@ elements:
 
       - tag: div
         content:
+
+        - tag: h3
+          content: "11. Trade and other receivables"
+        - worksheet: zero
 
         - tag: h3
           content: "12. Cash and cash equivalents"
