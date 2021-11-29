@@ -1,0 +1,27 @@
+#!/bin/bash
+
+mkdir -p output/
+
+cfgs="unaud-micro-rev.yaml unaud-micro.yaml aud-micro.yaml 
+  aud-micro-rev.yaml aud-small.yaml aud-small-rev.yaml unaud-abr.yaml 
+  unaud-abr-rev.yaml unaud-full.yaml unaud-full-rev.yaml aud-full.yaml 
+  aud-full-rev.yaml ct.yaml"
+
+for cfg in ${cfgs}
+do
+    echo ${cfg}...
+    out=output/${cfg%.yaml}.html
+    kv=output/${cfg%.yaml}.kv
+    cmp=log/${cfg%.yaml}.kv
+    scripts/gnucash-ixbrl test/${cfg} report ixbrl > ${out}
+    ixbrl-to-kv ${out} | sort > ${kv}
+    cmp ${kv} ${cmp}
+    if [ $? -ne 0 ]
+    then
+        echo 'File comparison fail...'
+	echo 'diff ${kv} ${cmp} >>>>'
+	diff ${kv} ${cmp}
+	exit 1
+    fi
+done
+
