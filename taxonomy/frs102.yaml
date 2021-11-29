@@ -555,6 +555,7 @@ sign-reversed:
   trade-creditors: true
   depreciation-charge: true
   depreciation-total: true
+  depreciation-adjustment: true
 
 # Taxonomy mapping.  Identifiers are mapped to their iXBRL tag names
 # here.
