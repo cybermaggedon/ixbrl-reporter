@@ -15,12 +15,12 @@ do
     cmp=log/${cfg%.yaml}.kv
     scripts/gnucash-ixbrl test/${cfg} report ixbrl > ${out}
     ixbrl-to-kv ${out} | sort > ${kv}
-    cmp ${kv} ${cmp}
+    sort ${cmp} | cmp ${kv} -
     if [ $? -ne 0 ]
     then
         echo 'File comparison fail...'
 	echo 'diff ${kv} ${cmp} >>>>'
-	diff ${kv} ${cmp}
+	sort ${cmp} | diff ${kv} -
 	exit 1
     fi
 done
