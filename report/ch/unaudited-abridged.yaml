@@ -182,6 +182,7 @@ computations:
 # Profit, computed from gross profit without the expenses
 - id: profit
   kind: group
+  note: profit-note
   description: Profit (Loss)
   period: in-year
   inputs:
@@ -211,6 +212,7 @@ computations:
   description: Fixed Assets
   kind: sum
   period: at-end
+  note: equipment-note
   inputs:
   - tangible-assets
 
@@ -312,7 +314,7 @@ computations:
 # Corporation tax liability
 - id: corporation-tax-owed
   kind: line
-  description: Corporation Tax
+  description: Corporation tax
   period: at-end
   accounts:
   - Liabilities:Owed Corporation Tax
@@ -368,7 +370,7 @@ computations:
 # Corporation tax drawn on the equity account
 - id: corporation-tax
   kind: line
-  description: Corporation Tax
+  description: Corporation tax
   period: at-end
   accounts:
   - Equity:Corporation Tax
@@ -476,7 +478,7 @@ computations:
 # Shares issued
 - id: shares-issued
   kind: line
-  description: Shares Issued
+  description: Shares Issued in period
   period: in-year
   accounts:
   - Equity:Shareholdings
@@ -711,6 +713,7 @@ elements:
         - tag: tr
           content:
           - tag: td
+            attributes: { class: tag }
             content: Directors
           - tag: td
             content:
@@ -722,6 +725,7 @@ elements:
         - tag: tr
           content:
           - tag: td
+            attributes: { class: tag }
             content: Company number
           - tag: td
             content: 'expand:
@@ -729,6 +733,7 @@ elements:
         - tag: tr
           content:
           - tag: td
+            attributes: { class: tag }
             content: Registered office
           - tag: td
             content:
@@ -742,6 +747,7 @@ elements:
         - tag: tr
           content:
           - tag: td
+            attributes: { class: tag }
             content: Accountant
           - tag: td
             content:

@@ -875,10 +875,9 @@ elements:
         - tag: div
           content: 'expand:As at ~[balance-sheet-date]'
         - tag: hr
-  - kind: worksheet
-    worksheet: balance-sheet
-  - balance-sheet-notes
-  - signature
+      - worksheet: balance-sheet
+      - element: balance-sheet-notes
+      - element: signature
 
 - id: balance-sheet-notes
   kind: notes
@@ -1002,6 +1001,7 @@ elements:
         - tag: tr
           content:
           - tag: td
+            attributes: { class: tag }
             content: Directors
           - tag: td
             content:
@@ -1013,6 +1013,7 @@ elements:
         - tag: tr
           content:
           - tag: td
+            attributes: { class: tag }
             content: Company number
           - tag: td
             content: 'expand:
@@ -1020,6 +1021,7 @@ elements:
         - tag: tr
           content:
           - tag: td
+            attributes: { class: tag }
             content: Registered office
           - tag: td
             content:
@@ -1033,6 +1035,7 @@ elements:
         - tag: tr
           content:
           - tag: td
+            attributes: { class: tag }
             content: Accountant
           - tag: td
             content:
@@ -1044,6 +1047,7 @@ elements:
         - tag: tr
           content:
           - tag: td
+            attributes: { class: tag }
             content: Auditor
           - tag: td
             content:

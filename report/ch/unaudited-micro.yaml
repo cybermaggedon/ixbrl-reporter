@@ -46,9 +46,8 @@ computations:
 
 # Total turnover
 - id: turnover
-  kind: group
+  kind: sum
   description: Turnover / revenue
-  hide-breakdown: true
   period: in-year
   inputs:
   - consultancy
@@ -597,9 +596,24 @@ elements:
 
 # Profit and loss
 - id: profit-and-loss
-  kind: worksheet
-  title: Income Statement
-  worksheet: profit-and-loss
+  kind: page
+  elements:
+  - kind: html
+    root:
+      tag: div
+      content:
+      - tag: div
+        attributes: { class: heading }
+        content:
+        - tag: div
+          content: 'expand:~[company-name]'
+        - tag: div
+          content: Income statement
+        - tag: div
+          content: 'expand:For the year ended ~[period-end]'
+        - tag: hr
+  - kind: worksheet
+    worksheet: profit-and-loss
 
 # Fixed assets
 - id: fixed-assets
