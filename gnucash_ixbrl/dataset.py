@@ -41,7 +41,6 @@ class Series:
         self.rank = rank
 
     def has_notes(self):
-        print(self.metadata)
         if self.metadata.note:
             return True
         return False
