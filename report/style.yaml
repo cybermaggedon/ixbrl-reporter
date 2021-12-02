@@ -86,7 +86,27 @@ body {
 }
 
 .sheet {
-  padding: 0.1rem;
+  table-layout: fixed;
+  border-collapse: separate;
+}
+
+.sheet td {
+  padding-top: 0em;
+  padding-left: 1.2em;
+  padding-bottom: 0em;
+  padding-right: 1.2em;
+}
+
+.spacetable {
+  table-layout: fixed;
+  border-collapse: separate;
+}
+
+.spacetable td {
+  padding-top: 0em;
+  padding-left: 1.2em;
+  padding-bottom: 0em;
+  padding-right: 1.2em;
 }
 
 table {
@@ -102,26 +122,19 @@ table {
   margin-right: auto;
 }
 
-.spacetable {
-  border-spacing: 0.2rem 0rem;
-  border-collapse: separate;
-  font-size: medium;
-  margin-left: auto;
-  margin-right: auto;
-}
-
 .company-info {
   border-collapse: separate;
-  border-spacing: 0em 1em;
+  border-spacing: 0em;
   display: table;
   table-layout: fixed;  
 }
 
 .company-info tr td {
   vertical-align: top;
+  padding: 0.5em;
 }
 
-.company-info tr td:nth-child(1) {
+.company-info tr td.tag {
   width: 15em;
   font-weight: bold;
 }
@@ -154,7 +167,6 @@ table {
 .note.header {
   font-size: smaller;
   font-weight: bold;
-//  border-bottom: 0.2em solid black;
   text-align: center;
 }
 
@@ -174,7 +186,7 @@ table {
 @media print {
   .label {
     font-size: small;
-    width: 14rem;
+    width: 14em;
   }
   .value {
     font-family: Source Code Pro, monospace;
@@ -185,13 +197,16 @@ table {
     font-size: medium;
   }
   TABLE.sheet {
-    margin: auto;
+    margin-left: 5%;
+  }
+  TABLE.spacetable {
+    margin-left: 5%;
   }
   body {
     font-size: 11pt;
   }
   .period {
-    width: 6rem;
+    width: 8em;
   }
 }
 
@@ -232,8 +247,6 @@ table {
 }
 
 .period.value.negative {
-  padding-left: 2rem;
-  padding-right: 0rem;
   color: #400000;
 }
 

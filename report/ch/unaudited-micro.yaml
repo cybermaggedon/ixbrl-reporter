@@ -663,6 +663,7 @@ elements:
         - tag: tr
           content:
           - tag: td
+            attributes: { class: tag }
             content: Directors
           - tag: td
             content:
@@ -674,6 +675,7 @@ elements:
         - tag: tr
           content:
           - tag: td
+            attributes: { class: tag }
             content: Company number
           - tag: td
             content: 'expand:
@@ -681,6 +683,7 @@ elements:
         - tag: tr
           content:
           - tag: td
+            attributes: { class: tag }
             content: Registered office
           - tag: td
             content:

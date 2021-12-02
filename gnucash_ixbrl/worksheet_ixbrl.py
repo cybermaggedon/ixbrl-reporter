@@ -96,7 +96,7 @@ class WorksheetIxbrl:
 
         if not self.hide_notes:
             # Blank note cell
-            blank = self.create_cell("\u00a0note")
+            blank = self.create_cell("note")
             blank.set("class", "note header cell")
             row.append(blank)
 
@@ -162,6 +162,14 @@ class WorksheetIxbrl:
                 span.append(self.par.xhtml_maker.span(" )"))
                 return span
 
+            else:
+
+                span = self.par.xhtml_maker.span()
+                span.append(self.par.xhtml_maker.span(""))
+                span.append(elt)
+                span.append(self.par.xhtml_maker.span("\u00a0\u00a0"))
+                return span
+
             return elt
 
         if abs(val) < self.tiny: val = 0
@@ -177,7 +185,9 @@ class WorksheetIxbrl:
             span.append(self.par.xhtml_maker.span(" )"))
             return span
 
-        return self.par.xhtml_maker.span(self.fmt(val))
+        else:
+            txt = self.fmt(val) + "\u00a0\u00a0"
+            return self.par.xhtml_maker.span(txt)
 
     def add_nil_section(self, table, section, periods):
 

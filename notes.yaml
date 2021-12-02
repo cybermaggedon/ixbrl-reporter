@@ -395,7 +395,7 @@ elements:
 
         - tag: table
           attributes:
-            class: spacetable
+            class: sheet table
           content:
           - tag: tr
             content:
