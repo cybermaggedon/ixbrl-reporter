@@ -5,7 +5,10 @@ from . format import NegativeParenFormatter
 from datetime import datetime, date
 from lxml import objectify
 
-class IxbrlReporter:
+class WorksheetIxbrl:
+
+    def __init__(self, hide_notes):
+        self.hide_notes = hide_notes
 
     def add_empty_row(self, table):
 
@@ -69,6 +72,12 @@ class IxbrlReporter:
         blank.set("class", "label cell")
         row.append(blank)
 
+        if not self.hide_notes:
+            # Blank note cell
+            blank = self.create_cell("\u00a0")
+            blank.set("class", "note cell")
+            row.append(blank)
+
         # Header cells for period names
         for period in periods:
 
@@ -84,6 +93,12 @@ class IxbrlReporter:
         blank = self.create_cell("\u00a0")
         blank.set("class", "label cell")
         row.append(blank)
+
+        if not self.hide_notes:
+            # Blank note cell
+            blank = self.create_cell("\u00a0note")
+            blank.set("class", "note header cell")
+            row.append(blank)
 
         # Header cells for currencies
         for period in periods:
@@ -173,13 +188,29 @@ class IxbrlReporter:
 
         if len(section.total.values) > 0 and section.total.values[0].id:
             desc = self.taxonomy.create_description_fact(
-                section.total.values[0], section.header
+                section.total.values[0], section.metadata.description
             )
             div.append(desc.to_elt(self.par))
         else:
-            div.append(self.par.xhtml_maker.span(section.header))
+            div.append(self.par.xhtml_maker.span(section.metadata.description))
 
         row.append(div)
+
+        if not self.hide_notes:
+            # note cell
+            
+            note = "\u00a0"
+
+            if section.metadata.note:
+                try:
+                    note = self.data.get_note(section.metadata.note)
+                    
+                except Exception as e:
+                    pass
+
+            note = self.create_cell(note)
+            note.set("class", "note cell")
+            row.append(note)
 
         for i in range(0, len(periods)):
             div = self.create_cell()
@@ -205,13 +236,29 @@ class IxbrlReporter:
 
         if len(section.total.values) > 0 and section.total.values[0].id:
             desc = self.taxonomy.create_description_fact(
-                section.total.values[0], section.header
+                section.total.values[0], section.metadata.description
             )
             div.append(desc.to_elt(self.par))
         else:
-            div.append(self.par.xhtml_maker.span(section.header))
+            div.append(self.par.xhtml_maker.span(section.metadata.description))
 
         row.append(div)
+
+        if not self.hide_notes:
+            # note cell
+            
+            note = "\u00a0"
+
+            if section.metadata.note:
+                try:
+                    note = self.data.get_note(section.metadata.note)
+                    
+                except Exception as e:
+                    pass
+
+            note = self.create_cell(note)
+            note.set("class", "note cell")
+            row.append(note)
 
         for i in range(0, len(periods)):
             div = self.create_cell()
@@ -249,12 +296,18 @@ class IxbrlReporter:
 
         if len(section.total.values) > 0 and section.total.values[0].id:
             desc = self.taxonomy.create_description_fact(
-                section.total.values[0], section.header
+                section.total.values[0], section.metadata.description
             )
             div.append(desc.to_elt(self.par))
         else:
-            div.append(self.par.xhtml_maker.span(section.header))
+            div.append(self.par.xhtml_maker.span(section.metadata.description))
         row.append(div)
+
+        if not self.hide_notes:
+            # note cell
+            blank = self.create_cell("\u00a0")
+            blank.set("class", "note cell")
+            row.append(blank)
 
         self.add_row(table, row)
 
@@ -267,13 +320,29 @@ class IxbrlReporter:
 
             if len(item.values) > 0 and item.values[0].id:
                 desc = self.taxonomy.create_description_fact(
-                    item.values[0], item.description
+                    item.values[0], item.metadata.description
                 )
                 div.append(desc.to_elt(self.par))
             else:
-                div.append(self.par.xhtml_maker.span(item.description))
+                div.append(self.par.xhtml_maker.span(item.metadata.description))
 
             row.append(div)
+
+            if not self.hide_notes:
+                # note cell
+
+                note = "\u00a0"
+
+                if item.metadata.note:
+                    try:
+                        note = self.data.get_note(item.metadata.note)
+
+                    except Exception as e:
+                        pass
+
+                note = self.create_cell(note)
+                note.set("class", "note cell")
+                row.append(note)
 
             for i in range(0, len(periods)):
 
@@ -303,6 +372,22 @@ class IxbrlReporter:
         div.set("class", "label breakdown total cell")
         row.append(div)
         div.append(self.par.xhtml_maker.span("Total"))
+
+        if not self.hide_notes:
+            # note cell
+            
+            note = "\u00a0"
+
+            if section.metadata.note:
+                try:
+                    note = self.data.get_note(section.metadata.note)
+                    
+                except Exception as e:
+                    pass
+
+            note = self.create_cell(note)
+            note.set("class", "note cell")
+            row.append(note)
 
         for i in range(0, len(periods)):
 
@@ -347,6 +432,10 @@ class IxbrlReporter:
     def create_report(self, worksheet):
 
         ds = worksheet.get_dataset()
+
+        # Hide notes if the option is set, or there are no notes.
+        self.hide_notes = self.hide_notes or not ds.has_notes()
+
         periods = ds.periods
         sections = ds.sections
 

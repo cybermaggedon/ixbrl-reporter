@@ -575,11 +575,11 @@ elements:
         attributes: { class: heading }
         content:
         - tag: div
-          content: 'expand:note:~[company-name]'
+          content: 'expand:~[company-name]'
         - tag: div
           content: Statement of financial position
         - tag: div
-          content: 'expand:note:As at ~[balance-sheet-date]'
+          content: 'expand:As at ~[balance-sheet-date]'
         - tag: hr
       - worksheet: balance-sheet
       - element: balance-sheet-notes
@@ -592,16 +592,16 @@ elements:
 
   # Some boilerplate notes...
   # ...applicable to companies subject to the small companies regime
-  - small-company-provisions
+  - template:small-company-provisions
 
   # ...exemption from audit... small companies
-  - small-company-audit-exempt
+  - template:small-company-audit-exempt
 
   # ...directors acknowledge their responsibilities for complying with...
-  - directors-acknowledge
+  - template:directors-acknowledge
 
   # ...members have not required the company to obtain an audit...
-  - no-audit-required
+  - template:no-audit-required
 
 # Profit and loss
 - id: profit-and-loss
@@ -615,11 +615,11 @@ elements:
         attributes: { class: heading }
         content:
         - tag: div
-          content: 'expand:note:~[company-name]'
+          content: 'expand:~[company-name]'
         - tag: div
           content: Income statement
         - tag: div
-          content: 'expand:note:For the year ended ~[period-end]'
+          content: 'expand:For the year ended ~[period-end]'
         - tag: hr
   - kind: worksheet
     worksheet: profit-and-loss
@@ -646,7 +646,7 @@ elements:
       content:
       - tag: div
         attributes: { class: company-number }
-        content: 'expand:note:
+        content: 'expand:
           Company registration no. ~[company-number] (~[jurisdiction])'
       - tag: img
         attributes:
@@ -654,13 +654,13 @@ elements:
           alt: Company logo
       - tag: div
         attributes: { class: company-name }
-        content: 'expand:note:~[company-name]'
+        content: 'expand:~[company-name]'
       - tag: div
         attributes: { class: title }
-        content: expand:note:~[report-title]
+        content: expand:~[report-title]
       - tag: div
         attributes: { class: subtitle }
-        content: 'expand:note:For the year ended ~[period-end]'
+        content: 'expand:For the year ended ~[period-end]'
 
 - id: consent
   kind: page
@@ -673,11 +673,11 @@ elements:
         attributes: { class: heading }
         content:
         - tag: div
-          content: 'expand:note:~[company-name]'
+          content: 'expand:~[company-name]'
         - tag: div
           content: Statement of Consent
         - tag: div
-          content: 'expand:note:For the year ended ~[period-end]'
+          content: 'expand:For the year ended ~[period-end]'
         - tag: hr
       - tag: div
         content:
@@ -685,7 +685,7 @@ elements:
           content: "Statement of consent to prepare Abridged Financial
             Statements"
         - tag: p
-          content: "expand:members-agreed-abridged-accounts"
+          content: "template:members-agreed-abridged-accounts"
 
 - id: company-info
   kind: page
@@ -698,11 +698,11 @@ elements:
         attributes: { class: heading }
         content:
         - tag: div
-          content: 'expand:note:~[company-name]'
+          content: 'expand:~[company-name]'
         - tag: div
           content: Company information
         - tag: div
-          content: 'expand:note:For the year ended ~[period-end]'
+          content: 'expand:For the year ended ~[period-end]'
         - tag: hr
       - tag: table
         attributes:
@@ -714,17 +714,17 @@ elements:
             content: Directors
           - tag: td
             content:
-            - 'expand:note:~[officer1]'
+            - 'expand:~[officer1]'
             - tag: br
-            - 'expand:note:~[officer2]'
+            - 'expand:~[officer2]'
             - tag: br
-            - 'expand:note:~[officer3]'
+            - 'expand:~[officer3]'
         - tag: tr
           content:
           - tag: td
             content: Company number
           - tag: td
-            content: 'expand:note:
+            content: 'expand:
             ~[company-number], registered in ~[jurisdiction]'
         - tag: tr
           content:
@@ -732,24 +732,24 @@ elements:
             content: Registered office
           - tag: td
             content:
-            - 'expand:note:~[contact-address1::, ]'
+            - 'expand:~[contact-address1::, ]'
             - tag: br
               content: []
-            - 'expand:note:~[contact-address2::, ]'
+            - 'expand:~[contact-address2::, ]'
             - tag: br
               content: []
-            - 'expand:note:~[contact-location::, ] ~[contact-postcode]'
+            - 'expand:~[contact-location::, ] ~[contact-postcode]'
         - tag: tr
           content:
           - tag: td
             content: Accountant
           - tag: td
             content:
-            - expand:note:~[accountant-name]
+            - expand:~[accountant-name]
             - tag: br
-            - expand:note:~[accountant-business]
+            - expand:~[accountant-business]
             - tag: br
-            - expand:note:~[accountant-address]
+            - expand:~[accountant-address]
 
 - //ref directors-report
 - //ref auditors-report
@@ -761,10 +761,10 @@ elements:
     tag: div
     content:
     - tag: p
-      content: 'expand:note:Approved by the board of directors and
+      content: 'expand:Approved by the board of directors and
         authorised for publication on ~[authorised-date].'
     - tag: p
-      content: 'expand:note:Signed on behalf of the board, by
+      content: 'expand:Signed on behalf of the board, by
         ~[signers-name].'
     - tag: img
       attributes:
@@ -782,12 +782,12 @@ elements:
         attributes: { class: heading }
         content:
         - tag: div
-          content: 'expand:note:~[company-name]'
+          content: 'expand:~[company-name]'
         - tag: div
           content: Notes to the accounts
         - tag: div
           attributes: { class: subtitle }
-          content: 'expand:note:For the year ended ~[period-end]'
+          content: 'expand:For the year ended ~[period-end]'
         - tag: hr
   - kind: notes
     notes:
@@ -795,11 +795,7 @@ elements:
     # Some boilerplate notes...
 
     # Company number and address.
-    - company
-
-    # These accounts were generated using gnucash-ixbrl...  You don't need
-    # to have this one in your report.
-    - software-version
+    - template:company
 
 - id: revision-info
   kind: page
@@ -812,12 +808,12 @@ elements:
         attributes: { class: heading }
         content:
         - tag: div
-          content: 'expand:note:~[company-name]'
+          content: 'expand:~[company-name]'
         - tag: div
           content: Revision of the financial statements
         - tag: div
           attributes: { class: subtitle }
-          content: 'expand:note:For the year ended ~[period-end]'
+          content: 'expand:For the year ended ~[period-end]'
         - tag: hr
   - kind: html
     root: //import supplementary-note.yaml

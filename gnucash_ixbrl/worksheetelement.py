@@ -3,14 +3,15 @@
 
 from . basicelement import BasicElement
 from . report import TextReporter
-from . worksheet_ixbrl import IxbrlReporter
+from . worksheet_ixbrl import WorksheetIxbrl
 from lxml import objectify
 
 class WorksheetElement(BasicElement):
-    def __init__(self, id, title, worksheet, data):
+    def __init__(self, id, title, worksheet, data, hide_notes=None):
         super().__init__(id, data)
         self.title = title
         self.worksheet = worksheet
+        self.hide_notes = hide_notes
         self.data = data
 
     @staticmethod
@@ -20,7 +21,8 @@ class WorksheetElement(BasicElement):
             elt_def.get("id", mandatory=False),
             elt_def.get("title", mandatory=False),
             data.get_worksheet(elt_def.get("worksheet")),
-            data
+            data,
+            elt_def.get("hide-notes", False, mandatory=False)
         )
 
         return e
@@ -38,7 +40,7 @@ class WorksheetElement(BasicElement):
 
     def to_ixbrl_elt(self, par, taxonomy):
 
-        rep = IxbrlReporter()
+        rep = WorksheetIxbrl(hide_notes = self.hide_notes)
         elt = rep.get_elt(self.worksheet, par, taxonomy, self.data)
 
         div = par.xhtml_maker.div()

@@ -12,34 +12,41 @@ elements:
         attributes: { class: heading }
         content:
         - tag: div
-          content: 'expand:note:~[company-name]'
+          content: 'expand:~[company-name]'
         - tag: div
           content: Notes to the accounts
         - tag: div
           attributes: { class: subtitle }
-          content: 'expand:note:For the year ended ~[period-end]'
+          content: 'expand:For the year ended ~[period-end]'
         - tag: hr
       - tag: div
         content:
 
-        - tag: h3
-          content: "1. Company information"
+        - element:
+            kind: noteheading
+            title: Company information
+            level: 1
 
         - tag: p
-          content: "expand:company"
+          content: "template:company"
 
-        - tag: h3
-          content: "2. Accounting policies"
+        - element:
+            kind: noteheading
+            title: Accounting policies
+            level: 1
 
         - tag: p
           content: "The following accounting policies have been
             applied consistently in dealing with items which are
             considered material in relation to the company's accounts:"
 
-        - tag: h4
-          content: "a. Basis of preparation"
+        - element:
+            kind: noteheading
+            title: Basis of preparation
+            level: 2
+
         - tag: p
-          content: "expand:note:~{statement-of-compliance-reporting-framework=
+          content: "expand:~{statement-of-compliance-reporting-framework=
             These financial statements have been prepared in
             accordance with applicable United Kingdom accounting
             standards, including Financial Reporting Standard 102,
@@ -54,12 +61,13 @@ elements:
           content: "The financial statements are presented in Sterling
             (£)."
 
-        - tag: h4
-          content: "b. Revenue recognition"
+        - element:
+            kind: noteheading
+            title: Revenue recognition
+            level: 2
 
         - tag: p
-
-          content: "expand:note:~{revenue-recognition-policy=
+          content: "expand:~{revenue-recognition-policy=
             Where the company agrees to provide a service for
             a fixed period, revenue is allocated on a monthly basis,
             for the period of the contract. Revenue which is
@@ -90,8 +98,11 @@ elements:
         - tag: p
           content: Interest income is recognised on an accruals basis.
 
-        - tag: h4
-          content: "c. Going concern"
+        - element:
+            kind: noteheading
+            title: Going concern
+            level: 2
+
         - tag: p
           content: "The financial statements have been prepared on a
             going concern basis assuming the continued support of the
@@ -117,28 +128,31 @@ elements:
         attributes: { class: heading }
         content:
         - tag: div
-          content: 'expand:note:~[company-name]'
+          content: 'expand:~[company-name]'
         - tag: div
           content: Notes to the accounts
         - tag: div
           attributes: { class: subtitle }
-          content: 'expand:note:For the year ended ~[period-end]'
+          content: 'expand:For the year ended ~[period-end]'
         - tag: hr
 
       - tag: div
         content:
 
-        - tag: h4
-          content: "d. Plant and equipment"
+        - element:
+            kind: noteheading
+            title: Plant and equipment
+            level: 2
+
         - tag: p
-          content: "expand:note:
+          content: "expand:
             ~{description-of-measurement-property-plant-equipment=
             Property, plant and equipment are stated in the
             Statement of Financial Position at cost less accumulated
             depreciation.}"
 
         - tag: p
-          content: "expand:note:
+          content: "expand:
             ~{description-of-depreciation-method-property-plant-equipment=
             Depreciation is charged so as to write off the
             cost of assets over their estimated useful lives on the
@@ -159,11 +173,14 @@ elements:
             - tag: td
               content: 33% per annum 
 
-        - tag: h4
-          content: "e. Intangible assets"
+        - element:
+            kind: noteheading
+            title: Intangible assets
+            level: 2
+
         - tag: p
 
-          content: "expand:note:
+          content: "expand:
             ~{description-recognition-basis-intangible-assets=
             Intangible assets include software development
             costs that in the opinion of the directors meets the
@@ -193,19 +210,24 @@ elements:
           content: The results of this review performed at 31 December 2020
             confirmed there were no indications of impairment."
 
-        - tag: h4
-          content: "f. Operating leases"
+        - element:
+            kind: noteheading
+            title: Operating leases
+            level: 2
+
         - tag: p
-          content: "expand:note:~{lessee-operating-lease-policy=
+          content: "expand:~{lessee-operating-lease-policy=
             Costs of operating leases are charged to the Statement
             of Comprehensive Income on a straight line basis over the
             lease term.}"
 
+        - element:
+            kind: noteheading
+            title: Taxation
+            level: 2
 
-        - tag: h4
-          content: "g. Taxation"
         - tag: p
-          content: "expand:note:~{current-income-tax-policy=
+          content: "expand:~{current-income-tax-policy=
             Income tax on the profits for the year comprises
             current tax and deferred tax. Income tax is recognised in
             the Statement of Comprehensive Income except where items
@@ -231,19 +253,19 @@ elements:
         attributes: { class: heading }
         content:
         - tag: div
-          content: 'expand:note:~[company-name]'
+          content: 'expand:~[company-name]'
         - tag: div
           content: Notes to the accounts
         - tag: div
           attributes: { class: subtitle }
-          content: 'expand:note:For the year ended ~[period-end]'
+          content: 'expand:For the year ended ~[period-end]'
         - tag: hr
 
       - tag: div
         content:
 
         - tag: p
-          content: "expand:note:~{deferred-tax-policy=
+          content: "expand:~{deferred-tax-policy=
             Deferred tax is provided using the Statement of
             Financial Position liability method, which recognises
             temporary differences between the carrying amounts of
@@ -255,10 +277,13 @@ elements:
             or substantively enacted at the Statement of Financial
             Position date.}"
 
-        - tag: h4
-          content: "h. Pensions"
+        - element:
+            kind: noteheading
+            title: Pensions
+            level: 2
+
         - tag: p
-          content: "expand:note:~{defined-contribution-pensions-policy=
+          content: "expand:~{defined-contribution-pensions-policy=
             All company employees are entitled to be members
             of the Example Limited stakeholder pension scheme, the
             assets of which are held in an independently administered
@@ -267,12 +292,13 @@ elements:
           content: "Contributions are charged to the Statement of
             Comprehensive Income and are included in staff costs."
 
+        - element:
+            kind: noteheading
+            title: Cash and cash equivalents
+            level: 2
 
-
-        - tag: h4
-          content: "i. Cash and cash equivalents"
         - tag: p
-          content: "expand:note:~{cash-and-cash-equivalents-policy=
+          content: "expand:~{cash-and-cash-equivalents-policy=
             For the purpose of the Statement of Cash Flows,
             cash comprises cash in hand and loans and advances to
             credit institutions repayable on demand, and cash and cash
@@ -285,10 +311,12 @@ elements:
           content: "The Statement of Cash Flows has been prepared using the
             indirect method."
 
-        - tag: h4
-          content: "j. Net financing costs"
-        - tag: p
+        - element:
+            kind: noteheading
+            title: Net financing costs
+            level: 2
 
+        - tag: p
           content: "~{finance-income-and-costs-policy=
             Net financing costs comprise interest payable on
             borrowings calculated using the effective interest rate
@@ -302,12 +330,16 @@ elements:
             Comprehensive Income as it accrues, using the effective
             interest rate method."
 
-        - tag: h3
-          content: "3. Profit from operations"
+        - element:
+            id: profit-note
+            kind: noteheading
+            title: Profit from operations
+            level: 1
 
         - tag: p
           content: "Profit from operations has been arrived at after charging:"
         - worksheet: charges
+          hide-notes: true
 
 
 
@@ -321,29 +353,41 @@ elements:
         attributes: { class: heading }
         content:
         - tag: div
-          content: 'expand:note:~[company-name]'
+          content: 'expand:~[company-name]'
         - tag: div
           content: Notes to the accounts
         - tag: div
           attributes: { class: subtitle }
-          content: 'expand:note:For the year ended ~[period-end]'
+          content: 'expand:For the year ended ~[period-end]'
         - tag: hr
 
       - tag: div
         content:
 
-        - tag: h3
-          content: "4. Financial income"
+        - element:
+            id: financial-income-note
+            kind: noteheading
+            title: Financial income
+            level: 1
+
         - worksheet: financial-income
+          hide-notes: true
 
-        - tag: h3
-          content: "5. Finance costs"
+
+        - element:
+            id: financial-costs-note
+            kind: noteheading
+            title: Finance costs
+            level: 1
+
         - worksheet: financial-costs
+          hide-notes: true
 
-
-
-        - tag: h3
-          content: "6. Staff numbers and costs"
+        - element:
+            id: staff-costs-note
+            kind: noteheading
+            title: Staff numbers and costs
+            level: 1
 
         - tag: p
           content: "The average monthly number of persons employed by the
@@ -371,16 +415,17 @@ elements:
               content: "Employees"
             - tag: td
               attributes: { class: period value }
-              content: expand:note:~[average-employees-this]
+              content: expand:~[average-employees-this]
             - tag: td
               attributes: { class: period value }
-              content: expand:note:~[average-employees-previous]
+              content: expand:~[average-employees-previous]
 
         - tag: p
           content: "The aggregate payroll costs of these persons was as
             follows:"
 
         - worksheet: staff-costs
+          hide-notes: true
 
 - kind: page
   elements:
@@ -392,36 +437,52 @@ elements:
         attributes: { class: heading }
         content:
         - tag: div
-          content: 'expand:note:~[company-name]'
+          content: 'expand:~[company-name]'
         - tag: div
           content: Notes to the accounts
         - tag: div
           attributes: { class: subtitle }
-          content: 'expand:note:For the year ended ~[period-end]'
+          content: 'expand:For the year ended ~[period-end]'
         - tag: hr
 
       - tag: div
         content:
 
+        - element:
+            kind: noteheading
+            title: Directors' renumeration and transactions
+            level: 1
 
-        - tag: h3
-          content: "7. Directors' renumeration and transactions"
         - tag: p
           content: "The remuneration of the directors was as follows:"
         - worksheet: zero
+          hide-notes: true
 
-        - tag: h3
-          content: "8. Taxation"
+        - element:
+            id: taxation-note
+            kind: noteheading
+            title: Taxation
+            level: 1
+
         - worksheet: corporation-tax
+          hide-notes: true
 
-        - tag: h3
-          content: "9. Intangible fixed assets"
+        - element:
+            kind: noteheading
+            title: Intangible fixed assets
+            level: 1
+
         - worksheet: zero
+          hide-notes: true
 
+        - element:
+            id: equipment-note
+            kind: noteheading
+            title: Property, plant and equipment
+            level: 1
 
-        - tag: h3
-          content: "10. Property, plant and equipment"
         - worksheet: fixed-assets
+          hide-notes: true
 
 - kind: page
   elements:
@@ -433,32 +494,49 @@ elements:
         attributes: { class: heading }
         content:
         - tag: div
-          content: 'expand:note:~[company-name]'
+          content: 'expand:~[company-name]'
         - tag: div
           content: Notes to the accounts
         - tag: div
           attributes: { class: subtitle }
-          content: 'expand:note:For the year ended ~[period-end]'
+          content: 'expand:For the year ended ~[period-end]'
         - tag: hr
 
       - tag: div
         content:
 
-        - tag: h3
-          content: "11. Trade and other receivables"
-        - worksheet: zero
+        - element:
+            kind: noteheading
+            title: Trade and other receivables
+            level: 1
 
-        - tag: h3
-          content: "12. Cash and cash equivalents"
+        - worksheet: zero
+          hide-notes: true
+
+        - element:
+            id: cash-note
+            kind: noteheading
+            title: Cash and cash equivalents
+            level: 1
+
         - worksheet: cash
+          hide-notes: true
 
-        - tag: h3
-          content: "13. Trade and other payables"
-        - worksheet: zero
+        - element:
+            kind: noteheading
+            title: Trade and other payables
+            level: 1
 
-        - tag: h3
-          content: "14. Deferred tax assets and liabilities"
         - worksheet: zero
+          hide-notes: true
+
+        - element:
+            kind: noteheading
+            title: Deferred tax assets and liabilities
+            level: 1
+
+        - worksheet: zero
+          hide-notes: true
 
 - kind: page
   elements:
@@ -470,32 +548,38 @@ elements:
         attributes: { class: heading }
         content:
         - tag: div
-          content: 'expand:note:~[company-name]'
+          content: 'expand:~[company-name]'
         - tag: div
           content: Notes to the accounts
         - tag: div
           attributes: { class: subtitle }
-          content: 'expand:note:For the year ended ~[period-end]'
+          content: 'expand:For the year ended ~[period-end]'
         - tag: hr
 
       - tag: div
         content:
 
-        - tag: h3
-          content: "15. Share capital"
+        - element:
+            id: share-capital-note
+            kind: noteheading
+            title: Share capital
+            level: 1
+
         - worksheet: share-capital
+          hide-notes: true
 
-        - tag: h3
-          content: "16. Operating leases and commitments"
+        - element:
+            kind: noteheading
+            title: Operating leases and commitments
+            level: 1
+
         - worksheet: zero
+          hide-notes: true
 
-        - tag: h3
-          content: "17. Related party transactions"
+        - element:
+            kind: noteheading
+            title: Related party transactions
+            level: 1
+
         - worksheet: zero
-
-        - tag: h3
-          content: "18. Software"
-
-        - tag: p
-          content: "expand:software-version"
-
+          hide-notes: true

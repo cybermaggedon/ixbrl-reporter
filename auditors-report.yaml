@@ -14,18 +14,18 @@ elements:
         attributes: { class: heading }
         content:
         - tag: div
-          content: 'expand:note:~[company-name]'
+          content: 'expand:~[company-name]'
         - tag: div
           content: Auditor's report
         - tag: div
-          content: 'expand:note:For the year ended ~[period-end]'
+          content: 'expand:For the year ended ~[period-end]'
         - tag: hr
       - tag: div
         content:
         - tag: p
           content: To the members of Example Limited,
         - tag: p
-          content: "expand:note:
+          content: "expand:
             We have audited the financial statements of ~[company-name]
             for the year ended ~[period-end] which comprise the
             Statement of Income, the Statement of
@@ -48,7 +48,7 @@ elements:
           by our prior consent in writing."
         - tag: h3
           content: Respective responsibilities of directors and auditors
-        - "expand:note:~{statement-on-respective-responsibilities=
+        - "expand:~{statement-on-respective-responsibilities=
           As explained more fully in the Statement of Directors
           Responsibilities, the directors are responsible for the
           preparation of the financial statements and for being
@@ -61,7 +61,7 @@ elements:
         - tag: h3
           content: Scope of the audit of the financial statements
 
-        - "expand:note:~{statement-on-audit-scope=
+        - "expand:~{statement-on-audit-scope=
           A description of the scope of an audit of financial
           statements is provided on the APB's website at
           http://www.frc.org.uk/.}"
@@ -89,7 +89,7 @@ elements:
         - tag: h3
           content: Basis for opinion
         - tag: p
-          content: "expand:note:~{basis-for-opinion-auditors=
+          content: "expand:~{basis-for-opinion-auditors=
              We conducted our audit in accordance
              with International Standards on Auditing (UK) and
              applicable law. Our responsibilities under those standards are
@@ -115,11 +115,11 @@ elements:
         attributes: { class: heading }
         content:
         - tag: div
-          content: 'expand:note:~[company-name]'
+          content: 'expand:~[company-name]'
         - tag: div
           content: Auditor's report
         - tag: div
-          content: 'expand:note:For the year ended ~[period-end]'
+          content: 'expand:For the year ended ~[period-end]'
         - tag: hr
       - tag: div
         content:
@@ -228,11 +228,11 @@ elements:
         attributes: { class: heading }
         content:
         - tag: div
-          content: 'expand:note:~[company-name]'
+          content: 'expand:~[company-name]'
         - tag: div
           content: Auditor's report
         - tag: div
-          content: 'expand:note:For the year ended ~[period-end]'
+          content: 'expand:For the year ended ~[period-end]'
         - tag: hr
       - tag: div
         content:
@@ -279,13 +279,13 @@ elements:
             description forms part of our auditor's report."
         - tag: p
           content:
-          - "expand:note:~[auditor-name]"
+          - "expand:~[auditor-name]"
           - tag: br
           - "Auditor"
           - tag: br
-          - "expand:note:~[auditors-report-date]"
+          - "expand:~[auditors-report-date]"
         - tag: p
           content:
-          - "expand:note:~[auditor-business]"
+          - "expand:~[auditor-business]"
           - tag: br
-          - "expand:note:~[auditor-address]"
+          - "expand:~[auditor-address]"

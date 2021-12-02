@@ -14,22 +14,22 @@ elements:
         attributes: { class: heading }
         content:
         - tag: div
-          content: 'expand:note:~[company-name]'
+          content: 'expand:~[company-name]'
         - tag: div
           content: Accountant's report
         - tag: div
-          content: 'expand:note:For the year ended ~[period-end]'
+          content: 'expand:For the year ended ~[period-end]'
         - tag: hr
       - tag: div
         content:
         - tag: h3
-          content: "expand:note:
+          content: "expand:
             Accountant’s Report to the Board
             of Directors on the Preparation  of  the  Unaudited  Statutory
             Accounts  of  ~[company-name] for the
             Year Ended ~[period-end]"
         - tag: p
-          content: "expand:note:~{accountants-report-on-financial-statements=
+          content: "expand:~{accountants-report-on-financial-statements=
             In order to assist you to fulfil your duties under
             the Companies Act 2006, we have prepared for your approval
             the accounts of ~[company-name] for the
@@ -45,7 +45,7 @@ elements:
           - tag: br
           - www.icaew.com/en/members/regulations-standards-and-guidance.
         - tag: p
-          content: "expand:note:
+          content: "expand:
             This report is made solely to the Board of
             Directors of ~[company-name], as a body, in
             accordance with the terms of our engagement letter dated
@@ -59,7 +59,7 @@ elements:
             other than ~[company-name] and its Board of
             Directors as a body for our work or for this report."
         - tag: p
-          content: "expand:note:
+          content: "expand:
             It is your duty to ensure that ~[company-name]
             Limited has kept adequate accounting records and to prepare
             statutory accounts that give a true and fair view of the
@@ -67,7 +67,7 @@ elements:
             of ~[company-name].  You consider that ~[company-name]
             is exempt from the statutory audit requirement for the year."
         - tag: p
-          content: "expand:note:~{statement-on-scope-of-accountants-report=
+          content: "expand:~{statement-on-scope-of-accountants-report=
             We have not been instructed to carry out an audit or
             a review of the accounts of ~[company-name].  For
             this reason, we have not verified the accuracy or
@@ -77,12 +77,12 @@ elements:
 
         - tag: p
           content:
-          - "expand:note:~[accountant-name]"
+          - "expand:~[accountant-name]"
           - tag: br
-          - "expand:note:~[accountants-report-date]"
+          - "expand:~[accountants-report-date]"
         - tag: p
           content:
-          - "expand:note:~[accountant-business]"
+          - "expand:~[accountant-business]"
           - tag: br
-          - "expand:note:~[accountant-address]"
+          - "expand:~[accountant-address]"
 

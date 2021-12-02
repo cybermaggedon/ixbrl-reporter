@@ -51,9 +51,7 @@ class MultiPeriodWorksheet(Worksheet):
 
     def get_dataset(self):
 
-        ds = Dataset()
-        ds.periods = self.periods
-        ds.sections = []
+        ds = Dataset(self.periods, [])
 
         computations = {
             v.id: self.data.get_computation(v.id)

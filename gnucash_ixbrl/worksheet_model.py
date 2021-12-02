@@ -13,72 +13,71 @@ class WsStructure:
         pass
 
 class SimpleValue(WorksheetItem):
-    def __init__(self, defn, desc, value):
+    def __init__(self, defn, value):
         self.defn = defn
-        self.description = desc
         self.value = value
     def add_data(self, computation, cdef, result, sec):
         raise RuntimeError("Not implemented")
 
 class Breakdown(WorksheetItem):
-    def __init__(self, defn, desc, value, items):
+    def __init__(self, defn, value, items):
         self.defn = defn
-        self.description = desc
         self.value = value
         self.items = items
 
     def add_data(self, computation, cdef, result, sec):
 
-        if sec.header == None:
-            sec.header = computation.description
+        if sec.metadata == None:
+            sec.metadata = computation.metadata
 
         if sec.total == None:
-            sec.total = Series("Total", [], rank=cdef.total_rank)
+            sec.total = Series(self.defn.metadata, [], rank=cdef.total_rank)
 
         if sec.items == None:
             sec.items = [
-                Series(computation.inputs[i].description, [],
-                       rank=cdef.rank)
+                Series(
+                    computation.inputs[i].metadata, [],
+                    rank=cdef.rank
+                )
                 for i in range(0, len(computation.inputs))
             ]
 
         sec.total.values.append(self.value.value)
 
         for i in range(0, len(computation.inputs)):
-            id = computation.inputs[i].id
-            value = result[computation.id].items[i].value
+            id = computation.inputs[i].metadata.id
+            value = result[computation.metadata.id].items[i].value
             sec.items[i].values.append(value)
 
 class NilValue(WorksheetItem):
-    def __init__(self, defn, desc, value):
+    def __init__(self, defn, value):
         self.defn = defn
-        self.description = desc
         self.value = value
+
     def add_data(self, computation, cdef, result, sec):
 
-        if sec.header == None:
-            sec.header = computation.description
+        if sec.metadata == None:
+            sec.metadata = computation.metadata
 
         if sec.total == None:
-            sec.total = Series("Total", [], rank=cdef.total_rank)
+            sec.total = Series(self.defn.metadata, [], rank=cdef.total_rank)
 
         sec.total.values.append(self.value.value)
 
 class Total(WorksheetItem):
 
-    def __init__(self, defn, desc, value, items):
+    def __init__(self, defn, value, items):
         self.defn = defn
-        self.description = desc
         self.value = value
         self.items = items
 
     def add_data(self, computation, cdef, result, sec):
 
-        if sec.header == None:
-            sec.header = computation.description
+        if sec.metadata == None:
+            sec.metadata = computation.metadata
 
         if sec.total == None:
-            sec.total = Series("Total", [], rank=cdef.total_rank)
+            sec.total = Series(self.defn.metadata, [], rank=cdef.total_rank)
 
         sec.total.values.append(self.value.value)
 

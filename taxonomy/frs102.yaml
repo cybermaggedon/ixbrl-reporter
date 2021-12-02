@@ -504,39 +504,39 @@ metadata:
 # is not defined, the null text is shown.  ~{tag=text} is used to markup
 # text with an iXBRL tag.
 notes:
-  company: 'The company is a private company limited by shares and is
+  company: 'expand:The company is a private company limited by shares and is
     registered in England and Wales number ~[company-number].
     The registered address is: ~[contact-address1::, ]
     ~[contact-address2::, ] ~[contact-address3::, ]
     ~[contact-location:: ] ~[contact-postcode].'
-  directors-acknowledge: '~{directors-duty=The directors acknowledge
+  directors-acknowledge: 'expand:~{directors-duty=The directors acknowledge
     their responsibilities for complying with the requirements of the
     Act with respect to accounting records and the preparation of
     financial statements.}'
-  micro-entity-provisions: '~{accounts-prepared-small-company-regime=These
+  micro-entity-provisions: 'expand:~{accounts-prepared-small-company-regime=These
     financial statements have been prepared in accordance with the
     micro-entity provisions and delivered in accordance with the
     provisions applicable under the small companies regime.}'
-  micro-entity-pl-provisions: '~{accounts-prepared-small-company-regime=These
-    financial statements have been prepared in accordance with the
+  micro-entity-pl-provisions: 'expand:~{accounts-prepared-small-company-regime=
+    These financial statements have been prepared in accordance with the
     micro-entity provisions.}'
-  small-company-provisions: '~{accounts-prepared-small-company-regime=These
-    accounts have been prepared in accordance with the provisions applicable
-    to companies subject to the small companies regime.}'
-  members-agreed-abridged-accounts: '~{members-agreed-abridged-accounts=All
-    of the members of ~[company-name] have consented to the preparation
+  small-company-provisions: 'expand:~{accounts-prepared-small-company-regime=
+    These accounts have been prepared in accordance with the provisions
+    applicable to companies subject to the small companies regime.}'
+  members-agreed-abridged-accounts: 'expand:~{members-agreed-abridged-accounts=
+    All of the members of ~[company-name] have consented to the preparation
     of the Abridged Statement of Financial Position and the Abridged
     Income Statement for the year ended ~[period-end] in accordance with
     Section 444(2A) of the Companies Act 2006.}'
-  no-audit-required: '~{members-not-required-audit=The members have
+  no-audit-required: 'expand:~{members-not-required-audit=The members have
     not required the company to obtain an audit of its financial
     statements for the accounting period in accordance with section 476.}'
-  small-company-audit-exempt: '~{small-company-exempt-from-audit=For the
+  small-company-audit-exempt: 'expand:~{small-company-exempt-from-audit=For the
     accounting period ending ~[period-end] the company was
     entitled to exemption from audit under section 477 of the Companies
     Act 2006 relating to small companies.}'
-  software-version: These accounts were generated using
-    ~[software-name] version ~[software-version].
+  software-version: 'expand:These accounts were generated using
+    ~[software-name] version ~[software-version].'
 
 # If sign-reversed is true for a field, it's value is negated.  We
 # normally treat things which cause money to 'go away' (e.g. expenses)

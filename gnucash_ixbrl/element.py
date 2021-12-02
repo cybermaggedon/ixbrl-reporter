@@ -7,6 +7,7 @@ from . period import Period
 from . composite import Composite
 from . title import Title
 from . notes import NotesElement
+from . noteheading import NoteHeading
 from . html import HtmlElement
 from . page import PageElement
 
@@ -28,6 +29,9 @@ class Element:
 
         if kind == "notes":
             return NotesElement.load(elt_def, data)
+
+        if kind == "noteheading":
+            return NoteHeading.load(elt_def, data)
 
         if kind == "facttable":
             from . facttable import FactTable

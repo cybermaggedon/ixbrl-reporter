@@ -23,6 +23,56 @@ ROUND_DOWN = 1
 ROUND_UP = 2
 ROUND_NEAREST = 3
 
+class Metadata:
+    def __init__(self, id, description, context, segments, period, note):
+        self.id = id
+        self.description = description
+        self.context = context
+        self.segments = segments
+        self.period = period
+        self.note = note
+        
+    @staticmethod
+    def load(cfg, comps, context, data, gcfg):
+
+        id = cfg.get("id", None, mandatory=False)
+        if id == None: id = create_uuid()
+
+        pspec = cfg.get("period", "at-end")
+
+        pid = {
+            "in-year": IN_YEAR,
+            "at-start": AT_START,
+            "at-end": AT_END
+        }.get(pspec, AT_END)
+
+        segs = cfg.get("segments", {})
+        segs = {k: gcfg.get(v, v) for k, v in segs.items()}
+
+        description = cfg.get("description", "?")
+        note = cfg.get("note", mandatory=False)
+
+        if note: note = str(note)
+
+        return Metadata(id, description, context, segs, pid, note)
+
+    def get_context(self, start, end):
+
+        if self.period == AT_START:
+            context = self.context.with_instant(start)
+        elif self.period == AT_END:
+            context = self.context.with_instant(end)
+        else: # IN_YEAR
+            context = self.context.with_period(Period("", start, end))
+
+        if len(self.segments) != 0:
+            context = context.with_segments(self.segments)
+
+        return context
+
+    def result(self, result):
+        return result.get(self.id)
+        
 class Computable:
     def compute(self, accounts, start, end, result):
         raise RuntimeError("Not implemented")
@@ -58,50 +108,35 @@ class Computable:
 
 class Line(Computable):
 
-    def __init__(self, id, description, accounts, context, period=AT_END,
-                 reverse=False, segments={}):
-        self.id = id
-        self.description = description
+    def __init__(self, metadata, accounts, reverse=False):
+        self.metadata = metadata
         self.accounts = accounts
-        self.context = context
-        self.period = period
         self.reverse = reverse
-        self.segments = segments
 
     @staticmethod
     def load(cfg, comps, context, data, gcfg):
-        id = cfg.get("id", None, mandatory=False)
-        if id == None: id = create_uuid()
 
-        pspec = cfg.get("period", "at-end")
+        metadata = Metadata.load(cfg, comps, context, data, gcfg)
 
-        pid = {
-            "in-year": IN_YEAR,
-            "at-start": AT_START,
-            "at-end": AT_END
-        }.get(pspec, AT_END)
-
-        segs = cfg.get("segments", {})
-        segs = {k: gcfg.get(v, v) for k, v in segs.items()}
-
-        return Line(id, cfg.get("description", "?"), cfg.get("accounts"),
-                    context, pid, cfg.get_bool("reverse-sign", False), segs)
+        return Line(
+            metadata, cfg.get("accounts"), cfg.get_bool("reverse-sign", False)
+        )
 
     def compute(self, session, start, end, result):
 
         total = 0
 
         # FIXME: If there are transactions preceding 1970, this won't work.
-        if self.period == AT_START:
-            context = self.context.with_instant(start)
+        if self.metadata.period == AT_START:
+            context = self.metadata.context.with_instant(start)
             history = datetime.date(1970, 1, 1)
             start, end = history, start
-        elif self.period == AT_END:
-            context = self.context.with_instant(end)
+        elif self.metadata.period == AT_END:
+            context = self.metadata.context.with_instant(end)
             history = datetime.date(1970, 1, 1)
             start, end = history, end
         else: # IN_YEAR
-            context = self.context.with_period(Period("", start, end))
+            context = self.metadata.context.with_period(Period("", start, end))
             
         for acct_name in self.accounts:
             acct = session.get_account(None, acct_name)
@@ -117,109 +152,75 @@ class Line(Computable):
 
         if self.reverse: total *= -1
 
-        if len(self.segments) != 0:
-            context = context.with_segments(self.segments)
+        if len(self.metadata.segments) != 0:
+            context = context.with_segments(self.metadata.segments)
 
-        result.set(self.id, context.create_money_datum(self.id, total))
+        result.set(
+            self.metadata.id,
+            context.create_money_datum(self.metadata.id, total)
+        )
 
         return total
 
     def get_output(self, result):
 
         if len(self.accounts) == 0:
-            output = NilValue(self, self.description, result.get(self.id))
+            output = NilValue(
+                self, self.metadata.result(result)
+            )
             return output
 
-        output = Total(self, self.description, result.get(self.id),
+        output = Total(self, self.metadata.result(result),
                        items=[])
 
         return output
 
 class Constant(Computable):
-    def __init__(self, id, description, values, context, period=AT_END,
-                 segments={}):
-        self.id = id
-        self.description = description
+    def __init__(self, metadata, values):
+        self.metadata = metadata
         self.values = values
-        self.context = context
-        self.period = period
-        self.segments = segments
 
     @staticmethod
     def load(cfg, comps, context, data, gcfg):
-        id = cfg.get("id")
-        if id == None: id = create_uuid()
 
-        pspec = cfg.get("period", "at-end")
-
-        pid = {
-            "in-year": IN_YEAR,
-            "at-start": AT_START,
-            "at-end": AT_END
-        }.get(pspec, AT_END)
-
-        segs = cfg.get("segments", {})
-        segs = {k: gcfg.get(v, v) for k, v in segs.items()}
-
-        return Constant(id, cfg.get("description", "?"), cfg.get("values"),
-                        context, pid, segs)
+        metadata = Metadata.load(cfg, comps, context, data, gcfg)
+        return Constant(metadata, cfg.get("values"))
 
     def compute(self, session, start, end, result):
 
-        if self.period == AT_START:
-            context = self.context.with_instant(start)
-        elif self.period == AT_END:
-            context = self.context.with_instant(end)
-        else: # IN_YEAR
-            context = self.context.with_period(Period("", start, end))
-
+        context = self.metadata.get_context(start, end)
         val = self.values[str(end)]
 
-        if len(self.segments) != 0:
-            context = context.with_segments(self.segments)
-
-        result.set(self.id, context.create_money_datum(self.id, val))
+        result.set(
+            self.metadata.id,
+            context.create_money_datum(self.metadata.id, val)
+        )
 
         return val
 
     def get_output(self, result):
 
-        output = SimpleValue(self, self.description, result.get(self.id))
+        output = SimpleValue(
+            self,
+            result.get(self.metadata.id)
+        )
 
         return output
 
 class Group(Computable):
-    def __init__(self, id, description, inputs=None, context=None,
-                 period=AT_END, segments={}):
+    def __init__(self, metadata, inputs=None):
 
         if inputs == None:
             inputs = []
 
-        self.id = id
-        self.description = description
+        self.metadata = metadata
         self.inputs = inputs
-        self.context = context
-        self.period = period
-        self.segments = segments
 
     @staticmethod
     def load(cfg, comps, context, data, gcfg):
 
-        id = cfg.get("id", None, mandatory=False)
-        if id == None: id = create_uuid()
-
-        pspec = cfg.get("period", "at-end")
-
-        pid = {
-            "in-year": IN_YEAR,
-            "at-start": AT_START,
-            "at-end": AT_END
-        }.get(pspec, AT_END)
-
-        segs = cfg.get("segments", {})
-        segs = {k: gcfg.get(v, v) for k, v in segs.items()}
-
-        comp = Group(id, cfg.get("description", "?"), [], context, pid, segs)
+        metadata = Metadata.load(cfg, comps, context, data, gcfg)
+        comp = Group(metadata, [])
 
         for item in cfg.get("inputs"):
             comp.add(get_computation(item, comps, context, data, gcfg))
@@ -236,28 +237,23 @@ class Group(Computable):
 
     def compute(self, accounts, start, end, result):
 
-        if self.period == AT_START:
-            context = self.context.with_instant(start)
-        elif self.period == AT_END:
-            context = self.context.with_instant(end)
-        else: # IN_YEAR
-            context = self.context.with_period(Period("", start, end))
+        context = self.metadata.get_context(start, end)
 
         total = 0
         for input in self.inputs:
             total += input.compute(accounts, start, end, result)
 
-        if len(self.segments) != 0:
-            context = context.with_segments(self.segments)
-
-        result.set(self.id, context.create_money_datum(self.id, total))
+        result.set(
+            self.metadata.id,
+            context.create_money_datum(self.metadata.id, total)
+        )
 
         return total
 
     def get_output(self, result):
 
         if len(self.inputs) == 0:
-            output = NilValue(self, self.description, result.get(self.id))
+            output = NilValue(self, result.get(self.metadata.id))
             return output
 
         if self.hide_breakdown:
@@ -266,22 +262,20 @@ class Group(Computable):
             # returned, and a Total object which references it
             bd = Breakdown(
                 self,
-                self.description,
-                result.get(self.id),
+                result.get(self.metadata.id),
                 items= [
                     item.get_output(result) for item in self.inputs
                 ]
             )
 
-            output = Total(self, self.description, result.get(self.id),
+            output = Total(self, self.metadata, result.get(self.metadata.id),
                            items=[bd])
 
         else:
 
             output = Breakdown(
                 self,
-                self.description,
-                result.get(self.id),
+                result.get(self.metadata.id),
                 items= [
                     item.get_output(result) for item in self.inputs
                 ]
@@ -290,96 +284,54 @@ class Group(Computable):
         return output
 
 class ApportionOperation(Computable):
-    def __init__(self, id, description, context, period, segments,
-                 item, part, whole):
-        self.id = id
-        self.description = description
-        self.context = context
-        self.period = period
-        self.segments = segments
+    def __init__(self, metadata, item, part, whole):
+        self.metadata = metadata
         self.item = item
         self.fraction = part.days() / whole.days()
 
     @staticmethod
     def load(cfg, comps, context, data, gcfg):
 
-        id = cfg.get("id", None, mandatory=False)
-        if id == None: id = create_uuid()
+        metadata = Metadata.load(cfg, comps, context, data, gcfg)
 
-        description = cfg.get("description", "?")
         whole_key = cfg.get("whole-period")
         whole = Period.load(data.get_config(whole_key))
         proportion_key = cfg.get("proportion-period")
         proportion = Period.load(data.get_config(proportion_key))
 
-        segs = cfg.get("segments", {})
-        segs = {k: gcfg.get(v, v) for k, v in segs.items()}
-
-        pspec = cfg.get("period", "at-end")
-
-        pid = {
-            "in-year": IN_YEAR,
-            "at-start": AT_START,
-            "at-end": AT_END
-        }.get(pspec, AT_END)
-
         item = comps[cfg.get("input")]
 
-        return ApportionOperation(id, description, context, pid, segs,
-                                  item, proportion, whole)
+        return ApportionOperation(metadata, item, proportion, whole)
 
     def compute(self, accounts, start, end, result):
 
-        if self.period == AT_START:
-            context = self.context.with_instant(start)
-        elif self.period == AT_END:
-            context = self.context.with_instant(end)
-        else: # IN_YEAR
-            context = self.context.with_period(Period("", start, end))
-
-        if len(self.segments) != 0:
-            context = context.with_segments(self.segments)
+        context = self.metadata.get_context(start, end)
 
         val = self.item.compute(accounts, start, end, result)
         val *= self.fraction
 
-        result.set(self.id, context.create_money_datum(self.id, val))
+        result.set(self.metadata.id,
+                   context.create_money_datum(self.metadata.id, val)
+                   )
         return val
 
     def get_output(self, result):
 
-        output = Total(self, self.description, result.get(self.id),
+        output = Total(self, result.get(self.metadata.id),
                        items=[])
 
         return output
 
 class RoundOperation(Computable):
-    def __init__(self, id, description, context, period, segments, dir, item):
-        self.id = id
-        self.description = description
-        self.context = context
-        self.period = period
-        self.segments = segments
+    def __init__(self, metadata, dir, item):
+        self.metadata = metadata
         self.direc = dir
         self.item = item
 
     @staticmethod
     def load(cfg, comps, context, data, gcfg):
 
-        id = cfg.get("id", None, mandatory=False)
-        if id == None: id = create_uuid()
-        description = cfg.get("description", "?")
-
-        segs = cfg.get("segments", {})
-        segs = {k: gcfg.get(v, v) for k, v in segs.items()}
-
-        pspec = cfg.get("period", "at-end")
-
-        pid = {
-            "in-year": IN_YEAR,
-            "at-start": AT_START,
-            "at-end": AT_END
-        }.get(pspec, AT_END)
+        metadata = Metadata.load(cfg, comps, context, data, gcfg)
 
         direc = {
             "nearest": ROUND_NEAREST,
@@ -390,21 +342,13 @@ class RoundOperation(Computable):
         item = cfg.get("input")
 
         return RoundOperation(
-            id, description, context, pid, segs, direc,
+            metadata, direc,
             get_computation(item, comps, context, data, gcfg)
         )
 
     def compute(self, accounts, start, end, result):
 
-        if self.period == AT_START:
-            context = self.context.with_instant(start)
-        elif self.period == AT_END:
-            context = self.context.with_instant(end)
-        else: # IN_YEAR
-            context = self.context.with_period(Period("", start, end))
-
-        if len(self.segments) != 0:
-            context = context.with_segments(self.segments)
+        context = self.metadata.get_context(start, end)
 
         val = self.item.compute(accounts, start, end, result)
 
@@ -415,72 +359,50 @@ class RoundOperation(Computable):
         else:
             val = int(val + 1)  # Round up
 
-        result.set(self.id, context.create_money_datum(self.id, val))
+        result.set(
+            self.metadata.id,
+            context.create_money_datum(self.metadata.id, val)
+        )
         return val
 
     def get_output(self, result):
 
-        output = Total(self, self.description, result.get(self.id),
+        output = Total(self, result.get(self.metadata.id),
                        items=[])
 
         return output
 
 class FactorOperation(Computable):
-    def __init__(self, id, description, context, period, segments, item,
-                 factor):
-        self.id = id
-        self.description = description
-        self.context = context
-        self.period = period
-        self.segments = segments
+    def __init__(self, metadata, item, factor):
+        self.metadata = metadata
         self.item = item
         self.factor = factor
 
     @staticmethod
     def load(cfg, comps, context, data, gcfg):
 
-        id = cfg.get("id")
-        description = cfg.get("description", "?")
-
-        segs = cfg.get("segments", {})
-        segs = {k: gcfg.get(v, v) for k, v in segs.items()}
-
-        pspec = cfg.get("period", "at-end")
-
-        pid = {
-            "in-year": IN_YEAR,
-            "at-start": AT_START,
-            "at-end": AT_END
-        }.get(pspec, AT_END)
-
+        metadata = Metadata.load(cfg, comps, context, data, gcfg)
         factor = float(cfg.get("factor"))
-
         item = comps[cfg.get("input")]
 
-        return FactorOperation(id, description, context, pid, segs, item,
-                               factor)
+        return FactorOperation(metadata, item, factor)
 
     def compute(self, accounts, start, end, result):
 
-        if self.period == AT_START:
-            context = self.context.with_instant(start)
-        elif self.period == AT_END:
-            context = self.context.with_instant(end)
-        else: # IN_YEAR
-            context = self.context.with_period(Period("", start, end))
-
-        if len(self.segments) != 0:
-            context = context.with_segments(self.segments)
+        context = self.metadata.get_context(start, end)
 
         val = self.item.compute(accounts, start, end, result)
         val = val * self.factor
 
-        result.set(self.id, context.create_money_datum(self.id, val))
+        result.set(
+            self.metadata.id,
+            context.create_money_datum(self.metadata.id, val)
+        )
         return val
 
     def get_output(self, result):
 
-        output = Total(self, self.description, result.get(self.id),
+        output = Total(self, result.get(self.metadata.id),
                        items=[])
 
         return output
@@ -496,32 +418,16 @@ class Result:
         return self.values[id]
 
 class Sum(Computable):
-    def __init__(self, id, description, context, period, segments={}):
-        self.id = id
-        self.description = description
+    def __init__(self, metadata):
+        self.metadata = metadata
         self.steps = []
-        self.context = context
-        self.period = period
-        self.segments = segments
 
     @staticmethod
     def load(cfg, comps, context, data, gcfg):
 
-        id = cfg.get("id", None, mandatory=False)
-        if id == None: id = create_uuid()
+        metadata = Metadata.load(cfg, comps, context, data, gcfg)
 
-        pspec = cfg.get("period", "at-end")
-
-        pid = {
-            "in-year": IN_YEAR,
-            "at-start": AT_START,
-            "at-end": AT_END
-        }.get(pspec, AT_END)
-
-        segs = cfg.get("segments", {})
-        segs = {k: gcfg.get(v, v) for k, v in segs.items()}
-
-        comp = Sum(id, cfg.get("description", "?"), context, pid, segs)
+        comp = Sum(metadata)
 
         for item in cfg.get("inputs"):
             comp.add(get_computation(item, comps, context, data, gcfg))
@@ -538,17 +444,12 @@ class Sum(Computable):
         for v in self.steps:
             total += v.compute(accounts, start, end, result)
 
-        if self.period == AT_START:
-            context = self.context.with_instant(start)
-        elif self.period == AT_END:
-            context = self.context.with_instant(end)
-        else: # IN_YEAR
-            context = self.context.with_period(Period("", start, end))
+        context = self.metadata.get_context(start, end)
 
-        if len(self.segments) != 0:
-            context = context.with_segments(self.segments)
-
-        result.set(self.id, context.create_money_datum(self.id, total))
+        result.set(
+            self.metadata.id,
+            context.create_money_datum(self.metadata.id, total)
+        )
 
         return total
 
@@ -556,11 +457,12 @@ class Sum(Computable):
 
         if len(self.steps) == 0:
             
-            output = NilValue(self, self.description, result.get(self.id))
+            output = NilValue(
+                self, result.get(self.metadata.id)
+            )
             return output
 
-        output = Total(self, self.description, result.get(self.id),
-                       items=self.steps)
+        output = Total(self, result.get(self.metadata.id), items=self.steps)
 
         return output
 
@@ -571,6 +473,6 @@ def get_computations(gcfg, context, data):
     comps = {}
     for comp_def in comp_defs:
         comp =  Computable.load(comp_def, comps, context, data, gcfg)
-        comps[comp.id] = comp
+        comps[comp.metadata.id] = comp
     
     return comps

@@ -24,6 +24,14 @@ class DataSource:
         self.computations = get_computations(cfg, self.business_context, self)
         self.results = {}
 
+        self.notes = {}
+
+    def set_note(self, id, value):
+        self.notes[id] = value
+
+    def get_note(self, id):
+        return self.notes[id]
+
     def get_business_context(self):
         return self.business_context
 

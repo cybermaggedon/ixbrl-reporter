@@ -93,6 +93,7 @@ computations:
 # Salaries expense
 - id: staff-costs
   kind: group
+  note: staff-costs-note
   inputs:
   - salaries-expense
   - pensions-expense
@@ -198,6 +199,7 @@ computations:
 # Profit, computed from gross profit without the expenses
 - id: profit
   kind: group
+  note: profit-note
   description: Profit (Loss)
   period: in-year
   inputs:
@@ -207,7 +209,6 @@ computations:
   - staff-costs
   - depreciation
   - other-charges
-#  - tax
 
 - id: charges
   kind: group
@@ -220,6 +221,7 @@ computations:
 
 - id: interest-received
   kind: line
+  note: financial-income-note
   period: in-year
   description: Interest on current account
   accounts:
@@ -235,6 +237,7 @@ computations:
 - id: interest-paid
   kind: line
   period: in-year
+  note: financial-costs-note
   description: Interest on bank loans
   accounts:
   - Expenses:Interest Paid
@@ -269,6 +272,7 @@ computations:
   description: Fixed Assets
   kind: sum
   period: at-end
+  note: equipment-note
   inputs:
   - tangible-assets
 
@@ -551,6 +555,7 @@ computations:
 
 - id: corporation-tax-paid
   kind: line
+  note: taxation-note
   description: Corporation tax
   period: in-year
   accounts:
@@ -559,6 +564,7 @@ computations:
 # Sign-reversed depreciation to add back in
 - id: depreciation-adjustment
   kind: line
+  note: equipment-note
   description: Adjustment for depreciation
   period: in-year
   reverse-sign: true
@@ -657,6 +663,7 @@ computations:
 - id: proceeds-from-issuing-shares
   kind: group
   period: in-year
+  note: share-capital-note
   description: Issue of share capital
   inputs:
   - shares-issued
@@ -694,6 +701,7 @@ computations:
 
 - id: cash-at-end-of-year
   kind: group
+  note: cash-note
   description: Cash and cash equivalents at end of year
   inputs:
   - cash-at-start-of-year
@@ -805,6 +813,7 @@ worksheets:
 
 - id: staff-costs
   kind: multi-period
+  note: staff-costs-note
   description: Staff costs
   computations:
   - staff-costs
@@ -860,11 +869,11 @@ elements:
         attributes: { class: heading }
         content:
         - tag: div
-          content: 'expand:note:~[company-name]'
+          content: 'expand:~[company-name]'
         - tag: div
           content: Statement of financial position
         - tag: div
-          content: 'expand:note:As at ~[balance-sheet-date]'
+          content: 'expand:As at ~[balance-sheet-date]'
         - tag: hr
   - kind: worksheet
     worksheet: balance-sheet
@@ -878,16 +887,16 @@ elements:
 
   # Some boilerplate notes...
   # ...applicable to companies subject to the small companies regime
-  - small-company-provisions
+  - template:small-company-provisions
 
   # ...exemption from audit... small companies
-  - small-company-audit-exempt
+  - template:small-company-audit-exempt
 
   # ...directors acknowledge their responsibilities for complying with...
-  - directors-acknowledge
+  - template:directors-acknowledge
 
   # ...members have not required the company to obtain an audit...
-  - no-audit-required
+  - template:no-audit-required
 
 # Profit and loss
 - id: comprehensive-income
@@ -901,11 +910,11 @@ elements:
         attributes: { class: heading }
         content:
         - tag: div
-          content: 'expand:note:~[company-name]'
+          content: 'expand:~[company-name]'
         - tag: div
           content: Statement of Comprehensive Income
         - tag: div
-          content: 'expand:note:For the year ended ~[period-end]'
+          content: 'expand:For the year ended ~[period-end]'
         - tag: hr
   - kind: worksheet
     worksheet: profit-and-loss
@@ -922,11 +931,11 @@ elements:
         attributes: { class: heading }
         content:
         - tag: div
-          content: 'expand:note:~[company-name]'
+          content: 'expand:~[company-name]'
         - tag: div
           content: Statement of Cash Flows
         - tag: div
-          content: 'expand:note:For the year ended ~[period-end]'
+          content: 'expand:For the year ended ~[period-end]'
         - tag: hr
   - kind: worksheet
     worksheet: cash-flows
@@ -953,7 +962,7 @@ elements:
       content:
       - tag: div
         attributes: { class: company-number }
-        content: 'expand:note:
+        content: 'expand:
           Company registration no. ~[company-number] (~[jurisdiction])'
       - tag: img
         attributes:
@@ -961,13 +970,13 @@ elements:
           alt: Company logo
       - tag: div
         attributes: { class: company-name }
-        content: 'expand:note:~[company-name]'
+        content: 'expand:~[company-name]'
       - tag: div
         attributes: { class: title }
-        content: expand:note:~[report-title]
+        content: expand:~[report-title]
       - tag: div
         attributes: { class: subtitle }
-        content: 'expand:note:For the year ended ~[period-end]'
+        content: 'expand:For the year ended ~[period-end]'
 
 - id: company-info
   kind: page
@@ -980,11 +989,11 @@ elements:
         attributes: { class: heading }
         content:
         - tag: div
-          content: 'expand:note:~[company-name]'
+          content: 'expand:~[company-name]'
         - tag: div
           content: Company information
         - tag: div
-          content: 'expand:note:For the year ended ~[period-end]'
+          content: 'expand:For the year ended ~[period-end]'
         - tag: hr
       - tag: table
         attributes:
@@ -996,17 +1005,17 @@ elements:
             content: Directors
           - tag: td
             content:
-            - 'expand:note:~[officer1]'
+            - 'expand:~[officer1]'
             - tag: br
-            - 'expand:note:~[officer2]'
+            - 'expand:~[officer2]'
             - tag: br
-            - 'expand:note:~[officer3]'
+            - 'expand:~[officer3]'
         - tag: tr
           content:
           - tag: td
             content: Company number
           - tag: td
-            content: 'expand:note:
+            content: 'expand:
             ~[company-number], registered in ~[jurisdiction]'
         - tag: tr
           content:
@@ -1014,35 +1023,35 @@ elements:
             content: Registered office
           - tag: td
             content:
-            - 'expand:note:~[contact-address1::, ]'
+            - 'expand:~[contact-address1::, ]'
             - tag: br
               content: []
-            - 'expand:note:~[contact-address2::, ]'
+            - 'expand:~[contact-address2::, ]'
             - tag: br
               content: []
-            - 'expand:note:~[contact-location::, ] ~[contact-postcode]'
+            - 'expand:~[contact-location::, ] ~[contact-postcode]'
         - tag: tr
           content:
           - tag: td
             content: Accountant
           - tag: td
             content:
-            - expand:note:~[accountant-name]
+            - expand:~[accountant-name]
             - tag: br
-            - expand:note:~[accountant-business]
+            - expand:~[accountant-business]
             - tag: br
-            - expand:note:~[accountant-address]
+            - expand:~[accountant-address]
         - tag: tr
           content:
           - tag: td
             content: Auditor
           - tag: td
             content:
-            - expand:note:~[auditor-name]
+            - expand:~[auditor-name]
             - tag: br
-            - expand:note:~[auditor-business]
+            - expand:~[auditor-business]
             - tag: br
-            - expand:note:~[auditor-address]
+            - expand:~[auditor-address]
 
 - //ref directors-report
 - //ref auditors-report
@@ -1054,10 +1063,10 @@ elements:
     tag: div
     content:
     - tag: p
-      content: 'expand:note:Approved by the board of directors and
+      content: 'expand:Approved by the board of directors and
         authorised for publication on ~[authorised-date].'
     - tag: p
-      content: 'expand:note:Signed on behalf of the board, by
+      content: 'expand:Signed on behalf of the board, by
         ~[signers-name].'
     - tag: img
       attributes:
@@ -1077,12 +1086,12 @@ elements:
         attributes: { class: heading }
         content:
         - tag: div
-          content: 'expand:note:~[company-name]'
+          content: 'expand:~[company-name]'
         - tag: div
           content: Revision of the financial statements
         - tag: div
           attributes: { class: subtitle }
-          content: 'expand:note:For the year ended ~[period-end]'
+          content: 'expand:For the year ended ~[period-end]'
         - tag: hr
   - kind: html
     root: //import supplementary-note.yaml

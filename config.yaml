@@ -13,12 +13,12 @@ accounts:
   kind: piecash
   file: example2.gnucash
 
-report: //import report/ch/unaudited-micro.yaml
+#report: //import report/ch/unaudited-micro.yaml
 #report: //import report/ch/audited-micro.yaml
 #report: //import report/ch/audited-small.yaml
 #report: //import report/ch/unaudited-abridged.yaml
 #report: //import report/ch/unaudited-full.yaml
-#report: //import report/ch/audited-full.yaml
+report: //import report/ch/audited-full.yaml
 #report: //import report/hmrc/corp-tax.yaml
 
 #pretty-print: true

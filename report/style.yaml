@@ -144,6 +144,20 @@ table {
   font-size: smaller;
 }
 
+.note {
+  font-size: smaller;
+  text-align: center;
+  padding-left: 0.2em;
+  padding-right: 0.2em;
+}
+
+.note.header {
+  font-size: smaller;
+  font-weight: bold;
+//  border-bottom: 0.2em solid black;
+  text-align: center;
+}
+
 .label.breakdown.header {
   margin-bottom: 0.2rem;
 }
