@@ -804,13 +804,54 @@ elements:
           attributes: { class: subtitle }
           content: 'expand:For the year ended ~[period-end]'
         - tag: hr
-  - kind: notes
-    notes:
 
-    # Some boilerplate notes...
+      - tag: div
+        content:
 
-    # Company number and address.
-    - template:company
+        - element:
+            kind: noteheading
+            title: Company information
+            level: 1
+
+        - tag: p
+          content:
+          - template:company
+
+        - element:
+            kind: noteheading
+            title: Employees
+            level: 1
+
+        - tag: p
+          content: "The average monthly number of persons employed by the
+            company (including directors) during the period was as follows:"
+
+        - tag: table
+          attributes:
+            class: sheet table
+          content:
+          - tag: tr
+            content:
+            - tag: td
+              attributes: { class: label }
+              content: ""
+            - tag: td
+              attributes: { class: period periodname }
+              content: "expand:~[metadata.accounting.periods.0.name]"
+            - tag: td
+              attributes: { class: period periodname }
+              content: "expand:~[metadata.accounting.periods.1.name]"
+          - tag: tr
+            content:
+            - tag: td
+              attributes: { class: label header }
+              content: "Employees"
+            - tag: td
+              attributes: { class: period value }
+              content: expand:~[average-employees-this]
+            - tag: td
+              attributes: { class: period value }
+              content: expand:~[average-employees-previous]
 
 - id: revision-info
   kind: page
