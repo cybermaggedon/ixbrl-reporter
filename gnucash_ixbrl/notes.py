@@ -2,7 +2,6 @@
 # Notes element is a report element which displays notes.
 from . basicelement import BasicElement
 from . fact import *
-from . html import expand_string
 
 class NotesElement(BasicElement):
     def __init__(self, id, title, notes, numbered, data):
@@ -28,7 +27,7 @@ class NotesElement(BasicElement):
 
         for note in self.notes:
 
-            elt = expand_string(note, self.data)
+            elt = self.data.expand_string(note)
             elt.to_text(taxonomy, out)
             out.write("\n")
 
@@ -51,7 +50,7 @@ class NotesElement(BasicElement):
 
         for note in self.notes:
 
-            nelt = expand_string(note, self.data)
+            nelt = self.data.expand_string(note)
 
             if self.numbered:
 

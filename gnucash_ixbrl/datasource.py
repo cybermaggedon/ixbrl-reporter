@@ -7,6 +7,7 @@ from . multi_period import MultiPeriodWorksheet
 from . element import Element
 from . config import NoneValue
 from . datum import *
+from . expand import expand_string
 
 import copy
 
@@ -28,6 +29,9 @@ class DataSource:
 
     def set_note(self, id, value):
         self.notes[id] = value
+
+    def expand_string(self, value):
+        return expand_string(value, self)
 
     def get_note(self, id):
         return self.notes[id]
