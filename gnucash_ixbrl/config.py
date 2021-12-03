@@ -22,7 +22,10 @@ class Config(dict):
         val = yaml.load(open(file), Loader=yaml.FullLoader)
         c = Config.makevalue(val)
         c.file = file
-        if resolve: Config.resolve_refs(c, c)
+        if resolve:
+            open("t1.dat", "w").write(json.dumps(c, indent=4))
+            Config.resolve_refs(c, c)
+            open("t2.dat", "w").write(json.dumps(c, indent=4))
         return c
     @staticmethod
     def makevalue(val):
@@ -73,7 +76,7 @@ class Config(dict):
 
         return Config(rtn)
 
-    def resolve_refs(val, root, d=""):
+    def resolve_refs(val, root):
 
         if isinstance(val, list):
 
@@ -82,10 +85,11 @@ class Config(dict):
                 if isinstance(val[i], str):
                     if val[i].startswith("//ref "):
                         val[i] = root.get(val[i][6:])
+                        Config.resolve_refs(val[i], root)
                 elif isinstance(val[i], dict):
-                    Config.resolve_refs(val[i], root, d + str(i) + ".")
+                    Config.resolve_refs(val[i], root)
                 elif isinstance(val[i], list):
-                    Config.resolve_refs(val[i], root, d + str(i) + ".")
+                    Config.resolve_refs(val[i], root)
 
         if isinstance(val, dict):
 
@@ -94,11 +98,11 @@ class Config(dict):
                 if isinstance(val[k], str):
                     if val[k].startswith("//ref "):
                         val[k] = root.get(val[k][6:])
-                        # FIXME: Resolve this now.
+                        Config.resolve_refs(val[k], root)
                 if isinstance(val[k], list):
-                    Config.resolve_refs(val[k], root, d + k + ".")
+                    Config.resolve_refs(val[k], root)
                 elif isinstance(val[k], dict):
-                    Config.resolve_refs(val[k], root, d + k + ".")
+                    Config.resolve_refs(val[k], root)
 
     def get(self, key, deflt=None, mandatory=True):
         if "." not in key:

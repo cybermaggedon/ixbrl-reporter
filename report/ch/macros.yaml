@@ -1,0 +1,183 @@
+
+simple-notes:
+  id: notes
+  kind: page
+  elements:
+  - kind: html
+    root:
+      tag: div
+      content:
+      - tag: div
+        attributes: { class: heading }
+        content:
+        - tag: div
+          content: 'expand:~[company-name]'
+        - tag: div
+          content: Notes to the accounts
+        - tag: div
+          attributes: { class: subtitle }
+          content: 'expand:For the year ended ~[period-end]'
+        - tag: hr
+
+      - element: //ref macros.company-info-note
+      - element: //ref macros.employee-counts-note
+
+company-info-note:
+  kind: html
+  root:
+    tag: div
+    content:
+    - element:
+        kind: noteheading
+        title: Company information
+        level: 1
+    - tag: p
+      content:
+      - template:company
+
+employee-counts-note:
+  kind: html
+  root:
+    tag: div
+    content:
+    - element:
+        kind: noteheading
+        title: Employees
+        level: 1
+    - tag: p
+      content: "The average monthly number of persons employed by the
+        company (including directors) during the period was as follows:"
+
+    - tag: table
+      attributes:
+        class: sheet table
+      content:
+      - tag: tr
+        content:
+        - tag: td
+          attributes: { class: label }
+          content: ""
+        - tag: td
+          attributes: { class: period periodname }
+          content: "expand:~[metadata.accounting.periods.0.name]"
+        - tag: td
+          attributes: { class: period periodname }
+          content: "expand:~[metadata.accounting.periods.1.name]"
+      - tag: tr
+        content:
+        - tag: td
+          attributes: { class: label header }
+          content: "Employees"
+        - tag: td
+          attributes: { class: period value }
+          content: expand:~[average-employees-this]
+        - tag: td
+          attributes: { class: period value }
+          content: expand:~[average-employees-previous]
+
+revision:
+  id: revision-info
+  kind: page
+  elements:
+  - kind: html
+    root:
+      tag: div
+      content:
+      - tag: div
+        attributes: { class: heading }
+        content:
+        - tag: div
+          content: 'expand:~[company-name]'
+        - tag: div
+          content: Revision of the financial statements
+        - tag: div
+          attributes: { class: subtitle }
+          content: 'expand:For the year ended ~[period-end]'
+        - tag: hr
+  - kind: html
+    root: //import supplementary-note.yaml
+
+company-info:
+  id: company-info
+  kind: page
+  elements:
+  - kind: html
+    root:
+      tag: div
+      content:
+      - tag: div
+        attributes: { class: heading }
+        content:
+        - tag: div
+          content: 'expand:~[company-name]'
+        - tag: div
+          content: Company information
+        - tag: div
+          content: 'expand:For the year ended ~[period-end]'
+        - tag: hr
+      - tag: table
+        attributes:
+          class: company-info
+        content:
+        - tag: tr
+          content:
+          - tag: td
+            attributes: { class: tag }
+            content: Directors
+          - tag: td
+            content:
+            - 'expand:~[officer1]'
+            - tag: br
+            - 'expand:~[officer2]'
+            - tag: br
+            - 'expand:~[officer3]'
+        - tag: tr
+          content:
+          - tag: td
+            attributes: { class: tag }
+            content: Company number
+          - tag: td
+            content: 'expand:
+            ~[company-number], registered in ~[jurisdiction]'
+        - tag: tr
+          content:
+          - tag: td
+            attributes: { class: tag }
+            content: Registered office
+          - tag: td
+            content:
+            - 'expand:~[contact-address1::, ]'
+            - tag: br
+              content: []
+            - 'expand:~[contact-address2::, ]'
+            - tag: br
+              content: []
+            - 'expand:~[contact-location::, ] ~[contact-postcode]'
+        - ifdef: metadata.accountant.name
+          content:
+            tag: tr
+            content:
+            - tag: td
+              attributes: { class: tag }
+              content: Accountant
+            - tag: td
+              content:
+              - expand:~[accountant-name]
+              - tag: br
+              - expand:~[accountant-business]
+              - tag: br
+              - expand:~[accountant-address]
+        - ifdef: metadata.auditor.name
+          content:
+            tag: tr
+            content:
+            - tag: td
+              attributes: { class: tag }
+              content: Auditor
+            - tag: td
+              content:
+              - expand:~[auditor-name]
+              - tag: br
+              - expand:~[auditor-business]
+              - tag: br
+              - expand:~[auditor-address]
