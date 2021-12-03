@@ -3,6 +3,8 @@
 from . basicelement import BasicElement
 from . fact import *
 from . note_parse import *
+from . html import expand_string
+
 from lxml import objectify
 
 from datetime import datetime
@@ -151,15 +153,10 @@ class NotesElement(BasicElement):
 
     def to_text(self, taxonomy, out):
 
-        self.init_html(taxonomy)
         for note in self.notes:
-            note = self.expand_text(note, self, taxonomy)
 
-            if isinstance(note, str):
-                out.write(note)
-            else:
-                for elt in note:
-                    self.html_to_text(elt, out)
+            elt = expand_string(note, self.data)
+            elt.to_text(taxonomy, out)
             out.write("\n")
 
     def expand_text(self, text, par, taxonomy):

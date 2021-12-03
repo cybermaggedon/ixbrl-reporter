@@ -117,6 +117,23 @@ class TagElt(Elt):
 
         return elt
 
+    def to_text(self, taxonomy, out):
+
+        for c in self.content:
+            c.to_text(taxonomy, out)
+
+        if self.tag.lower() in {
+                "div", "p", "td", "br", "tr", "h1", "h2", "h3"
+        }:
+            out.write("\n")
+         
+        if self.tag.lower() in {
+                "hr"
+        }:
+            out.write("--------\n")
+
+        
+
 class IfdefElt(Elt):
     def __init__(self, key, content, data):
         self.key = key
@@ -137,6 +154,14 @@ class IfdefElt(Elt):
             return par.xhtml_maker.span()
 
         return self.content.to_html(par, taxonomy)
+
+    def to_text(self, taxonomy, out):
+        try:
+            self.data.get_config(self.key)
+        except:
+            return
+
+        self.content.to_text(out)
 
 class MetadataElt(Elt):
     def __init__(self, name, prefix, suffix, null, data):
@@ -170,6 +195,22 @@ class MetadataElt(Elt):
 
         return par.xhtml_maker.span(self.null)
 
+    def to_text(self, taxonomy, out):
+
+        fact = taxonomy.get_metadata_by_id(self.data, self.name)
+        if fact:
+            if self.prefix != "": out.write(self.prefix)
+            out.write(str(fact.value))
+            if self.suffix != "": out.write(self.suffix)
+            return
+
+        val = self.data.get_config(self.name, mandatory=False)
+        if val:
+            if self.prefix != "": out.write(self.prefix)
+            out.write(val)
+            if self.suffix != "": out.write(self.suffix)
+            return
+
 class StringElt(Elt):
     def __init__(self, value, data):
         self.value = value
@@ -181,6 +222,10 @@ class StringElt(Elt):
 
     def to_html(self, par, taxonomy):
         return par.xhtml_maker.span(self.value)
+
+    def to_text(self, taxonomy, out):
+        out.write(self.value)
+        return
 
 class FactElt(Elt):
     def __init__(self, fact, ctxt, attrs, content, data):
@@ -225,6 +270,13 @@ class FactElt(Elt):
 
         return elt
 
+    def to_text(self, taxonomy, out):
+
+        for child in self.content:
+            child.to_text(taxonomy, out)
+
+        return
+
 class ElementElt(Elt):
     def __init__(self, elt, data):
         self.elt = elt
@@ -252,6 +304,9 @@ class ElementElt(Elt):
 
         return cntr
 
+    def to_text(self, taxonomy, out):
+        self.elt.to_text(taxonomy, out)
+
 class WorksheetElt(Elt):
 
     def __init__(self, ws, data):
@@ -268,6 +323,8 @@ class WorksheetElt(Elt):
         # Assumption about WorksheetElement: Returns single element in list
         return self.wse.to_ixbrl_elt(par, taxonomy)[0]
 
+    def to_text(self, taxonomy, out):
+        self.wse.to_text(taxonomy, out)
 
 class HtmlElement(BasicElement):
     def __init__(self, id, root, data):
@@ -335,8 +392,7 @@ class HtmlElement(BasicElement):
 
     def to_text(self, taxonomy, out):
 
-        self.init_html(taxonomy)
-        self.write_text(self.root, out, taxonomy)
+        self.root.to_text(taxonomy, out)
 
     def to_html(self, root, par, taxonomy):
         return root.to_html(par, taxonomy)
@@ -346,3 +402,4 @@ class HtmlElement(BasicElement):
         root = self.root
 
         return [self.to_html(root, par, taxonomy)]
+

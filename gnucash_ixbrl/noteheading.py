@@ -45,16 +45,12 @@ class NoteHeading(BasicElement):
 
     def to_text(self, taxonomy, out):
 
-        self.init_html(taxonomy)
-        for note in self.notes:
-            note = self.expand_text(note, self, taxonomy)
+        if self.level == 1:
+            if 2 in NoteHeading.counts:
+                del NoteHeading.counts[2]
 
-            if isinstance(note, str):
-                out.write(note)
-            else:
-                for elt in note:
-                    self.html_to_text(elt, out)
-            out.write("\n")
+        txt = "%s. %s\n" % (self.format(), self.title)
+        out.write(txt)
 
     def to_ixbrl_elt(self, par, taxonomy):
 

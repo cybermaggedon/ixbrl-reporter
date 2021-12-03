@@ -31,7 +31,7 @@ class TextReporter:
 
             if section.total == None and section.items == None:
 
-                out.write(fmt.format("{0:40}: ", section.header))
+                out.write(fmt.format("{0:40}: ", section.metadata.description))
 
                 for period in periods:
                     out.write(fmt.format("{0:>10} ", " - "))
@@ -41,7 +41,7 @@ class TextReporter:
 
             elif section.items == None:
 
-                out.write(fmt.format("{0:40}: ", section.header))
+                out.write(fmt.format("{0:40}: ", section.metadata.description))
 
                 for i in range(0, len(periods)):
 
@@ -52,11 +52,14 @@ class TextReporter:
 
             else:
 
-                out.write(fmt.format("{0}:\n", section.header))
+                out.write(fmt.format("{0}:\n", section.metadata.description))
 
                 for item in section.items:
                     
-                    out.write(fmt.format("  {0:38}: ", item.description))
+                    out.write(
+
+                        fmt.format("  {0:38}: ", item.metadata.description)
+                    )
 
                     for i in range(0, len(periods)):
 
