@@ -2,123 +2,7 @@
 # Notes element is a report element which displays notes.
 from . basicelement import BasicElement
 from . fact import *
-from . note_parse import *
 from . html import expand_string
-
-from lxml import objectify
-
-from datetime import datetime
-
-class NoteExpansion:
-
-    def __init__(self, data):
-        self.data = data
-
-    def get_note_structure(self, n, taxonomy):
-
-        return NoteParser.parse(n)
-
-    def get_note(self, n, taxonomy):
-
-        if n.startswith("expand:"):
-            return n[7:]
-
-        if n.startswith("template:"):
-            id = n[9:]
-            tmpl = self.data.get_config(
-                "report.taxonomy.note-templates.%s" % id
-            )
-            if tmpl:
-                return self.get_note(tmpl, taxonomy)
-
-            raise RuntimeError("Note '%s' not known." % n)
-
-        return n
-
-    def expand(self, input, par, taxonomy):
-        
-        period = self.data.get_report_period()
-        rpc = self.data.business_context.with_period(period)
-
-        elt = par.xhtml_maker.span()
-
-        note = self.get_note(input, taxonomy)
-
-        structure = self.get_note_structure(note, taxonomy)
-
-        elements = [ elt ]
-
-        for tk in structure:
-
-            if isinstance(tk, TextToken):
-                elements[-1].append(par.xhtml_maker.span(tk.text))
-
-            elif isinstance(tk, MetadataToken):
-
-                fact = taxonomy.get_metadata_by_id(self.data, tk.name)
-
-                if fact:
-
-                    if tk.prefix != "":
-                        elements[-1].append(
-                            par.xhtml_maker.span(tk.prefix)
-                        )
-
-                    elements[-1].append(fact.to_elt(par))
-
-                    if tk.suffix != "":
-                        elements[-1].append(
-                            par.xhtml_maker.span(tk.suffix)
-                        )
-
-                else:
-
-                    val = self.data.get_config(tk.name, mandatory=False)
-
-                    # Metadata can be a config variable.
-                    if val:
-                        elements[-1].append(par.xhtml_maker.span(val))
-                    else:
-                        if tk.null != "":
-                            elements[-1].append(par.xhtml_maker.span(tk.null))
-
-            elif isinstance(tk, ComputationToken):
-
-                if tk.period == "":
-                    period = self.data.get_report_period()
-                else:
-                    period = Period.load(self.data.get_config(tk.period))
-
-                res = self.data.perform_computations(period)
-
-                datum = res.get(tk.name)
-
-                fact = taxonomy.create_fact(datum)
-
-                if fact:
-                    elements[-1].append(fact.to_elt(par))
-
-            elif isinstance(tk, TagOpen):
-
-                if tk.kind != "string":
-                    raise RuntimeError("Only string tags, currently")
-
-                if tk.context == None:
-                    ctxt = rpc
-                else:
-                    ctxt = taxonomy.get_context(tk.context, self.data)
-
-                datum = StringDatum(tk.name, [], ctxt)
-                fact = taxonomy.create_fact(datum)
-                e = fact.to_elt(par)
-                elements[-1].append(e)
-                elements.append(e)
-
-            elif isinstance(tk, TagClose):
-
-                elements.pop()
-
-        return [elt]
 
 class NotesElement(BasicElement):
     def __init__(self, id, title, notes, numbered, data):
@@ -126,7 +10,6 @@ class NotesElement(BasicElement):
         self.title = title
         self.notes = notes
         self.numbered = numbered
-        self.expander = NoteExpansion(data)
 
     @staticmethod
     def load(elt_def, data):
@@ -141,16 +24,6 @@ class NotesElement(BasicElement):
 
         return e
 
-    def html_to_text(self, root, out):
-
-        if root.tag == "{http://www.w3.org/1999/xhtml}span":
-            if root.text: out.write(root.text)
-        else:
-            if root.text: out.write(root.text + "\n")
-
-        for child in root.getchildren():
-            self.html_to_text(child, out)
-
     def to_text(self, taxonomy, out):
 
         for note in self.notes:
@@ -158,11 +31,6 @@ class NotesElement(BasicElement):
             elt = expand_string(note, self.data)
             elt.to_text(taxonomy, out)
             out.write("\n")
-
-    def expand_text(self, text, par, taxonomy):
-
-        ne = NoteExpansion(self.data)
-        return ne.expand(text, par, taxonomy)
 
     def to_ixbrl_elt(self, par, taxonomy):
 
@@ -183,6 +51,8 @@ class NotesElement(BasicElement):
 
         for note in self.notes:
 
+            nelt = expand_string(note, self.data)
+
             if self.numbered:
 
                 li = par.xhtml_maker.li()
@@ -196,8 +66,6 @@ class NotesElement(BasicElement):
                 p = par.xhtml_maker.p()
                 contr.append(p)
 
-            elts = self.expander.expand(note, par, taxonomy)
-            for elt in elts:
-                p.append(elt)
+            p.append(nelt.to_html(par, taxonomy))
 
         return [div]
