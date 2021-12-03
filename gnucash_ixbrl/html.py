@@ -342,54 +342,6 @@ class HtmlElement(BasicElement):
 
         return c
 
-    def html_to_text(self, root, out):
-
-        if root.tag == "{http://www.w3.org/1999/xhtml}span":
-            if root.text: out.write(root.text)
-        else:
-            if root.text: out.write(root.text + "\n")
-
-        for child in root.getchildren():
-            self.html_to_text(child, out)
-
-    def write_text(self, root, out, taxonomy):
-
-        content = root.get("content", mandatory=False)
-
-        if not content:
-            content = []
-            
-        if isinstance(content, str):
-
-            content = self.expand_text(content, self, taxonomy)
-
-            if isinstance(content, str):
-                out.write(content + "\n")
-            else:
-                for elt in content:
-                    self.html_to_text(elt, out)
-
-            return
-
-        for child in content:
-
-            if isinstance(child, str):
-                child = self.expand_text(child, self, taxonomy)
-
-                if isinstance(child, str):
-                    out.write(child + "\n")
-                else:
-                    for child2 in child:
-                        self.html_to_text(child2, out)
-
-            elif isinstance(child, dict):
-                self.write_text(child, out, taxonomy)
-            else:
-                raise RuntimeError(
-                    "HTMLElement can't work with content of type %s" %
-                    str(type(child))
-                )
-
     def to_text(self, taxonomy, out):
 
         self.root.to_text(taxonomy, out)
