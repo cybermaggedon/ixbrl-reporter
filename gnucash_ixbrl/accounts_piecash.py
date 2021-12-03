@@ -10,7 +10,6 @@
 #     for v in rtn["totalVatDue"]["splits"]:
 #         print(v["date"], v["amount"])
 
-#import gnucash
 import piecash
 import json
 import math
