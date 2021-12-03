@@ -1,4 +1,5 @@
 
+
 #############################################################################
 ### Taxonomy configuration ##################################################
 #############################################################################
@@ -503,7 +504,7 @@ metadata:
 # suffix are included as text (not part of the tag value).  If the value
 # is not defined, the null text is shown.  ~{tag=text} is used to markup
 # text with an iXBRL tag.
-notes:
+note-templates:
   company: 'expand:The company is a private company limited by shares and is
     registered in England and Wales number ~[company-number].
     The registered address is: ~[contact-address1::, ]

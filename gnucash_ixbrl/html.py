@@ -1,4 +1,5 @@
 
+
 # A Composite element is used to wrap several elements into a single document.
 
 from . basicelement import BasicElement
@@ -10,9 +11,11 @@ from lxml import objectify, etree
 
 def expand_string(value, data):
 
-    # This is template:, return a template elt
+    # This is template:, look up a note template and expand that
     if value.startswith("template:"):
-        return TemplateElt(value[9:], data)
+        id = value[9:]
+        tmpl = data.get_config("report.taxonomy.note-templates.%s" % id)
+        return expand_string(tmpl, data)
 
     # If it's just a string, (no expand: or template: prefix) return a
     # StringElt
@@ -134,15 +137,6 @@ class IfdefElt(Elt):
             return par.xhtml_maker.span()
 
         return self.content.to_html(par, taxonomy)
-
-class TemplateElt(Elt):
-    def __init__(self, value, data):
-        self.value = value
-        self.data = data
-
-    def to_html(self, par, taxonomy):
-        note = taxonomy.get_note(self.value)
-        return expand_string(note, self.data).to_html(par, taxonomy)
 
 class MetadataElt(Elt):
     def __init__(self, name, prefix, suffix, null, data):

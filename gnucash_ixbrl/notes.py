@@ -22,13 +22,13 @@ class NoteExpansion:
             return n[7:]
 
         if n.startswith("template:"):
-            note = taxonomy.get_note(n[9:])
-            if note:
+            id = n[9:]
+            tmpl = self.data.get_config(
+                "report.taxonomy.note-templates.%s" % id
+            )
+            if tmpl:
+                return self.get_note(tmpl, taxonomy)
 
-                if note.startswith("expand:"):
-                    return note[7:]
-
-                return note
             raise RuntimeError("Note '%s' not known." % n)
 
         return n

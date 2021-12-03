@@ -206,10 +206,6 @@ class Taxonomy:
         key = "schema"
         return self.cfg.get(key)
 
-    def get_note(self, n):
-        key = "notes.{0}".format(n)
-        return self.cfg.get(key)
-
     def get_predefined_contexts(self, data):
 
         contexts = {}
