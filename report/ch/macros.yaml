@@ -251,3 +251,256 @@ consent:
             Statements"
         - tag: p
           content: "template:members-agreed-abridged-accounts"
+
+# Financial position page
+balance-sheet-unaudited-micro:
+  id: balance-sheet
+  kind: page
+  elements:
+  - kind: html
+    root:
+      tag: div
+      content:
+      - tag: div
+        attributes: { class: heading }
+        content:
+        - tag: div
+          content: 'expand:~[company-name]'
+        - tag: div
+          content: Statement of financial position
+        - tag: div
+          content: 'expand:As at ~[balance-sheet-date]'
+        - tag: hr
+      - worksheet: balance-sheet
+      - element: //ref macros.balance-sheet-notes-unaudited-micro
+      - element: signature
+
+balance-sheet-notes-unaudited-micro:
+  id: balance-sheet-notes
+  kind: html
+  root:
+    tag: div
+    content:
+    - tag: p
+      content: 
+      # Some boilerplate notes...
+      # ...prepared in accordance with the micro-entity provisions...
+      - template:micro-entity-provisions
+
+    - tag: p
+      content: 
+      # ...the company was entitled to exemption from audit..
+      - template:small-company-audit-exempt
+
+    - tag: p
+      content: 
+      # ...members have not required the company to obtain an audit..
+      - template:no-audit-required
+
+    - tag: p
+      content: 
+      # ...directors acknowledge their responsibilities for complying with...
+      - template:directors-acknowledge
+
+# Financial position page
+balance-sheet-audited-micro:
+  id: balance-sheet
+  kind: page
+  elements:
+  - kind: html
+    root:
+      tag: div
+      content:
+      - tag: div
+        attributes: { class: heading }
+        content:
+        - tag: div
+          content: 'expand:~[company-name]'
+        - tag: div
+          content: Statement of financial position
+        - tag: div
+          content: 'expand:As at ~[balance-sheet-date]'
+        - tag: hr
+      - worksheet: balance-sheet
+      - element: //ref macros.balance-sheet-notes-audited-micro
+      - element: signature
+
+balance-sheet-notes-audited-micro:
+  id: balance-sheet-notes
+  kind: html
+  root:
+    tag: div
+    content:
+    - tag: p
+      content: 
+      # Some boilerplate notes...
+      # ...prepared in accordance with the micro-entity provisions...
+      - template:micro-entity-provisions
+
+    - tag: p
+      content: 
+      # ...directors acknowledge their responsibilities for complying with...
+      - template:directors-acknowledge
+
+# Profit and loss
+profit-and-loss:
+  id: profit-and-loss
+  kind: page
+  elements:
+  - kind: html
+    root:
+      tag: div
+      content:
+      - tag: div
+        attributes: { class: heading }
+        content:
+        - tag: div
+          content: 'expand:~[company-name]'
+        - tag: div
+          content: Income statement
+        - tag: div
+          content: 'expand:For the year ended ~[period-end]'
+        - tag: hr
+  - kind: worksheet
+    worksheet: profit-and-loss
+
+
+# Financial position page
+balance-sheet-audited-small:
+  id: balance-sheet
+  kind: page
+  elements:
+  - kind: html
+    root:
+      tag: div
+      content:
+      - tag: div
+        attributes: { class: heading }
+        content:
+        - tag: div
+          content: 'expand:~[company-name]'
+        - tag: div
+          content: Statement of financial position
+        - tag: div
+          content: 'expand:As at ~[balance-sheet-date]'
+        - tag: hr
+      - worksheet: balance-sheet
+      - element: //ref macros.balance-sheet-notes-audited-small
+      - element: signature
+
+balance-sheet-notes-audited-small:
+  id: balance-sheet-notes
+  kind: notes
+  numbered: false
+  notes:
+
+  # Some boilerplate notes...
+  # ...applicable to companies subject to the small companies regime
+  - template:small-company-provisions
+
+  # ...exemption from audit... small companies
+  - template:small-company-audit-exempt
+
+  # ...directors acknowledge their responsibilities for complying with...
+  - template:directors-acknowledge
+
+  # ...members have not required the company to obtain an audit...
+  - template:no-audit-required
+
+balance-sheet-unaudited-small:
+  id: balance-sheet
+  kind: page
+  elements:
+  - kind: html
+    root:
+      tag: div
+      content:
+      - tag: div
+        attributes: { class: heading }
+        content:
+        - tag: div
+          content: 'expand:~[company-name]'
+        - tag: div
+          content: Statement of financial position
+        - tag: div
+          content: 'expand:As at ~[balance-sheet-date]'
+        - tag: hr
+      - worksheet: balance-sheet
+      - element: //ref macros.balance-sheet-notes-unaudited-small
+      - element: signature
+
+balance-sheet-notes-unaudited-small:
+  id: balance-sheet-notes
+  kind: notes
+  numbered: false
+  notes:
+
+  # Some boilerplate notes...
+  # ...applicable to companies subject to the small companies regime
+  - template:small-company-provisions
+
+  # ...exemption from audit... small companies
+  - template:small-company-audit-exempt
+
+  # ...directors acknowledge their responsibilities for complying with...
+  - template:directors-acknowledge
+
+  # ...members have not required the company to obtain an audit...
+  - template:no-audit-required
+
+cash-flows:
+# Cash flows
+  id: cash-flows
+  kind: page
+  elements:
+  - kind: html
+    root:
+      tag: div
+      content:
+      - tag: div
+        attributes: { class: heading }
+        content:
+        - tag: div
+          content: 'expand:~[company-name]'
+        - tag: div
+          content: Statement of Cash Flows
+        - tag: div
+          content: 'expand:For the year ended ~[period-end]'
+        - tag: hr
+  - kind: worksheet
+    worksheet: cash-flows
+
+comprehensive-income:
+  id: comprehensive-income
+  kind: page
+  elements:
+  - kind: html
+    root:
+      tag: div
+      content:
+      - tag: div
+        attributes: { class: heading }
+        content:
+        - tag: div
+          content: 'expand:~[company-name]'
+        - tag: div
+          content: Statement of Comprehensive Income
+        - tag: div
+          content: 'expand:For the year ended ~[period-end]'
+        - tag: hr
+  - kind: worksheet
+    worksheet: profit-and-loss
+
+# Fixed assets
+fixed-assets:
+  id: fixed-assets
+  kind: worksheet
+  title: Fixed Assets
+  worksheet: fixed-assets
+
+# Share capital
+share-capital:
+  id: share-capital
+  kind: worksheet
+  title: Share Capital
+  worksheet: share-capital
