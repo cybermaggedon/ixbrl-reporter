@@ -181,3 +181,73 @@ company-info:
               - expand:~[auditor-business]
               - tag: br
               - expand:~[auditor-address]
+
+title:
+  id: title
+  kind: page
+  elements:
+  - kind: html
+    root:
+      tag: div
+      attributes: { class: titlepage }
+      content:
+      - tag: div
+        attributes: { class: company-number }
+        content: 'expand:
+          Company registration no. ~[company-number] (~[jurisdiction])'
+      - tag: img
+        attributes:
+          src: //import logo.yaml
+          alt: Company logo
+      - tag: div
+        attributes: { class: company-name }
+        content: 'expand:~[company-name]'
+      - tag: div
+        attributes: { class: title }
+        content: expand:~[report-title]
+      - tag: div
+        attributes: { class: subtitle }
+        content: 'expand:For the year ended ~[period-end]'
+
+signature:
+  id: signature
+  kind: html
+  root:
+    tag: div
+    content:
+    - tag: p
+      content: 'expand:Approved by the board of directors and
+        authorised for publication on ~[authorised-date].'
+    - tag: p
+      content: 'expand:Signed on behalf of the board, by
+        ~[signers-name].'
+    - tag: img
+      attributes:
+        src: //import signature.yaml
+        alt: Director's signature
+
+consent:
+  id: consent
+  kind: page
+  elements:
+  - kind: html
+    root:
+      tag: div
+      content:
+      - tag: div
+        attributes: { class: heading }
+        content:
+        - tag: div
+          content: 'expand:~[company-name]'
+        - tag: div
+          content: Statement of Consent
+        - tag: div
+          content: 'expand:For the year ended ~[period-end]'
+        - tag: hr
+      - tag: div
+        content:
+        - tag: h3
+          content: "Statement of consent to prepare Abridged Financial
+            Statements"
+        - tag: p
+          content: "template:members-agreed-abridged-accounts"

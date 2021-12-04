@@ -24,8 +24,7 @@ report: //import report/ch/audited-small.yaml
 # pretty-print: true
 # Decimal places
 
-#metadata: //import metadata.yaml
-metadata: //import metadata-revised.yaml
+metadata: //import test/metadata-acc-aud-rev.yaml
 
 directors-report: //import directors-report.yaml
 

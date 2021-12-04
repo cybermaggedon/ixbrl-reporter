@@ -627,49 +627,8 @@ elements:
   title: Share Capital
   worksheet: share-capital
 
-- id: title
-  kind: page
-  elements:
-  - kind: html
-    root:
-      tag: div
-      attributes: { class: titlepage }
-      content:
-      - tag: div
-        attributes: { class: company-number }
-        content: 'expand:
-          Company registration no. ~[company-number] (~[jurisdiction])'
-      - tag: img
-        attributes:
-          src: //import logo.yaml
-          alt: Company logo
-      - tag: div
-        attributes: { class: company-name }
-        content: 'expand:~[company-name]'
-      - tag: div
-        attributes: { class: title }
-        content: expand:~[report-title]
-      - tag: div
-        attributes: { class: subtitle }
-        content: 'expand:For the year ended ~[period-end]'
-
 - //ref macros.company-info
-
-- id: signature
-  kind: html
-  root:
-    tag: div
-    content:
-    - tag: p
-      content: 'expand:Approved by the board of directors and
-        authorised for publication on ~[authorised-date].'
-    - tag: p
-      content: 'expand:Signed on behalf of the board, by
-        ~[signers-name].'
-    - tag: img
-      attributes:
-        src: //import signature.yaml
-        alt: Director's signature
-
+- //ref macros.title
+- //ref macros.signature
 - //ref macros.simple-notes
 - //ref macros.revision
