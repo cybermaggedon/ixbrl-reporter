@@ -61,9 +61,9 @@ elements:
         element: revision-info
     - element: notes
 
-- //ref macros.balance-sheet-unaudited-micro
-- //ref macros.company-info
 - //ref macros.title
+- //ref macros.company-info
+- //ref macros.balance-sheet-unaudited-micro
 - //ref macros.signature
-- //ref macros.simple-notes
 - //ref macros.revision
+- //ref macros.simple-notes

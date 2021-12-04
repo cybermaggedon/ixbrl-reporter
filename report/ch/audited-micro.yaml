@@ -65,12 +65,10 @@ elements:
 - //ref directors-report
 - //ref auditors-report
 
-- //ref macros.balance-sheet-audited-micro
-- //ref macros.simple-notes
-- //ref macros.revision
-- //ref macros.company-info
 - //ref macros.title
+- //ref macros.company-info
+- //ref macros.balance-sheet-audited-micro
 - //ref macros.signature
-- //ref macros.simple-notes
 - //ref macros.revision
+- //ref macros.simple-notes
 

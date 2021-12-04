@@ -65,22 +65,18 @@ elements:
         element: revision-info
     - element: notes
 
-- //ref macros.cash-flows
-- //ref macros.balance-sheet-unaudited-small
-- //ref macros.comprehensive-income
-- //ref macros.fixed-assets
-- //ref macros.share-capital
-
 - //ref directors-report
 - //ref auditors-report
 - //ref accountants-report
 - //ref notes
 
-- //ref macros.revision
-- //ref macros.company-info
 - //ref macros.title
+- //ref macros.company-info
+- //ref macros.balance-sheet-unaudited-small
 - //ref macros.signature
-- //ref macros.simple-notes
+- //ref macros.cash-flows
+- //ref macros.comprehensive-income
+- //ref macros.fixed-assets
+- //ref macros.share-capital
 - //ref macros.revision
-- //ref macros.consent
 

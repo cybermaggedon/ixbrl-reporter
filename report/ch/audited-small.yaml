@@ -66,31 +66,16 @@ elements:
     - element: notes
 
 - //ref macros.balance-sheet-audited-small
-
 - //ref macros.profit-and-loss
-
-# Fixed assets
-- id: fixed-assets
-  kind: worksheet
-  title: Fixed Assets
-  worksheet: fixed-assets
-
-# Share capital
-- id: share-capital
-  kind: worksheet
-  title: Share Capital
-  worksheet: share-capital
 
 - //ref directors-report
 - //ref auditors-report
 - //ref accountants-report
 
-- //ref macros.simple-notes
-- //ref macros.revision
-- //ref macros.company-info
 - //ref macros.title
-- //ref macros.signature
-- //ref macros.simple-notes
-- //ref macros.revision
 - //ref macros.consent
+- //ref macros.company-info
+- //ref macros.signature
+- //ref macros.revision
+- //ref macros.simple-notes
 

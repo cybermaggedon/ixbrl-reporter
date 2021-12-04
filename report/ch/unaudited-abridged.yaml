@@ -65,10 +65,6 @@ elements:
         element: revision-info
     - element: notes
 
-- //ref macros.balance-sheet-unaudited-small
-
-- //ref macros.profit-and-loss
-
 # Fixed assets
 - id: fixed-assets
   kind: worksheet
@@ -85,12 +81,12 @@ elements:
 - //ref auditors-report
 - //ref accountants-report
 
-- //ref macros.simple-notes
-- //ref macros.revision
-- //ref macros.company-info
 - //ref macros.title
-- //ref macros.signature
-- //ref macros.simple-notes
-- //ref macros.revision
 - //ref macros.consent
+- //ref macros.company-info
+- //ref macros.balance-sheet-unaudited-small
+- //ref macros.signature
+- //ref macros.profit-and-loss
+- //ref macros.revision
+- //ref macros.simple-notes
 
