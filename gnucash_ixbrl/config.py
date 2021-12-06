@@ -55,25 +55,6 @@ class Config(dict):
         for k in val:
             rtn[k] = Config.makevalue(val[k])
             
-            # if isinstance(val[k], str):
-
-            #     if val[k].startswith("//import "):
-            #         rtn[k] = Config.load(val[k][9:], resolve=False)
-            #     else:
-            #         rtn[k] = Config.makevalue(val[k])
-            # elif isinstance(val[k], dict):
-            #     rtn[k] = Config.import_dict(val[k])
-            # elif isinstance(val[k], list):
-            #     tmp = []
-            #     for elt in val[k]:
-            #         if isinstance(val[k], dict):
-            #             tmp.append(Config.import_dict(val[k]))
-            #         else:
-            #             tmp.append(Config.makevalue(elt))
-
-            # else:
-            #     rtn[k] = Config.makevalue(val[k])
-
         return Config(rtn)
 
     def resolve_refs(val, root):
