@@ -1,15 +1,11 @@
 
-# A worksheet with multiple periods.
-
-
-# Dataset
-#   Section
-#     Series
+# A worksheet with a bunch of computations shown.
 
 from . period import Period
-from . computation import Result
-from . worksheet_model import Worksheet, SimpleValue, Breakdown, NilValue, Total
-from . dataset import Dataset, Section, Series
+from . worksheet import Worksheet
+from . worksheet_structure import (
+    Dataset, Series, Heading, Item, Totals, Break, SingleLine
+)
 
 class WorksheetSection:
     def __init__(self, id, rank=0, total_rank=0, hide_total=False):
@@ -18,7 +14,7 @@ class WorksheetSection:
         self.total_rank = total_rank
         self.hide_total = hide_total
 
-class MultiPeriodWorksheet(Worksheet):
+class SimpleWorksheet(Worksheet):
 
     def __init__(self, comps, periods, data):
         self.computations = comps
@@ -45,11 +41,11 @@ class MultiPeriodWorksheet(Worksheet):
                     hide_total=comp.get("hide-total", False)
                 ))
 
-        mpr = MultiPeriodWorksheet(ws_elts, periods, data)
+        mpr = SimpleWorksheet(ws_elts, periods, data)
 
         return mpr
 
-    def get_dataset(self):
+    def get_structure(self):
 
         ds = Dataset(self.periods, [])
 
@@ -63,13 +59,9 @@ class MultiPeriodWorksheet(Worksheet):
             for period in self.periods
         ]
 
-        results = [
-            {
-                cid: computations[cid].get_output(results[i])
-                for cid in computations
-            }
-            for i in range(0, len(self.periods))
-        ]
+        if len(results) < 1:
+            raise RuntimeError("No periods in worksheet?")
+
 
         for cix in range(0, len(self.computations)):
 
@@ -77,13 +69,22 @@ class MultiPeriodWorksheet(Worksheet):
             cid = comp_def.id
             computation = computations[cid]
 
-            sec = Section()
+            if computation.is_single_line():
 
-            if len(results) < 1:
-                raise RuntimeError("No periods in worksheet?")
+                sec = computation.to_single_line(results)
+                ds.sections.append(sec)
 
-            sec.add_data(computation, comp_def, results)
+            else:
 
-            ds.sections.append(sec)
+                sec = computation.to_heading()
+                ds.sections.append(sec)
+
+                for item in computation.to_items(results):
+                    ds.sections.append(item)
+
+                sec = Totals(computation, results)
+                ds.sections.append(sec)
+
+            ds.sections.append(Break())
 
         return ds

@@ -1,6 +1,6 @@
 
 # Notes element is a report element which displays notes.
-from . basicelement import BasicElement
+from . basic_element import BasicElement
 from . fact import *
 
 class NotesElement(BasicElement):

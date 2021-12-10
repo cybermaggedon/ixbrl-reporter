@@ -1,9 +1,9 @@
 
 # A worksheet element is an element of a report which displays a worksheet.
 
-from . basicelement import BasicElement
-from . report import TextReporter
-from . worksheet_ixbrl import WorksheetIxbrl
+from . basic_element import BasicElement
+from . text_reporter import TextReporter
+from . ixbrl_reporter import IxbrlReporter
 from lxml import objectify
 
 class WorksheetElement(BasicElement):
@@ -40,7 +40,7 @@ class WorksheetElement(BasicElement):
 
     def to_ixbrl_elt(self, par, taxonomy):
 
-        rep = WorksheetIxbrl(hide_notes = self.hide_notes)
+        rep = IxbrlReporter(hide_notes = self.hide_notes)
         elt = rep.get_elt(self.worksheet, par, taxonomy, self.data)
 
         div = par.xhtml_maker.div()
@@ -54,3 +54,4 @@ class WorksheetElement(BasicElement):
         div.append(elt)
         
         return [div]
+

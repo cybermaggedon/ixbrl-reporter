@@ -1,6 +1,6 @@
 
 from . datum import StringDatum
-from . worksheetelement import WorksheetElement
+from . worksheet_element import WorksheetElement
 
 class Elt:
 
@@ -105,7 +105,7 @@ class IfdefElt(Elt):
         except:
             return
 
-        self.content.to_text(out)
+        self.content.to_text(taxonomy, out)
 
 class MetadataElt(Elt):
     def __init__(self, name, prefix, suffix, null, data):

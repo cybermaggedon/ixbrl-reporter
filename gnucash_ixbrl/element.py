@@ -2,12 +2,12 @@
 # Entry point for Elements, Element.load calls out to appropriate code to
 # construct elements.
 
-from . worksheetelement import WorksheetElement
+from . worksheet_element import WorksheetElement
 from . period import Period
 from . composite import Composite
 from . title import Title
 from . notes import NotesElement
-from . noteheading import NoteHeading
+from . note_heading import NoteHeading
 from . html import HtmlElement
 from . page import PageElement
 

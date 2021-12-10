@@ -3,7 +3,7 @@
 # the title page taxonomy-free, but this code still contains a set of hard-coded
 # fields which make up a report.
 
-from . basicelement import BasicElement
+from . basic_element import BasicElement
 from . fact import *
 
 import base64

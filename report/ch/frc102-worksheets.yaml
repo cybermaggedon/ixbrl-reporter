@@ -1,7 +1,7 @@
 
 # Balance sheet
 - id: balance-sheet
-  kind: multi-period
+  kind: simple
   computations:
   - fixed-assets
   - current-assets
@@ -16,7 +16,7 @@
   - total-capital-and-reserves
 
 - id: cash-flows
-  kind: multi-period
+  kind: simple
   computations:
   - net-cash-from-operating-activities
   - net-cash-from-investing-activities
@@ -25,14 +25,14 @@
 
 # Profit and loss
 - id: profit-and-loss
-  kind: multi-period
+  kind: simple
   description: Profit and Loss
   computations:
   - profit
 
 # Fixed assets
 - id: fixed-assets
-  kind: multi-period
+  kind: simple
   description: Fixed Assets
   computations:
   - fixed-assets-total
@@ -41,13 +41,13 @@
 
 # Share capital
 - id: share-capital
-  kind: multi-period
+  kind: simple
   description: Share Capital
   computations:
   - share-capital
 
 - id: charges
-  kind: multi-period
+  kind: simple
   description: Charges
   computations:
   - charges
@@ -55,38 +55,38 @@
 # Misc
 
 - id: financial-income
-  kind: multi-period
+  kind: simple
   description: Financial income
   computations:
   - interest-income
 
 - id: financial-costs
-  kind: multi-period
+  kind: simple
   description: Financial income
   computations:
   - interest-expense
 
 - id: zero
-  kind: multi-period
+  kind: simple
   description: Zero
   computations:
   - zero
 
 - id: staff-costs
-  kind: multi-period
+  kind: simple
   note: staff-costs-note
   description: Staff costs
   computations:
   - staff-costs
 
 - id: corporation-tax
-  kind: multi-period
+  kind: simple
   description: Corporation tax
   computations:
   - corporation-tax-paid
 
 - id: cash
-  kind: multi-period
+  kind: simple
   description: Cash
   computations:
   - cash

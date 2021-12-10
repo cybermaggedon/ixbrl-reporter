@@ -1,7 +1,7 @@
 
 # A Composite element is used to wrap several elements into a single document.
 
-from . basicelement import BasicElement
+from . basic_element import BasicElement
 
 class Composite(BasicElement):
     def __init__(self, id, elts, data):

@@ -5,7 +5,7 @@ from gnucash_ixbrl.config import Config
 import gnucash_ixbrl.accounts as accounts
 from gnucash_ixbrl.taxonomy import Taxonomy
 import sys
-from gnucash_ixbrl.datasource import DataSource
+from gnucash_ixbrl.data_source import DataSource
 
 if len(sys.argv) < 4:
     sys.stderr.write("Usage:\n    report <config> <report> <format>\n")

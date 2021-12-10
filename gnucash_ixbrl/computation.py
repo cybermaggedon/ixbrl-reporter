@@ -4,8 +4,9 @@ import json
 import datetime
 import uuid
 
-from . worksheet_model import SimpleValue, Breakdown, NilValue, Total
+from . result import SimpleResult, BreakdownResult, NilResult, TotalResult
 from . period import Period
+from . worksheet_structure import Heading, SingleLine, Item
 
 def get_computation(item, comps, context, data, gcfg):
     if isinstance(item, str):
@@ -106,6 +107,25 @@ class Computable:
 
         raise RuntimeError("Don't understand computable type '%s'" % kind)
 
+    def is_single_line(self):
+        return True
+
+    def to_single_line(self, results):
+        return SingleLine(self, results)
+
+    def to_heading(self):
+
+        if hasattr(self, "metadata"):
+            return Heading(self.metadata)
+
+        raise RuntimeError("Not implemented")
+
+    def to_total_line(self):
+        raise RuntimeError("Not implemented")
+
+    def to_items(self, results):
+        raise RuntimeError("Not implemented")
+
 class Line(Computable):
 
     def __init__(self, metadata, accounts, reverse=False):
@@ -165,13 +185,11 @@ class Line(Computable):
     def get_output(self, result):
 
         if len(self.accounts) == 0:
-            output = NilValue(
-                self, self.metadata.result(result)
+            output = NilResult(self, self.metadata.result(result)
             )
             return output
 
-        output = Total(self, self.metadata.result(result),
-                       items=[])
+        output = TotalResult(self, self.metadata.result(result), items=[])
 
         return output
 
@@ -232,6 +250,12 @@ class Group(Computable):
         
         return comp
 
+    def is_single_line(self):
+        if len(self.inputs) == 0:
+            return True
+        else:
+            return False
+
     def add(self, input):
         self.inputs.append(input)
 
@@ -253,27 +277,27 @@ class Group(Computable):
     def get_output(self, result):
 
         if len(self.inputs) == 0:
-            output = NilValue(self, result.get(self.metadata.id))
+            output = NilResult(self, result.get(self.metadata.id))
             return output
 
         if self.hide_breakdown:
 
             # For a hidden breakdown, create a breakdown object which is not
             # returned, and a Total object which references it
-            bd = Breakdown(
+            bd = BreakdownResult(
                 self,
                 result.get(self.metadata.id),
-                items= [
+                items=[
                     item.get_output(result) for item in self.inputs
                 ]
             )
 
-            output = Total(self, self.metadata, result.get(self.metadata.id),
-                           items=[bd])
+            output = TotalResult(self, self.metadata, result.get(self.metadata.id),
+                                 items=[bd])
 
         else:
 
-            output = Breakdown(
+            output = BreakdownResult(
                 self,
                 result.get(self.metadata.id),
                 items= [
@@ -282,6 +306,11 @@ class Group(Computable):
             )
 
         return output
+
+    def to_items(self, results):
+
+        for item in self.inputs:
+            yield Item(item, results)
 
 class ApportionOperation(Computable):
     def __init__(self, metadata, item, part, whole):
@@ -317,8 +346,7 @@ class ApportionOperation(Computable):
 
     def get_output(self, result):
 
-        output = Total(self, result.get(self.metadata.id),
-                       items=[])
+        output = TotalResult(self, result.get(self.metadata.id), items=[])
 
         return output
 
@@ -367,8 +395,7 @@ class RoundOperation(Computable):
 
     def get_output(self, result):
 
-        output = Total(self, result.get(self.metadata.id),
-                       items=[])
+        output = TotalResult(self, result.get(self.metadata.id), items=[])
 
         return output
 
@@ -402,20 +429,9 @@ class FactorOperation(Computable):
 
     def get_output(self, result):
 
-        output = Total(self, result.get(self.metadata.id),
-                       items=[])
+        output = TotalResult(self, result.get(self.metadata.id), items=[])
 
         return output
-
-class Result:
-    def __init__(self):
-        self.values = {}
-
-    def set(self, id, value):
-        self.values[id] = value
-
-    def get(self, id):
-        return self.values[id]
 
 class Sum(Computable):
     def __init__(self, metadata):
@@ -457,12 +473,10 @@ class Sum(Computable):
 
         if len(self.steps) == 0:
             
-            output = NilValue(
-                self, result.get(self.metadata.id)
-            )
+            output = NilResult(self, result.get(self.metadata.id))
             return output
 
-        output = Total(self, result.get(self.metadata.id), items=self.steps)
+        output = TotalResult(self, result.get(self.metadata.id), items=self.steps)
 
         return output
 
@@ -476,3 +490,10 @@ def get_computations(gcfg, context, data):
         comps[comp.metadata.id] = comp
     
     return comps
+
+class ResultSet(dict):
+    def set(self, id, value):
+        self[id] = value
+    def get(self, id):
+        return self[id]
+
