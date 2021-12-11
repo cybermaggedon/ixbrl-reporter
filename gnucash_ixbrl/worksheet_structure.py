@@ -2,15 +2,18 @@
 from . datum import *
 
 class Dataset:
+
     def __init__(self, periods, sections):
         self.periods = periods
         self.sections = sections
+
     def has_notes(self):
         for sec in self.sections:
             if sec.has_notes(): return True
         return False
 
 class Series:
+
     def __init__(self, metadata, values, rank=0):
         self.metadata = metadata
         self.values = values
@@ -22,6 +25,7 @@ class Series:
         return False
 
 class Heading:
+
     def __init__(self, metadata):
         self.metadata = metadata
 
@@ -30,10 +34,11 @@ class Heading:
             return True
         return False
 
-    def update(self, reporter, grid, periods):
+    def emit(self, reporter, grid, periods):
         reporter.add_heading(grid, self, periods)
 
 class Totals:
+
     def __init__(self, computation, results, super_total=False):
         self.id = None
         self.value = None
@@ -49,16 +54,19 @@ class Totals:
             return True
         return False
 
-    def update(self, reporter, grid, periods):
+    def emit(self, reporter, grid, periods):
         reporter.add_totals(grid, self, periods, self.super_total)
 
 class Break:
-    def update(self, reporter, grid, periods):
-        reporter.add_break(grid)
+
     def has_notes(self):
         return False
 
+    def emit(self, reporter, grid, periods):
+        reporter.add_break(grid)
+
 class SingleLine:
+
     def __init__(self, computation, results):
         self.id = None
         self.value = None
@@ -73,10 +81,11 @@ class SingleLine:
             return True
         return False
 
-    def update(self, reporter, grid, periods):
+    def emit(self, reporter, grid, periods):
         reporter.add_single_line(grid, self, periods)
 
 class Item:
+
     def __init__(self, computation, results):
         self.id = None
         self.value = None
@@ -94,5 +103,5 @@ class Item:
             return True
         return False
 
-    def update(self, reporter, grid, periods):
+    def emit(self, reporter, grid, periods):
         reporter.add_item(grid, self, periods)

@@ -408,8 +408,6 @@ class IxbrlReporter:
         else:
             div.append(self.par.xhtml_maker.span(item.metadata.description))
 
-#        div.append(self.par.xhtml_maker.span(item.metadata.description))
-
         row.append(div)
 
         if not self.hide_notes:
@@ -469,9 +467,6 @@ class IxbrlReporter:
             div.append(self.par.xhtml_maker.span(section.metadata.description))
         row.append(div)
 
-#        div.append(self.par.xhtml_maker.span(section.metadata.description))
-#        row.append(div)
-
         if not self.hide_notes:
             # note cell
             blank = self.create_cell("\u00a0")
@@ -495,7 +490,7 @@ class IxbrlReporter:
         self.add_header(grid, periods)
 
         for section in sections:
-            section.update(self, grid, periods)
+            section.emit(self, grid, periods)
 
         return grid
 

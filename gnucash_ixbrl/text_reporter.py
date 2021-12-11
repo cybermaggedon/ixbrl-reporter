@@ -27,7 +27,7 @@ class TextReporter:
         out.write("\n")
 
         for section in sections:
-            section.update(self, None, periods)
+            section.emit(self, None, periods)
 
     def add_heading(self, table, section, periods):
         self.out.write(self.fmt.format("{0}:\n", section.metadata.description))
