@@ -12,7 +12,7 @@ class WorksheetSection:
         self.total_rank = total_rank
         self.hide_total = hide_total
 
-class FlowsWorksheet(Worksheet):
+class ComputationsWorksheet(Worksheet):
 
     def __init__(self, content, periods, data):
         self.content = content
@@ -40,7 +40,7 @@ class FlowsWorksheet(Worksheet):
                     hide_total=elt.get("hide-total", False)
                 ))
 
-        f = FlowsWorksheet(ws_elts, periods, data)
+        f = ComputationsWorksheet(ws_elts, periods, data)
 
         return f
 

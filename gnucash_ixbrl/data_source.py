@@ -4,7 +4,7 @@ from . context import Context
 from . computation import get_computations, ResultSet
 from . valueset import ValueSet
 from . simple_sheet import SimpleWorksheet
-from . flows_sheet import FlowsWorksheet
+from . computations_sheet import ComputationsWorksheet
 from . element import Element
 from . config import NoneValue
 from . datum import *
@@ -95,8 +95,8 @@ class DataSource:
 
                 if kind == "simple":
                     return SimpleWorksheet.load(ws_def, self)
-                if kind == "flows":
-                    return FlowsWorksheet.load(ws_def, self)
+                if kind == "computations":
+                    return ComputationsWorksheet.load(ws_def, self)
 
                 raise RuntimeError("Don't know worksheet type '%s'" % kind)
 
