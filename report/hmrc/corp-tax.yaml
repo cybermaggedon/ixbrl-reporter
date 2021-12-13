@@ -445,7 +445,7 @@ worksheets:
 
 # Research and development costs
 - id: rnd
-  kind: multi-period
+  kind: simple
   description: SME R&D
   computations:
   - rnd-proj1-enhanced-expenditure
@@ -453,7 +453,7 @@ worksheets:
 
 # Tax calculation
 - id: tax-calculation
-  kind: multi-period
+  kind: simple
   description: Tax Calculation
   computations:
   - ct-trading-profits-raw
@@ -463,7 +463,7 @@ worksheets:
 
 # Detailed profit and loss
 - id: detailed-profit-and-loss
-  kind: multi-period
+  kind: simple
   description: Detailed Profit-and-Loss
   computations:
   - turnover

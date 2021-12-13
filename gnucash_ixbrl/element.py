@@ -34,7 +34,7 @@ class Element:
             return NoteHeading.load(elt_def, data)
 
         if kind == "facttable":
-            from . facttable import FactTable
+            from . fact_table import FactTable
             return FactTable.load(elt_def, data)
 
         if kind == "page":
