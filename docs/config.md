@@ -1,123 +1,71 @@
 
 # Configuration
 
-The configuration file is YAML file.  There is also a
-[Taxonomy configuration file](taxonomy.md).
+## Basic structure
 
-The configuration file consists of the following parts:
+The configuration uses YAML in a highly structured form.  We use a
+dot-separated path specifier to reference configuration at various points.
+For example, in the following configuration, the path specifier
+`one.val1.first` would reference the number 42:
+
+```
+one:
+- val1:
+  - first: 42
+  - second: 66
+two:
+- val1: hello world
+```
+
+The configuration can all be specified
+in a single file, but to make things easier, the configuration can be
+broken up.  There are two special 'markups' that have been introduced:
+- A configuration value can be a string of the form `//import file`
+  whereupon the data in the specified file is parsed as YAML and
+  substituted at this point of the configuration.
+- A configuration value can be referenced at other points in the configuration
+  using `//ref path.to.value` whereupon the specified dot-separated path
+  is used to lookup configuration data.
 
 ## `accounts`
 
-This is where you specify the gnucash accounts filename:
+This is where you specify the gnucash accounts filename, and the class
+used to handle the accounts access. e.g.
 
 ```
 accounts:
   kind: piecash
   file: example2.gnucash
 ```
-## `taxonomy`
 
-References the taxonomy configuration file.  Schema filename and
-taxonomy ID.
-```
-taxonomy:
-  file: taxonomy/frs101.yaml
-  id: frs101
-```
+In the example, you'll see this located at the top of `config.yaml`.
 
-## `metadata`
+## `report.taxonomy`
 
-### `metadata.business`
+This contains taxonomy data.  See [Taxonomy configuration file](taxonomy.md).
 
-This is where you describe your business e.g.
-```
-  business:
-    activities: Computer security consultancy and development services
-    average-employees:
-    - 2
-    - 1
-    company-name: Example Biz Ltd.
-    company-number: 012345678
-    company-formation:
-      country: england-and-wales
-      date: '2017-04-05'
-      form: private-limited-company
-    vat-registration: GB012345678
-    contact:
-      name: Corporate Enquiries
-      address:
-      - 123 Leadbarton Street
-      - Dumpston Trading Estate
-      county: Minchingshire
-      location: Threapminchington
-      country: UK
-      email: corporate@example.org
-      phone:
-        area: '7900'
-        country: '+44'
-        number: '0123456'
-        type: landline
-      postcode: QQ99 9ZZ
-    directors:
-    - A Bloggs
-    - B Smith
-    - C Jones
-    industry-sector: m
-    is-dormant: false
-    sic-codes:
-    - '62020'
-    - '62021'
-    website:
-      description: Corporate website
-      url: https://example.org/corporate
-```
+There is an example of taxonomy in the configuration file
+`taxonomy/frs102.yaml`.
 
-### `metadata.report`
+### `metadata`
 
-Some report configuration.  Notice that report periods are defined.
+This is where you describe specifics of your report and your business
 
-```
-  report:
-    accounting-standards: micro-entities
-    accounts-status: audit-exempt-no-accountants-report
-    accounts-type: abridged-accounts
-    authorised-date: '2021-08-31'
-    balance-sheet-date: '2021-08-31'
-    currency: GBP
-    date: '2021-08-31'
-    periods:
-    - name: '2021'
-      start: '2020-09-01'
-      end: '2021-08-31'
-    - name: '2020'
-      start: '2019-09-01'
-      end: '2020-08-31'
-    signed-by: B Smith
-    signing-officer: director2
-    title: Unaudited Micro-Entity Accounts
-```
+There is an example specification in `metadata.yaml` which can be treated
+as a template for your business.  There are various dates in here
+which are important e.g. look for the `metadata.report.periods` which
+defines the accounting periods the report is produced over.
 
-The `signing-officer` element is a reference to which director signed off the
-report in `metadata.business.directors`.  The value `director1` means the
-first director did so, `director2`, the 2nd etc.
+The `metadata.business.signing-officer` element is a reference to which
+director signed off the report in `metadata.business.directors`.
+The value `director1` means the first director did so, `director2`, the 2nd
+etc.
 
-### `metadata.tax`
-
-This configuration is referenced in other bits of the `ct.yaml` configuration
-file, and provides some configuration for tax reports:
-
-```
-  tax:
-    utr: 0123456789
-    period:
-      name: '2021'
-      start: '2020-09-01'
-      end: '2021-08-31'
-```
-
-## `computations`
+## `report.computations`
 
 This sections describes the flow information which makes up the computations.
+There are example computations in `report/ch/frs102-computations.yaml`.
+
 The types are:
 - `line` which fetches information from GnuCash accounts.
 - `group` describes the combination of a set of computations in a sum with
@@ -263,15 +211,18 @@ computations (by the `id` attribute) to iXBRL tag names.  See
 
 FIXME: Describe
 
-## `worksheets`
+## `report.worksheets`
 
-Computations describe internal data flows, but don't cause any output.
-Worksheets are a collection of computations. The worksheet specifies a
-set of computations to output.  Worksheets just describe a set
-of computations to show, not how any of the information is linked.  It is
-possible to construct a worksheet that uses computations that aren't shown,
-which may be confusing to the reader.  It's down to you to select a set of
-computations that make sense together.
+Worksheets take a collection of computations and produce a financial table.
+The main worksheet is the `simple` kind at the moment, we'll work on other
+worksheets which give more control over the output in time.
+
+See `report/ch/frs102-worksheets.yaml` for some examples.
+
+Worksheets just describe a set of computations to show, not how any of the
+information is linked.  It is possible to construct a worksheet that uses
+computations that aren't shown, which may be confusing to the reader.  It's
+down to you to select a set of computations that make sense together.
 
 Here's a balance sheet exmaple:
 
@@ -293,8 +244,6 @@ Here's a balance sheet exmaple:
   - total-capital-and-reserves
 ```
 
-The only currently supported worksheet type is `multi-period`.
-
 ## `elements`
 
 Elements describe the structure of a report.  When `gnucash-ixbrl` is
@@ -307,80 +256,45 @@ elements:
 - id: report
   kind: composite
   elements:
-  - title
   - balance-sheet
-  - profit-and-loss
-  - fixed-assets
-  - share-capital
   - notes
-- id: title
-  kind: title
-  signature-image: signature.png
-  signature-type: image/png
 - id: balance-sheet
-  kind: worksheet
-  title: Balance Sheet
-  worksheet: balance-sheet
-- id: profit-and-loss
-  kind: worksheet
-  title: Income Statement
-  worksheet: profit-and-loss
-- id: fixed-assets
-  kind: worksheet
-  title: Fixed Assets
-  worksheet: fixed-assets
-- id: share-capital
-  kind: worksheet
-  title: Share Capital
-  worksheet: share-capital
-- id: notes
-  kind: notes
-  notes:
-  - micro-entity-provisions
-  - small-company-audit-exempt
-  - no-audit-required
-  - company
-  - directors-acknowledge
-  - software-version
-  - 'note:~{supplementary-note:report-period=These are fictional accounts,
-    references to real-world entities or persons is unintentional.}'
-- id: heading
-  kind: html
-  root:
-    tag: h2
-    attributes:
-      class: heading
-      style: 'font-weight: bold'
-    content:
-    - tag: span
-      content: 'Hello world'
-- id: page1
   kind: page
   elements:
-  - heading
-  - notes
+  - kind: worksheet
+    title: Balance Sheet
+    worksheet: balance-sheet
+- id: notes
+  kind: page
+  elements:
+  - kind: html
+    content:
+      tag: div
+      content:
+      - tag: p
+	content:
+	- Here is note 1.
+      - tag: p
+	content:
+	- Here is note 2.
 ```
 
-The entry point is the `report` element, at the top.  It is a `composite`
-which means it builds a report from other elements.
-The `title` element produces a report page.  The `worksheet` elements 
-tabulate defined worksheets one per page.  Finally, the `notes` element
-produces a list of notes.  
+The entry point is the `report` element, at the top.  When calling
+`gnucash-ixbrl` you have to specify this entry point.
+`report` is a composite which includes two other elements, `balance-sheet`
+and `notes`.  The `balance-sheet` demonstrates nested elements by
+including a `worksheet` element within a `page` element.
+The `notes` element embeds some HTML elements.
 
-The `notes` section auto-generates report notes with appropriate company
-data and iXBRL tags. e.g. `micro-entity-provisions` outputs a note which
-says: "These financial statements have been prepared in accordance with the
-micro-entity provisions."  `company` outputs something like "The company is
-a private company limited by shares and is registered in England and Wales
-number 012345678. The registered address is: 123 Leadbarton Street, Dumpston
-Trading Estate, Threapminchington, Minchingshire QQ99 9ZZ."
+There are some example elements defined in the `report/ch/macros.yaml`
+configuration file.
 
-Custom notes can be added with the `note:` prefix followed by any text you
-want in the report.
+## Template expansion
 
-### Note markup
+Content of an `html` element can include text which is subject to expansion
+if it begins with the `expand:` prefix.
 
-Notes have a simple markup language.  iXBRL tags can be created
+A simple markup language is used.  iXBRL tags can be created
 using a form such as `~{identifier=content}`.  A defined context can be
 specified using `~{identifier:context=content}`.  A type can be
 specified using `~{identifier:context:type=content}` where type is one
@@ -394,15 +308,8 @@ has a null value, the null text is output.  Otherwise, the tag-name is output,
 iXBRL tagged, with the provided prefix and suffix added before and after.
 
 Example:
-```notes:
-      company: 'The company is a private company limited by shares and is
-        registered in England and Wales number ~[company-number].
-        The registered address is: ~[contact-address1::, ]
-        ~[contact-address2::, ] ~[contact-address3::, ]
-        ~[contact-location:: ] ~[contact-postcode].'
+```
+expand:The company number is ~[company-number].
 ```
 
-This example adds comma-separation between elements of the address.
-Although this particular schema provides for 3 lines of address, not all will
-be present, and this mechanism adds commas to the output only where needed.
 
