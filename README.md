@@ -57,8 +57,8 @@ should check with a qualified accountant.
 supplied work for your business you could get accounts with little work.
 
 However, it is very likely that you'll need to tailor the reports to work
-with your business.  The configuration is described
-in [Configuration Workflow](docs/configuration-workflow.md).
+with your business.  The information flows are described
+in [Information flows](docs/information-flows.md).
 
 ## Installing
 
