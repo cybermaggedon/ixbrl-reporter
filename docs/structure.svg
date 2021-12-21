@@ -1,0 +1,654 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="189mm"
+   height="172mm"
+   viewBox="0 0 189 172"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   sodipodi:docname="structure.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="1.3429142"
+     inkscape:cx="357.43161"
+     inkscape:cy="325.03937"
+     inkscape:window-width="1967"
+     inkscape:window-height="1088"
+     inkscape:window-x="489"
+     inkscape:window-y="141"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1"
+     width="296mm" />
+  <defs
+     id="defs2">
+    <marker
+       style="overflow:visible"
+       id="Arrow2Lend"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Lend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-1.1,0,0,-1.1,-1.1,0)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:0.625;stroke-linejoin:round"
+         id="path37624" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker37889"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path37887" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path37612" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Send"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Send"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.2,0,0,-0.2,-1.2,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path37618" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Lend"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path37606" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend-2"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path37612-0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend-0"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path37612-4" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend-2-9"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path37612-0-1" />
+    </marker>
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <text
+       xml:space="preserve"
+       style="font-size:6.35px;font-family:'Secret Code';-inkscape-font-specification:'Secret Code';fill:#aa008c;fill-opacity:1;stroke-width:0.264999;stop-color:#000000"
+       x="3.5244563"
+       y="102.23632"
+       id="text4345-0-5"><tspan
+         sodipodi:role="line"
+         id="tspan4343-2-4"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.35px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#aa008c;fill-opacity:1;stroke-width:0.265"
+         x="3.5244563"
+         y="102.23632">configuration</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:6.35px;font-family:'Secret Code';-inkscape-font-specification:'Secret Code';fill:#aa008c;fill-opacity:1;stroke-width:0.264999;stop-color:#000000"
+       x="7.6337366"
+       y="130.75185"
+       id="text4345-0-5-8"><tspan
+         sodipodi:role="line"
+         id="tspan4343-2-4-6"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.35px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#aa008c;fill-opacity:1;stroke-width:0.265"
+         x="7.6337366"
+         y="130.75185">accounts</tspan></text>
+    <g
+       id="g37298"
+       transform="translate(-6.8720392,-0.01841329)">
+      <rect
+         style="fill:none;fill-opacity:1;stroke:#3c82ca;stroke-width:0.7;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+         id="rect30994"
+         width="86.993759"
+         height="42.975407"
+         x="43.917992"
+         y="12.49711"
+         ry="4.2016277"
+         rx="4.2016277" />
+      <text
+         xml:space="preserve"
+         style="font-size:6.35px;font-family:'Secret Code';-inkscape-font-specification:'Secret Code';fill:#3c82ca;stroke-width:0.264999;stop-color:#000000"
+         x="46.312065"
+         y="20.298519"
+         id="text4345"><tspan
+           sodipodi:role="line"
+           id="tspan4343"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.35px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.265"
+           x="46.312065"
+           y="20.298519">elements</tspan></text>
+      <g
+         id="g30970"
+         transform="translate(35.065761,-27.584425)">
+        <g
+           id="g28428"
+           transform="translate(4.2692309,2.1605439)">
+          <text
+             xml:space="preserve"
+             style="font-size:4.93889px;font-family:'Secret Code';-inkscape-font-specification:'Secret Code';fill:#3c82ca;stroke-width:0.264999;stop-color:#000000"
+             x="26.723221"
+             y="75.884697"
+             id="text4345-7-6-5-62"><tspan
+               sodipodi:role="line"
+               id="tspan4343-0-2-5-5"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.265"
+               x="26.723221"
+               y="75.884697">facttable</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:4.93889px;font-family:'Secret Code';-inkscape-font-specification:'Secret Code';fill:#3c82ca;stroke-width:0.264999;stop-color:#000000"
+             x="55.5518"
+             y="75.884697"
+             id="text4345-7-6-5-62-0"><tspan
+               sodipodi:role="line"
+               id="tspan4343-0-2-5-5-0"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.265"
+               x="55.5518"
+               y="75.884697">page</tspan></text>
+        </g>
+        <g
+           id="g28414">
+          <text
+             xml:space="preserve"
+             style="font-size:4.93889px;font-family:'Secret Code';-inkscape-font-specification:'Secret Code';fill:#3c82ca;stroke-width:0.264999;stop-color:#000000"
+             x="22.497"
+             y="59.11311"
+             id="text4345-7-6"><tspan
+               sodipodi:role="line"
+               id="tspan4343-0-2"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.265"
+               x="22.497"
+               y="59.11311">composite</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:4.93889px;font-family:'Secret Code';-inkscape-font-specification:'Secret Code';fill:#3c82ca;stroke-width:0.264999;stop-color:#000000"
+             x="53.976791"
+             y="59.11311"
+             id="text4345-7-6-5-6"><tspan
+               sodipodi:role="line"
+               id="tspan4343-0-2-5-7"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.265"
+               x="53.976791"
+               y="59.11311">noteheading</tspan></text>
+        </g>
+        <g
+           id="g28422"
+           transform="translate(-0.05034457,-2.548313)">
+          <text
+             xml:space="preserve"
+             style="font-size:4.93889px;font-family:'Secret Code';-inkscape-font-specification:'Secret Code';fill:#3c82ca;stroke-width:0.264999;stop-color:#000000"
+             x="16.773487"
+             y="71.606186"
+             id="text4345-7"><tspan
+               sodipodi:role="line"
+               id="tspan4343-0"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.265"
+               x="16.773487"
+               y="71.606186">html</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:4.93889px;font-family:'Secret Code';-inkscape-font-specification:'Secret Code';fill:#3c82ca;stroke-width:0.264999;stop-color:#000000"
+             x="42.890972"
+             y="71.606186"
+             id="text4345-7-6-5"><tspan
+               sodipodi:role="line"
+               id="tspan4343-0-2-5"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.265"
+               x="42.890972"
+               y="71.606186">notes</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-size:4.93889px;font-family:'Secret Code';-inkscape-font-specification:'Secret Code';fill:#3c82ca;stroke-width:0.264999;stop-color:#000000"
+             x="65.680252"
+             y="71.606186"
+             id="text4345-7-6-5-6-8"><tspan
+               sodipodi:role="line"
+               id="tspan4343-0-2-5-7-0"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.265"
+               x="65.680252"
+               y="71.606186">worksheet</tspan></text>
+        </g>
+      </g>
+      <path
+         style="fill:none;fill-opacity:1;stroke:#3c82ca;stroke-width:0.7;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+         d="M 43.911781,22.694407 H 130.74106"
+         id="path31540" />
+    </g>
+    <g
+       id="g38031"
+       transform="translate(-30.171246,0.2791396)">
+      <text
+         xml:space="preserve"
+         style="font-size:6.35px;font-family:'Secret Code';-inkscape-font-specification:'Secret Code';fill:#2fad4b;fill-opacity:1;stroke-width:0.264999;stop-color:#000000"
+         x="77.632622"
+         y="125.89291"
+         id="text4345-0-2"><tspan
+           sodipodi:role="line"
+           id="tspan4343-2-3"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.35px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#2fad4b;fill-opacity:1;stroke-width:0.265"
+           x="77.632622"
+           y="125.89291">computations</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-size:4.93889px;font-family:'Secret Code';-inkscape-font-specification:'Secret Code';fill:#2fad4b;fill-opacity:1;stroke-width:0.264999;stop-color:#000000"
+         x="98.926491"
+         y="138.50461"
+         id="text4345-0-2-8"><tspan
+           sodipodi:role="line"
+           id="tspan4343-2-3-5"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#2fad4b;fill-opacity:1;stroke-width:0.265"
+           x="98.926491"
+           y="138.50461">group</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-size:4.93889px;font-family:'Secret Code';-inkscape-font-specification:'Secret Code';fill:#2fad4b;fill-opacity:1;stroke-width:0.264999;stop-color:#000000"
+         x="139.96902"
+         y="141.47095"
+         id="text4345-0-2-8-0"><tspan
+           sodipodi:role="line"
+           id="tspan4343-2-3-5-9"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#2fad4b;fill-opacity:1;stroke-width:0.265"
+           x="139.96902"
+           y="141.47095">sum</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-size:4.93889px;font-family:'Secret Code';-inkscape-font-specification:'Secret Code';fill:#2fad4b;fill-opacity:1;stroke-width:0.264999;stop-color:#000000"
+         x="86.419769"
+         y="148.13873"
+         id="text4345-0-2-8-0-1"><tspan
+           sodipodi:role="line"
+           id="tspan4343-2-3-5-9-2"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#2fad4b;fill-opacity:1;stroke-width:0.265"
+           x="86.419769"
+           y="148.13873">line</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-size:4.93889px;font-family:'Secret Code';-inkscape-font-specification:'Secret Code';fill:#2fad4b;fill-opacity:1;stroke-width:0.264999;stop-color:#000000"
+         x="109.14794"
+         y="150.1404"
+         id="text4345-0-2-8-0-1-7"><tspan
+           sodipodi:role="line"
+           id="tspan4343-2-3-5-9-2-4"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#2fad4b;fill-opacity:1;stroke-width:0.265"
+           x="109.14794"
+           y="150.1404">factor</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-size:4.93889px;font-family:'Secret Code';-inkscape-font-specification:'Secret Code';fill:#2fad4b;fill-opacity:1;stroke-width:0.264999;stop-color:#000000"
+         x="130.55226"
+         y="153.59311"
+         id="text4345-0-2-8-0-1-7-7"><tspan
+           sodipodi:role="line"
+           id="tspan4343-2-3-5-9-2-4-2"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#2fad4b;fill-opacity:1;stroke-width:0.265"
+           x="130.55226"
+           y="153.59311">apportion</tspan></text>
+      <rect
+         style="fill:none;fill-opacity:1;stroke:#2fad4b;stroke-width:0.7;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+         id="rect30994-11"
+         width="86.993759"
+         height="42.975407"
+         x="75.448845"
+         y="118.75426"
+         ry="4.2016277"
+         rx="4.2016277" />
+      <path
+         style="fill:none;fill-opacity:1;stroke:#2fad4b;stroke-width:0.7;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+         d="M 75.442633,128.95156 H 162.27192"
+         id="path31540-1" />
+    </g>
+    <g
+       id="g38015"
+       transform="translate(-26.784778,1.7969071)">
+      <text
+         xml:space="preserve"
+         style="font-size:6.35px;font-family:'Secret Code';-inkscape-font-specification:'Secret Code';fill:#a60000;fill-opacity:1;stroke-width:0.264999;stop-color:#000000"
+         x="124.6653"
+         y="77.723961"
+         id="text4345-0"><tspan
+           sodipodi:role="line"
+           id="tspan4343-2"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.35px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#a60000;fill-opacity:1;stroke-width:0.265"
+           x="124.6653"
+           y="77.723961">worksheets</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-size:4.93889px;font-family:'Secret Code';-inkscape-font-specification:'Secret Code';fill:#a60000;fill-opacity:1;stroke-width:0.264999;stop-color:#000000"
+         x="135.44812"
+         y="88.243378"
+         id="text4345-0-56"><tspan
+           sodipodi:role="line"
+           id="tspan4343-2-38"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#a60000;fill-opacity:1;stroke-width:0.265"
+           x="135.44812"
+           y="88.243378">simple</tspan></text>
+      <rect
+         style="fill:none;fill-opacity:1;stroke:#a60000;stroke-width:0.7;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+         id="rect30994-1"
+         width="41.700218"
+         height="22.365805"
+         x="122.04929"
+         y="70.396751"
+         ry="4.2016277"
+         rx="4.2016277" />
+      <path
+         style="fill:none;fill-opacity:1;stroke:#a60000;stroke-width:0.7;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+         d="m 122.04631,80.594047 h 41.62138"
+         id="path31540-6" />
+    </g>
+    <path
+       style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#a60000;stroke-width:0.699999;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;marker-end:url(#Arrow1Mend);stop-color:#000000;stop-opacity:1"
+       d="M 117.1572,70.425922 114.80235,44.748479"
+       id="path37333" />
+    <path
+       style="font-variation-settings:normal;vector-effect:none;fill:none;fill-opacity:1;stroke:#aa008c;stroke-width:0.700002;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;marker-end:url(#Arrow1Mend-2);stop-color:#000000"
+       d="M 22.803727,96.578902 45.791935,44.572803"
+       id="path37333-3" />
+    <path
+       style="font-variation-settings:normal;vector-effect:none;fill:none;fill-opacity:1;stroke:#aa008c;stroke-width:0.7;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;marker-end:url(#Arrow1Mend-2-9);stop-color:#000000"
+       d="m 34.246436,133.68609 19.628359,11.73982"
+       id="path37333-3-0" />
+    <path
+       style="fill:none;fill-opacity:1;stroke:#2fad4b;stroke-width:0.699997;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Mend);stop-color:#000000"
+       d="M 96.387389,115.26952 107.62651,92.497702"
+       id="path31540-1-4"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;fill-opacity:1;stroke:#2fad4b;stroke-width:0.699998;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Mend-0);stop-color:#000000"
+       d="M 79.413613,117.14952 70.752335,54.316646"
+       id="path31540-1-4-0"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-size:3.175px;font-family:'Secret Code';-inkscape-font-specification:'Secret Code';fill:#3c82ca;stroke-width:0.264999;stop-color:#000000"
+       x="128.43806"
+       y="17.189053"
+       id="text41006"><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;fill-opacity:1;stroke-width:0.265"
+         x="128.43806"
+         y="17.189053"
+         id="tspan50544">Elements define the structure</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;fill-opacity:1;stroke-width:0.265"
+         x="128.43806"
+         y="21.661364"
+         id="tspan103">and layout of the report in terms</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;fill-opacity:1;stroke-width:0.265"
+         x="128.43806"
+         y="26.133673"
+         id="tspan617">of the pages, and the content of</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;fill-opacity:1;stroke-width:0.265"
+         x="128.43806"
+         y="30.605984"
+         id="tspan619">those pages. The html element</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;fill-opacity:1;stroke-width:0.265"
+         x="128.43806"
+         y="35.078293"
+         id="tspan621">allows HTML content to be added</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;fill-opacity:1;stroke-width:0.265"
+         x="128.43806"
+         y="39.550606"
+         id="tspan623">to the document.</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.175px;font-family:'Secret Code';-inkscape-font-specification:'Secret Code';fill:#3c82ca;stroke-width:0.264999;stop-color:#000000"
+       x="127.95206"
+       y="51.913681"
+       id="text41006-3"><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;fill-opacity:1;stroke-width:0.265"
+         x="127.95206"
+         y="51.913681"
+         id="tspan623-6">The worksheet element references</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;fill-opacity:1;stroke-width:0.265"
+         x="127.95206"
+         y="56.38599"
+         id="tspan2511">a worksheet definition in order to</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;fill-opacity:1;stroke-width:0.265"
+         x="127.95206"
+         y="60.858303"
+         id="tspan2513">display a financial data table.</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;fill-opacity:1;stroke-width:0.265"
+         x="127.95206"
+         y="65.330612"
+         id="tspan5611">Worksheets define the content of</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;fill-opacity:1;stroke-width:0.265"
+         x="127.95206"
+         y="69.802917"
+         id="tspan5613">such a table.</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.175px;font-family:'Secret Code';-inkscape-font-specification:'Secret Code';fill:#3c82ca;stroke-width:0.264999;stop-color:#000000"
+       x="107.73598"
+       y="100.19702"
+       id="text41006-3-2"><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;fill-opacity:1;stroke-width:0.265"
+         x="107.73598"
+         y="100.19702"
+         id="tspan2513-2">Worksheets define the data</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;fill-opacity:1;stroke-width:0.265"
+         x="107.73598"
+         y="104.66933"
+         id="tspan9305">to be displayed by referencing</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;fill-opacity:1;stroke-width:0.265"
+         x="107.73598"
+         y="109.14164"
+         id="tspan12671">computations.</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.175px;font-family:'Secret Code';-inkscape-font-specification:'Secret Code';fill:#3c82ca;stroke-width:0.264999;stop-color:#000000"
+       x="4.6425266"
+       y="48.641743"
+       id="text41006-3-2-6"><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;fill-opacity:1;stroke-width:0.265"
+         x="4.6425266"
+         y="48.641743"
+         id="tspan12671-2">html elements</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;fill-opacity:1;stroke-width:0.265"
+         x="4.6425266"
+         y="53.114052"
+         id="tspan18020">can use text</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;fill-opacity:1;stroke-width:0.265"
+         x="4.6425266"
+         y="57.586365"
+         id="tspan20988">templates to</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;fill-opacity:1;stroke-width:0.265"
+         x="4.6425266"
+         y="62.058678"
+         id="tspan25778">include</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;fill-opacity:1;stroke-width:0.265"
+         x="4.6425266"
+         y="66.530983"
+         id="tspan24590">configuration</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;fill-opacity:1;stroke-width:0.265"
+         x="4.6425266"
+         y="71.003296"
+         id="tspan25780">data in</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;fill-opacity:1;stroke-width:0.265"
+         x="4.6425266"
+         y="75.475609"
+         id="tspan24592">the report</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;fill-opacity:1;stroke-width:0.265"
+         x="4.6425266"
+         y="79.947914"
+         id="tspan24594">e.g. company</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;fill-opacity:1;stroke-width:0.265"
+         x="4.6425266"
+         y="84.420227"
+         id="tspan30126">name</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.175px;font-family:'Secret Code';-inkscape-font-specification:'Secret Code';fill:#3c82ca;stroke-width:0.264999;stop-color:#000000"
+       x="134.49918"
+       y="126.37417"
+       id="text41006-3-2-7"><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;fill-opacity:1;stroke-width:0.265"
+         x="134.49918"
+         y="126.37417"
+         id="tspan12671-3">Computations describe</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;fill-opacity:1;stroke-width:0.265"
+         x="134.49918"
+         y="130.84648"
+         id="tspan15193">how the account data is</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;fill-opacity:1;stroke-width:0.265"
+         x="134.49918"
+         y="135.31879"
+         id="tspan15195">combined to produce financial</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;fill-opacity:1;stroke-width:0.265"
+         x="134.49918"
+         y="139.79111"
+         id="tspan15201">facts. The line defines facts</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;fill-opacity:1;stroke-width:0.265"
+         x="134.49918"
+         y="144.26341"
+         id="tspan44232">from account data.  The group</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;fill-opacity:1;stroke-width:0.265"
+         x="134.49918"
+         y="148.73572"
+         id="tspan15203">and sum computations are</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;fill-opacity:1;stroke-width:0.265"
+         x="134.49918"
+         y="153.20804"
+         id="tspan15205">used to used to produce</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;fill-opacity:1;stroke-width:0.265"
+         x="134.49918"
+         y="157.68034"
+         id="tspan15207">totals from other computations.</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.175px;line-height:normal;font-family:'Secret Code';-inkscape-font-specification:'Secret Code';font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-variant-east-asian:normal;font-feature-settings:normal;font-variation-settings:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;shape-margin:0;inline-size:0;opacity:1;vector-effect:none;fill:#3c82ca;fill-opacity:1;stroke-width:0.264999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
+       x="18.975491"
+       y="146.1738"
+       id="text35183"
+       transform="translate(-13.896744,-5.5615116)"><tspan
+         sodipodi:role="line"
+         id="tspan35181"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.175px;line-height:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-variant-east-asian:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;shape-margin:0;inline-size:0;vector-effect:none;fill:#000000;fill-opacity:1;stroke-width:0.264999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
+         x="18.975491"
+         y="146.1738">The line computation</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.175px;line-height:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-variant-east-asian:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;shape-margin:0;inline-size:0;vector-effect:none;fill:#000000;fill-opacity:1;stroke-width:0.264999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
+         x="18.975491"
+         y="150.6461"
+         id="tspan35185">is used to take</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.175px;line-height:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-variant-east-asian:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;shape-margin:0;inline-size:0;vector-effect:none;fill:#000000;fill-opacity:1;stroke-width:0.264999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
+         x="18.975491"
+         y="155.11842"
+         id="tspan35187">information from</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.175px;line-height:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-variant-east-asian:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;shape-margin:0;inline-size:0;vector-effect:none;fill:#000000;fill-opacity:1;stroke-width:0.264999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
+         x="18.975491"
+         y="159.59073"
+         id="tspan41143">accounts.  </tspan></text>
+  </g>
+</svg>
