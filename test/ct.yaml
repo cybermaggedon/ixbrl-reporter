@@ -24,8 +24,8 @@ report: //import report/hmrc/corp-tax.yaml
 # pretty-print: true
 # Decimal places
 
-#metadata: //import metadata.yaml
-metadata: //import metadata-revised.yaml
+metadata: //import metadata.yaml
+#metadata: //import metadata-revised.yaml
 
 directors-report: //import directors-report.yaml
 

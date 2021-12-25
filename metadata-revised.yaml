@@ -166,8 +166,8 @@ tax:
   # Tax period
   period:
     name: '2021'
-    start: '2020-02-01'
-    end: '2021-01-31'
+    start: '2020-01-01'
+    end: '2020-12-31'
 
   # Tax years over which the accounts are calculated.  A company's tax year
   # is defined by the company's accounting period.  This usually falls
