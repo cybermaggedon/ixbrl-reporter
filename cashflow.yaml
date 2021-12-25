@@ -1,0 +1,407 @@
+
+#############################################################################
+### GnuCash accounts source #################################################
+#############################################################################
+accounts:
+  # Filename of GnuCash accounts
+  kind: piecash
+  file: example2.gnucash
+
+report:
+  style: //import report/style.yaml
+  taxonomy: //import taxonomy/frs102.yaml
+  title: Cashflow
+  accounting-standards: micro-entities
+  accounts-status: audit-exempt-no-accountants-report
+  accounts-type: abridged-accounts
+  computations: //import report/ch/frc102-computations.yaml
+
+  worksheets:
+
+  - id: cashflow
+    kind: flex
+    columns:
+    - label: Periods
+      columns:
+      - label: 2020
+        units: £
+      - label: flows
+      - label: 2019
+        units: £
+      - label: flows
+    indexes:
+    - id: na
+      description: Cashflow
+      indexes:
+
+      - id: operating
+        description: Cash at start of year
+        total:
+        - id: cash-at-start-of-year
+          kind: computation
+          computation: cash-at-start-of-year
+          period-config: metadata.accounting.periods.0
+        - id: blank
+          kind: string
+          value: ""
+        - id: cash-at-start-of-year
+          kind: computation
+          computation: cash-at-start-of-year
+          period-config: metadata.accounting.periods.1
+        - id: blank
+          kind: string
+          value: ""
+
+    - id: cashflow
+      description: Operating activities
+      indexes:
+
+      - id: operating
+        description: Profit (loss)
+        row:
+        - id: blank
+          kind: string
+          value: ""
+        - id: na
+          kind: computation
+          computation: profit
+          period-config: metadata.accounting.periods.0
+        - id: blank
+          kind: string
+          value: ""
+        - id: na
+          kind: computation
+          computation: profit
+          period-config: metadata.accounting.periods.1
+
+      - id: operating
+        description: Adjustment for depreciation
+        row:
+        - id: blank
+          kind: string
+          value: ""
+        - id: na
+          kind: computation
+          computation: depreciation-adjustment
+          period-config: metadata.accounting.periods.0
+        - id: blank
+          kind: string
+          value: ""
+        - id: na
+          kind: computation
+          computation: depreciation-adjustment
+          period-config: metadata.accounting.periods.1
+
+      - id: operating
+        description: Trade and other receivables
+        row:
+        - id: blank
+          kind: string
+          value: ""
+        - id: na
+          kind: computation
+          computation: trade-and-other-receivables
+          period-config: metadata.accounting.periods.0
+        - id: blank
+          kind: string
+          value: ""
+        - id: na
+          kind: computation
+          computation: trade-and-other-receivables
+          period-config: metadata.accounting.periods.1
+
+      - id: na
+        description: Inventories
+        row:
+        - id: blank
+          kind: string
+          value: ""
+        - id: na
+          kind: computation
+          computation: inventories
+          period-config: metadata.accounting.periods.0
+        - id: blank
+          kind: string
+          value: ""
+        - id: na
+          kind: computation
+          computation: inventories
+          period-config: metadata.accounting.periods.1
+
+      - id: na
+        description: Increase (decrease) in trade payables
+        row:
+        - id: blank
+          kind: string
+          value: ""
+        - id: na
+          kind: computation
+          computation: trade-payables
+          period-config: metadata.accounting.periods.0
+        - id: blank
+          kind: string
+          value: ""
+        - id: na
+          kind: computation
+          computation: trade-payables
+          period-config: metadata.accounting.periods.1
+
+      - id: na
+        description: Corporation tax paid
+        row:
+        - id: blank
+          kind: string
+          value: ""
+        - id: na
+          kind: computation
+          computation: corporation-tax-paid
+          period-config: metadata.accounting.periods.0
+        - id: blank
+          kind: string
+          value: ""
+        - id: na
+          kind: computation
+          computation: corporation-tax-paid
+          period-config: metadata.accounting.periods.1
+
+      - id: na
+        description: Totals
+        total:
+        - id: na
+          kind: computation
+          computation: net-cash-from-operating-activities
+          period-config: metadata.accounting.periods.0
+        - id: blank
+          kind: string
+          value: ""
+        - id: na
+          kind: computation
+          computation: net-cash-from-operating-activities
+          period-config: metadata.accounting.periods.1
+        - id: blank
+          kind: string
+          value: ""
+
+    - id: cashflow
+      description: Financing activities
+      indexes:
+
+      - id: na
+        description: Interest paid
+        row:
+        - id: blank
+          kind: string
+          value: ""
+        - id: na
+          kind: computation
+          computation: interest-paid
+          period-config: metadata.accounting.periods.0
+        - id: blank
+          kind: string
+          value: ""
+        - id: na
+          kind: computation
+          computation: interest-paid
+          period-config: metadata.accounting.periods.1
+
+      - id: na
+        description: Proceeds from shares issued
+        row:
+        - id: blank
+          kind: string
+          value: ""
+        - id: na
+          kind: computation
+          computation: proceeds-from-issuing-shares
+          period-config: metadata.accounting.periods.0
+        - id: blank
+          kind: string
+          value: ""
+        - id: na
+          kind: computation
+          computation: proceeds-from-issuing-shares
+          period-config: metadata.accounting.periods.1
+
+      - id: na
+        description: Purchase of non-controlling interest
+        row:
+        - id: blank
+          kind: string
+          value: ""
+        - id: na
+          kind: computation
+          computation: purchase-of-non-controlling-interest
+          period-config: metadata.accounting.periods.0
+        - id: blank
+          kind: string
+          value: ""
+        - id: na
+          kind: computation
+          computation: purchase-of-non-controlling-interest
+          period-config: metadata.accounting.periods.1
+
+      - id: na
+        description: Dividends paid
+        row:
+        - id: blank
+          kind: string
+          value: ""
+        - id: na
+          kind: computation
+          computation: dividends-paid
+          period-config: metadata.accounting.periods.0
+        - id: blank
+          kind: string
+          value: ""
+        - id: na
+          kind: computation
+          computation: dividends-paid
+          period-config: metadata.accounting.periods.1
+
+      - id: na
+        description: Totals
+        total:
+        - id: na
+          kind: computation
+          computation: net-cash-from-financing-activities
+          period-config: metadata.accounting.periods.0
+        - id: blank
+          kind: string
+          value: ""
+        - id: na
+          kind: computation
+          computation: net-cash-from-financing-activities
+          period-config: metadata.accounting.periods.1
+        - id: blank
+          kind: string
+          value: ""
+
+    - id: cashflow
+      description: Investing activities
+      indexes:
+
+      - id: na
+        description: Proceeds from sale of equipment
+        row:
+        - id: blank
+          kind: string
+          value: ""
+        - id: na
+          kind: computation
+          computation: proceeds-sale-equipment
+          period-config: metadata.accounting.periods.0
+        - id: blank
+          kind: string
+          value: ""
+        - id: na
+          kind: computation
+          computation: proceeds-sale-equipment
+          period-config: metadata.accounting.periods.1
+
+      - id: na
+        description: Purchase of property, plant and equipment
+        row:
+        - id: blank
+          kind: string
+          value: ""
+        - id: na
+          kind: computation
+          computation: purchase-equipment
+          period-config: metadata.accounting.periods.0
+        - id: blank
+          kind: string
+          value: ""
+        - id: na
+          kind: computation
+          computation: purchase-equipment
+          period-config: metadata.accounting.periods.1
+
+      - id: na
+        description: Purchase of intangible assets
+        row:
+        - id: blank
+          kind: string
+          value: ""
+        - id: na
+          kind: computation
+          computation: purchase-intangible-assets
+          period-config: metadata.accounting.periods.0
+        - id: blank
+          kind: string
+          value: ""
+        - id: na
+          kind: computation
+          computation: purchase-intangible-assets
+          period-config: metadata.accounting.periods.1
+
+      - id: na
+        description: Interest
+        row:
+        - id: blank
+          kind: string
+          value: ""
+        - id: na
+          kind: computation
+          computation: interest-received
+          period-config: metadata.accounting.periods.0
+        - id: blank
+          kind: string
+          value: ""
+        - id: na
+          kind: computation
+          computation: interest-received
+          period-config: metadata.accounting.periods.1
+
+      - id: na
+        description: Totals
+        total:
+        - id: na
+          kind: computation
+          computation: net-cash-from-investing-activities
+          period-config: metadata.accounting.periods.0
+        - id: blank
+          kind: string
+          value: ""
+        - id: na
+          kind: computation
+          computation: net-cash-from-investing-activities
+          period-config: metadata.accounting.periods.1
+        - id: blank
+          kind: string
+          value: ""
+
+    - id: na
+      description: Cashflow
+      indexes:
+      - id: operating
+        description: Cash at end of year
+        total:
+        - id: na
+          kind: computation
+          computation: cash-at-end-of-year
+          period-config: metadata.accounting.periods.0
+        - id: blank
+          kind: string
+          value: ""
+        - id: na
+          kind: computation
+          computation: cash-at-end-of-year
+          period-config: metadata.accounting.periods.1
+        - id: blank
+          kind: string
+          value: ""
+
+  elements:
+  - id: report
+    kind: page
+    elements:
+    - id: cashflow
+      kind: worksheet
+      worksheet: cashflow
+
+#pretty-print: true
+
+metadata: //import metadata.yaml
+
+
+

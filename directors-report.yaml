@@ -7,7 +7,7 @@ elements:
     tag: div
     content:
     - tag: div
-      attributes: { class: heading }
+      attributes: { class: header }
       content:
       - tag: div
         content: 'expand:~[company-name]'

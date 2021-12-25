@@ -48,3 +48,10 @@ class DateDatum(Datum):
         self.id = id
         self.value = value
         self.context = context
+
+class VariableDatum(Datum):
+    def __init__(self, id, value, context):
+        self.id = id
+        self.value = value
+        self.context = context
+

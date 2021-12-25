@@ -78,6 +78,13 @@ class TagElt(Elt):
         }:
             out.write("--------\n")
 
+    def to_debug(self, taxonomy, out):
+
+        for c in self.content:
+            c.to_debug(taxonomy, out)
+
+        print("tag:", self.tag.lower())
+
 class IfdefElt(Elt):
     def __init__(self, key, content, data):
         self.key = key
@@ -107,6 +114,14 @@ class IfdefElt(Elt):
 
         self.content.to_text(taxonomy, out)
 
+    def to_debug(self, taxonomy, out):
+        try:
+            self.data.get_config(self.key)
+        except:
+            return
+
+        self.content.to_debug(taxonomy, out)
+
 class MetadataElt(Elt):
     def __init__(self, name, prefix, suffix, null, data):
         self.name = name
@@ -119,7 +134,7 @@ class MetadataElt(Elt):
 
         elt = par.xhtml_maker.span()
 
-        fact = taxonomy.get_metadata_by_id(self.data, self.name)
+        fact = taxonomy.get_metadata_by_id(self.name)
         if fact:
             if self.prefix != "":
                 elt.append(par.xhtml_maker.span(self.prefix))
@@ -155,6 +170,22 @@ class MetadataElt(Elt):
             if self.suffix != "": out.write(self.suffix)
             return
 
+    def to_debug(self, taxonomy, out):
+
+        fact = taxonomy.get_metadata_by_id(self.data, self.name)
+        if fact:
+            if self.prefix != "": out.write(self.prefix)
+            out.write(str(fact.value))
+            if self.suffix != "": out.write(self.suffix)
+            return
+
+        val = self.data.get_config(self.name, mandatory=False)
+        if val:
+            if self.prefix != "": out.write(self.prefix)
+            out.write(val)
+            if self.suffix != "": out.write(self.suffix)
+            return
+
 class StringElt(Elt):
     def __init__(self, value, data):
         self.value = value
@@ -168,6 +199,10 @@ class StringElt(Elt):
         return par.xhtml_maker.span(self.value)
 
     def to_text(self, taxonomy, out):
+        out.write(self.value)
+        return
+
+    def to_debug(self, taxonomy, out):
         out.write(self.value)
         return
 
@@ -204,7 +239,7 @@ class FactElt(Elt):
             period = self.data.get_report_period()
             ctxt = self.data.business_context.with_period(period)
         else:
-            ctxt = taxonomy.get_context(self.ctxt, self.data)
+            ctxt = taxonomy.get_context(self.ctxt)
         datum = StringDatum(self.fact, [], ctxt)
         fact = taxonomy.create_fact(datum)
         elt = fact.to_elt(par)
@@ -218,6 +253,13 @@ class FactElt(Elt):
 
         for child in self.content:
             child.to_text(taxonomy, out)
+
+        return
+
+    def to_debug(self, taxonomy, out):
+
+        for child in self.content:
+            child.to_debug(taxonomy, out)
 
         return
 
@@ -251,6 +293,9 @@ class ElementElt(Elt):
     def to_text(self, taxonomy, out):
         self.elt.to_text(taxonomy, out)
 
+    def to_debug(self, taxonomy, out):
+        self.elt.to_debug(taxonomy, out)
+
 class WorksheetElt(Elt):
 
     def __init__(self, ws, data):
@@ -269,3 +314,6 @@ class WorksheetElt(Elt):
 
     def to_text(self, taxonomy, out):
         self.wse.to_text(taxonomy, out)
+
+    def to_debug(self, taxonomy, out):
+        self.wse.to_debug(taxonomy, out)

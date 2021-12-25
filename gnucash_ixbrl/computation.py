@@ -6,7 +6,6 @@ import uuid
 
 from . result import SimpleResult, BreakdownResult, NilResult, TotalResult
 from . period import Period
-from . worksheet_structure import Heading, SingleLine, Item
 
 def get_computation(item, comps, context, data, gcfg):
     if isinstance(item, str):
@@ -106,25 +105,6 @@ class Computable:
             return Constant.load(cfg, comps, context, data, gcfg)
 
         raise RuntimeError("Don't understand computable type '%s'" % kind)
-
-    def is_single_line(self):
-        return True
-
-    def to_single_line(self, results):
-        return SingleLine(self, results)
-
-    def to_heading(self):
-
-        if hasattr(self, "metadata"):
-            return Heading(self.metadata)
-
-        raise RuntimeError("Not implemented")
-
-    def to_total_line(self):
-        raise RuntimeError("Not implemented")
-
-    def to_items(self, results):
-        raise RuntimeError("Not implemented")
 
 class Line(Computable):
 
@@ -306,11 +286,6 @@ class Group(Computable):
             )
 
         return output
-
-    def to_items(self, results):
-
-        for item in self.inputs:
-            yield Item(item, results)
 
 class ApportionOperation(Computable):
     def __init__(self, metadata, item, part, whole):

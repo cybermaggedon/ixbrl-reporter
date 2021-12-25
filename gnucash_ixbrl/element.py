@@ -5,7 +5,6 @@
 from . worksheet_element import WorksheetElement
 from . period import Period
 from . composite import Composite
-from . title import Title
 from . notes import NotesElement
 from . note_heading import NoteHeading
 from . html import HtmlElement
@@ -20,9 +19,6 @@ class Element:
 
         if kind == "composite":
             return Composite.load(elt_def, data)
-
-        if kind == "title":
-            return Title.load(elt_def, data)
 
         if kind == "worksheet":
             return WorksheetElement.load(elt_def, data)

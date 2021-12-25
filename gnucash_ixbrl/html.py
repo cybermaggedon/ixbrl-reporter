@@ -27,6 +27,9 @@ class HtmlElement(BasicElement):
     def to_html(self, root, par, taxonomy):
         return root.to_html(par, taxonomy)
 
+    def to_debug(self, taxonomy, out):
+        self.root.to_debug(taxonomy, out)
+
     def to_ixbrl_elt(self, par, taxonomy):
 
         root = self.root

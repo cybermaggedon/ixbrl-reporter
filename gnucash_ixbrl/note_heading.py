@@ -52,6 +52,15 @@ class NoteHeading(BasicElement):
         txt = "%s. %s\n" % (self.format(), self.title)
         out.write(txt)
 
+    def to_debug(self, taxonomy, out):
+
+        if self.level == 1:
+            if 2 in NoteHeading.counts:
+                del NoteHeading.counts[2]
+
+        txt = "%s. %s\n" % (self.format(), self.title)
+        out.write(txt)
+
     def to_ixbrl_elt(self, par, taxonomy):
 
         if self.level == 1:

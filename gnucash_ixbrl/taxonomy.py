@@ -1,14 +1,13 @@
 
 # Mapping taxonomy-free datums to facts so that iXBRL tagging can take place.
-from . datum import (
-    StringDatum, DateDatum, MoneyDatum, BoolDatum, CountDatum, NumberDatum
-)
+from . datum import *
 from . fact import (
     StringFact, DateFact, MoneyFact, BoolFact, CountFact, NumberFact
 )
 
 from . period import Period
 from . config import NoneValue
+from . context import Context
 
 from datetime import datetime
 
@@ -44,7 +43,6 @@ class TypedDimension:
         )
 
         elt = mkr(tag, self.value)
-#        elt = base.xbrldi_maker(self.content["tag"])(self.value)
 
         mem = base.xbrldi_maker.typedMember()
         mem.set("dimension", self.dim)
@@ -52,11 +50,23 @@ class TypedDimension:
         return mem
 
 class Taxonomy:
-    def __init__(self, cfg):
+    def __init__(self, cfg, data):
         self.cfg = cfg
         self.contexts = {}
         self.next_context_id = 0
         self.contexts_used = set()
+        self.root_context = Context(None)
+
+        for defn in cfg.get("contexts"):
+            ctxt = self.load_context(defn, data, self.contexts)
+            self.contexts[defn.get("id")] = ctxt
+
+        meta = {}
+        for defn in cfg.get("metadata"):
+            fact = self.load_metadata(data, defn, self.contexts)
+            if fact:
+                meta[defn.get("id")] = fact
+        self.metadata = meta
 
     def get_context_id(self, ctxt):
         if ctxt in self.contexts:
@@ -87,6 +97,9 @@ class Taxonomy:
         if isinstance(val, NumberDatum):
             return self.create_number_fact(val)
 
+        if isinstance(val, VariableDatum):
+            return self.get_metadata_by_id(val.value)
+
         raise RuntimeError("Not implemented: " + str(type(val)))
 
     def get_tag_name(self, id):
@@ -105,17 +118,16 @@ class Taxonomy:
         key = "description-tags.{0}".format(id)
         return self.cfg.get(key, mandatory=False)
 
-    def create_description_fact(self, val, desc):
-        fact = StringFact(self.get_context_id(val.context),
-                          self.get_description_tag_name(val.id), desc)
-        fact.dimensions = self.get_tag_dimensions(val.id)
+    def create_description_fact(self, meta, desc, context):
+        fact = StringFact(self.get_context_id(context),
+                          self.get_description_tag_name(meta.id), desc)
+        fact.dimensions = self.get_tag_dimensions(meta.id)
         self.observe_fact(fact)
         return fact
 
     def lookup_dimension(self, id, val):
 
         try:
-
             k1 = "segment.{0}.typed-dimension".format(
                 id
             )
@@ -206,22 +218,20 @@ class Taxonomy:
         key = "schema"
         return self.cfg.get(key)
 
-    def get_predefined_contexts(self, data):
+    def get_predefined_contexts(self):
 
         contexts = {}
 
         for defn in self.cfg.get("contexts"):
-
-            ctxt = self.load_context(defn, data, contexts)
-            contexts[defn.get("id")] = ctxt
+            id = defn.get("id")
+            contexts[id] = self.contexts[id]
 
         return contexts
 
-    def get_context(self, id, data):
+    def get_context(self, id):
 
-        contexts = self.get_predefined_contexts(data)
-
-        if id in contexts: return contexts[id]
+        if id in self.contexts:
+            return self.contexts[id]
 
         raise RuntimeError("No such context: %s" % id)
 
@@ -232,7 +242,7 @@ class Taxonomy:
         if defn.get("from", mandatory=False):
             ctxt = contexts[defn.get("from")]
         else:
-            ctxt = data.get_root_context()
+            ctxt = self.root_context
 
         if defn.get("entity", mandatory=False):
             scheme_def = defn.get("scheme")
@@ -264,69 +274,28 @@ class Taxonomy:
 
     def get_document_metadata(self, data):
 
-        ctxts = self.get_predefined_contexts(data)
+        ctxts = self.get_predefined_contexts()
 
         ids = self.cfg.get("document-metadata")
-        ids = set(ids)
 
         meta = []
 
-        key = "metadata"
-        for defn in self.cfg.get(key):
-
-            if defn.get("id") in ids:
-
-                fact = self.load_metadata(data, defn, ctxts)
-
-                # Ignore missing
-                if fact:
-                    meta.append(fact)
+        for id in ids:
+            if id in self.metadata:
+                meta.append(self.metadata[id])
 
         return meta
 
-    def get_metadata_by_id(self, data, id):
+    def get_metadata_by_id(self, id):
 
-        ctxts = self.get_predefined_contexts(data)
-
-        key = "metadata"
-        for defn in self.cfg.get(key):
-
-            if defn.get("id") == id:
-
-                return self.load_metadata(data, defn, ctxts)
+        if id in self.metadata:
+            return self.metadata[id]
 
         return NoneValue()
 
-    def get_all_metadata(self, data, id):
+    def get_all_metadata(self, id):
 
-        ctxts = self.get_predefined_contexts(data)
-
-        meta = []
-
-        key = "metadata"
-        for defn in self.cfg.get(key):
-
-            if defn.get("id") == id:
-                fact = self.load_metadata(data, defn, ctxts)
-                if fact:
-                    meta.append(fact)
-
-        return meta
-
-    def get_all_metadata_by_id(self, data, id):
-
-        ctxts = self.get_predefined_contexts(data)
-
-        meta = []
-
-        key = "metadata"
-        for defn in self.cfg.get(key):
-
-            if defn.get("id").startswith(id):
-                fact = self.load_metadata(data, defn, ctxts)
-                if fact:
-                    meta.append(fact)
-
+        meta = [self.metadata[v] for v in self.metadata]
         return meta
 
     def load_metadata(self, data, defn, ctxts):

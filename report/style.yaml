@@ -72,16 +72,16 @@ body {
   padding: 0.5rem;
 }
 
-.page .heading {
+.page .header {
   text-align: center;
   font-weight: bold;
 }
 
-.page .heading div:last-child {
+.page .header div:last-child {
   padding-bottom: 0.5rem;
 }
 
-.page .heading hr {
+.page .header hr {
   margin-bottom: 2rem;
 }
 
@@ -143,11 +143,6 @@ table {
   display: table-row;
 }
 
-.header {
-  font-weight: bold;
-  margin-top: 1rem;
-}
-
 .cell {
   display: table-cell;
 }
@@ -155,6 +150,11 @@ table {
 .label {
   width: 14rem;
   font-size: smaller;
+}
+
+.label.heading {
+  font-weight: bold;
+  margin-top: 1rem;
 }
 
 .note {
@@ -170,7 +170,7 @@ table {
   text-align: center;
 }
 
-.label.breakdown.header {
+.label.breakdown.heading {
   margin-bottom: 0.2rem;
 }
 
@@ -205,7 +205,7 @@ table {
   body {
     font-size: 11pt;
   }
-  .period {
+  .data {
     width: 8em;
   }
 }
@@ -228,7 +228,7 @@ table {
   border-top: 5px double #808080;
 }
 
-.periodname {
+.column.header {
   padding: 0.5em 1em 0.5em 1em;
   border-bottom: 0.2em solid black;
   font-weight: bold;
@@ -246,15 +246,15 @@ table {
   margin-top: 0.25em;
 }
 
-.period.value {
+.data.value {
   text-align: right;
 }
 
-.period.value.negative {
+.data.value.negative {
   color: #400000;
 }
 
-.period.value.nil {
+.data.value.nil {
   color: #a0a0a0;
 }
 

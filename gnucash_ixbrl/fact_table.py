@@ -64,7 +64,7 @@ class FactTable(BasicElement):
         for v in self.elements:
 
             if v.get("context"):
-                context = taxonomy.get_context(v.get("context"), self.data)
+                context = taxonomy.get_context(v.get("context"))
             else:
                 context = period_context
 

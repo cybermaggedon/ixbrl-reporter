@@ -27,6 +27,11 @@ class PageElement(BasicElement):
             v.to_text(taxonomy, out)
             out.write("\n")
 
+    def to_debug(self, taxonomy, out):
+        for v in self.elements:
+            v.to_debug(taxonomy, out)
+            out.write("\n")
+
     def to_ixbrl_elt(self, par, taxonomy):
 
         elt = par.xhtml_maker.div({

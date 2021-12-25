@@ -4,13 +4,11 @@ from . context import Context
 from . computation import get_computations, ResultSet
 from . valueset import ValueSet
 from . simple_sheet import SimpleWorksheet
-from . computations_sheet import ComputationsWorksheet
+from . flex_sheet import FlexWorksheet
 from . element import Element
 from . config import NoneValue
 from . datum import *
 from . expand import expand_string
-
-import copy
 
 class DataSource:
     def __init__(self, cfg, session):
@@ -95,8 +93,8 @@ class DataSource:
 
                 if kind == "simple":
                     return SimpleWorksheet.load(ws_def, self)
-                if kind == "computations":
-                    return ComputationsWorksheet.load(ws_def, self)
+                if kind == "flex":
+                    return FlexWorksheet.load(ws_def, self)
 
                 raise RuntimeError("Don't know worksheet type '%s'" % kind)
 
@@ -130,6 +128,8 @@ class DataSource:
 
     def to_datum(self, defn, context):
 
+        # FIXME: All datum to over-ride context? (currently happens in fact_table)
+
         if defn.get("kind") == "config":
             id = defn.get("id")
             value = self.get_config(defn.get("key"))
@@ -161,7 +161,7 @@ class DataSource:
             datum = NumberDatum(id, value, context)
             return datum
         elif defn.get("kind") == "computation":
-            id = defn.get("id")
+
             comp_id = defn.get("computation")
             key = defn.get("period-config")
             period = Period.load(self.get_config(
@@ -169,7 +169,12 @@ class DataSource:
             ))
             res = self.get_results([comp_id], period)
             value = res.get(comp_id)
-            value = copy.copy(value)
-            value.id = id
-            value.context = context
+
             return value
+
+        elif defn.get("kind") == "variable":
+            id = None
+            variable = defn.get("variable")
+            datum = VariableDatum(id, variable, context)
+            return datum
+

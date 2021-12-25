@@ -31,6 +31,14 @@ class NotesElement(BasicElement):
             elt.to_text(taxonomy, out)
             out.write("\n")
 
+    def to_debug(self, taxonomy, out):
+
+        for note in self.notes:
+
+            elt = self.data.expand_string(note)
+            elt.to_debug(taxonomy, out)
+            out.write("\n")
+
     def to_ixbrl_elt(self, par, taxonomy):
 
         div = par.xhtml_maker.div()

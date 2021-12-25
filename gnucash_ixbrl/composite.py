@@ -25,6 +25,10 @@ class Composite(BasicElement):
         for v in self.elements:
             v.to_text(taxonomy, out)
 
+    def to_debug(self, taxonomy, out):
+        for v in self.elements:
+            v.to_debug(taxonomy, out)
+
     def to_ixbrl_elt(self, par, taxonomy):
 
         elts = []
