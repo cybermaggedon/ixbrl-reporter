@@ -1,0 +1,187 @@
+
+accounts:
+  # Filename of GnuCash accounts
+  kind: piecash
+  file: example2.gnucash
+
+report:
+  style: //import report/style.yaml
+  taxonomy: //import taxonomy/esef.yaml
+  title: Financial statements
+  computations: //import esef-computations.yaml
+
+  worksheets:
+  - id: consolidated-statement-of-income
+    kind: simple
+    computations:
+    - operating-revenue
+    - operating-costs
+    - net-financial-items
+    - income-tax
+    - net-profit
+    - other-comprehensive-income
+    - comprehensive-income
+
+  - id: financial-position
+    kind: simple
+    computations:
+    - non-current-assets
+    - current-assets
+    - total-assets
+    - equity
+    - non-current-liabilities
+    - current-liabilities
+    - total-liabilities
+    - total-equity
+
+  - id: cash-flows
+    kind: simple
+    computations:
+    - net-cash-from-operating-activities
+    - net-cash-from-investing-activities
+    - net-cash-from-financing-activities
+    - cash-at-end-of-year
+
+  elements:
+  - id: report
+    kind: composite
+    elements:
+    - id: title
+      kind: page
+      elements:
+      - kind: html
+        root:
+          tag: div
+          content:
+          - tag: table
+            attributes:
+              class: company-info
+            content:
+            - tag: tr
+              content:
+              - tag: td
+                attributes:
+                  class: tag
+                content: Name of reporting entity
+              - tag: td
+                content: expand:~[name-of-reporting-entity]
+            - tag: tr
+              content:
+              - tag: td
+                attributes:
+                  class: tag
+                content: Domicile of entity
+              - tag: td
+                content: expand:~[domicile-of-entity]
+            - tag: tr
+              content:
+              - tag: td
+                attributes:
+                  class: tag
+                content: Legal form of entity
+              - tag: td
+                content: expand:~[legal-form-of-entity]
+            - tag: tr
+              content:
+              - tag: td
+                attributes:
+                  class: tag
+                content: Country of incorporation
+              - tag: td
+                content: expand:~[country-of-incorporation]
+            - tag: tr
+              content:
+              - tag: td
+                attributes:
+                  class: tag
+                content: Address of entity's registered office
+              - tag: td
+                content: expand:~[address-of-entitys-registered-office]
+            - tag: tr
+              content:
+              - tag: td
+                attributes:
+                  class: tag
+                content: Principal place of business
+              - tag: td
+                content: expand:~[principal-place-of-business]
+            - tag: tr
+              content:
+              - tag: td
+                attributes:
+                  class: tag
+                content: Nature of entity's principal activities
+              - tag: td
+                content: expand:~[nature-of-entitys-principal-activities]
+            - tag: tr
+              content:
+              - tag: td
+                attributes:
+                  class: tag
+                content: Date of end of reporting period
+              - tag: td
+                content: expand:~[date-of-end-of-reporting-period]
+            - tag: tr
+              content:
+              - tag: td
+                attributes:
+                  class: tag
+                content: Period covered by financial statements
+              - tag: td
+                content: 'expand:For the period
+                  ~{period-covered-by-financial-statements=
+                    ~[period-start] - ~[period-end]}'
+    - id: page2
+      kind: page
+      elements:
+      - kind: worksheet
+        worksheet: consolidated-statement-of-income
+    - id: page3
+      kind: page
+      elements:
+      - kind: worksheet
+        worksheet: financial-position
+    - id: page4
+      kind: page
+      elements:
+      - kind: worksheet
+        worksheet: cash-flows
+    - id: page5
+      kind: page
+      elements:
+      - kind: html
+        root:
+          tag: div
+          content:
+          - element:
+              kind: noteheading
+              title: Compliance
+              level: 1
+          - tag: p
+            content: 'expand:~{statement-of-ifrs-compliance=
+              The consolidated financial statements of
+              ~[name-of-reporting-entity] have been prepared in accordance
+              with International Financial Reporting Standards (IFRS) and
+              interpretations issued by the IFRS Interpretations Committee
+              (IFRS IC) applicable to companies reporting under IFRS. The
+              financial statements comply with IFRS as issued by the
+              International Accounting Standards Board (IASB).}'
+          - element:
+              kind: noteheading
+              title: Currency
+              level: 1
+          - tag: p
+            content: 'expand:~{description-of-presentation-currency=
+              These statements are presented in the euro currency (EUR).}'
+          - element:
+              kind: noteheading
+              title: Level of rounding
+              level: 1
+          - tag: p
+            content: 'expand:~{level-of-rounding=
+              Monetary values are reported rounded to the nearest euro.}'
+
+pretty-print: true
+
+metadata: //import esef-metadata.yaml
+

@@ -1,0 +1,204 @@
+
+#############################################################################
+### Taxonomy configuration ##################################################
+#############################################################################
+
+# Some elements from the ESEF taxonomy.
+
+# One or more taxonomy definitions to include.  You can have more than
+# one to mix multiple taxonomies in a document.
+schema:
+#- http://xbrl.ifrs.org/taxonomy/2021-03-24/ifrs-full
+- http://xbrl.ifrs.org/taxonomy/2021-03-24/full_ifrs_mc_entry_point_2021-03-24.xsd
+# XML namespaces which are added to the iXBRL output.  A bunch of
+# standard iXBRL outputs are added automatically and don't need to be
+# listed here.
+namespaces:
+  ifrs-full: http://xbrl.ifrs.org/taxonomy/2021-03-24/ifrs-full
+
+# Contexts are references invoke by tagged data, they describe an
+# entity, any dimensions, and a time period/instant.  We define
+# contexts hierarchically.  Contexts reference other contexts.  That's
+# just how gnucash-ixbrl works, and is nothing to do with standards.
+# Also, the context names are not used in the iXBRL output, again, that's
+# just how gnucash-ixbrl manages things internally.
+contexts:
+
+# The business context, has a business identifier and a scheme under
+# which that identifier was issued.
+- id: business
+  entity: metadata.business.company-number
+  scheme: metadata.business.entity-scheme
+
+# The 'report-period' context describes the period of time which
+# the report covers.
+- id: report-period
+  from: business
+  period: metadata.accounting.periods.0
+
+# The 'previous-period' context describes the previous accounting period
+- from: business
+  id: previous-period
+  period: metadata.accounting.periods.1
+
+# The 'report-date' context describes the report issue date.
+- id: report-date
+  from: business
+  instant: metadata.accounting.date
+
+# The 'end-of-reporting-period' context describes the last day of reporting
+# period.
+- id: end-of-reporting-period
+  from: business
+  instant: metadata.accounting.periods.0.end
+
+# This is a list of metadata fields which are added to the 'hidden'
+# section at the start of the report.  The identifiers here are defined
+# in the metadata section below.
+document-metadata:
+- name-of-reporting-entity
+
+# Definitions for metadata fields.  Each field has content defined
+# using 'config' (value fetch from configuration) or 'value' (value defined
+# literally.  Default is string, but 'kind' describes the type for
+# non-strings e.g. number, bool, date.  The typing is important so that
+# iXBRL is tagged correctly.
+metadata:
+- id: name-of-reporting-entity
+  context: report-period
+  config: metadata.business.company-name
+- id: domicile-of-entity
+  context: report-period
+  config: metadata.business.domicile-of-entity
+- id: legal-form-of-entity
+  context: report-period
+  config: metadata.business.legal-form-of-entity
+- id: country-of-incorporation
+  context: report-period
+  config: metadata.business.country-of-incorporation
+- id: address-of-entitys-registered-office
+  context: report-period
+  config: metadata.business.address-of-entitys-registered-office
+- id: principal-place-of-business
+  context: report-period
+  config: metadata.business.principal-place-of-business
+- id: nature-of-entitys-principal-activities
+  context: report-period
+  config: metadata.business.nature-of-entitys-principal-activities
+- id: date-of-end-of-reporting-period
+  context: report-period
+  config: metadata.accounting.periods.0.end
+- id: period-start
+  context: report-period
+  config: metadata.accounting.periods.0.start
+- id: period-end
+  context: report-period
+  config: metadata.accounting.periods.0.end
+
+# Boiler-plate notes for the accounts notes page.  ~[...] is used to
+# insert a metadata field value.  The full form is
+# ~[fld:prefix:suffix:null].  If value is defined, the prefix and
+# suffix are included as text (not part of the tag value).  If the value
+# is not defined, the null text is shown.  ~{tag=text} is used to markup
+# text with an iXBRL tag.
+note-templates: []
+
+# If sign-reversed is true for a field, it's value is negated.  We
+# normally treat things which cause money to 'go away' (e.g. expenses)
+# as negatives.  iXBRL generally treats money going away as positive
+# numbers.
+sign-reversed: {}
+
+# Taxonomy mapping.  Identifiers are mapped to their iXBRL tag names
+# here.
+tags:
+  name-of-reporting-entity: ifrs-full:NameOfReportingEntityOrOtherMeansOfIdentification
+  domicile-of-entity: ifrs-full:DomicileOfEntity
+  legal-form-of-entity: ifrs-full:LegalFormOfEntity
+  country-of-incorporation: ifrs-full:CountryOfIncorporation
+  address-of-entitys-registered-office: ifrs-full:AddressOfRegisteredOfficeOfEntity
+  principal-place-of-business: ifrs-full:PrincipalPlaceOfBusiness
+  nature-of-entitys-principal-activities: ifrs-full:DescriptionOfNatureOfEntitysOperationsAndPrincipalActivities
+  date-of-end-of-reporting-period: ifrs-full:DateOfEndOfReportingPeriod2013
+  period-covered-by-financial-statements: ifrs-full:PeriodCoveredByFinancialStatements
+  description-of-presentation-currency: ifrs-full:DescriptionOfPresentationCurrency
+  level-of-rounding: ifrs-full:LevelOfRoundingUsedInFinancialStatements
+  statement-of-ifrs-compliance: ifrs-full:StatementOfIFRSCompliance
+
+  operating-revenue: ifrs-full:Revenue
+  # FIXME?
+  personnel-costs: ifrs-full:EmployeeBenefitsExpense
+  depreciation: ifrs-full:AdjustmentsForDepreciationExpense
+  # accountancy: ifrs-full:FIXME
+  # bank-charges: ifrs-full:FIXME
+  # office: ifrs-full:FIXME
+  # software: ifrs-full:FIXME
+  # subscriptions: ifrs-full:FIXME
+  # sundries: ifrs-full:FIXME
+  # telecoms: ifrs-full:FIXME
+  # travel: ifrs-full:FIXME
+  # supplies-and-services: ifrs-full:FIXME
+  # other-operating-costs: ifrs-full:FIXME
+  # operating-costs: ifrs-full:FIXME
+  # interest-received: ifrs-full:FIXME
+  # interest-paid: ifrs-full:FIXME
+  # net-financial-items: ifrs-full:FIXME
+  # income-tax: ifrs-full:FIXME
+  # net-profit: ifrs-full:FIXME
+  # other-comprehensive-income: ifrs-full:FIXME
+  # comprehensive-income: ifrs-full:FIXME
+  # tangible-assets: ifrs-full:FIXME
+  # fixed-assets: ifrs-full:FIXME
+  # other-non-current-assets: ifrs-full:FIXME
+  # deferred-tax-assets: ifrs-full:FIXME
+  # non-current-assets: ifrs-full:FIXME
+  # debtors: ifrs-full:FIXME
+  # vat-refund-owed: ifrs-full:FIXME
+  # bank: ifrs-full:FIXME
+  # current-assets: ifrs-full:FIXME
+  # total-assets: ifrs-full:FIXME
+  # capital: ifrs-full:FIXME
+  # retained-profit: ifrs-full:FIXME
+  # profit: ifrs-full:FIXME
+  # equity: ifrs-full:FIXME
+  # non-current-liabilities: ifrs-full:FIXME
+  # trade-creditors: ifrs-full:FIXME
+  # other-creditors: ifrs-full:FIXME
+  # current-liabilities: ifrs-full:FIXME
+  # total-liabilities: ifrs-full:FIXME
+  # total-equity: ifrs-full:FIXME
+  # income-tax-paid: ifrs-full:FIXME
+  # depreciation-adjustment: ifrs-full:FIXME
+  # trade-and-other-receivables: ifrs-full:FIXME
+  # inventories: ifrs-full:FIXME
+  # trade-payables: ifrs-full:FIXME
+  # cf-profit: ifrs-full:FIXME
+  # cash-inflow: ifrs-full:FIXME
+  # cash-from-operations: ifrs-full:FIXME
+  # net-cash-from-operating-activities: ifrs-full:FIXME
+  # proceeds-sale-equipment: ifrs-full:FIXME
+  # purchase-equipment: ifrs-full:FIXME
+  # purchase-intangible-assets: ifrs-full:FIXME
+  # net-cash-from-investing-activities: ifrs-full:FIXME
+  # proceeds-from-issuing-shares: ifrs-full:FIXME
+  # dividends-paid: ifrs-full:FIXME
+  # net-cash-from-financing-activities: ifrs-full:FIXME
+  # cash-at-start-of-year: ifrs-full:FIXME
+  # cash-at-end-of-year: ifrs-full:FIXME
+  # cash: ifrs-full:FIXME
+
+# Segments / dimensions are mapped here.  Segments are defined with a
+# segment identifier and a value e.g. accounting-standards = frs102.
+# For each segment identifier, there is listed a dimension (which is added
+# to a context) and a map from value to dimension value.
+segment: {}
+  # accounting-standards:
+  #   dimension: uk-bus:AccountingStandardsDimension
+  #   map:
+  #     frs101: uk-bus:FRS101
+  #     frs102: uk-bus:FRS102
+  #     frsse: uk-bus:FRSSE
+  #     full-irs: uk-bus:FullIFRS
+  #     micro-entities: uk-bus:Micro-entities
+  #     other-standards: uk-bus:OtherStandards
+  #     small-entities-regime: uk-bus:SmallEntities
