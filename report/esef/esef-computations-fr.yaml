@@ -1,0 +1,475 @@
+
+# Income statement
+
+- id: consultancy
+  kind: line
+  description: Consultance
+  period: in-year
+  accounts:
+  - Income:Sales
+
+- id: operating-revenue
+  kind: sum
+  description: Revenus d'exploitation
+  period: in-year
+  inputs:
+  - consultancy
+
+- id: personnel-costs
+  description: Coûts de personnel
+  kind: line
+  accounts:
+  - Expenses:Emoluments:Employees
+  - Expenses:Emoluments:Employer Pension Contribution
+  period: in-year
+
+- id: depreciation-and-amortisation
+  kind: line
+  description: Dépréciation et amortissement
+  accounts:
+  - Expenses:Depreciation
+  period: in-year
+
+- id: accountancy
+  kind: line
+  description: Services de comptabilité
+  accounts:
+  - Expenses:VAT Purchases:Accountant
+  period: in-year
+
+- id: bank-charges
+  kind: line
+  description: Charges bancaires
+  period: in-year
+  accounts:
+  - Expenses:VAT Purchases:Bank Charges
+
+- id: office
+  kind: line
+  description: Frais de bureau
+  period: in-year
+  accounts:
+  - Expenses:VAT Purchases:Office
+
+- id: software
+  kind: line
+  description: Logiciel
+  period: in-year
+  accounts:
+  - Expenses:VAT Purchases:Software
+
+- id: subscriptions
+  kind: line
+  description: Abonnements
+  period: in-year
+  accounts:
+  - Expenses:VAT Purchases:Subscriptions
+
+- id: sundries
+  kind: line
+  description: Articles divers
+  period: in-year
+  accounts:
+  - Expenses:VAT Purchases:Sundries
+
+- id: telecoms
+  kind: line
+  description: Télécoms
+  period: in-year
+  accounts:
+  - Expenses:VAT Purchases:Telecoms
+
+- id: travel
+  kind: line
+  description: Voyage
+  period: in-year
+  accounts:
+  - Expenses:VAT Purchases:Travel/Accom
+  
+- id: other-operating-costs
+  kind: sum
+  description: Autres coûts d'exploitation
+  inputs:
+  - accountancy
+  - bank-charges
+  - office
+  - software
+  - subscriptions
+  - sundries
+  - telecoms
+  - travel
+  period: in-year
+
+- id: operating-costs
+  kind: group
+  inputs:
+  - personnel-costs
+  - depreciation-and-amortisation
+  - other-operating-costs
+  description: Coûts d'exploitation
+  period: in-year
+
+- id: interest-received
+  kind: line
+  period: in-year
+  description: Intérêts sur le compte courant
+  accounts:
+  - Income:Interest
+
+- id: interest-paid
+  kind: line
+  period: in-year
+  description: Intérêts sur les prêts bancaires
+  accounts:
+  - Expenses:Interest Paid
+
+- id: net-financial-items
+  kind: group
+  inputs:
+  - interest-received
+  - interest-paid
+  description: Éléments financiers nets
+  period: in-year
+
+- id: income-tax
+  kind: line
+  description: Impôts sur le revenu
+  period: in-year
+  accounts:
+  - Equity:Corporation Tax
+
+- id: net-profit
+  kind: group
+  inputs:
+  - operating-revenue
+  - operating-costs
+  - net-financial-items
+  - income-tax
+  description: Bénéfice net pour l'année
+  period: in-year
+
+- id: other-comprehensive-income
+  kind: group
+  inputs: []
+  description: Autres éléments du résultat global
+  period: in-year
+
+- id: comprehensive-income
+  kind: group
+  inputs:
+  - net-profit
+  - other-comprehensive-income
+  description: Résultat global de l'année
+  period: in-year
+
+# Financial position
+
+- id: tangible-assets
+  kind: line
+  description: Actifs corporels
+  period: at-end
+  accounts:
+  - Assets:Capital Equipment
+  
+- id: fixed-assets
+  description: Actifs fixes
+  kind: sum
+  period: at-end
+  inputs:
+  - tangible-assets
+  
+- id: other-non-current-assets
+  description: Autres actifs non courants
+  kind: sum
+  period: at-end
+  inputs: []
+
+- id: deferred-tax-assets
+  description: Actifs d'impôts différés
+  kind: sum
+  period: at-end
+  inputs: []
+
+- id: non-current-assets
+  kind: group
+  inputs:
+  - fixed-assets
+  - other-non-current-assets
+  - deferred-tax-assets
+  description: Actifs non courants
+  period: at-end
+
+# Debtors
+- id: debtors
+  kind: line
+  description: Débiteurs
+  period: at-end
+  accounts:
+  - Accounts Receivable
+  - Assets:Owed To Us
+
+# VAT due back
+- id: vat-refund-owed
+  kind: line
+  description: Remboursement de la TVA dû
+  period: at-end
+  accounts:
+  - VAT:Input
+
+# Cash in bank
+- id: bank
+  kind: line
+  description: Liquidités en banque
+  period: at-end
+  accounts:
+  - Bank Accounts
+
+# Current assets
+- id: current-assets
+  kind: group
+  description: Actifs courants
+  period: at-end
+  inputs:
+  - debtors
+  - vat-refund-owed
+  - bank
+
+- id: total-assets
+  kind: sum
+  inputs:
+  - non-current-assets
+  - current-assets
+  description: Total des actifs
+  period: at-end
+
+- id: capital
+  kind: line
+  description: Capital
+  period: at-end
+  accounts:
+  - Equity:Shareholdings
+
+- id: retained-profit
+  kind: line
+  description: Bénéfice non distribué
+  period: at-end
+  accounts:
+  - Income
+  - Expenses
+  - Equity:Corporation Tax
+  - Equity:Dividends
+
+- id: equity
+  kind: group
+  inputs:
+  - capital
+  - retained-profit
+  description: Equity
+  period: at-end
+
+- id: non-current-liabilities
+  kind: group
+  inputs: []
+  description: Passifs non courants
+  period: at-end
+
+# Trade creditors
+- id: trade-creditors
+  kind: line
+  description: Créanciers commerciaux
+  reverse-sign: true
+  period: at-end
+  accounts:
+  - Accounts Payable
+
+# Other creditrs
+- id: other-creditors
+  kind: line
+  description: Autres créanciers
+  reverse-sign: true
+  period: at-end
+  accounts:
+  - VAT:Output
+  - Liabilities:Owed Corporation Tax
+
+- id: current-liabilities
+  kind: group
+  inputs:
+  - trade-creditors
+  - other-creditors
+  description: Passif à court terme
+  period: at-end
+
+- id: total-liabilities
+  kind: sum
+  inputs:
+  - non-current-liabilities
+  - current-liabilities
+  description: Total du passif
+  period: at-end
+
+- id: total-equity-and-liabilities
+  kind: sum
+  inputs:
+  - equity
+  - total-liabilities
+  description: Total des fonds propres et du passif
+  period: at-end
+
+
+##############################
+# Cash flows #################
+##############################
+
+- id: income-tax-paid
+  kind: line
+  description: Impôts sur le revenu
+  period: in-year
+  accounts:
+  - Equity:Corporation Tax
+
+# Sign-reversed depreciation to add back in
+- id: depreciation-adjustment
+  kind: line
+  description: Ajustement pour dépréciation
+  period: in-year
+  reverse-sign: true
+  accounts:
+  - Expenses:Depreciation
+
+- id: financial-items-adjustment
+  kind: line
+  description: Ajustement pour les éléments financiers
+  period: in-year
+  reverse-sign: true
+  accounts:
+  - Income:Interest
+  - Expenses:Interest Paid
+
+- id: income-tax-adjustment
+  kind: line
+  description: Ajustement pour l'impôt sur le revenu
+  period: in-year
+  reverse-sign: true
+  accounts:
+  - Equity:Corporation Tax
+
+# Sign-reversed depreciation to add back in
+- id: trade-and-other-receivables
+  kind: line
+  description: Diminution (augmentation) des créances commerciales et autres créances
+  period: in-year
+  reverse-sign: true
+  accounts:
+  - Accounts Receivable
+  - Assets:Owed To Us
+  - VAT:Input
+
+- id: inventories
+  kind: line
+  description: Decrease (increase) in inventories
+  period: in-year
+  # FIXME: Correct?
+  reverse-sign: true
+  accounts: []
+
+# Sign-reversed depreciation to add back in
+- id: trade-payables
+  kind: line
+  description: Diminution (augmentation) des stocks
+  period: in-year
+  # FIXME: Correct?
+  reverse-sign: true
+  accounts:
+  - Accounts Payable
+  - VAT:Output
+  - Liabilities:Owed Corporation Tax
+
+- id: net-cash-from-operating-activities
+  kind: group
+  description: Trésorerie nette des activités opérationnelles
+  period: in-year
+  inputs:
+  - net-profit
+  - depreciation-adjustment
+  - financial-items-adjustment
+  - income-tax-adjustment
+  - trade-and-other-receivables
+  - inventories
+  - trade-payables
+  - income-tax-paid
+
+- id: proceeds-sale-equipment
+  kind: line
+  period: in-year
+  description: Produit de la vente d'équipements
+  accounts: []
+
+- id: purchase-equipment
+  kind: line
+  period: in-year
+  reverse-sign: true
+  description: Achat de biens, d'installations et d'équipements
+  accounts:
+  - Assets:Capital Equipment:Computer Equipment
+
+- id: purchase-intangible-assets
+  kind: line
+  period: in-year
+  description: Achat d'actifs incorporels
+  accounts: []
+
+- id: net-cash-from-investing-activities
+  kind: group
+  description: Trésorerie nette des activités d'investissement
+  period: in-year
+  inputs:
+  - proceeds-sale-equipment
+  - purchase-equipment
+  - purchase-intangible-assets
+  - interest-received
+
+- id: proceeds-from-issuing-shares
+  kind: line
+  period: in-year
+  description: Émission de capital social
+  accounts:
+  - Equity:Shareholdings
+
+# Dividends paid out
+- id: dividends-paid
+  kind: line
+  description: Dividendes
+  period: in-year
+  accounts:
+  - Equity:Dividends
+
+- id: net-cash-from-financing-activities
+  kind: group
+  description: Trésorerie nette des activités de financement
+  period: in-year
+  inputs:
+  - interest-paid
+  - proceeds-from-issuing-shares
+  - dividends-paid
+
+- id: cash-at-start-of-year
+  kind: line
+  period: at-start
+  description: Liquidités au début de l'année
+  accounts:
+  - Bank Accounts
+
+- id: cash-at-end-of-year
+  kind: group
+  description: Trésorerie et équivalents de trésorerie à la fin de l'année
+  inputs:
+  - cash-at-start-of-year
+  - id: net-cash-change
+    kind: sum
+    description: Variation nette de la trésorerie et des équivalents de trésorerie
+    period: in-year
+    inputs:
+    - net-cash-from-operating-activities
+    - net-cash-from-investing-activities
+    - net-cash-from-financing-activities

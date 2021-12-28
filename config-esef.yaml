@@ -5,8 +5,9 @@ accounts:
   file: example2.gnucash
 
 report: //import report/esef/esef.yaml
+#report: //import report/esef/esef-fr.yaml
 
 #pretty-print: true
 
-metadata: //import esef-metadata.yaml
+metadata: //import metadata-esef.yaml
 
