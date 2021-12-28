@@ -1,4 +1,6 @@
 
+# Same as esef.yaml but invokes the French-labelled taxonomy.
+
 #############################################################################
 ### Taxonomy configuration ##################################################
 #############################################################################
@@ -8,7 +10,7 @@
 # One or more taxonomy definitions to include.  You can have more than
 # one to mix multiple taxonomies in a document.
 schema:
-- http://www.esma.europa.eu/taxonomy/2021-03-24/esef_cor.xsd
+- http://www.esma.europa.eu/taxonomy/2021-03-24/esef_cor-lab-fr.xml
 
 # XML namespaces which are added to the iXBRL output.  A bunch of
 # standard iXBRL outputs are added automatically and don't need to be

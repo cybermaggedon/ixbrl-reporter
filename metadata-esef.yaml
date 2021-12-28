@@ -21,7 +21,8 @@ business:
   company-name: Exemple d'Entreprise SARL
 
   # Registered company number
-  company-number: '0AAAAAAAAAAAAA0AAA00'
+  company-number: '0AAAAAAAAAAAAA0AAA40'
+#  company-number: '2138001AW6H99F3M7C66'
 
   # iXBRL entity scheme
   entity-scheme: http://standards.iso.org/iso/17442

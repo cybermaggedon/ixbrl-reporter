@@ -22,6 +22,8 @@ which output:
 - Company accounts for UK Companies House filing using the FRS-102 taxonomy.
 - UK HMRC corporation tax filing using the CT600 schema and Detailed Profit
   and Loss schema in a single document.
+- ESEF filing configuration for an English-language filing as well as
+  French.
 
 With the right configuration files, other taxonomies would work, the
 configuration files are complex to write.  This is a command-line utility.
@@ -114,6 +116,12 @@ Corporation tax filing:
 
 ```
 gnucash-ixbrl config-corptax.yaml report ixbrl > ct.html
+```
+
+ESMA ESEF filing:
+
+```
+gnucash-ixbrl config-esef.yaml report ixbrl > esef.html
 ```
 
 ## Configuration

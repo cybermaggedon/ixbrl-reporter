@@ -5,7 +5,7 @@ mkdir -p output/
 cfgs="unaud-micro-rev.yaml unaud-micro.yaml aud-micro.yaml 
   aud-micro-rev.yaml aud-small.yaml aud-small-rev.yaml unaud-abr.yaml 
   unaud-abr-rev.yaml unaud-full.yaml unaud-full-rev.yaml aud-full.yaml 
-  aud-full-rev.yaml ct.yaml"
+  aud-full-rev.yaml ct.yaml esef.yaml esef-fr.yaml"
 
 for cfg in ${cfgs}
 do

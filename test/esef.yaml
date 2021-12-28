@@ -5,8 +5,8 @@ accounts:
   file: example2.gnucash
 
 # Do you want your accounts in English or French?
-#report: //import report/esef/esef.yaml
-report: //import report/esef/esef-fr.yaml
+report: //import report/esef/esef.yaml
+#report: //import report/esef/esef-fr.yaml
 
 #pretty-print: true
 

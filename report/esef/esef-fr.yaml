@@ -1,5 +1,5 @@
 style: //import report/style.yaml
-taxonomy: //import taxonomy/esef.yaml
+taxonomy: //import taxonomy/esef-fr.yaml
 title: Financial statements
 computations: //import report/esef/esef-computations-fr.yaml
 worksheets: //import report/esef/esef-worksheets.yaml
