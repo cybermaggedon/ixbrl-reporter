@@ -126,66 +126,57 @@ tags:
   statement-of-ifrs-compliance: ifrs-full:StatementOfIFRSCompliance
 
   operating-revenue: ifrs-full:Revenue
-  # FIXME?
   personnel-costs: ifrs-full:EmployeeBenefitsExpense
-  depreciation: ifrs-full:AdjustmentsForDepreciationExpense
-  # accountancy: ifrs-full:FIXME
-  # bank-charges: ifrs-full:FIXME
-  # office: ifrs-full:FIXME
-  # software: ifrs-full:FIXME
-  # subscriptions: ifrs-full:FIXME
-  # sundries: ifrs-full:FIXME
-  # telecoms: ifrs-full:FIXME
-  # travel: ifrs-full:FIXME
-  # supplies-and-services: ifrs-full:FIXME
-  # other-operating-costs: ifrs-full:FIXME
-  # operating-costs: ifrs-full:FIXME
-  # interest-received: ifrs-full:FIXME
-  # interest-paid: ifrs-full:FIXME
-  # net-financial-items: ifrs-full:FIXME
-  # income-tax: ifrs-full:FIXME
-  # net-profit: ifrs-full:FIXME
-  # other-comprehensive-income: ifrs-full:FIXME
-  # comprehensive-income: ifrs-full:FIXME
-  # tangible-assets: ifrs-full:FIXME
-  # fixed-assets: ifrs-full:FIXME
-  # other-non-current-assets: ifrs-full:FIXME
-  # deferred-tax-assets: ifrs-full:FIXME
-  # non-current-assets: ifrs-full:FIXME
-  # debtors: ifrs-full:FIXME
-  # vat-refund-owed: ifrs-full:FIXME
-  # bank: ifrs-full:FIXME
-  # current-assets: ifrs-full:FIXME
-  # total-assets: ifrs-full:FIXME
-  # capital: ifrs-full:FIXME
-  # retained-profit: ifrs-full:FIXME
-  # profit: ifrs-full:FIXME
-  # equity: ifrs-full:FIXME
-  # non-current-liabilities: ifrs-full:FIXME
-  # trade-creditors: ifrs-full:FIXME
-  # other-creditors: ifrs-full:FIXME
-  # current-liabilities: ifrs-full:FIXME
-  # total-liabilities: ifrs-full:FIXME
-  # total-equity: ifrs-full:FIXME
-  # income-tax-paid: ifrs-full:FIXME
-  # depreciation-adjustment: ifrs-full:FIXME
-  # trade-and-other-receivables: ifrs-full:FIXME
-  # inventories: ifrs-full:FIXME
-  # trade-payables: ifrs-full:FIXME
-  # cf-profit: ifrs-full:FIXME
-  # cash-inflow: ifrs-full:FIXME
-  # cash-from-operations: ifrs-full:FIXME
-  # net-cash-from-operating-activities: ifrs-full:FIXME
-  # proceeds-sale-equipment: ifrs-full:FIXME
-  # purchase-equipment: ifrs-full:FIXME
-  # purchase-intangible-assets: ifrs-full:FIXME
-  # net-cash-from-investing-activities: ifrs-full:FIXME
-  # proceeds-from-issuing-shares: ifrs-full:FIXME
-  # dividends-paid: ifrs-full:FIXME
-  # net-cash-from-financing-activities: ifrs-full:FIXME
-  # cash-at-start-of-year: ifrs-full:FIXME
-  # cash-at-end-of-year: ifrs-full:FIXME
-  # cash: ifrs-full:FIXME
+  depreciation-and-amortisation: ifrs-full:DepreciationAndAmortisationExpense
+  other-operating-costs: ifrs-full:OtherExpenseByNature
+  interest-received: ifrs-full:FinanceIncome
+  interest-paid: ifrs-full:FinanceCosts
+  income-tax: ifrs-full:IncomeTaxExpenseContinuingOperations
+  net-profit: ifrs-full:ProfitLossFromOperatingActivities
+  other-comprehensive-income: ifrs-full:OtherIncomeExpenseFromSubsidiariesJointlyControlledEntitiesAndAssociates
+  comprehensive-income: ifrs-full:ProfitLoss
+
+  fixed-assets: ifrs-full:PropertyPlantAndEquipment
+  other-non-current-assets: ifrs-full:OtherNoncurrentFinancialAssets
+  deferred-tax-assets: ifrs-full:DeferredTaxAssets
+  non-current-assets: ifrs-full:NoncurrentAssets
+  debtors: ifrs-full:TradeAndOtherCurrentReceivables
+  vat-refund-owed: ifrs-full:CurrentTaxAssetsCurrent
+  bank: ifrs-full:CashAndCashEquivalents
+  current-assets: ifrs-full:CurrentAssets
+  total-assets: ifrs-full:Assets
+
+  capital: ifrs-full:IssuedCapital
+  retained-profit: ifrs-full:RetainedEarnings
+  equity: ifrs-full:Equity
+
+  non-current-liabilities: ifrs-full:NoncurrentLiabilities
+  trade-creditors: ifrs-full:TradeAndOtherCurrentPayables
+  other-creditors: ifrs-full:OtherCurrentFinancialLiabilities
+  current-liabilities: ifrs-full:CurrentLiabilities
+  total-liabilities: ifrs-full:Liabilities
+  total-equity-and-liabilities: ifrs-full:EquityAndLiabilities
+
+  income-tax-paid: ifrs-full:IncomeTaxesPaidRefundClassifiedAsOperatingActivities
+  income-tax-adjustment: ifrs-full:AdjustmentsForIncomeTaxExpense
+  financial-items-adjustment: ifrs-full:AdjustmentsForFinanceCosts
+  depreciation-adjustment: ifrs-full:AdjustmentsForDepreciationExpense
+
+  trade-and-other-receivables: ifrs-full:AdjustmentsForDecreaseIncreaseInTradeAccountReceivable
+
+  inventories: ifrs-full:AdjustmentsForDecreaseIncreaseInInventories
+  trade-payables: ifrs-full:AdjustmentsForIncreaseDecreaseInTradeAccountPayable
+  net-cash-from-operating-activities: ifrs-full:CashFlowsFromUsedInOperations
+  proceeds-sale-equipment: ifrs-full:ProceedsFromSalesOfPropertyPlantAndEquipmentClassifiedAsInvestingActivities
+  purchase-equipment: ifrs-full:PurchaseOfPropertyPlantAndEquipmentClassifiedAsInvestingActivities
+  purchase-intangible-assets: ifrs-full:ProceedsFromSalesOfIntangibleAssetsClassifiedAsInvestingActivities
+  net-cash-from-investing-activities: ifrs-full:CashFlowsFromUsedInInvestingActivities
+  proceeds-from-issuing-shares: ifrs-full:ProceedsFromIssuingShares
+  dividends-paid: ifrs-full:DividendsPaidClassifiedAsFinancingActivities
+  net-cash-from-financing-activities: ifrs-full:CashFlowsFromUsedInFinancingActivities
+  cash-at-start-of-year: ifrs-full:CashAndCashEquivalents
+  cash-at-end-of-year: ifrs-full:CashAndCashEquivalents
+  net-cash-change: ifrs-full:IncreaseDecreaseInCashAndCashEquivalents
 
 # Segments / dimensions are mapped here.  Segments are defined with a
 # segment identifier and a value e.g. accounting-standards = frs102.

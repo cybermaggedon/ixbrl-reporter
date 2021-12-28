@@ -32,7 +32,7 @@ report:
     - non-current-liabilities
     - current-liabilities
     - total-liabilities
-    - total-equity
+    - total-equity-and-liabilities
 
   - id: cash-flows
     kind: simple
@@ -181,7 +181,7 @@ report:
             content: 'expand:~{level-of-rounding=
               Monetary values are reported rounded to the nearest euro.}'
 
-pretty-print: true
+#pretty-print: true
 
 metadata: //import esef-metadata.yaml
 

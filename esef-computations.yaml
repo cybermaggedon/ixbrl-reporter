@@ -20,12 +20,12 @@
   accounts:
   - Expenses:Emoluments:Employees
   - Expenses:Emoluments:Employer Pension Contribution
-  description: Personal costs
+  description: Personnel costs
   period: in-year
 
-- id: depreciation
+- id: depreciation-and-amortisation
   kind: line
-  description: Depreciation
+  description: Depreciation and amortisation
   accounts:
   - Expenses:Depreciation
   period: in-year
@@ -86,9 +86,9 @@
   accounts:
   - Expenses:VAT Purchases:Travel/Accom
   
-- id: supplies-and-services
+- id: other-operating-costs
   kind: sum
-  description: Supplies and services
+  description: Other operating costs
   inputs:
   - accountancy
   - bank-charges
@@ -99,19 +99,12 @@
   - telecoms
   - travel
   period: in-year
-  
-- id: other-operating-costs
-  kind: sum
-  description: Other operating costs
-  inputs: []
-  period: in-year
 
 - id: operating-costs
   kind: group
   inputs:
-  - supplies-and-services
   - personnel-costs
-  - depreciation
+  - depreciation-and-amortisation
   - other-operating-costs
   description: Operating costs
   period: in-year
@@ -135,7 +128,7 @@
   inputs:
   - interest-received
   - interest-paid
-  description: Net financial costs
+  description: Net financial items
   period: in-year
 
 - id: income-tax
@@ -158,7 +151,7 @@
 - id: other-comprehensive-income
   kind: group
   inputs: []
-  description: Net financial costs
+  description: Other comprehensive income
   period: in-year
 
 - id: comprehensive-income
@@ -259,17 +252,7 @@
 - id: retained-profit
   kind: line
   description: Retained profit
-  period: at-start
-  accounts:
-  - Income
-  - Expenses
-  - Equity:Corporation Tax
-  - Equity:Dividends
-
-- id: profit
-  kind: line
-  description: In-year profit
-  period: in-year
+  period: at-end
   accounts:
   - Income
   - Expenses
@@ -281,7 +264,6 @@
   inputs:
   - capital
   - retained-profit
-  - profit
   description: Equity
   period: at-end
 
@@ -326,7 +308,7 @@
   description: Total liabilities
   period: at-end
 
-- id: total-equity
+- id: total-equity-and-liabilities
   kind: sum
   inputs:
   - equity
@@ -355,6 +337,23 @@
   accounts:
   - Expenses:Depreciation
 
+- id: financial-items-adjustment
+  kind: line
+  description: Adjustment for financial items
+  period: in-year
+  reverse-sign: true
+  accounts:
+  - Income:Interest
+  - Expenses:Interest Paid
+
+- id: income-tax-adjustment
+  kind: line
+  description: Adjustment for Income tax
+  period: in-year
+  reverse-sign: true
+  accounts:
+  - Equity:Corporation Tax
+
 # Sign-reversed depreciation to add back in
 - id: trade-and-other-receivables
   kind: line
@@ -366,11 +365,11 @@
   - Assets:Owed To Us
   - VAT:Input
 
-# Sign-reversed depreciation to add back in
 - id: inventories
   kind: line
   description: Decrease (increase) in inventories
   period: in-year
+  # FIXME: Correct?
   reverse-sign: true
   accounts: []
 
@@ -379,47 +378,22 @@
   kind: line
   description: Increase (decrease) in trade payables
   period: in-year
+  # FIXME: Correct?
   reverse-sign: true
   accounts:
   - Accounts Payable
   - VAT:Output
   - Liabilities:Owed Corporation Tax
 
-# Cashflow lists dividends and corp tax separately
-- id: cf-profit
-  kind: line
-  description: In-year profit
-  period: in-year
-  accounts:
-  - Income:Sales
-  - Expenses:Depreciation
-  - Expenses:Emoluments
-  - Expenses:VAT Purchases
-
-- id: cash-inflow
-  kind: sum
-  period: in-year
-  inputs:
-  - cf-profit
-
-- id: cash-from-operations
-  kind: group
-  description: Cash from operations
-  period: in-year
-  inputs:
-  - cash-inflow
-  - depreciation-adjustment
-  - trade-and-other-receivables
-  - inventories
-  - trade-payables
-
 - id: net-cash-from-operating-activities
   kind: group
   description: Net cash from operating activities
   period: in-year
   inputs:
-  - cf-profit
+  - net-profit
   - depreciation-adjustment
+  - financial-items-adjustment
+  - income-tax-adjustment
   - trade-and-other-receivables
   - inventories
   - trade-payables
@@ -462,12 +436,6 @@
   accounts:
   - Equity:Shareholdings
 
-- id: purchase-of-non-controlling-interest
-  kind: line
-  period: in-year
-  description: Purchase of non-controlling interest
-  accounts: []
-
 # Dividends paid out
 - id: dividends-paid
   kind: line
@@ -483,7 +451,6 @@
   inputs:
   - interest-paid
   - proceeds-from-issuing-shares
-  - purchase-of-non-controlling-interest
   - dividends-paid
 
 - id: cash-at-start-of-year
@@ -501,26 +468,8 @@
   - id: net-cash-change
     kind: sum
     description: Net change in cash and cash equivalents
+    period: in-year
     inputs:
     - net-cash-from-operating-activities
     - net-cash-from-investing-activities
     - net-cash-from-financing-activities
-
-- id: cash
-  kind: group
-  description: Cash and cash equivalents at end of year
-  period: at-end
-  inputs:
-  - id: current-account
-    kind: line
-    description: Current account
-    period: at-end
-    accounts:
-    - Bank Accounts:Current Account
-  - id: reserve-account
-    kind: line
-    description: Reserve account
-    period: at-end
-    accounts:
-    - Bank Accounts:Reserve Account
-
