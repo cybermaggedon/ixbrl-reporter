@@ -1,0 +1,250 @@
+style: //import report/style.yaml
+taxonomy: //import taxonomy/esef.yaml
+title: Financial statements
+computations: //import report/esef/esef-computations.yaml
+worksheets: //import report/esef/esef-worksheets.yaml
+
+elements:
+- id: report
+  kind: composite
+  elements:
+  - title
+  - company-info
+  - consolidated-statement-of-income
+  - financial-position
+  - cash-flows
+  - notes
+
+- id: title
+  kind: page
+  elements:
+  - kind: html
+    root:
+      tag: div
+      attributes: { class: titlepage }
+      content:
+      - tag: div
+        attributes: { class: company-number }
+        content: 'expand:
+          ~[name-of-reporting-entity] (~[country-of-incorporation])'
+      - tag: img
+        attributes:
+          src: //import logo.yaml
+          alt: Company logo
+      - tag: div
+        attributes: { class: company-name }
+        content: 'expand:~[name-of-reporting-entity]'
+      - tag: div
+        attributes: { class: title }
+        content: Financial Statements
+      - tag: div
+        attributes: { class: subtitle }
+        content: 'expand:For the period ended ~[date-of-end-of-reporting-period]'
+- id: company-info
+  kind: page
+  elements:
+  - kind: html
+    root:
+      tag: div
+      content:
+      - tag: div
+        attributes: { class: header }
+        content:
+        - tag: div
+          content: 'expand:~[company-name]'
+        - tag: div
+          content: Company information
+        - tag: div
+          content: 'expand:For the period ended ~[date-of-end-of-reporting-period]'
+        - tag: hr
+  - kind: html
+    root:
+      tag: div
+      content:
+      - tag: table
+        attributes:
+          class: company-info
+        content:
+        - tag: tr
+          content:
+          - tag: td
+            attributes:
+              class: tag
+            content: Name of reporting entity
+          - tag: td
+            content: expand:~[name-of-reporting-entity]
+        - tag: tr
+          content:
+          - tag: td
+            attributes:
+              class: tag
+            content: Domicile of entity
+          - tag: td
+            content: expand:~[domicile-of-entity]
+        - tag: tr
+          content:
+          - tag: td
+            attributes:
+              class: tag
+            content: Legal form of entity
+          - tag: td
+            content: expand:~[legal-form-of-entity]
+        - tag: tr
+          content:
+          - tag: td
+            attributes:
+              class: tag
+            content: Country of incorporation
+          - tag: td
+            content: expand:~[country-of-incorporation]
+        - tag: tr
+          content:
+          - tag: td
+            attributes:
+              class: tag
+            content: Address of entity's registered office
+          - tag: td
+            content: expand:~[address-of-entitys-registered-office]
+        - tag: tr
+          content:
+          - tag: td
+            attributes:
+              class: tag
+            content: Principal place of business
+          - tag: td
+            content: expand:~[principal-place-of-business]
+        - tag: tr
+          content:
+          - tag: td
+            attributes:
+              class: tag
+            content: Nature of entity's principal activities
+          - tag: td
+            content: expand:~[nature-of-entitys-principal-activities]
+        - tag: tr
+          content:
+          - tag: td
+            attributes:
+              class: tag
+            content: Date of end of reporting period
+          - tag: td
+            content: expand:~[date-of-end-of-reporting-period]
+        - tag: tr
+          content:
+          - tag: td
+            attributes:
+              class: tag
+            content: Period covered by financial statements
+          - tag: td
+            content: 'expand:For the period
+              ~{period-covered-by-financial-statements=
+                ~[period-start] - ~[period-end]}'
+
+- id: consolidated-statement-of-income
+  kind: page
+  elements:
+  - kind: html
+    root:
+      tag: div
+      content:
+      - tag: div
+        attributes: { class: header }
+        content:
+        - tag: div
+          content: 'expand:~[company-name]'
+        - tag: div
+          content: Consolidated statement of income
+        - tag: div
+          content: 'expand:For the period ended ~[date-of-end-of-reporting-period]'
+        - tag: hr
+  - kind: worksheet
+    worksheet: consolidated-statement-of-income
+
+- id: financial-position
+  kind: page
+  elements:
+  - kind: html
+    root:
+      tag: div
+      content:
+      - tag: div
+        attributes: { class: header }
+        content:
+        - tag: div
+          content: 'expand:~[company-name]'
+        - tag: div
+          content: Statement of financial position
+        - tag: div
+          content: 'expand:For the period ended ~[date-of-end-of-reporting-period]'
+        - tag: hr
+  - kind: worksheet
+    worksheet: financial-position
+
+- id: cash-flows
+  kind: page
+  elements:
+  - kind: html
+    root:
+      tag: div
+      content:
+      - tag: div
+        attributes: { class: header }
+        content:
+        - tag: div
+          content: 'expand:~[company-name]'
+        - tag: div
+          content: Statement of cash flows
+        - tag: div
+          content: 'expand:For the period ended ~[date-of-end-of-reporting-period]'
+        - tag: hr
+  - kind: worksheet
+    worksheet: cash-flows
+
+- id: notes
+  kind: page
+  elements:
+  - kind: html
+    root:
+      tag: div
+      content:
+      - tag: div
+        attributes: { class: header }
+        content:
+        - tag: div
+          content: 'expand:~[company-name]'
+        - tag: div
+          content: Notes to the accounts
+        - tag: div
+          content: 'expand:For the period ended ~[date-of-end-of-reporting-period]'
+        - tag: hr
+  - kind: html
+    root:
+      tag: div
+      content:
+      - element:
+          kind: noteheading
+          title: Compliance
+          level: 1
+      - tag: p
+        content: 'expand:~{statement-of-ifrs-compliance=
+          The consolidated financial statements of
+          ~[name-of-reporting-entity] have been prepared in accordance
+          with International Financial Reporting Standards (IFRS) and
+          interpretations issued by the IFRS Interpretations Committee
+          (IFRS IC) applicable to companies reporting under IFRS. The
+          financial statements comply with IFRS as issued by the
+          International Accounting Standards Board (IASB).}'
+      - element:
+          kind: noteheading
+          title: Currency
+          level: 1
+      - tag: p
+        content: 'expand:~{description-of-presentation-currency=
+          These statements are presented in the euro currency (EUR).}'
+      - element:
+          kind: noteheading
+          title: Level of rounding
+          level: 1
+      - tag: p
+        content: 'expand:~{level-of-rounding=
+          Monetary values are reported rounded to the nearest euro.}'
