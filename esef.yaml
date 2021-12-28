@@ -8,45 +8,15 @@ report:
   style: //import report/style.yaml
   taxonomy: //import taxonomy/esef.yaml
   title: Financial statements
-  computations: //import esef-computations.yaml
-
-  worksheets:
-  - id: consolidated-statement-of-income
-    kind: simple
-    computations:
-    - operating-revenue
-    - operating-costs
-    - net-financial-items
-    - income-tax
-    - net-profit
-    - other-comprehensive-income
-    - comprehensive-income
-
-  - id: financial-position
-    kind: simple
-    computations:
-    - non-current-assets
-    - current-assets
-    - total-assets
-    - equity
-    - non-current-liabilities
-    - current-liabilities
-    - total-liabilities
-    - total-equity-and-liabilities
-
-  - id: cash-flows
-    kind: simple
-    computations:
-    - net-cash-from-operating-activities
-    - net-cash-from-investing-activities
-    - net-cash-from-financing-activities
-    - cash-at-end-of-year
+  computations: //import report/esef/esef-computations.yaml
+  worksheets: //import report/esef/esef-worksheets.yaml
 
   elements:
   - id: report
     kind: composite
     elements:
-    - id: title
+    - title
+    - id: title2
       kind: page
       elements:
       - kind: html
@@ -180,6 +150,34 @@ report:
           - tag: p
             content: 'expand:~{level-of-rounding=
               Monetary values are reported rounded to the nearest euro.}'
+
+  - id: title
+    kind: page
+    elements:
+    - kind: html
+      root:
+        tag: div
+        attributes: { class: titlepage }
+        content:
+        - tag: div
+          attributes: { class: company-number }
+          content: 'expand:
+            ~[name-of-reporting-entity] (~[country-of-incorporation])'
+        - tag: img
+          attributes:
+            src: //import logo.yaml
+            alt: Company logo
+        - tag: div
+          attributes: { class: company-name }
+          content: 'expand:~[name-of-reporting-entity]'
+        - tag: div
+          attributes: { class: title }
+          content: Financial Statements
+        - tag: div
+          attributes: { class: subtitle }
+          content: 'expand:For the period ended ~[date-of-end-of-reporting-period]'
+
+
 
 #pretty-print: true
 
