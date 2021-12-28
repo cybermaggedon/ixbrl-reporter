@@ -356,6 +356,24 @@ computations:
   inputs:
   - ct-trading-profits
 
+- id: profits-before-charges-and-group-relief
+  kind: group
+  description: Profits before donations and group relief
+  period: in-year
+  segments:
+    business-type: company
+  inputs:
+  - ct-profits
+
+- id: total-profits-chargeable-to-corporation-tax
+  kind: group
+  description: Profits chargeable to Corporation Tax
+  period: in-year
+  segments:
+    business-type: company
+  inputs:
+  - profits-before-charges-and-group-relief
+
 # Profits apportioned to first FY
 - id: ct-profit-before-tax-fy1
   kind: round
@@ -433,10 +451,28 @@ computations:
   segments:
     business-type: company
 
+- id: corporation-tax-chargeable-payable
+  kind: sum
+  inputs: [ct-tax-total]
+
+- id: net-corporation-tax-payable
+  kind: sum
+  inputs: [corporation-tax-chargeable-payable]
+
 # Tax owed
 - id: ct-tax-owed
   kind: sum
-  inputs: [ct-tax-total]
+  inputs: [net-corporation-tax-payable]
+
+# Tax owed
+- id: tax-chargeable
+  kind: sum
+  inputs: [ct-tax-owed]
+
+# Tax owed
+- id: tax-payable
+  kind: sum
+  inputs: [tax-chargeable]
 
 #############################################################################
 ### Worksheets ##############################################################
@@ -593,7 +629,7 @@ elements:
       period-config: metadata.tax.period
     - id: profits-before-charges-and-group-relief
       kind: computation
-      computation: ct-profits
+      computation: profits-before-charges-and-group-relief
       context: report-period
       description: Profits before donations and group relief
       field: '300'
@@ -616,7 +652,7 @@ elements:
       id: group-relief-claimed-for-carried-forward-losses
       kind: money
       value: 0
-    - computation: ct-profits
+    - computation: total-profits-chargeable-to-corporation-tax
       context: report-period
       description: Profits chargeable to Corporation Tax
       field: '315'
@@ -695,7 +731,7 @@ elements:
       id: marginal-rate-relief-for-ring-fence-trades-payable
       kind: money
       value: 0
-    - computation: ct-tax-owed
+    - computation: corporation-tax-chargeable-payable
       context: report-period
       description: Corporation tax chargeable
       field: '440'
@@ -712,21 +748,21 @@ elements:
     - id: net-corporation-tax-payable
       kind: computation
       context: report-period
-      computation: ct-tax-owed
+      computation: net-corporation-tax-payable
       description: Net Corporation Tax liability
       field: '475'
       period-config: metadata.tax.period
     - id: tax-chargeable
       kind: computation
       context: report-period
-      computation: ct-tax-owed
+      computation: tax-chargeable
       description: Tax chargeable
       field: '510'
       period-config: metadata.tax.period
     - id: tax-payable
       kind: computation
       context: report-period
-      computation: ct-tax-owed
+      computation: tax-payable
       description: Tax payable
       field: '525'
       period-config: metadata.tax.period

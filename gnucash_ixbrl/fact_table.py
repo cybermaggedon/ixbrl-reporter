@@ -70,7 +70,11 @@ class FactTable(BasicElement):
 
             datum = self.data.to_datum(v, context)
 
+            if not datum:
+                raise RuntimeError("Not valid: " + str(v))
+
             fact = taxonomy.create_fact(datum)
+
             elt = self.make_fact(par, v.get("field"),
                                  v.get("description"), fact)
             div.append(elt)
