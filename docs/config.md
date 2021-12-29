@@ -29,13 +29,21 @@ broken up.  There are two special 'markups' that have been introduced:
 
 ## `accounts`
 
-This is where you specify the gnucash accounts filename, and the class
+This is where you specify the accounts filename, and the class
 used to handle the accounts access. e.g.
 
 ```
 accounts:
   kind: piecash
   file: example2.gnucash
+```
+
+or
+
+```
+accounts:
+  kind: csv
+  file: example3.csv
 ```
 
 In the example, you'll see this located at the top of `config.yaml`.

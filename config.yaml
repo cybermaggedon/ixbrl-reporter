@@ -13,6 +13,10 @@ accounts:
   kind: piecash
   file: example2.gnucash
 
+  # CSV input
+  kind: csv
+  file: example3.csv
+
 report: //import report/ch/unaudited-micro.yaml
 #report: //import report/ch/audited-micro.yaml
 #report: //import report/ch/audited-small.yaml

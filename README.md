@@ -1,21 +1,28 @@
 
 # `ixbrl-reporter`
 
-## Introduction
+## Summary
 
-This is a utility which allows accounts managed by the excellent
-[GnuCash](gnucash.org) accounting software to be presented as iXBRL
-report output.  iXBRL is commonly used to describe regulatory account
-information which companies must publish annually.  Different schemas are
-in use in different places in the world.  The example account and report
-data included in this project uses schemas which are used in the UK
-reporting regime, but it is possible to define other taxonomies.
+This is a command-line utility which creates iXBRL-tagged financial reports
+from configuration templates and account data.  It currently supports account
+information from GnuCash files, and also a CSV file of transactions.
 
-iXBRL stands for "Inline XBRL".  It was inspired by the XBRL standard
-(Extensible Business Reporting Language).  iXBRL is HTML with embedded XBRL
+## iXBRL
+
+The iXBRL format is commonly used to describe regulatory account information
+which companies must publish.  Different schemas are in use in different
+places in the world.  The example account and report data included in this
+project uses schemas which are used in the UK reporting regime, and there
+is also a minimalistic ESEF example, but it is possible to define other
+taxonomies.
+
+iXBRL stands for "Inline XBRL".  It was built on the XBRL standard
+(eXtensible Business Reporting Language).  iXBRL is HTML with embedded XBRL
 tags so that the document can be viewed in an HTML browser and read by
 a human, but the tags are also machine-readable.  This allows the same
 accounts to be usable by a human, and also by automated data extraction tools.
+
+## Examples
 
 Included in this repo are example accounts and configuration files exist
 which output:
@@ -25,23 +32,26 @@ which output:
 - ESEF filing configuration for an English-language filing as well as
   French.
 
-With the right configuration files, other taxonomies would work, the
-configuration files are complex to write.  This is a command-line utility.
+Configuration files can be written for other taxonomies.
 
-Incidentally, plain-text report output is also supported as a byproduct of
-creating the reports.  This is useful in the workflow of constructing
-report configuration.
+## Other outputs
+
+Plain-text report output is supported (semi-useful), as is plain-text
+HTML output created by stripping the iXBRL tags.
 
 ## Motivation
 
-The overheads in configuring reports and iXBRL output with `ixbrl-reporter`
-is not small, but that's an up-front cost.
+iXBRL report generation is presently convoluted.  Generally people generate
+financial reports, or use an accountant to create the reports, and then
+send the report files away for a human to semi-automatically tag using an
+iXBRL tagging tool, which takes some number of days and costs at least €150.
 
-The motivation is that once set up, it is trivial to generate reports,
-with the latest, accurate information without constantly copying boiler-plate
-text into reports.  It isn't difficult to generate reports dynamically.
-Automating business report for low on-going costs, and real-time delivery of
-information.
+This tool demonstrates auto-generating reports with the right tags in the
+first place.
+
+The overheads in configuring reports and iXBRL output with `ixbrl-reporter`
+is not small, but that's an up-front cost, once set-up, up-to-date reports
+can be generated.
 
 ## Warranty
 
@@ -55,7 +65,7 @@ should check with a qualified accountant.
 
 ## Configuration overview
 
-`ixbrl-reporter` is not simple to configure.  If the configuration files
+`ixbrl-reporter` configuration is complex: If the configuration files
 supplied work for your business you could get accounts with little work.
 
 However, it is very likely that you'll need to tailor the reports to work
@@ -64,7 +74,8 @@ in [Information flows](docs/information-flows.md).
 
 ## Installing
 
-There is a dependency on either the `gnucash` or `piecash` Python modules:
+There is a dependency on one of the `gnucash`, `piecash` or `csv` Python
+modules:
 
 - The `gnucash` Python support is built from the GnuCash source code tree
   itself.  It is currently only distributed with Linux packages.  You cannot
@@ -76,6 +87,7 @@ There is a dependency on either the `gnucash` or `piecash` Python modules:
   Python package manager.  It works on Linux, MacOS and Windows.  However,
   it only supports the Sqlite or Postgres GnuCash formats, and not the
   XML format which is the default.
+- The `csv` Python module is bundled with Python.
 
 It is possible to convert a GnuCash file to Sqlite format by using
 GnuCash, select Save As... and selecting Sqlite.
@@ -123,6 +135,12 @@ ESMA ESEF filing:
 ```
 ixbrl-reporter config-esef.yaml report ixbrl > esef.html
 ```
+
+Check out the awesome Graffiti tool for viewing iXBRL tags in a document.
+The basic version is free.  It's just a bookmark in your browser!  Once
+your iXBRL document is loaded in the browser, invoke the bookmark and
+iXBRL tag navigation is seamlessly added to the document you are looking at.
+https://stechanalytics.com/#Graffiti
 
 ## Configuration
 
