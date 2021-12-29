@@ -19,9 +19,9 @@ namespaces:
 # Contexts are references invoke by tagged data, they describe an
 # entity, any dimensions, and a time period/instant.  We define
 # contexts hierarchically.  Contexts reference other contexts.  That's
-# just how gnucash-ixbrl works, and is nothing to do with standards.
+# just how ixbrl-reporter works, and is nothing to do with standards.
 # Also, the context names are not used in the iXBRL output, again, that's
-# just how gnucash-ixbrl manages things internally.
+# just how ixbrl-reporter manages things internally.
 contexts:
 
 # The business context, has a business identifier and a scheme under

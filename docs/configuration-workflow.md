@@ -6,7 +6,7 @@
 There are various moving parts which result in the production of a report:
 
 - The elements define the structure of a report.  The command-line
-  `gnucash-ixbrl` is called with the identifier of an element which is
+  `ixbrl-reporter` is called with the identifier of an element which is
   used as the root of the report.  There are various 'kinds' of element e.g.
   `html`, `composite`, `page` and `worksheet`.  Some elements e.g. `page`
   can invoke other elements recursively.

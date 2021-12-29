@@ -1,5 +1,5 @@
 
-# `gnucash-ixbrl`
+# `ixbrl-reporter`
 
 ## Introduction
 
@@ -34,7 +34,7 @@ report configuration.
 
 ## Motivation
 
-The overheads in configuring reports and iXBRL output with `gnucash-ixbrl`
+The overheads in configuring reports and iXBRL output with `ixbrl-reporter`
 is not small, but that's an up-front cost.
 
 The motivation is that once set up, it is trivial to generate reports,
@@ -55,7 +55,7 @@ should check with a qualified accountant.
 
 ## Configuration overview
 
-`gnucash-ixbrl` is not simple to configure.  If the configuration files
+`ixbrl-reporter` is not simple to configure.  If the configuration files
 supplied work for your business you could get accounts with little work.
 
 However, it is very likely that you'll need to tailor the reports to work
@@ -81,13 +81,13 @@ It is possible to convert a GnuCash file to Sqlite format by using
 GnuCash, select Save As... and selecting Sqlite.
 
 ```
-pip3 install git+https://github.com/cybermaggedon/gnucash-ixbrl
+pip3 install git+https://github.com/cybermaggedon/ixbrl-reporter
 ```
 
 ## Usage
 
 ```
-gnucash-ixbrl <config> <report> <format>
+ixbrl-reporter <config> <report> <format>
 ```
 
 Where:
@@ -102,26 +102,26 @@ The examples use files in the git repo.  Clone the git repo to run this
 stuff:
 
 ```
-git clone https://github.com/cybermaggedon/gnucash-ixbrl
+git clone https://github.com/cybermaggedon/ixbrl-reporter
 ```
 
 Example, Companies House accounts. You should be able to view the resultant
 HTML in a browser:
 
 ```
-gnucash-ixbrl config.yaml report ixbrl > accts.html
+ixbrl-reporter config.yaml report ixbrl > accts.html
 ```
 
 Corporation tax filing:
 
 ```
-gnucash-ixbrl config-corptax.yaml report ixbrl > ct.html
+ixbrl-reporter config-corptax.yaml report ixbrl > ct.html
 ```
 
 ESMA ESEF filing:
 
 ```
-gnucash-ixbrl config-esef.yaml report ixbrl > esef.html
+ixbrl-reporter config-esef.yaml report ixbrl > esef.html
 ```
 
 ## Configuration

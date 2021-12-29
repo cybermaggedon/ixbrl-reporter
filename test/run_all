@@ -13,7 +13,7 @@ do
     out=output/${cfg%.yaml}.html
     kv=output/${cfg%.yaml}.kv
     cmp=log/${cfg%.yaml}.kv
-    scripts/gnucash-ixbrl test/${cfg} report ixbrl > ${out}
+    scripts/ixbrl-reporter test/${cfg} report ixbrl > ${out}
     ixbrl-to-kv ${out} | sort > ${kv}
     sort ${cmp} | cmp ${kv} -
     if [ $? -ne 0 ]

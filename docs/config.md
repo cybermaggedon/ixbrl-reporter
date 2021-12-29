@@ -246,7 +246,7 @@ Here's a balance sheet exmaple:
 
 ## `elements`
 
-Elements describe the structure of a report.  When `gnucash-ixbrl` is
+Elements describe the structure of a report.  When `ixbrl-reporter` is
 invoked, the user selects an element to invoke.  Elements have
 different types - the `composite` element is a container, and can combine a
 set of elements into a single output.
@@ -280,7 +280,7 @@ elements:
 ```
 
 The entry point is the `report` element, at the top.  When calling
-`gnucash-ixbrl` you have to specify this entry point.
+`ixbrl-reporter` you have to specify this entry point.
 `report` is a composite which includes two other elements, `balance-sheet`
 and `notes`.  The `balance-sheet` demonstrates nested elements by
 including a `worksheet` element within a `page` element.
