@@ -28,6 +28,11 @@ accounts-type: abridged-accounts
 title: Audited Micro-Entity Accounts
 
 #############################################################################
+### Macros ##################################################################
+#############################################################################
+macros: //import report/ch/macros.yaml
+
+#############################################################################
 ### Report computations #####################################################
 #############################################################################
 computations: //import report/ch/frc102-computations.yaml
@@ -65,10 +70,10 @@ elements:
 - //ref directors-report
 - //ref auditors-report
 
-- //ref macros.title
-- //ref macros.company-info
-- //ref macros.balance-sheet-audited-micro
-- //ref macros.signature
-- //ref macros.revision
-- //ref macros.simple-notes
+- //ref report.macros.title
+- //ref report.macros.company-info
+- //ref report.macros.balance-sheet-audited-micro
+- //ref report.macros.signature
+- //ref report.macros.revision
+- //ref report.macros.simple-notes
 

@@ -19,8 +19,8 @@ simple-notes:
           content: 'expand:For the year ended ~[period-end]'
         - tag: hr
 
-      - element: //ref macros.company-info-note
-      - element: //ref macros.employee-counts-note
+      - element: //ref report.macros.company-info-note
+      - element: //ref report.macros.employee-counts-note
 
 company-info-note:
   kind: html
@@ -319,7 +319,7 @@ balance-sheet-unaudited-micro:
           content: 'expand:As at ~[balance-sheet-date]'
         - tag: hr
       - worksheet: balance-sheet
-      - element: //ref macros.balance-sheet-notes-unaudited-micro
+      - element: //ref report.macros.balance-sheet-notes-unaudited-micro
       - element: signature
 
 balance-sheet-notes-unaudited-micro:
@@ -369,7 +369,7 @@ balance-sheet-audited-micro:
           content: 'expand:As at ~[balance-sheet-date]'
         - tag: hr
       - worksheet: balance-sheet
-      - element: //ref macros.balance-sheet-notes-audited-micro
+      - element: //ref report.macros.balance-sheet-notes-audited-micro
       - element: signature
 
 balance-sheet-notes-audited-micro:
@@ -432,7 +432,7 @@ balance-sheet-audited-small:
           content: 'expand:As at ~[balance-sheet-date]'
         - tag: hr
       - worksheet: balance-sheet
-      - element: //ref macros.balance-sheet-notes-audited-small
+      - element: //ref report.macros.balance-sheet-notes-audited-small
       - element: signature
 
 balance-sheet-notes-audited-small:
@@ -473,7 +473,7 @@ balance-sheet-unaudited-small:
           content: 'expand:As at ~[balance-sheet-date]'
         - tag: hr
       - worksheet: balance-sheet
-      - element: //ref macros.balance-sheet-notes-unaudited-small
+      - element: //ref report.macros.balance-sheet-notes-unaudited-small
       - element: signature
 
 balance-sheet-notes-unaudited-small:

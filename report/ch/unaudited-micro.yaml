@@ -28,6 +28,11 @@ accounts-type: abridged-accounts
 title: Unaudited Micro-Entity Accounts
 
 #############################################################################
+### Macros ##################################################################
+#############################################################################
+macros: //import report/ch/macros.yaml
+
+#############################################################################
 ### Report computations #####################################################
 #############################################################################
 computations: //import report/ch/frc102-computations.yaml
@@ -61,9 +66,9 @@ elements:
         element: revision-info
     - element: notes
 
-- //ref macros.title
-- //ref macros.company-info
-- //ref macros.balance-sheet-unaudited-micro
-- //ref macros.signature
-- //ref macros.revision
-- //ref macros.simple-notes
+- //ref report.macros.title
+- //ref report.macros.company-info
+- //ref report.macros.balance-sheet-unaudited-micro
+- //ref report.macros.signature
+- //ref report.macros.revision
+- //ref report.macros.simple-notes

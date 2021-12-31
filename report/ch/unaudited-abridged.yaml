@@ -28,6 +28,11 @@ accounts-type: abridged-accounts
 title: Unaudited Abridged Accounts
 
 #############################################################################
+### Macros ##################################################################
+#############################################################################
+macros: //import report/ch/macros.yaml
+
+#############################################################################
 ### Report computations #####################################################
 #############################################################################
 computations: //import report/ch/frc102-computations.yaml
@@ -81,12 +86,12 @@ elements:
 - //ref auditors-report
 - //ref accountants-report
 
-- //ref macros.title
-- //ref macros.consent
-- //ref macros.company-info
-- //ref macros.balance-sheet-unaudited-small
-- //ref macros.signature
-- //ref macros.profit-and-loss
-- //ref macros.revision
-- //ref macros.simple-notes
+- //ref report.macros.title
+- //ref report.macros.consent
+- //ref report.macros.company-info
+- //ref report.macros.balance-sheet-unaudited-small
+- //ref report.macros.signature
+- //ref report.macros.profit-and-loss
+- //ref report.macros.revision
+- //ref report.macros.simple-notes
 

@@ -28,6 +28,11 @@ accounts-type: full-accounts
 title: Unaudited Full Accounts
 
 #############################################################################
+### Macros ##################################################################
+#############################################################################
+macros: //import report/ch/macros.yaml
+
+#############################################################################
 ### Report computations #####################################################
 #############################################################################
 computations: //import report/ch/frc102-computations.yaml
@@ -70,13 +75,13 @@ elements:
 - //ref accountants-report
 - //ref notes
 
-- //ref macros.title
-- //ref macros.company-info
-- //ref macros.balance-sheet-unaudited-small
-- //ref macros.signature
-- //ref macros.cash-flows
-- //ref macros.comprehensive-income
-- //ref macros.fixed-assets
-- //ref macros.share-capital
-- //ref macros.revision
+- //ref report.macros.title
+- //ref report.macros.company-info
+- //ref report.macros.balance-sheet-unaudited-small
+- //ref report.macros.signature
+- //ref report.macros.cash-flows
+- //ref report.macros.comprehensive-income
+- //ref report.macros.fixed-assets
+- //ref report.macros.share-capital
+- //ref report.macros.revision
 
