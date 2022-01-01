@@ -24,8 +24,8 @@ class HtmlElement(BasicElement):
 
         self.root.to_text(taxonomy, out)
 
-    def to_html(self, root, par, taxonomy):
-        return root.to_html(par, taxonomy)
+    def to_html_elt(self, root, taxonomy, out):
+        return root.to_html(taxonomy, out)
 
     def to_debug(self, taxonomy, out):
         self.root.to_debug(taxonomy, out)
@@ -34,5 +34,5 @@ class HtmlElement(BasicElement):
 
         root = self.root
 
-        return [self.to_html(root, par, taxonomy)]
+        return [self.to_html_elt(root, par, taxonomy)]
 
