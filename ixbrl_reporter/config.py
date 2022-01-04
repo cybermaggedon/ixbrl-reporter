@@ -23,9 +23,7 @@ class Config(dict):
         c = Config.makevalue(val)
         c.file = file
         if resolve:
-            open("t1.dat", "w").write(json.dumps(c, indent=4))
             Config.resolve_refs(c, c)
-            open("t2.dat", "w").write(json.dumps(c, indent=4))
         return c
     @staticmethod
     def makevalue(val):
