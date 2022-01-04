@@ -1,5 +1,5 @@
 style: //import report/style.yaml
-taxonomy: //import taxonomy/esef.yaml
+taxonomy: //import taxonomy/uksef.yaml
 title: Financial statements
 computations: //import report/esef/esef-computations.yaml
 worksheets: //import report/esef/esef-worksheets.yaml
@@ -240,11 +240,12 @@ elements:
           level: 1
       - tag: p
         content: 'expand:~{description-of-presentation-currency=
-          These statements are presented in the euro currency (EUR).}'
+          These statements are presented in sterling currency (GBP).}'
       - element:
           kind: noteheading
           title: Level of rounding
           level: 1
       - tag: p
         content: 'expand:~{level-of-rounding=
-          Monetary values are reported rounded to the nearest euro.}'
+          Monetary values are reported rounded to the nearest £1.}'
+

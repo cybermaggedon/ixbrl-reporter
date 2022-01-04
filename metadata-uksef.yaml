@@ -18,24 +18,30 @@ business:
   - 1
 
   # Business name
-  company-name: Exemple d'Entreprise SARL
+  company-name: Example Biz Ltd.
 
   # Registered company number
-  company-number: '0AAAAAAAAAAAAA0AAA40'
-#  company-number: '2138001AW6H99F3M7C66'
+  company-number: '12345678'
 
-  # iXBRL entity scheme
-  entity-scheme: http://standards.iso.org/iso/17442
+  # iXBRL entity scheme, Companies House
+  entity-scheme: http://www.companieshouse.gov.uk/
 
-  domicile-of-entity: France
-  legal-form-of-entity: Société à responsabilité limitée
-  country-of-incorporation: France
-  address-of-entitys-registered-office: 1281 Boulevard du leon, 75000 Paris
-  principal-place-of-business: PARIS, France
-  nature-of-entitys-principal-activities: Services de blockchain
+  domicile-of-entity: England and Wales
+  legal-form-of-entity: Private Limited Company
+  country-of-incorporation: England and Wales
+  address-of-entitys-registered-office: 123 Leadbarton Street, Threapminchington QQ99 9ZZ
+
+  principal-place-of-business: England and Wales
+  nature-of-entitys-principal-activities: Contracting services
+
+  # Legal entity formation information
+  company-formation:
+    country: england-and-wales
+    date: '2017-04-05'
+    form: private-limited-company
 
   # VAT registration number
-  vat-registration: FR012345678
+  vat-registration: GB012345678
 
   # Company contact details
   contact:
@@ -114,13 +120,13 @@ accounting:
   balance-sheet-date: '2020-12-31'
 
   # Accounts currency
-  currency: EUR
+  currency: GBP
 
   # Number of decimal places in figures.  This is pre scale so e.g.
   # to show pence/cents use 2.  For whole euros/pounds/dollars use 0.
   # Negative numbers shift the rounding left, use -3 to round to whole
   # thousand, -6 to round millions.
-  decimals: 2
+  decimals: 0
 
   # Scale factor for figures e.g. for whole euros/pounds/dollars
   # use 0.  To account in thousands use 3, millions use 6.
@@ -128,7 +134,7 @@ accounting:
 
   # Human readable label in the header.  If you've changed scale you'll want
   # to change this so it's clear the figures show thousands / millions.
-  currency-label: €
+  currency-label: £
 
   # Report issue date
   date: '2021-03-01'
