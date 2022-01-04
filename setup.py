@@ -5,10 +5,10 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="ixbrl-reporter",
-    version="1.7.0",
+    version="1.0.0",
     author="Cybermaggedon",
     author_email="mark@cyberapocalypse.co.uk",
-    description="Production of iXBRL reports from GnuCash accounts",
+    description="Production of iXBRL reports from templates and accounts files",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/cybermaggedon/ixbrl-reporter",
@@ -19,9 +19,9 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.6',
-    download_url = "https://github.com/cybermaggedon/ixbrl-reporter/archive/refs/tags/v1.7.0.tar.gz",
+    download_url = "https://github.com/cybermaggedon/ixbrl-reporter/archive/refs/tags/v1.0.0.tar.gz",
     install_requires=[
-        "requests", "lxml", "piecash"
+        "requests", "lxml", "piecash", "PyYAML"
     ],
     scripts=[
         "scripts/ixbrl-reporter"
