@@ -57,6 +57,12 @@ class Taxonomy:
         self.contexts_used = set()
         self.root_context = Context(None)
 
+        self.decimals = data.get_config("metadata.accounting.decimals", 2)
+        self.scale = data.get_config("metadata.accounting.scale", 0)
+        self.currency = data.get_config(
+            "metadata.accounting.currency", "EUR"
+        )
+
         for defn in cfg.get("contexts"):
             ctxt = self.load_context(defn, data, self.contexts)
             self.contexts[defn.get("id")] = ctxt
@@ -157,6 +163,9 @@ class Taxonomy:
     def create_money_fact(self, val):
         fact = MoneyFact(self.get_context_id(val.context),
                          self.get_tag_name(val.id), val.value,
+                         self.currency,
+                         self.scale,
+                         self.decimals,
                          self.get_sign_reversed(val.id))
         fact.dimensions = self.get_tag_dimensions(val.id)
         self.observe_fact(fact)

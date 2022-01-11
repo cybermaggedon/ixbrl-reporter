@@ -17,12 +17,15 @@ class Fact:
         return fn(self)
 
 class MoneyFact(Fact):
-    def __init__(self, context, name, value, reverse=False, unit="GBP"):
+    def __init__(self, context, name, value, unit, scale, decimals,
+                 reverse=False):
         self.name = name
         self.value = value
         self.context = context
-        self.unit = unit
         self.reverse = reverse
+        self.unit = unit
+        self.decimals = decimals
+        self.scale = scale
     def to_elt(self, base):
         value = self.value
         if self.reverse: value *= -1
@@ -32,7 +35,8 @@ class MoneyFact(Fact):
             elt.set("contextRef", self.context)
             elt.set("unitRef", self.unit)
             elt.set("format", "ixt2:numdotdecimal")
-            elt.set("decimals", "2")
+            elt.set("decimals", str(self.decimals))
+            elt.set("scale", str(self.scale))
             if value < 0:
                 elt.set("sign", "-")
             return elt
