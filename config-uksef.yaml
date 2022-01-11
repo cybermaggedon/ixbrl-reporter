@@ -13,19 +13,24 @@ accounts:
   kind: piecash
   file: example2.gnucash
 
+  # CSV input
+  kind: csv
+  file: example3.csv
+
 #report: //import report/ch/unaudited-micro.yaml
 #report: //import report/ch/audited-micro.yaml
 #report: //import report/ch/audited-small.yaml
 #report: //import report/ch/unaudited-abridged.yaml
 #report: //import report/ch/unaudited-full.yaml
-report: //import report/ch/audited-full.yaml
+#report: //import report/ch/audited-full.yaml
 #report: //import report/hmrc/corp-tax.yaml
+report: //import report/uksef/uksef.yaml
 
-# pretty-print: true
-# Decimal places
+#pretty-print: true
 
-metadata: //import test/metadata-aud.yaml
-#metadata: //import test/metadata-aud-rev.yaml
+#metadata: //import metadata.yaml
+metadata: //import metadata-uksef.yaml
+#metadata: //import metadata-revised.yaml
 
 directors-report: //import directors-report.yaml
 
@@ -35,4 +40,5 @@ auditors-report: //import auditors-report.yaml
 accountants-report: //import accountants-report.yaml
 
 notes: //import notes.yaml
+
 

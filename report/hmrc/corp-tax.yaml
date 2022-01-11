@@ -347,7 +347,7 @@ computations:
     business-type: company
 
 # Profits chargeable to corp tax
-- id: ct-profits
+- id: ct-net-trading-profits
   kind: group
   description: Profits chargeable to corporation tax
   period: in-year
@@ -356,6 +356,16 @@ computations:
   inputs:
   - ct-trading-profits
 
+# Profits chargeable to corp tax
+- id: profits-before-other-deductions-and-reliefs
+  kind: group
+  description: Profits before other deductions and reliefs
+  period: in-year
+  segments:
+    business-type: company
+  inputs:
+  - ct-net-trading-profits
+
 - id: profits-before-charges-and-group-relief
   kind: group
   description: Profits before donations and group relief
@@ -363,7 +373,7 @@ computations:
   segments:
     business-type: company
   inputs:
-  - ct-profits
+  - profits-before-other-deductions-and-reliefs
 
 - id: total-profits-chargeable-to-corporation-tax
   kind: group
@@ -384,7 +394,7 @@ computations:
     kind: apportion
     description: FY1
     period: in-year
-    input: ct-profits
+    input: ct-net-trading-profits
     whole-period: metadata.accounting.periods.0
     proportion-period: metadata.tax.fy1
   segments:
@@ -400,7 +410,7 @@ computations:
     kind: apportion
     description: FY2
     period: in-year
-    input: ct-profits
+    input: ct-net-trading-profits
     whole-period: metadata.accounting.periods.0
     proportion-period: metadata.tax.fy2
   segments:
@@ -454,25 +464,40 @@ computations:
 - id: corporation-tax-chargeable-payable
   kind: sum
   inputs: [ct-tax-total]
+  period: in-year
+  segments:
+    business-type: company
 
 - id: net-corporation-tax-payable
   kind: sum
   inputs: [corporation-tax-chargeable-payable]
+  period: in-year
+  segments:
+    business-type: company
 
 # Tax owed
 - id: ct-tax-owed
   kind: sum
   inputs: [net-corporation-tax-payable]
+  period: in-year
+  segments:
+    business-type: company
 
 # Tax owed
 - id: tax-chargeable
   kind: sum
   inputs: [ct-tax-owed]
+  period: in-year
+  segments:
+    business-type: company
 
 # Tax owed
 - id: tax-payable
   kind: sum
   inputs: [tax-chargeable]
+  period: in-year
+  segments:
+    business-type: company
 
 #############################################################################
 ### Worksheets ##############################################################
@@ -493,7 +518,7 @@ worksheets:
   description: Tax Calculation
   computations:
   - ct-trading-profits-raw
-  - ct-profits
+  - ct-net-trading-profits
   - ct-profit-before-tax-total
   - ct-tax-total
 
@@ -607,7 +632,7 @@ elements:
       kind: money
       value: 0
     - id: net-trading-profits
-      computation: ct-trading-profits
+      computation: ct-net-trading-profits
       context: report-period
       description: Net trading profits
       field: '165'
@@ -621,7 +646,7 @@ elements:
       value: 0
       period-config: metadata.tax.period
     - id: profits-before-other-deductions-and-reliefs
-      computation: ct-trading-profits
+      computation: profits-before-other-deductions-and-reliefs
       context: report-period
       description: Profits before other deductions and reliefs
       field: '235'
