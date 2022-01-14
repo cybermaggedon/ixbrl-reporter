@@ -14,12 +14,18 @@ do
     kv=output/${cfg%.yaml}.kv
     cmp=log/${cfg%.yaml}.kv
     scripts/ixbrl-reporter test/${cfg} report ixbrl > ${out}
-    ixbrl-to-kv ${out} | sort > ${kv}
-    sort ${cmp} | cmp ${kv} -
+    ixbrl-to-kv ${out} | \
+	egrep -v 'VersionProductionSoftware|VersionOfProductionSoftware' | \
+	sort > ${kv}
+    egrep -v 'VersionProductionSoftware|VersionOfProductionSoftware' ${cmp} | \
+	sort | cmp ${kv} -
     if [ $? -ne 0 ]
     then
         echo 'File comparison fail...'
 	echo 'diff ${kv} ${cmp} >>>>'
+	egrep -v 'VersionProductionSoftware|VersionOfProductionSoftware' \
+	      ${cmp} | \
+	    sort | cmp ${kv} -
 	sort ${cmp} | diff ${kv} -
 	exit 1
     fi
