@@ -59,7 +59,8 @@ class TagElt(Elt):
         elt = par.xhtml_maker(self.tag, self.attrs)
 
         for c in self.content:
-            elt.append(c.to_html(par, taxonomy))
+            elt2 = c.to_html(par, taxonomy)
+            if elt2 is not None: elt.append(elt2)
 
         return elt
 
@@ -99,10 +100,11 @@ class IfdefElt(Elt):
         return IfdefElt(key, content, data)
 
     def to_html(self, par, taxonomy):
+
         try:
             self.data.get_config(self.key)
         except:
-            return par.xhtml_maker.span()
+            return None
 
         return self.content.to_html(par, taxonomy)
 
@@ -245,7 +247,8 @@ class FactElt(Elt):
         elt = fact.to_elt(par)
 
         for child in self.content:
-            elt.append(child.to_html(par, taxonomy))
+            elt2 = child.to_html(par, taxonomy)
+            if elt2 is not None: elt.append(elt2)
 
         return elt
 
@@ -286,7 +289,8 @@ class ElementElt(Elt):
         
         cntr = par.xhtml_maker.div()
         for c in content:
-            cntr.append(c)
+            if c is not None:
+                cntr.append(c)
 
         return cntr
 
