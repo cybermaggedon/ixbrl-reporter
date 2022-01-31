@@ -86,7 +86,7 @@ body {
 }
 
 .sheet {
-  table-layout: fixed;
+  width: 80%;
   border-collapse: separate;
 }
 
@@ -148,7 +148,8 @@ table {
 }
 
 .label {
-  width: 14rem;
+  width: 50%;
+  padding-right: 1em;
   font-size: smaller;
 }
 
@@ -168,6 +169,8 @@ table {
   font-size: smaller;
   font-weight: bold;
   text-align: center;
+  padding-left: 1em;
+  padding-right: 1em;
 }
 
 .label.breakdown.heading {
@@ -176,31 +179,31 @@ table {
 
 .value {
   font-family: Source Code Pro, monospace, Courier New;
-  width: 8rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  margin-right: 1rem;
+  width: 20%;
+  padding-left: 1em;
+  padding-right: 1em;
+  margin-right: 1em;
   font-size: small;
 }
 
 @media print {
   .label {
     font-size: small;
-    width: 14em;
+    width: 40%;
   }
   .value {
     font-family: Source Code Pro, monospace;
-    width: 6rem;
+    width: 20%;
     font-size: small;
   }
   .company-info {
     font-size: medium;
   }
   TABLE.sheet {
-    margin-left: 5%;
+    margin-left: 20%;
   }
   TABLE.spacetable {
-    margin-left: 5%;
+    margin-left: 20%;
   }
   body {
     font-size: 11pt;
@@ -233,7 +236,7 @@ table {
   border-bottom: 0.2em solid black;
   font-weight: bold;
   text-align: center;
-  width: 10rem;
+  width: 20%;
   margin-right: 1rem;
 }
 
@@ -241,7 +244,7 @@ table {
   text-align: right;
   padding-left: 1em;
   padding-right: 1em;
-  width: 10rem;
+  width: 20%;
   margin-right: 1rem;
   margin-top: 0.25em;
 }
