@@ -15,7 +15,7 @@ try:
 
     cfg = Config.load(sys.argv[1])
     cfg.set("internal.software-name", "ixbrl-reporter")
-    cfg.set("internal.software-version", "1.0.2")
+    cfg.set("internal.software-version", "1.0.3")
 
     kind = cfg.get("accounts.kind")
     file = cfg.get("accounts.file")
