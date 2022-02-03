@@ -13,7 +13,7 @@ report: //import report/hmrc/corp-tax.yaml
 
 #pretty-print: true
 
-metadata: //import metadata.yaml
+metadata: //import metadata-corptax.yaml
 
 directors-report: //import directors-report.yaml
 
