@@ -298,6 +298,7 @@
   period: at-end
   accounts:
   - VAT:Output
+  - Liabilities:Credit Cards
 
 # Creditors owing amounts which are due within 1 year.
 - id: creditors-within-1-year
