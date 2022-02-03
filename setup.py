@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="ixbrl-reporter",
-    version="1.0.3",
+    version="1.0.4",
     author="Cybermaggedon",
     author_email="mark@cyberapocalypse.co.uk",
     description="Production of iXBRL reports from templates and accounts files",
@@ -19,7 +19,7 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.6',
-    download_url = "https://github.com/cybermaggedon/ixbrl-reporter/archive/refs/tags/v1.0.3.tar.gz",
+    download_url = "https://github.com/cybermaggedon/ixbrl-reporter/archive/refs/tags/v1.0.4.tar.gz",
     install_requires=[
         "requests", "lxml", "piecash", "PyYAML"
     ],
