@@ -371,7 +371,7 @@
   - accruals-and-deferred-income
 
 # Called-up share capital
-- id: share-capital
+- id: share-capital-equity
   kind: line
   description: Share Capital
   period: at-end
@@ -410,7 +410,7 @@
   id: capital-and-reserves
   kind: group
   inputs:
-  - share-capital
+  - share-capital-equity
   - profit-loss
   - dividends
   - corporation-tax
