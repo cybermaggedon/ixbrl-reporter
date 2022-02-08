@@ -273,11 +273,24 @@ class Taxonomy:
         if defn.get("segments", mandatory=False):
             segments = defn.get("segments")
 
-            for k, v in segments.items():
-                v = data.get_config(v, v)
-                segments[k] = v
+            if not isinstance(segments, list):
+                raise RuntimeError(
+                    "segments should be array of single item maps"
+                )
 
-            ctxt = ctxt.with_segments(segments)
+            segs = []
+            for elt in segments:
+                if len(elt) != 1:
+                    raise RuntimeError(
+                        "segments should be array of single item maps"
+                    )
+
+                # Will only loop once
+                for k, v in elt.items():
+                    v = data.get_config(v, v)
+                    segs.append((k, v))
+
+            ctxt = ctxt.with_segments(segs)
 
         return ctxt
 

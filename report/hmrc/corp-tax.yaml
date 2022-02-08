@@ -29,9 +29,9 @@ computations:
   period: in-year
   direction: down
   segments:
-    activity: m
-    detailed-analysis: item1
-    countries-regions: UK
+    - activity: m
+    - detailed-analysis: item1
+    - countries-regions: UK
   input:
     kind: line
     period: in-year
@@ -60,7 +60,7 @@ computations:
   description: Salaries
   period: in-year
   segments:
-    expense-type: administrative-expenses
+    - expense-type: administrative-expenses
   accounts:
   - Expenses:Emoluments:Employees
 
@@ -70,7 +70,7 @@ computations:
   description: Pension contributions
   period: in-year
   segments:
-    expense-type: administrative-expenses
+    - expense-type: administrative-expenses
   accounts:
   - Expenses:Emoluments:Employer Pension Contribution
 
@@ -80,7 +80,7 @@ computations:
   description: Bank charges
   period: in-year
   segments:
-    expense-type: administrative-expenses
+    - expense-type: administrative-expenses
   accounts:
   - Expenses:VAT Purchases:Bank Charges
 
@@ -90,7 +90,7 @@ computations:
   description: Office costs
   period: in-year
   segments:
-    expense-type: administrative-expenses
+    - expense-type: administrative-expenses
   accounts:
   - Expenses:VAT Purchases:Office
 
@@ -100,7 +100,7 @@ computations:
   description: Software
   period: in-year
   segments:
-    expense-type: administrative-expenses
+    - expense-type: administrative-expenses
   accounts:
   - Expenses:VAT Purchases:Software
 
@@ -110,7 +110,7 @@ computations:
   kind: line
   period: in-year
   segments:
-    expense-type: administrative-expenses
+    - expense-type: administrative-expenses
   accounts:
   - Expenses:VAT Purchases:Sundries
 
@@ -120,7 +120,7 @@ computations:
   kind: line
   period: in-year
   segments:
-    expense-type: administrative-expenses
+    - expense-type: administrative-expenses
   accounts:
   - Expenses:VAT Purchases:Travel/Accom
 
@@ -130,7 +130,7 @@ computations:
   kind: line
   period: in-year
   segments:
-    expense-type: administrative-expenses
+    - expense-type: administrative-expenses
   accounts:
   - Expenses:VAT Purchases:Accountant
 
@@ -140,7 +140,7 @@ computations:
   description: Subscriptions
   period: in-year
   segments:
-    expense-type: administrative-expenses
+    - expense-type: administrative-expenses
   accounts:
   - Expenses:VAT Purchases:Subscriptions
 
@@ -150,7 +150,7 @@ computations:
   description: Telecoms
   period: in-year
   segments:
-    expense-type: administrative-expenses
+    - expense-type: administrative-expenses
   accounts:
   - Expenses:VAT Purchases:Telecoms
 
@@ -215,11 +215,11 @@ computations:
   direction: down
   period: in-year
   segments:
-    business-name: metadata.business.company-name
-    business-type: trade
-    ct-detailed-analysis: item1
-    loss-reform: post-loss-reform
-    territory: uk
+    - business-name: metadata.business.company-name
+    - business-type: trade
+    - ct-detailed-analysis: item1
+    - loss-reform: post-loss-reform
+    - territory: uk
   input:
     kind: line
     period: in-year
@@ -233,11 +233,11 @@ computations:
   period: in-year
   direction: down
   segments:
-    business-name: metadata.business.company-name
-    business-type: trade
-    ct-detailed-analysis: item1
-    loss-reform: post-loss-reform
-    territory: uk
+    - business-name: metadata.business.company-name
+    - business-type: trade
+    - ct-detailed-analysis: item1
+    - loss-reform: post-loss-reform
+    - territory: uk
   input:
     kind: line
     period: in-year
@@ -251,11 +251,11 @@ computations:
   period: in-year
   direction: down
   segments:
-    business-name: metadata.business.company-name
-    business-type: trade
-    ct-detailed-analysis: item1
-    loss-reform: post-loss-reform
-    territory: uk
+    - business-name: metadata.business.company-name
+    - business-type: trade
+    - ct-detailed-analysis: item1
+    - loss-reform: post-loss-reform
+    - territory: uk
   input:
     kind: line
     period: in-year
@@ -268,11 +268,11 @@ computations:
   description: Project Iguana
   period: in-year
   segments:
-    business-name: metadata.business.company-name
-    business-type: trade
-    ct-detailed-analysis: item1
-    loss-reform: post-loss-reform
-    territory: uk
+    - business-name: metadata.business.company-name
+    - business-type: trade
+    - ct-detailed-analysis: item1
+    - loss-reform: post-loss-reform
+    - territory: uk
   inputs:
   - rnd-proj1-enhanced-staffing
   - rnd-proj1-enhanced-software
@@ -284,10 +284,10 @@ computations:
   description: SME R&D tax relief (130%)
   period: in-year
   segments:
-    business-name: metadata.business.company-name
-    business-type: trade
-    loss-reform: post-loss-reform
-    territory: uk
+    - business-name: metadata.business.company-name
+    - business-type: trade
+    - loss-reform: post-loss-reform
+    - territory: uk
   inputs:
   - rnd-proj1-enhanced-expenditure
 
@@ -302,13 +302,13 @@ computations:
   period: in-year
   direction: down
   segments:
-    business-type: management-expenses
+    - business-type: management-expenses
   input:
     kind: line
     period: in-year
     reverse-sign: true
     segments:
-      business-type: management-expenses
+      - business-type: management-expenses
     accounts:
     - Assets:Capital Equipment:Computer Equipment
 
@@ -318,10 +318,10 @@ computations:
   description: Profit (loss) per accounts
   period: in-year
   segments:
-    business-name: metadata.business.company-name
-    business-type: trade
-    loss-reform: post-loss-reform
-    territory: uk
+    - business-name: metadata.business.company-name
+    - business-type: trade
+    - loss-reform: post-loss-reform
+    - territory: uk
   inputs:
   - profit-before-tax
 
@@ -331,7 +331,7 @@ computations:
   description: Taxable profits
   period: in-year
   segments:
-    business-type: company
+    - business-type: company
   inputs:
   - profit-loss-per-accounts
   - ct-annual-investment-allowance
@@ -344,7 +344,7 @@ computations:
   direction: down
   period: in-year
   segments:
-    business-type: company
+    - business-type: company
 
 # Profits chargeable to corp tax
 - id: ct-net-trading-profits
@@ -352,7 +352,7 @@ computations:
   description: Profits chargeable to corporation tax
   period: in-year
   segments:
-    business-type: company
+    - business-type: company
   inputs:
   - ct-trading-profits
 
@@ -362,7 +362,7 @@ computations:
   description: Profits before other deductions and reliefs
   period: in-year
   segments:
-    business-type: company
+    - business-type: company
   inputs:
   - ct-net-trading-profits
 
@@ -371,7 +371,7 @@ computations:
   description: Profits before donations and group relief
   period: in-year
   segments:
-    business-type: company
+    - business-type: company
   inputs:
   - profits-before-other-deductions-and-reliefs
 
@@ -380,7 +380,7 @@ computations:
   description: Profits chargeable to Corporation Tax
   period: in-year
   segments:
-    business-type: company
+    - business-type: company
   inputs:
   - profits-before-charges-and-group-relief
 
@@ -398,7 +398,7 @@ computations:
     whole-period: metadata.accounting.periods.0
     proportion-period: metadata.tax.fy1
   segments:
-    business-type: company
+    - business-type: company
 
 # Profits apportioned to second FY
 - id: ct-profit-before-tax-fy2
@@ -414,7 +414,7 @@ computations:
     whole-period: metadata.accounting.periods.0
     proportion-period: metadata.tax.fy2
   segments:
-    business-type: company
+    - business-type: company
 
 # Total of FY1 and FY2 profits.  Visual check on the worksheet, should be the
 # same as profits chargeable to corp tax
@@ -426,7 +426,7 @@ computations:
   - ct-profit-before-tax-fy1
   - ct-profit-before-tax-fy2
   segments:
-    business-type: company
+    - business-type: company
 
 # Tax due on FY1
 - id: ct-tax-fy1
@@ -437,7 +437,7 @@ computations:
   input: ct-profit-before-tax-fy1
   reverse-sign: true
   segments:
-    business-type: company
+    - business-type: company
 
 # Tax due in FY2
 - id: ct-tax-fy2
@@ -448,7 +448,7 @@ computations:
   input: ct-profit-before-tax-fy2
   reverse-sign: true
   segments:
-    business-type: company
+    - business-type: company
 
 # Total tax due
 - id: ct-tax-total
@@ -459,21 +459,21 @@ computations:
   - ct-tax-fy2
   period: in-year
   segments:
-    business-type: company
+    - business-type: company
 
 - id: corporation-tax-chargeable-payable
   kind: sum
   inputs: [ct-tax-total]
   period: in-year
   segments:
-    business-type: company
+    - business-type: company
 
 - id: net-corporation-tax-payable
   kind: sum
   inputs: [corporation-tax-chargeable-payable]
   period: in-year
   segments:
-    business-type: company
+    - business-type: company
 
 # Tax owed
 - id: ct-tax-owed
@@ -481,7 +481,7 @@ computations:
   inputs: [net-corporation-tax-payable]
   period: in-year
   segments:
-    business-type: company
+    - business-type: company
 
 # Tax owed
 - id: tax-chargeable
@@ -489,7 +489,7 @@ computations:
   inputs: [ct-tax-owed]
   period: in-year
   segments:
-    business-type: company
+    - business-type: company
 
 # Tax owed
 - id: tax-payable
@@ -497,7 +497,7 @@ computations:
   inputs: [tax-chargeable]
   period: in-year
   segments:
-    business-type: company
+    - business-type: company
 
 #############################################################################
 ### Worksheets ##############################################################

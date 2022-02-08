@@ -32,7 +32,7 @@ class Context:
         if self.entity:
             dims.append(("entity", self.scheme, self.entity))
         if self.segments:
-            for k, v in self.segments.items():
+            for k, v in self.segments:
                 dims.append(("segment", k, v))
         if self.period:
             dims.append(("period", str(self.period.start),
@@ -42,14 +42,14 @@ class Context:
         return dims
 
     def with_segment(self, k, v):
-        return self.with_segments({k: v})
+        return self.with_segments(((k, v)))
 
     def with_segments(self, segments):
 
         # entity, scheme, segments, period, instant
         seghash = "//".join([
-            "%s=%s" % (k, segments[k])
-            for k in sorted(segments.keys())
+            "%s=%s" % (k, v)
+            for k, v in segments
         ])
         k = (None, None, seghash, None, None)
         if k in self.children:

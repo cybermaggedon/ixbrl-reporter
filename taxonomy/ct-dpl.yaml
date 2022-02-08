@@ -6,25 +6,25 @@ contexts:
   from: business
   period: metadata.accounting.periods.0
   segments:
-    business-type: company
+    - business-type: company
 - id: management-expenses-period
   from: business
   period: metadata.accounting.periods.0
   segments:
-    business-type: management-expenses
+    - business-type: management-expenses
 - id: report-date
   from: business
   instant: metadata.accounting.date
   segments:
-    business-type: company
+    - business-type: company
 - id: trade-period
   from: business
   period: metadata.accounting.periods.0
   segments:
-    business-name: metadata.business.company-name
-    business-type: trade
-    loss-reform: post-loss-reform
-    territory: uk
+    - business-name: metadata.business.company-name
+    - business-type: trade
+    - loss-reform: post-loss-reform
+    - territory: uk
 metadata:
 - id: software-name
   config: internal.software-name

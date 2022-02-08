@@ -46,8 +46,22 @@ class Metadata:
             "at-end": AT_END
         }.get(pspec, AT_END)
 
-        segs = cfg.get("segments", {})
-        segs = {k: gcfg.get(v, v) for k, v in segs.items()}
+        segsdef = cfg.get("segments", [])
+        if not isinstance(segsdef, list):
+            raise RuntimeError(
+                "segments should be list of single-item maps"
+            )
+
+        segs = []
+
+        for elt in segsdef:
+            if len(elt) != 1:
+                raise RuntimeError(
+                    "segments should be list of single-item maps"
+                )
+            # Will loop only once
+            for k, v in elt.items():
+                segs.append((k, gcfg.get(v, v)))
 
         description = cfg.get("description", "?")
         note = cfg.get("note", mandatory=False)

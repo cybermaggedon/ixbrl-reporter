@@ -63,137 +63,137 @@ contexts:
 - id: industry-sector
   from: report-period
   segments:
-    industry-sector: metadata.business.industry-sector
+    - industry-sector: metadata.business.industry-sector
 
 # Various other things added as dimensions...
 - id: accounting-standards
   from: report-period
   segments:
-    accounting-standards: report.accounting-standards
+    - accounting-standards: report.accounting-standards
 - id: accounts-type
   from: report-period
   segments:
-    accounts-type: report.accounts-type
+    - accounts-type: report.accounts-type
 - id: accounts-status
   from: report-period
   segments:
-    accounts-status: report.accounts-status
+    - accounts-status: report.accounts-status
 - id: entity-legal-form
   from: report-period
   segments:
-    entity-legal-form: metadata.business.company-formation.form
+    - entity-legal-form: metadata.business.company-formation.form
 - id: entity-legal-country
   from: report-period
   segments:
-    countries-regions: metadata.business.company-formation.country
+    - countries-regions: metadata.business.company-formation.country
 
 # Directors are referenced in the report using dimensions on a context.
 # There can't be more than 20 directors. :-)
 - from: report-period
   id: officer1
   segments:
-    officer: director1
+    - officer: director1
 - from: report-period
   id: officer2
   segments:
-    officer: director2
+    - officer: director2
 - from: report-period
   id: officer3
   segments:
-    officer: director3
+    - officer: director3
 - from: report-period
   id: officer4
   segments:
-    officer: director4
+    - officer: director4
 - from: report-period
   id: officer5
   segments:
-    officer: director5
+    - officer: director5
 - from: report-period
   id: officer6
   segments:
-    officer: director6
+    - officer: director6
 - from: report-period
   id: officer7
   segments:
-    officer: director7
+    - officer: director7
 - from: report-period
   id: officer8
   segments:
-    officer: director8
+    - officer: director8
 - from: report-period
   id: officer9
   segments:
-    officer: director9
+    - officer: director9
 - from: report-period
   id: officer10
   segments:
-    officer: director10
+    - officer: director10
 - from: report-period
   id: officer11
   segments:
-    officer: director11
+    - officer: director11
 - from: report-period
   id: officer12
   segments:
-    officer: director12
+    - officer: director12
 - from: report-period
   id: officer13
   segments:
-    officer: director13
+    - officer: director13
 - from: report-period
   id: officer14
   segments:
-    officer: director14
+    - officer: director14
 - from: report-period
   id: officer15
   segments:
-    officer: director15
+    - officer: director15
 - from: report-period
   id: officer16
   segments:
-    officer: director16
+    - officer: director16
 - from: report-period
   id: officer17
   segments:
-    officer: director17
+    - officer: director17
 - from: report-period
   id: officer18
   segments:
-    officer: director18
+    - officer: director18
 - from: report-period
   id: officer19
   segments:
-    officer: director19
+    - officer: director19
 - from: report-period
   id: officer20
   segments:
-    officer: director20
+    - officer: director20
 
 # The signing officer is referenced using their dimension
 - id: signing-officer
   from: report-period
   segments:
-    officer: metadata.accounting.signing-officer
+    - officer: metadata.accounting.signing-officer
 
 - id: directors-report-signing-officer
   from: report-period
   segments:
-    officer: metadata.accounting.directors-report-signing-officer
+    - officer: metadata.accounting.directors-report-signing-officer
 
 # Contact information-related dimensions
 - from: report-period
   id: contact-country
   segments:
-    countries-regions: metadata.business.contact.country
+    - countries-regions: metadata.business.contact.country
 - from: report-period
   id: phone
   segments:
-    phone-number-type: metadata.business.contact.phone.type
+    - phone-number-type: metadata.business.contact.phone.type
 - from: report-period
   id: website
   segments:
-    countries-regions: metadata.business.contact.country
+    - countries-regions: metadata.business.contact.country
 
 # This is a list of metadata fields which are added to the 'hidden'
 # section at the start of the report.  The identifiers here are defined

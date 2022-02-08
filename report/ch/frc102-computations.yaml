@@ -310,7 +310,7 @@
   # In the FRS taxonomies there is a dimension which partitions
   # creditors due within 1 year from over 1 year
   segments:
-    matures: within-1-year
+    - matures: within-1-year
 
 # Net current assets
 - id: net-current-assets
@@ -337,7 +337,7 @@
   description: 'Creditors: falling due after one year'
   inputs: []
   segments:
-    matures: after-1-year
+    - matures: after-1-year
 
 # Corporation tax liability
 - id: corporation-tax-owed
@@ -378,7 +378,7 @@
   accounts:
   - Equity:Shareholdings
   segments:
-    equity: ordinary-shares
+    - equity: ordinary-shares
 
 # Profit i.e. income minus expenses.
 - id: profit-loss
@@ -515,7 +515,7 @@
   - shares-at-start
   - shares-issued
   segments:
-    equity: ordinary-shares
+    - equity: ordinary-shares
 
 ##############################
 # Cash flows #################
