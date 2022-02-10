@@ -10,6 +10,21 @@ from . config import NoneValue
 from . datum import *
 from . expand import expand_string
 
+class NoteHeadings(dict):
+    def maybe_init(self, level):
+        if level not in self:
+            self[level] = 1
+    def get_next(self, level):
+
+        if level == 1:
+            if 2 in self:
+                del self[2]
+
+        self.maybe_init(level)
+        n = self[level]
+        self[level] += 1
+        return n
+
 class DataSource:
     def __init__(self, cfg, session):
 
@@ -25,6 +40,8 @@ class DataSource:
         self.results = {}
 
         self.notes = {}
+
+        self.noteheadings = NoteHeadings()
 
     def set_note(self, id, value):
         self.notes[id] = value

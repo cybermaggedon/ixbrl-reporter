@@ -4,7 +4,6 @@ from . basic_element import BasicElement
 class NoteHeading(BasicElement):
 
     counts = {}
-    note_index = {}
 
     def __init__(self, id, level, title, data):
 
@@ -12,16 +11,12 @@ class NoteHeading(BasicElement):
         self.level = level
         self.title = title
 
-        if level not in NoteHeading.counts:
-            NoteHeading.counts[level] = 1
+        self.headings = data.noteheadings
 
-        self.num = NoteHeading.counts[level]
-
-        NoteHeading.counts[level] += 1
+        self.num = self.headings.get_next(level)
 
         if id:
             data.set_note(id, str(self.format()))
-            NoteHeading.note_index[id] = self
 
     def format(self):
         if self.level == 1:
@@ -44,28 +39,14 @@ class NoteHeading(BasicElement):
         return e
 
     def to_text(self, taxonomy, out):
-
-        if self.level == 1:
-            if 2 in NoteHeading.counts:
-                del NoteHeading.counts[2]
-
         txt = "%s. %s\n" % (self.format(), self.title)
         out.write(txt)
 
     def to_debug(self, taxonomy, out):
-
-        if self.level == 1:
-            if 2 in NoteHeading.counts:
-                del NoteHeading.counts[2]
-
         txt = "%s. %s\n" % (self.format(), self.title)
         out.write(txt)
 
     def to_ixbrl_elt(self, par, taxonomy):
-
-        if self.level == 1:
-            if 2 in NoteHeading.counts:
-                del NoteHeading.counts[2]
 
         txt = "%s. %s" % (self.format(), self.title)
         
