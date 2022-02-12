@@ -16,7 +16,7 @@ body {
     background-color: gray; 
   }
 
-  DIV.page {
+  div.page {
 
     background-color: white;
     padding: 2em;
@@ -199,10 +199,10 @@ table {
   .company-info {
     font-size: medium;
   }
-  TABLE.sheet {
+  table.sheet {
     margin-left: 20%;
   }
-  TABLE.spacetable {
+  table.spacetable {
     margin-left: 20%;
   }
   body {
@@ -271,7 +271,7 @@ table {
   margin: 2px;
 }
 
-.fact DIV {
+.fact div {
   margin: 0rem 0rem 0rem 1rem;
   padding: 4px;
 }
