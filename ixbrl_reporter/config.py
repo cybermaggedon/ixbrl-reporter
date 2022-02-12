@@ -98,7 +98,12 @@ class Config(dict):
                 if k in nav:
                     nav = nav[k]
                 elif isinstance(nav, list):
-                    pos = int(k)
+                    try:
+                        pos = int(k)
+                    except Exception as e:
+                        if deflt == None and mandatory:
+                            raise RuntimeError("Config value %s not known" % key)
+                        return Config.makevalue(deflt)
                     if pos >= len(nav):
                         if deflt == None and mandatory:
                             raise RuntimeError(
