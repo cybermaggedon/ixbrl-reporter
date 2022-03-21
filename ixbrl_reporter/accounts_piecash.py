@@ -83,13 +83,13 @@ class Accounts:
 
         if acct == None: acct = self.book.root_account
 
-        ch = acct.children()
+        ch = acct.children
         if ch == None:
             return []
         
         res = []
 
-        for v in acct.children():
+        for v in acct.children:
             res.append(pfx + v.name)
             res.extend(
                 self.get_accounts(v, pfx + v.name + ":")

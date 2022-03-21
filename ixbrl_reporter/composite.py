@@ -11,8 +11,10 @@ class Composite(BasicElement):
     @staticmethod
     def load(elt_def, data):
 
+        id = elt_def.get("id", mandatory=False)
+
         c = Composite(
-            elt_def.get("id"),
+            id,
             [
                 data.get_element(v)
                 for v in elt_def.get("elements")
