@@ -102,6 +102,9 @@ class Computable:
         if kind == "sum":
             return Sum.load(cfg, comps, context, data, gcfg)
 
+        if kind == "abs":
+            return AbsOperation.load(cfg, comps, context, data, gcfg)
+
         if kind == "apportion":
             return ApportionOperation.load(cfg, comps, context, data, gcfg)
 
@@ -466,6 +469,44 @@ class Sum(Computable):
             return output
 
         output = TotalResult(self, result.get(self.metadata.id), items=self.steps)
+
+        return output
+
+class AbsOperation(Computable):
+    def __init__(self, metadata, dir, item):
+        self.metadata = metadata
+        self.direc = dir
+        self.item = item
+
+    @staticmethod
+    def load(cfg, comps, context, data, gcfg):
+
+        metadata = Metadata.load(cfg, comps, context, data, gcfg)
+
+        item = cfg.get("input")
+
+        return AbsOperation(
+            metadata, direc,
+            get_computation(item, comps, context, data, gcfg)
+        )
+
+    def compute(self, accounts, start, end, result):
+
+        context = self.metadata.get_context(start, end)
+
+        val = self.item.compute(accounts, start, end, result)
+
+        val = abs(val)
+
+        result.set(
+            self.metadata.id,
+            context.create_money_datum(self.metadata.id, val)
+        )
+        return val
+
+    def get_output(self, result):
+
+        output = TotalResult(self, result.get(self.metadata.id), items=[])
 
         return output
 
