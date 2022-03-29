@@ -473,9 +473,8 @@ class Sum(Computable):
         return output
 
 class AbsOperation(Computable):
-    def __init__(self, metadata, dir, item):
+    def __init__(self, metadata, item):
         self.metadata = metadata
-        self.direc = dir
         self.item = item
 
     @staticmethod
@@ -486,8 +485,7 @@ class AbsOperation(Computable):
         item = cfg.get("input")
 
         return AbsOperation(
-            metadata, direc,
-            get_computation(item, comps, context, data, gcfg)
+            metadata, get_computation(item, comps, context, data, gcfg)
         )
 
     def compute(self, accounts, start, end, result):
