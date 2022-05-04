@@ -86,20 +86,16 @@ class Accounts:
 
     def get_accounts(self, acct=None, pfx=""):
 
-        if acct == None: acct = self.book.root_account
+        if acct == None: acct = ""
 
-        ch = acct.children()
-        if ch == None:
-            return []
-        
-        res = []
+        s = set()
 
-        for v in acct.children():
-            res.append(pfx + v.name)
-            res.extend(
-                self.get_accounts(v, pfx + v.name + ":")
-            )
-        return res
+        for tx in self.transactions:
+            for k in tx["splits"].keys():
+                if k.startswith(acct):
+                    s.add(k)
+
+        return list(s)
 
     def is_debit(self, acct):
         if acct.startswith("Income"): return True
