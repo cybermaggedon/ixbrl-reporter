@@ -58,7 +58,7 @@ class Accounts:
                 splits.append(
                     {
                         "date": dt,
-                        "amount": float(spl.value),
+                        "amount": float(spl.quantity),
                         "description": tx.description
                     }
                 )
