@@ -88,14 +88,26 @@ class Accounts:
     # Return an account given an account locator.  Navigates through
     # hierarchy, account parts are colon separated.
     def get_account(self, par, locator):
+
         if par == None:
             acct = self.root
         else:
             acct = par
+
         for v in locator.split(":"):
-            acct = acct.lookup_by_name(v)
-            if acct == None:
+
+            ch_acct = None
+
+            for ch in acct.get_children():
+                if ch.name == v:
+                    ch_acct = ch
+                    break
+
+            if ch_acct == None:
                 raise RuntimeError("Can't locate account '%s'" % locator)
+
+            acct = ch_acct
+
         return acct
 
     def get_accounts(self, acct=None, pfx=""):
