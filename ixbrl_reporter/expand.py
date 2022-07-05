@@ -33,7 +33,7 @@ def expand_string(value, data):
             )
         elif isinstance(tk, ComputationToken):
             content.append(
-                ComputationElt(tk.name, tk.period)
+                ComputationElt(tk.name, tk.period, data)
             )
         elif isinstance(tk, TagOpen):
             if tk.kind != "string":

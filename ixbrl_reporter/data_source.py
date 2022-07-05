@@ -84,6 +84,10 @@ class DataSource:
 
         return self.results[c]
 
+    def get_result(self, id, period):
+        res = self.get_results([id], period)
+        return res.get(id)
+
     def get_results(self, ids, period):
 
         res = self.perform_computations(period)
@@ -99,6 +103,14 @@ class DataSource:
             Period.load(period)
             for period in self.cfg.get("metadata.accounting.periods")
         ]
+
+    def get_period(self, name):
+
+        for period in self.get_periods():
+            if period.name == name:
+                return period
+
+        raise RuntimeError("Period '" + period + "' not known")
 
     def get_worksheet(self, id):
 

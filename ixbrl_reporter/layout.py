@@ -321,3 +321,57 @@ class WorksheetElt(Elt):
 
     def to_debug(self, taxonomy, out):
         self.wse.to_debug(taxonomy, out)
+
+class ComputationElt(Elt):
+    def __init__(self, name, period, data):
+        self.ctxt = None
+        self.name = name
+        self.period = period
+        self.data = data
+
+    def to_html(self, par, taxonomy):
+
+        elt = par.xhtml_maker.span()
+
+        if self.period == "":
+            period = self.data.get_report_period(0)
+        else:
+            period = self.data.get_period(self.period)
+
+        res = self.data.get_result(self.name, period)
+
+        if self.ctxt == None:
+            ctxt = self.data.business_context.with_period(period)
+        else:
+            ctxt = taxonomy.get_context(self.ctxt)
+
+        fact = taxonomy.create_fact(res)
+
+        elt = fact.to_elt(par)
+
+        return elt
+
+    def to_text(self, taxonomy, out):
+
+        elt = par.xhtml_maker.span()
+
+        if self.period == "":
+            period = self.data.get_report_period(0)
+        else:
+            period = self.data.get_period(self.period)
+
+        res = self.data.get_result(self.name, period)
+
+        if self.ctxt == None:
+            ctxt = self.data.business_context.with_period(period)
+        else:
+            ctxt = taxonomy.get_context(self.ctxt)
+
+        fact = taxonomy.create_fact(res)
+
+        out.write(fact.to_text())
+
+    def to_debug(self, taxonomy, out):
+
+        self.to_text(taxonomy, out)
+
