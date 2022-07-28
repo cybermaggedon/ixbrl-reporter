@@ -12,6 +12,28 @@ information from GnuCash files, and also a CSV file of transactions.
 There's a #ixbrl-reporter channel on our Discord server if you want
 to discuss... https://discord.gg/3cAvPASS6p
 
+## Note
+
+The configuration files used by ixbrl-reporter are complex.  See
+[`ixbrl-reporter-jsonnet`](https://github.com/cybermaggedon/ixbrl-reporter-jsonnet) for an easier way to manage the configuration files.
+
+## Summary
+
+This code is intended for use with `ixbrl-reporter`.
+
+Using `ixbrl-reporter` requires a complex configuration file, or set of
+configuration files.  An internal import/reference mechanism was introduced
+to allow the configuration files to be modulariesd, but the mechanism is
+still not ideal.
+
+This repo implements JSONNET templates for construction of configuration
+files for `ixbrl-reporter` which makes the matter more manageable.
+
+Jsonnet (see jsonnet.org) is a programming language (invented by Google)
+which extends JSON with programming constructs.  Jsonnet is specifically
+designed to make it easy to build configuration files; it supports object
+templating and extension.
+
 ## iXBRL
 
 The iXBRL format is commonly used to describe regulatory account information
