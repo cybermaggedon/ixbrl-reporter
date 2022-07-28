@@ -7,6 +7,11 @@ This is a command-line utility which creates iXBRL-tagged financial reports
 from configuration templates and account data.  It currently supports account
 information from GnuCash files, and also a CSV file of transactions.
 
+## Discuss
+
+There's a #ixbrl-reporter channel on our Discord server if you want
+to discuss... https://discord.gg/3cAvPASS6p
+
 ## iXBRL
 
 The iXBRL format is commonly used to describe regulatory account information
@@ -192,4 +197,9 @@ document is loaded into Arelle, the document is automatically loaded into
 a browser with markup so that you can navigate the tags and discover tagged
 information.  With the iXBRL viewer when you hover over tagged information,
 it is highlighted, clicking opens up the metadata viewer.
+
+## License
+
+Copyright (c) Accounts Machine Limited, 2020-2022
+Licenced under the GPL version 3 licence, see the [LICENSE](LICENCE) file
 
