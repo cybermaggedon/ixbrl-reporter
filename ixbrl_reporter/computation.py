@@ -320,9 +320,14 @@ class ApportionOperation(Computable):
         proportion_key = cfg.get("proportion-period")
         proportion = Period.load(data.get_config(proportion_key))
 
-        item = comps[cfg.get("input")]
+        item = cfg.get("input")
 
-        return ApportionOperation(metadata, item, proportion, whole)
+        return ApportionOperation(
+            metadata,
+            get_computation(item, comps, context, data, gcfg),
+            proportion,
+            whole
+        )
 
     def compute(self, accounts, start, end, result):
 
@@ -402,9 +407,13 @@ class FactorOperation(Computable):
 
         metadata = Metadata.load(cfg, comps, context, data, gcfg)
         factor = float(cfg.get("factor"))
-        item = comps[cfg.get("input")]
+        item = cfg.get("input")
 
-        return FactorOperation(metadata, item, factor)
+        return FactorOperation(
+            metadata,
+            get_computation(item, comps, context, data, gcfg),
+            factor
+        )
 
     def compute(self, accounts, start, end, result):
 

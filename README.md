@@ -220,6 +220,16 @@ a browser with markup so that you can navigate the tags and discover tagged
 information.  With the iXBRL viewer when you hover over tagged information,
 it is highlighted, clicking opens up the metadata viewer.
 
+### Test suite / examples
+
+See the `test` directory.
+
+```
+sh test/run_all
+```
+
+Output in `output`.
+
 ## License
 
 Copyright (c) Accounts Machine Limited, 2020-2022
