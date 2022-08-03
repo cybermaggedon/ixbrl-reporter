@@ -23,6 +23,11 @@ ROUND_DOWN = 1
 ROUND_UP = 2
 ROUND_NEAREST = 3
 
+CMP_LESS = 1
+CMP_LESS_EQUAL = 2
+CMP_GREATER = 3
+CMP_GREATER_EQUAL = 4
+
 class Metadata:
     def __init__(self, id, description, context, segments, period, note):
         self.id = id
@@ -114,6 +119,9 @@ class Computable:
 
         if kind == "factor":
             return FactorOperation.load(cfg, comps, context, data, gcfg)
+
+        if kind == "compare":
+            return Comparison.load(cfg, comps, context, data, gcfg)
 
         if kind == "line":
             return Line.load(cfg, comps, context, data, gcfg)
@@ -421,6 +429,73 @@ class FactorOperation(Computable):
 
         val = self.item.compute(accounts, start, end, result)
         val = val * self.factor
+
+        result.set(
+            self.metadata.id,
+            context.create_money_datum(self.metadata.id, val)
+        )
+        return val
+
+    def get_output(self, result):
+
+        output = TotalResult(self, result.get(self.metadata.id), items=[])
+
+        return output
+
+class Comparison(Computable):
+    def __init__(self, metadata, item, comparison, value=0, false_value=0):
+        self.metadata = metadata
+        self.item = item
+        self.value = value
+        self.false_value = false_value
+        self.comparison = comparison
+
+    @staticmethod
+    def load(cfg, comps, context, data, gcfg):
+
+        metadata = Metadata.load(cfg, comps, context, data, gcfg)
+
+        comparison = cfg.get("comparison")
+
+        cid = {
+            "less": CMP_LESS,
+            "less-or-equal": CMP_LESS_EQUAL,
+            "greater": CMP_GREATER,
+            "greater-or-equal": CMP_GREATER_EQUAL,
+        }.get(comparison, CMP_LESS)
+
+        try:
+            value = float(cfg.get("value"))
+        except: value = 0
+
+        try:
+            if_false = float(cfg.get("if-false"))
+        except: if_false = 0
+
+        item = cfg.get("input")
+
+        return Comparison(
+            metadata,
+            get_computation(item, comps, context, data, gcfg),
+            cid,
+            value,
+            if_false
+        )
+
+    def compute(self, accounts, start, end, result):
+
+        context = self.metadata.get_context(start, end)
+
+        val = self.item.compute(accounts, start, end, result)
+
+        if self.comparison == CMP_LESS and val >= self.value:
+            val = self.false_value
+        elif self.comparison == CMP_LESS_EQUAL and val > self.value:
+            val = self.false_value
+        if self.comparison == CMP_GREATER and val <= self.value:
+            val = self.false_value
+        if self.comparison == CMP_GREATER_EQUAL and val < self.value:
+            val = self.false_value
 
         result.set(
             self.metadata.id,
