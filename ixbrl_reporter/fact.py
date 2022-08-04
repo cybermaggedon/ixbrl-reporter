@@ -27,8 +27,21 @@ class MoneyFact(Fact):
         self.decimals = decimals
         self.scale = scale
     def to_elt(self, base):
+
         value = self.value
+
+        # Smallest value which rounds to zero
+        mini = (10 ** -self.decimals) / 2
+
+        # Round off to zero if tiny.  This stops Python from outputting
+        # -0.00 for tiny negative values
+        if abs(value) < mini:
+            value = 0
+
         if self.reverse: value *= -1
+
+
+
         if self.name:
             elt = base.ix_maker.nonFraction("{0:,.2f}".format(value))
             elt.set("name", self.name)
@@ -37,8 +50,13 @@ class MoneyFact(Fact):
             elt.set("format", "ixt2:numdotdecimal")
             elt.set("decimals", str(self.decimals))
             elt.set("scale", str(self.scale))
-            if value < 0:
-                elt.set("sign", "-")
+
+# If the value is negative, it includes a minus sign, so don't need
+# to flag it as having negative sign.
+
+#            if value < 0:
+#                elt.set("sign", "-")
+
             return elt
         else:
             return base.xhtml_maker.span("{0:,.2f}".format(value))
