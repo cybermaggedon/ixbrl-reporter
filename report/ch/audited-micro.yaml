@@ -1,79 +1,1843 @@
-
-#############################################################################
-### Taxonomy configuration ##################################################
-#############################################################################
-# This sets up the iXBRL taxonomy.  There should be a filename and a
-# taxonomy ID.
-taxonomy: //import taxonomy/frs102.yaml
-
-# CSS style
-style: //import report/style.yaml
-
-# The accounting-standards applied.  One of:
-#   frs101, frs102, frsse, full-irs, micro-entities, other-standards,
-#   small-entities-regime.
 accounting-standards: micro-entities
-
-# Accounts status, one of:
-#   audit-exempt-no-accountants-report,
-#   audit-exempt-with-accountants-report, audited,
-#   independent-examination, other-reporting-regime
 accounts-status: audited
-
-# Accounts type, one of:
-#   abbreviated-accounts, abridged-accounts, full-accounts
 accounts-type: abridged-accounts
-
-# Report title
-title: Audited Micro-Entity Accounts
-
-#############################################################################
-### Macros ##################################################################
-#############################################################################
-macros: //import report/ch/macros.yaml
-
-#############################################################################
-### Report computations #####################################################
-#############################################################################
-computations: //import report/ch/frc102-computations.yaml
-
-#############################################################################
-### Worksheets ##############################################################
-#############################################################################
-# Worksheets list the computations which are shown on each accounting figure
-worksheets: //import report/ch/frc102-worksheets.yaml
-
-#############################################################################
-### Elements describe the report structure ##################################
-#############################################################################
-
+computations:
+- accounts:
+  - Income:Sales
+  description: Consultancy
+  id: consultancy
+  kind: line
+  period: in-year
+- description: Turnover / revenue
+  id: turnover
+  inputs:
+  - consultancy
+  kind: sum
+  period: in-year
+- description: Other income
+  id: other-operating-income
+  inputs: []
+  kind: sum
+  period: in-year
+- description: Cost of raw materials
+  id: raw-materials-consumables
+  inputs: []
+  kind: sum
+  period: in-year
+- description: Gross Profit
+  id: gross-profit
+  inputs:
+  - turnover
+  kind: sum
+  period: in-year
+- accounts:
+  - Expenses:Emoluments:Employees
+  description: Salaries
+  id: salaries-expense
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:Emoluments:Employer Pension Contribution
+  description: Pension contributions
+  id: pensions-expense
+  kind: line
+  period: in-year
+- description: Staff costs
+  id: staff-costs
+  inputs:
+  - salaries-expense
+  - pensions-expense
+  kind: group
+  note: staff-costs-note
+  period: in-year
+- accounts:
+  - Expenses:Depreciation
+  description: Depreciation
+  id: depreciation
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Accountant
+  description: Accountancy services
+  id: accountancy
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Bank Charges
+  description: Bank charges
+  id: bank-charges
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Office
+  description: Office costs
+  id: office
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Software
+  description: Software
+  id: software
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Subscriptions
+  description: Subscriptions
+  id: subscriptions
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Sundries
+  description: Sundries
+  id: sundries
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Telecoms
+  description: Telecoms
+  id: telecoms
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Travel/Accom
+  description: Travel
+  id: travel
+  kind: line
+  period: in-year
+- description: Other charges
+  id: other-charges
+  inputs:
+  - accountancy
+  - bank-charges
+  - office
+  - software
+  - subscriptions
+  - sundries
+  - telecoms
+  - travel
+  kind: sum
+  period: in-year
+- accounts:
+  - Equity:Corporation Tax
+  description: Tax
+  id: tax
+  kind: line
+  period: in-year
+- description: Profit (Loss)
+  id: profit
+  inputs:
+  - turnover
+  - other-operating-income
+  - raw-materials-consumables
+  - staff-costs
+  - depreciation
+  - other-charges
+  kind: group
+  note: profit-note
+  period: in-year
+- description: Charges against profits
+  id: charges
+  inputs:
+  - depreciation
+  - staff-costs
+  - other-charges
+  kind: group
+  period: in-year
+- accounts:
+  - Income:Interest
+  description: Interest on current account
+  id: interest-received
+  kind: line
+  note: financial-income-note
+  period: in-year
+- description: Interest income
+  id: interest-income
+  inputs:
+  - interest-received
+  kind: group
+  period: in-year
+- accounts:
+  - Expenses:Interest Paid
+  description: Interest on bank loans
+  id: interest-paid
+  kind: line
+  note: financial-costs-note
+  period: in-year
+- description: Interest expense
+  id: interest-expense
+  inputs:
+  - interest-paid
+  kind: group
+  period: in-year
+- description: No information
+  id: zero
+  inputs: []
+  kind: group
+  period: in-year
+- accounts:
+  - Assets:Capital Equipment
+  description: Tangible Assets
+  id: tangible-assets
+  kind: line
+  period: at-end
+- description: Fixed Assets
+  id: fixed-assets
+  inputs:
+  - tangible-assets
+  kind: sum
+  note: equipment-note
+  period: at-end
+- accounts:
+  - Accounts Receivable
+  - Assets:Owed To Us
+  description: Debtors
+  id: debtors
+  kind: line
+  period: at-end
+- accounts:
+  - VAT:Input
+  - VAT:Settlement:Input
+  - Assets:VAT Repayments Due
+  description: VAT Refund Due
+  id: vat-refund-owed
+  kind: line
+  period: at-end
+- accounts:
+  - Bank Accounts
+  description: Bank
+  id: bank
+  kind: line
+  period: at-end
+- description: Current Assets
+  id: current-assets
+  inputs:
+  - debtors
+  - vat-refund-owed
+  - bank
+  kind: sum
+- description: Prepayments and Accrued Income
+  id: prepayments-and-accrued-income
+  inputs: []
+  kind: group
+- accounts:
+  - Accounts Payable
+  description: Trade Creditors
+  id: trade-creditors
+  kind: line
+  period: at-end
+- accounts:
+  - VAT:Output
+  - VAT:Settlement:Output
+  - Liabilities:Credit Cards
+  description: Other Creditors
+  id: other-creditors
+  kind: line
+  period: at-end
+- description: 'Creditors: falling due within one year'
+  id: creditors-within-1-year
+  inputs:
+  - trade-creditors
+  - other-creditors
+  kind: sum
+  segments:
+  - matures: within-1-year
+- description: Net Current Assets
+  id: net-current-assets
+  inputs:
+  - current-assets
+  - prepayments-and-accrued-income
+  - creditors-within-1-year
+  kind: sum
+- description: Total Assets Less Liabilities
+  id: total-assets-less-liabilities
+  inputs:
+  - fixed-assets
+  - current-assets
+  - prepayments-and-accrued-income
+  - creditors-within-1-year
+  kind: sum
+- description: 'Creditors: falling due after one year'
+  id: creditors-after-1-year
+  inputs: []
+  kind: group
+  segments:
+  - matures: after-1-year
+- accounts:
+  - Liabilities:Owed Corporation Tax
+  description: Corporation tax
+  id: corporation-tax-owed
+  kind: line
+  period: at-end
+- description: Provisions For Liabilities
+  id: provisions-for-liabilities
+  inputs:
+  - corporation-tax-owed
+  kind: sum
+- description: Accrued liabilities and deferred income
+  id: accruals-and-deferred-income
+  inputs: []
+  kind: group
+- description: Net Assets
+  id: net-assets
+  inputs:
+  - total-assets-less-liabilities
+  - creditors-after-1-year
+  - provisions-for-liabilities
+  - accruals-and-deferred-income
+  kind: sum
+- accounts:
+  - Equity:Shareholdings
+  description: Share Capital
+  id: share-capital-equity
+  kind: line
+  period: at-end
+  segments:
+  - equity: ordinary-shares
+- accounts:
+  - Income
+  - Expenses
+  description: Retained Profit
+  id: profit-loss
+  kind: line
+  period: at-end
+- accounts:
+  - Equity:Dividends
+  description: Dividends
+  id: dividends
+  kind: line
+  period: at-end
+- accounts:
+  - Equity:Corporation Tax
+  description: Corporation tax
+  id: corporation-tax
+  kind: line
+  period: at-end
+- description: Capital and Reserves
+  id: capital-and-reserves
+  inputs:
+  - share-capital-equity
+  - profit-loss
+  - dividends
+  - corporation-tax
+  kind: group
+- description: Capital and Reserves
+  id: total-capital-and-reserves
+  inputs:
+  - capital-and-reserves
+  kind: sum
+- accounts:
+  - Assets:Capital Equipment:Computer Equipment
+  description: At start of period
+  id: fixed-assets-initial
+  kind: line
+  period: at-start
+- accounts:
+  - Assets:Capital Equipment:Computer Equipment
+  description: Additions
+  id: fixed-assets-additions
+  kind: line
+  period: in-year
+- description: Fixed Assets
+  id: fixed-assets-total
+  inputs:
+  - fixed-assets-initial
+  - fixed-assets-additions
+  kind: group
+- accounts:
+  - Assets:Capital Equipment:Depreciation
+  description: At start of period
+  id: depreciation-initial
+  kind: line
+  period: at-start
+- accounts:
+  - Assets:Capital Equipment:Depreciation
+  description: Charge
+  id: depreciation-charge
+  kind: line
+  period: in-year
+- description: Depreciation
+  id: depreciation-total
+  inputs:
+  - depreciation-initial
+  - depreciation-charge
+  kind: group
+- description: Carrying at end of period
+  id: carrying-final
+  inputs:
+  - fixed-assets-total
+  - depreciation-total
+  kind: sum
+- accounts:
+  - Equity:Shareholdings:Ordinary Shares
+  - Equity:Shareholdings:Preference Shares
+  description: Ordinary Shares held at start
+  id: shares-at-start
+  kind: line
+  period: at-start
+- accounts:
+  - Equity:Shareholdings
+  description: Shares Issued in period
+  id: shares-issued
+  kind: line
+  period: in-year
+- description: Share Capital
+  id: share-capital
+  inputs:
+  - shares-at-start
+  - shares-issued
+  kind: group
+  period: at-end
+  segments:
+  - equity: ordinary-shares
+- accounts:
+  - Equity:Corporation Tax
+  description: Corporation tax
+  id: corporation-tax-paid
+  kind: line
+  note: taxation-note
+  period: in-year
+- accounts:
+  - Expenses:Depreciation
+  description: Adjustment for depreciation
+  id: depreciation-adjustment
+  kind: line
+  note: equipment-note
+  period: in-year
+  reverse-sign: true
+- accounts:
+  - Accounts Receivable
+  - Assets:Owed To Us
+  - VAT:Input
+  - VAT:Settlement:Input
+  description: Decrease (increase) in trade and other receivables
+  id: trade-and-other-receivables
+  kind: line
+  period: in-year
+  reverse-sign: true
+- accounts: []
+  description: Decrease (increase) in inventories
+  id: inventories
+  kind: line
+  period: in-year
+  reverse-sign: true
+- accounts:
+  - Accounts Payable
+  - VAT:Output
+  - VAT:Settlement:Output
+  - Liabilities:Owed Corporation Tax
+  description: Increase (decrease) in trade payables
+  id: trade-payables
+  kind: line
+  period: in-year
+  reverse-sign: true
+- id: cash-inflow
+  inputs:
+  - profit
+  kind: sum
+  period: in-year
+- description: Cash from operations
+  id: cash-from-operations
+  inputs:
+  - cash-inflow
+  - depreciation-adjustment
+  - trade-and-other-receivables
+  - inventories
+  - trade-payables
+  kind: group
+  period: in-year
+- description: Net cash from operating activities
+  id: net-cash-from-operating-activities
+  inputs:
+  - profit
+  - depreciation-adjustment
+  - trade-and-other-receivables
+  - inventories
+  - trade-payables
+  - corporation-tax-paid
+  kind: group
+  period: in-year
+- accounts: []
+  description: Proceeds from sale of equipment
+  id: proceeds-sale-equipment
+  kind: line
+  period: in-year
+- accounts:
+  - Assets:Capital Equipment:Computer Equipment
+  description: Purchase of property, plant and equipment
+  id: purchase-equipment
+  kind: line
+  period: in-year
+  reverse-sign: true
+- accounts: []
+  description: Purchase of intangible assets
+  id: purchase-intangible-assets
+  kind: line
+  period: in-year
+- description: Net cash from investing activities
+  id: net-cash-from-investing-activities
+  inputs:
+  - proceeds-sale-equipment
+  - purchase-equipment
+  - purchase-intangible-assets
+  - interest-received
+  kind: group
+  period: in-year
+- description: Issue of share capital
+  id: proceeds-from-issuing-shares
+  inputs:
+  - shares-issued
+  kind: group
+  note: share-capital-note
+  period: in-year
+- accounts: []
+  description: Purchase of non-controlling interest
+  id: purchase-of-non-controlling-interest
+  kind: line
+  period: in-year
+- accounts:
+  - Equity:Dividends
+  description: Dividends
+  id: dividends-paid
+  kind: line
+  period: in-year
+- description: Net cash from financing activities
+  id: net-cash-from-financing-activities
+  inputs:
+  - interest-paid
+  - proceeds-from-issuing-shares
+  - purchase-of-non-controlling-interest
+  - dividends-paid
+  kind: group
+  period: in-year
+- accounts:
+  - Bank Accounts
+  description: Cash at start of year
+  id: cash-at-start-of-year
+  kind: line
+  period: at-start
+- description: Cash and cash equivalents at end of year
+  id: cash-at-end-of-year
+  inputs:
+  - cash-at-start-of-year
+  - description: Net change in cash and cash equivalents
+    id: net-cash-change
+    inputs:
+    - net-cash-from-operating-activities
+    - net-cash-from-investing-activities
+    - net-cash-from-financing-activities
+    kind: sum
+  kind: group
+  note: cash-note
+- description: Cash and cash equivalents at end of year
+  id: cash
+  inputs:
+  - accounts:
+    - Bank Accounts:Current Account
+    description: Current account
+    id: current-account
+    kind: line
+    period: at-end
+  - accounts:
+    - Bank Accounts:Reserve Account
+    description: Reserve account
+    id: reserve-account
+    kind: line
+    period: at-end
+  kind: group
+  period: at-end
 elements:
-
-# Top-level report element is a composite which invokes the other elements.
-# The top-level element adds iXBRL schema stuff and document metadata.
-# That is configurable in the taxonomy, not here.
-
-- id: report
-  kind: html
-  root:
-    tag: div
-    content:
-    - element: title
-    - element: company-info
-    - element: auditors-report
-    - element: balance-sheet
-    - ifdef: metadata.accounting.is-revised
+- elements:
+  - elements:
+    - kind: html
+      root:
+        attributes:
+          class: titlepage
+        content:
+        - attributes:
+            class: company-number
+          content: 'expand: Company registration no. ~[company-number] (~[jurisdiction])'
+          tag: div
+        - attributes:
+            alt: Company logo
+            src: data:image/png;base64,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
+          tag: img
+        - attributes:
+            class: company-name
+          content: expand:~[company-name]
+          tag: div
+        - attributes:
+            class: title
+          content: expand:~[report-title]
+          tag: div
+        - attributes:
+            class: subtitle
+          content: expand:For the year ended ~[period-end]
+          tag: div
+        tag: div
+    kind: page
+  - elements:
+    - kind: html
+      root:
+        content:
+        - attributes:
+            class: header
+          content:
+          - content: expand:~[company-name]
+            tag: div
+          - content: Company information
+            tag: div
+          - content: expand:For the year ended ~[period-end]
+            tag: div
+          - tag: hr
+          tag: div
+        - attributes:
+            class: company-info
+          content:
+          - content:
+            - attributes:
+                class: tag
+              content: Directors
+              tag: td
+            - content:
+              - content:
+                  content:
+                  - expand:~[officer1]
+                  - tag: br
+                  tag: div
+                ifdef: metadata.business.directors.0
+              - content:
+                  content:
+                  - expand:~[officer2]
+                  - tag: br
+                  tag: div
+                ifdef: metadata.business.directors.1
+              - content:
+                  content:
+                  - expand:~[officer3]
+                  - tag: br
+                  tag: div
+                ifdef: metadata.business.directors.2
+              - content:
+                  content:
+                  - expand:~[officer4]
+                  - tag: br
+                  tag: div
+                ifdef: metadata.business.directors.3
+              - content:
+                  content:
+                  - expand:~[officer5]
+                  - tag: br
+                  tag: div
+                ifdef: metadata.business.directors.4
+              - content:
+                  content:
+                  - expand:~[officer6]
+                  - tag: br
+                  tag: div
+                ifdef: metadata.business.directors.5
+              tag: td
+            tag: tr
+          - content:
+            - attributes:
+                class: tag
+              content: Company number
+              tag: td
+            - content: 'expand: ~[company-number], registered in ~[jurisdiction]'
+              tag: td
+            tag: tr
+          - content:
+            - attributes:
+                class: tag
+              content: Registered office
+              tag: td
+            - content:
+              - content:
+                  content:
+                  - expand:~[contact-address1::, ]
+                  - tag: br
+                  tag: div
+                ifdef: metadata.business.contact.address.0
+              - content:
+                  content:
+                  - expand:~[contact-address2::, ]
+                  - tag: br
+                  tag: div
+                ifdef: metadata.business.contact.address.1
+              - content:
+                  content:
+                  - expand:~[contact-address3::, ]
+                  - tag: br
+                  tag: div
+                ifdef: metadata.business.contact.address.2
+              - expand:~[contact-location::, ] ~[contact-postcode]
+              tag: td
+            tag: tr
+          - content:
+              content:
+              - attributes:
+                  class: tag
+                content: Accountant
+                tag: td
+              - content:
+                - expand:~[accountant-name]
+                - tag: br
+                - expand:~[accountant-business]
+                - tag: br
+                - expand:~[accountant-address]
+                tag: td
+              tag: tr
+            ifdef: metadata.accountant.name
+          - content:
+              content:
+              - attributes:
+                  class: tag
+                content: Auditor
+                tag: td
+              - content:
+                - expand:~[auditor-name]
+                - tag: br
+                - expand:~[auditor-business]
+                - tag: br
+                - expand:~[auditor-address]
+                tag: td
+              tag: tr
+            ifdef: metadata.auditor.name
+          tag: table
+        tag: div
+    kind: page
+  - //ref auditors-report
+  - elements:
+    - kind: html
+      root:
+        content:
+        - attributes:
+            class: header
+          content:
+          - content: expand:~[company-name]
+            tag: div
+          - content: Statement of financial position
+            tag: div
+          - content: expand:As at ~[balance-sheet-date]
+            tag: div
+          - tag: hr
+          tag: div
+        - worksheet: balance-sheet
+        - element:
+            id: balance-sheet-notes
+            kind: html
+            root:
+              content:
+              - content:
+                - template:micro-entity-provisions
+                tag: p
+              - content:
+                - template:directors-acknowledge
+                tag: p
+              tag: div
+        - element:
+            kind: html
+            root:
+              content:
+              - content: expand:Approved by the board of directors and authorised
+                  for publication on ~[authorised-date].
+                tag: p
+              - content: expand:Signed on behalf of the board, by ~[signers-name].
+                tag: p
+              - attributes:
+                  alt: Director's signature
+                  src: data:image/png;base64,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
+                tag: img
+              tag: div
+        tag: div
+    kind: page
+    signature: data:image/png;base64,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
+  - kind: html
+    root:
       content:
-        element: revision-info
-    - element: notes
+        content:
+          element:
+            elements:
+            - kind: html
+              root:
+                content:
+                - attributes:
+                    class: header
+                  content:
+                  - content: expand:~[company-name]
+                    tag: div
+                  - content: Revision of the financial statements
+                    tag: div
+                  - attributes:
+                      class: subtitle
+                    content: expand:For the year ended ~[period-end]
+                    tag: div
+                  - tag: hr
+                  tag: div
+                tag: div
+            - kind: html
+              root: //ref revision-info
+            kind: page
+          kind: element
+        ifdef: metadata.accounting.is-revised
+      tag: div
+  - elements:
+    - kind: html
+      root:
+        content:
+        - attributes:
+            class: header
+          content:
+          - content: expand:~[company-name]
+            tag: div
+          - content: Notes to the accounts
+            tag: div
+          - content: expand:For the year ended ~[period-end]
+            tag: div
+          - tag: hr
+          tag: div
+        - element:
+            kind: html
+            root:
+              content:
+              - element:
+                  kind: noteheading
+                  level: 1
+                  title: Company information
+              - content:
+                - template:company
+                tag: p
+              tag: div
+        - element:
+            kind: html
+            root:
+              content:
+              - element:
+                  kind: noteheading
+                  level: 1
+                  title: Employees
+              - content: 'The average monthly number of persons employed by the company
+                  (including directors) during the period was as follows:'
+                tag: p
+              - attributes:
+                  class: sheet table
+                content:
+                - content:
+                  - attributes:
+                      class: label
+                    content: ''
+                    tag: td
+                  - attributes:
+                      class: column header
+                    content: expand:~[metadata.accounting.periods.0.name]
+                    tag: td
+                  - content:
+                      attributes:
+                        class: column header
+                      content: expand:~[metadata.accounting.periods.1.name]
+                      tag: td
+                    ifdef: metadata.business.average-employees.1
+                  tag: tr
+                - content:
+                  - attributes:
+                      class: label heading
+                    content: Employees
+                    tag: td
+                  - attributes:
+                      class: data value
+                    content: expand:~[average-employees-this]
+                    tag: td
+                  - content:
+                      attributes:
+                        class: data value
+                      content: expand:~[average-employees-previous]
+                      tag: td
+                    ifdef: metadata.business.average-employees.1
+                  tag: tr
+                tag: table
+              tag: div
+        tag: div
+    kind: page
+  id: report
+  kind: composite
+style: '
 
-- //ref directors-report
-- //ref auditors-report
+  .page { page-break-after: always; }
 
-- //ref report.macros.title
-- //ref report.macros.company-info
-- //ref report.macros.balance-sheet-audited-micro
-- //ref report.macros.signature
-- //ref report.macros.revision
-- //ref report.macros.simple-notes
+  body { font-family: Helvetica, Georgia, sans-serif; font-size: medium; }
+
+  @media screen, projection, tv {
+
+  body { margin: 2% 4% 2% 4%; background-color: gray; }
+
+  div.page {
+
+  background-color: white; padding: 2em;
+
+  /* CSS hack for cross browser minimum height */ min-height: 29.7cm;
+
+  height: 29.7cm; width: 21cm;
+
+  margin: 2em 0; }
+
+  }
+
+  .titlepage .company-number { text-align: right; font-size: small; font-weight: bold;
+  }
+
+  .titlepage img { margin: auto; width: 25%; display: block; padding-top: 12em; padding-left:
+  0em; padding-bottom: 1em; padding-right: 0em; }
+
+  .titlepage .company-name { text-align: center; font-size: xx-large; font-weight:
+  bold; padding-top: 1em; padding-left: 0em; padding-bottom: 1em; padding-right: 0em;
+  }
+
+  .titlepage .title { text-align: center; font-size: large; font-weight: bold; padding:
+  0.5rem; }
+
+  .titlepage .subtitle { text-align: center; font-size: large; font-weight: bold;
+  padding: 0.5rem; }
+
+  .page .header { text-align: center; font-weight: bold; }
+
+  .page .header div:last-child { padding-bottom: 0.5rem; }
+
+  .page .header hr { margin-bottom: 2rem; }
+
+  .sheet { width: 80%; border-collapse: separate; }
+
+  .sheet td { padding-top: 0em; padding-left: 1.2em; padding-bottom: 0em; padding-right:
+  1.2em; }
+
+  .spacetable { table-layout: fixed; border-collapse: separate; }
+
+  .spacetable td { padding-top: 0em; padding-left: 1.2em; padding-bottom: 0em; padding-right:
+  1.2em; }
+
+  table { border-spacing: 1rem 1rem; border-collapse: separate; }
+
+  .table { border-spacing: 0.2rem 0rem; border-collapse: separate; font-size: medium;
+  margin-left: auto; margin-right: auto; }
+
+  .company-info { border-collapse: separate; border-spacing: 0em; display: table;
+  table-layout: fixed; }
+
+  .company-info tr td { vertical-align: top; padding: 0.5em; }
+
+  .company-info tr td.tag { width: 15em; font-weight: bold; }
+
+  .row { display: table-row; }
+
+  .cell { display: table-cell; }
+
+  .label { width: 50%; padding-right: 1em; font-size: smaller; }
+
+  .label.heading { font-weight: bold; margin-top: 1rem; }
+
+  .note { font-size: smaller; text-align: center; padding-left: 0.2em; padding-right:
+  0.2em; }
+
+  .note.header { font-size: smaller; font-weight: bold; text-align: center; padding-left:
+  1em; padding-right: 1em; }
+
+  .label.breakdown.heading { margin-bottom: 0.2rem; }
+
+  .value { font-family: Source Code Pro, monospace, Courier New; width: 20%; padding-left:
+  1em; padding-right: 1em; margin-right: 1em; font-size: small; }
+
+  @media print { .label { font-size: small; width: 40%; } .value { font-family: Source
+  Code Pro, monospace; width: 20%; font-size: small; } .company-info { font-size:
+  medium; } table.sheet { margin-left: 20%; } table.spacetable { margin-left: 20%;
+  } body { font-size: 11pt; } .data { width: 8em; } }
+
+  .total.value { margin-top: 1em; }
+
+  .breakdown.total { margin-top: 0.2em; padding-top: 4px; border-top: 1px solid white;
+  }
+
+  .breakdown.total.value { border-top: 1px solid #808080; }
+
+  .breakdown.total.super-total.value { border-top: 5px double #808080; }
+
+  .column.header { padding: 0.5em 1em 0.5em 1em; border-bottom: 0.2em solid black;
+  font-weight: bold; text-align: center; width: 20%; margin-right: 1rem; }
+
+  .currency { text-align: right; padding-left: 1em; padding-right: 1em; width: 20%;
+  margin-right: 1rem; margin-top: 0.25em; }
+
+  .data.value { text-align: right; }
+
+  .data.value.negative { color: #400000; }
+
+  .data.value.nil { color: #a0a0a0; }
+
+  .hidden { display: none; }
+
+  .fact { display: flex; flex-direction: row; margin: 2px; }
+
+  .fact div { margin: 0rem 0rem 0rem 1rem; padding: 4px; }
+
+  .fact .ref { width: 5em; text-align: center; color: white; background-color: #2ca469;
+  border: 2px solid #104020; font-weight: bold; font-size: small; padding-left: 0.1rem;
+  padding-right: 0.1rem; }
+
+  .fact .description { width: 22em; font-size: small; }
+
+  .fact .factvalue { border: 2px solid black; background-color: white; font-family:
+  Source Code Pro, monospace; font-size: small; width: 12rem; padding-left: 1rem;
+  padding-right: 1rem; margin-right: 1rem; }
+
+  .fact .factvalue.false { color: #a0a0a0; }
+
+  .rank-1 { position: relative; left: -6rem; }
+
+  .rank1 { position: relative; left: 4rem; }
+
+  '
+taxonomy:
+  contexts:
+  - entity: metadata.business.company-number
+    id: business
+    scheme: metadata.business.entity-scheme
+  - from: business
+    id: report-period
+    period: metadata.accounting.periods.0
+  - from: business
+    id: previous-period
+    period: metadata.accounting.periods.1
+  - from: business
+    id: report-date
+    instant: metadata.accounting.date
+  - from: business
+    id: end-of-reporting-period
+    instant: metadata.accounting.periods.0.end
+  - from: report-period
+    id: industry-sector
+    segments:
+    - industry-sector: metadata.business.industry-sector
+  - from: report-period
+    id: accounting-standards
+    segments:
+    - accounting-standards: report.accounting-standards
+  - from: report-period
+    id: accounts-type
+    segments:
+    - accounts-type: report.accounts-type
+  - from: report-period
+    id: accounts-status
+    segments:
+    - accounts-status: report.accounts-status
+  - from: report-period
+    id: entity-legal-form
+    segments:
+    - entity-legal-form: metadata.business.company-formation.form
+  - from: report-period
+    id: entity-legal-country
+    segments:
+    - countries-regions: metadata.business.company-formation.country
+  - from: report-period
+    id: officer1
+    segments:
+    - officer: director1
+  - from: report-period
+    id: officer2
+    segments:
+    - officer: director2
+  - from: report-period
+    id: officer3
+    segments:
+    - officer: director3
+  - from: report-period
+    id: officer4
+    segments:
+    - officer: director4
+  - from: report-period
+    id: officer5
+    segments:
+    - officer: director5
+  - from: report-period
+    id: officer6
+    segments:
+    - officer: director6
+  - from: report-period
+    id: officer7
+    segments:
+    - officer: director7
+  - from: report-period
+    id: officer8
+    segments:
+    - officer: director8
+  - from: report-period
+    id: officer9
+    segments:
+    - officer: director9
+  - from: report-period
+    id: officer10
+    segments:
+    - officer: director10
+  - from: report-period
+    id: officer11
+    segments:
+    - officer: director11
+  - from: report-period
+    id: officer12
+    segments:
+    - officer: director12
+  - from: report-period
+    id: officer13
+    segments:
+    - officer: director13
+  - from: report-period
+    id: officer14
+    segments:
+    - officer: director14
+  - from: report-period
+    id: officer15
+    segments:
+    - officer: director15
+  - from: report-period
+    id: officer16
+    segments:
+    - officer: director16
+  - from: report-period
+    id: officer17
+    segments:
+    - officer: director17
+  - from: report-period
+    id: officer18
+    segments:
+    - officer: director18
+  - from: report-period
+    id: officer19
+    segments:
+    - officer: director19
+  - from: report-period
+    id: officer20
+    segments:
+    - officer: director20
+  - from: report-period
+    id: signing-officer
+    segments:
+    - officer: metadata.accounting.signing-officer
+  - from: report-period
+    id: directors-report-signing-officer
+    segments:
+    - officer: metadata.accounting.directors-report-signing-officer
+  - from: report-period
+    id: contact-country
+    segments:
+    - countries-regions: metadata.business.contact.country
+  - from: report-period
+    id: phone
+    segments:
+    - phone-number-type: metadata.business.contact.phone.type
+  - from: report-period
+    id: website
+    segments:
+    - countries-regions: metadata.business.contact.country
+  document-metadata:
+  - report-title
+  - report-date
+  - authorised-date
+  - period-start
+  - period-end
+  - company-name
+  - company-number
+  - vat-registration
+  - software-name
+  - software-version
+  - balance-sheet-date
+  - activities
+  - sic1
+  - sic2
+  - sic3
+  - sic4
+  - industry-sector
+  - is-dormant
+  - trading-status
+  - accounting-standards
+  - accounts-type
+  - accounts-status
+  - entity-legal-form
+  - entity-legal-country
+  - entity-legal-date
+  - average-employees-this
+  - average-employees-previous
+  - officer
+  - signing-officer
+  - contact-name
+  - contact-address1
+  - contact-address2
+  - contact-address3
+  - contact-location
+  - contact-county
+  - contact-postcode
+  - contact-email
+  - contact-phone-country
+  - contact-phone-area
+  - contact-phone-number
+  - website-url
+  - website-description
+  - is-revised
+  - directors-report-consistent-with-revised-accounts
+  metadata:
+  - config: report.title
+    context: report-period
+    id: report-title
+  - config: metadata.accounting.date
+    context: report-date
+    id: report-date
+    kind: date
+  - config: metadata.accounting.authorised-date
+    context: end-of-reporting-period
+    id: authorised-date
+    kind: date
+  - config: metadata.accounting.periods.0.start
+    context: report-date
+    id: period-start
+    kind: date
+  - config: metadata.accounting.periods.0.end
+    context: report-date
+    id: period-end
+    kind: date
+  - config: metadata.business.company-name
+    context: report-period
+    id: company-name
+  - config: metadata.business.company-number
+    context: report-period
+    id: company-number
+  - config: metadata.business.vat-registration
+    context: report-period
+    id: vat-registration
+  - config: internal.software-name
+    context: report-period
+    id: software-name
+  - config: internal.software-version
+    context: report-period
+    id: software-version
+  - config: metadata.accounting.balance-sheet-date
+    context: end-of-reporting-period
+    id: balance-sheet-date
+    kind: date
+  - config: metadata.business.activities
+    context: report-period
+    id: activities
+  - config: metadata.business.sic-codes.0
+    context: report-period
+    id: sic1
+  - config: metadata.business.sic-codes.1
+    context: report-period
+    id: sic2
+  - config: metadata.business.sic-codes.2
+    context: report-period
+    id: sic3
+  - config: metadata.business.sic-codes.3
+    context: report-period
+    id: sic4
+  - context: industry-sector
+    id: industry-sector
+    value: ''
+  - config: metadata.business.is-dormant
+    context: report-period
+    id: is-dormant
+    kind: bool
+  - context: report-period
+    id: trading-status
+    value: ''
+  - context: accounting-standards
+    id: accounting-standards
+    value: ''
+  - context: accounts-type
+    id: accounts-type
+    value: ''
+  - context: accounts-status
+    id: accounts-status
+    value: ''
+  - context: entity-legal-form
+    id: entity-legal-form
+    value: ''
+  - context: entity-legal-country
+    id: entity-legal-country
+    value: ''
+  - config: metadata.business.company-formation.date
+    context: report-date
+    id: entity-legal-date
+    kind: date
+  - config: metadata.business.average-employees.0
+    context: report-period
+    id: average-employees-this
+    kind: count
+  - config: metadata.business.average-employees.1
+    context: previous-period
+    id: average-employees-previous
+    kind: count
+  - config: metadata.business.directors.0
+    context: officer1
+    id: officer1
+  - config: metadata.business.directors.1
+    context: officer2
+    id: officer2
+  - config: metadata.business.directors.2
+    context: officer3
+    id: officer3
+  - config: metadata.business.directors.3
+    context: officer4
+    id: officer4
+  - config: metadata.business.directors.4
+    context: officer5
+    id: officer5
+  - config: metadata.business.directors.5
+    context: officer6
+    id: officer6
+  - config: metadata.business.directors.6
+    context: officer7
+    id: officer7
+  - config: metadata.business.directors.7
+    context: officer8
+    id: officer8
+  - config: metadata.business.directors.8
+    context: officer9
+    id: officer9
+  - config: metadata.business.directors.9
+    context: officer10
+    id: officer10
+  - config: metadata.business.directors.10
+    context: officer11
+    id: officer11
+  - config: metadata.business.directors.11
+    context: officer12
+    id: officer12
+  - config: metadata.business.directors.12
+    context: officer13
+    id: officer13
+  - config: metadata.business.directors.13
+    context: officer14
+    id: officer14
+  - config: metadata.business.directors.14
+    context: officer15
+    id: officer15
+  - config: metadata.business.directors.15
+    context: officer16
+    id: officer16
+  - config: metadata.business.directors.16
+    context: officer17
+    id: officer17
+  - config: metadata.business.directors.17
+    context: officer18
+    id: officer18
+  - config: metadata.business.directors.18
+    context: officer19
+    id: officer19
+  - config: metadata.business.directors.19
+    context: officer20
+    id: officer20
+  - context: signing-officer
+    id: signing-officer
+    value: ''
+  - context: signing-officer
+    id: signed-by
+    value: FIXME
+  - config: metadata.accounting.signed-by
+    context: report-period
+    id: signers-name
+  - config: metadata.business.jurisdiction
+    context: report-period
+    id: jurisdiction
+  - config: metadata.business.contact.name
+    context: contact-country
+    id: contact-name
+  - config: metadata.business.contact.address.0
+    context: contact-country
+    id: contact-address1
+  - config: metadata.business.contact.address.1
+    context: contact-country
+    id: contact-address2
+  - config: metadata.business.contact.address.2
+    context: contact-country
+    id: contact-address3
+  - config: metadata.business.contact.location
+    context: contact-country
+    id: contact-location
+  - config: metadata.business.contact.county
+    context: contact-country
+    id: contact-county
+  - config: metadata.business.contact.postcode
+    context: contact-country
+    id: contact-postcode
+  - config: metadata.business.contact.email
+    context: contact-country
+    id: contact-email
+  - config: metadata.business.contact.phone.country
+    context: phone
+    id: contact-phone-country
+  - config: metadata.business.contact.phone.area
+    context: phone
+    id: contact-phone-area
+  - config: metadata.business.contact.phone.number
+    context: phone
+    id: contact-phone-number
+  - config: metadata.business.website.url
+    context: website
+    id: website-url
+  - config: metadata.business.website.description
+    context: website
+    id: website-description
+  - config: metadata.accountant.report-date
+    context: end-of-reporting-period
+    id: accountants-report-date
+    kind: date
+  - config: metadata.accountant.name
+    context: report-period
+    id: accountant-name
+  - config: metadata.accountant.business
+    context: report-period
+    id: accountant-business
+  - config: metadata.accountant.address
+    context: report-period
+    id: accountant-address
+  - config: metadata.auditor.report-date
+    context: end-of-reporting-period
+    id: auditors-report-date
+    kind: date
+  - config: metadata.auditor.name
+    context: report-period
+    id: auditor-name
+  - config: metadata.auditor.business
+    context: report-period
+    id: auditor-business
+  - config: metadata.auditor.address
+    context: report-period
+    id: auditor-address
+  - config: metadata.directors.report-date
+    context: end-of-reporting-period
+    id: directors-report-date
+    kind: date
+  - context: directors-report-signing-officer
+    id: directors-report-signing-officer
+    value: ''
+  - config: metadata.accounting.is-revised
+    context: report-period
+    id: is-revised
+    kind: bool
+  - config: metadata.auditor.revised-report-date
+    context: end-of-reporting-period
+    id: revised-auditors-report-date
+    kind: date
+  - config: metadata.auditor.directors-report-consistent-revised-accounts
+    context: report-period
+    id: directors-report-consistent-with-revised-accounts
+    kind: bool
+  namespaces:
+    uk-accrep: http://xbrl.frc.org.uk/reports/2021-01-01/accrep
+    uk-aurep: http://xbrl.frc.org.uk/reports/2021-01-01/aurep
+    uk-bus: http://xbrl.frc.org.uk/cd/2021-01-01/business
+    uk-core: http://xbrl.frc.org.uk/fr/2021-01-01/core
+    uk-direp: http://xbrl.frc.org.uk/reports/2021-01-01/direp
+    uk-geo: http://xbrl.frc.org.uk/cd/2021-01-01/countries
+  note-templates:
+    company: 'expand:The company is a private company limited by shares and is registered
+      in England and Wales number ~[company-number]. The registered address is: ~[contact-address1::,
+      ] ~[contact-address2::, ] ~[contact-address3::, ] ~[contact-location:: ] ~[contact-postcode].'
+    directors-acknowledge: expand:~{directors-duty=The directors acknowledge their
+      responsibilities for complying with the requirements of the Act with respect
+      to accounting records and the preparation of financial statements.}
+    members-agreed-abridged-accounts: expand:~{members-agreed-abridged-accounts= All
+      of the members of ~[company-name] have consented to the preparation of the Abridged
+      Statement of Financial Position and the Abridged Income Statement for the year
+      ended ~[period-end] in accordance with Section 444(2A) of the Companies Act
+      2006.}
+    micro-entity-pl-provisions: expand:~{accounts-prepared-small-company-regime= These
+      financial statements have been prepared in accordance with the micro-entity
+      provisions.}
+    micro-entity-provisions: expand:~{accounts-prepared-small-company-regime=These
+      financial statements have been prepared in accordance with the micro-entity
+      provisions and delivered in accordance with the provisions applicable under
+      the small companies regime.}
+    no-audit-required: expand:~{members-not-required-audit=The members have not required
+      the company to obtain an audit of its financial statements for the accounting
+      period in accordance with section 476.}
+    small-company-audit-exempt: expand:~{small-company-exempt-from-audit=For the accounting
+      period ending ~[period-end] the company was entitled to exemption from audit
+      under section 477 of the Companies Act 2006 relating to small companies.}
+    small-company-provisions: expand:~{accounts-prepared-small-company-regime= These
+      accounts have been prepared in accordance with the provisions applicable to
+      companies subject to the small companies regime.}
+    software-version: expand:These accounts were generated using ~[software-name]
+      version ~[software-version].
+  schema:
+  - https://xbrl.frc.org.uk/FRS-102/2021-01-01/FRS-102-2021-01-01.xsd
+  segment:
+    accounting-standards:
+      dimension: uk-bus:AccountingStandardsDimension
+      map:
+        frs101: uk-bus:FRS101
+        frs102: uk-bus:FRS102
+        frsse: uk-bus:FRSSE
+        full-irs: uk-bus:FullIFRS
+        micro-entities: uk-bus:Micro-entities
+        other-standards: uk-bus:OtherStandards
+        small-entities-regime: uk-bus:SmallEntities
+    accounts-status:
+      dimension: uk-bus:AccountsStatusDimension
+      map:
+        audit-exempt-no-accountants-report: uk-bus:AuditExempt-NoAccountantsReport
+        audit-exempt-with-accountants-report: uk-bus:AuditExemptWithAccountantsReport
+        audited: uk-bus:Audited
+        independent-examination: uk-bus:IndependentExaminationCharity
+        other-reporting-regime: uk-bus:OtherReportingRegime
+    accounts-type:
+      dimension: uk-bus:AccountsTypeDimension
+      map:
+        abbreviated-accounts: uk-bus:AbbreviatedAccounts
+        abridged-accounts: uk-bus:AbridgedAccounts
+        full-accounts: uk-bus:FullAccounts
+    countries-regions:
+      dimension: uk-geo:CountriesRegionsDimension
+      map:
+        UK: uk-geo:UnitedKingdom
+        england-and-wales: uk-geo:EnglandWales
+    entity-legal-form:
+      dimension: uk-bus:LegalFormEntityDimension
+      map:
+        branch-trading-in-uk: uk-bus:BranchTradingInUK
+        community-interest-company: uk-bus:CommunityInterestCompanyCIC
+        company-limited-by-guarantee: uk-bus:CompanyLimitedByGuarantee
+        friendly-society: uk-bus:FriendlySociety
+        incorporated-by-act-of-parliament: uk-bus:IncorporatedByActParliament
+        incorporated-by-royal-charter: uk-bus:IncorporatedByRoyalCharter
+        industrial-and-provident-society: uk-bus:IndustrialProvidentSociety
+        limited-liability-partnership: uk-bus:LimitedLiabilityPartnershipLLP
+        other-incorporated-association: uk-bus:OtherIncorporatedAssociation
+        other-non-uk: uk-bus:OtherNon-UK
+        other-uk: uk-bus:OtherUK
+        private-limited-company: uk-bus:PrivateLimitedCompanyLtd
+        public-limited-company-not-quoted: uk-bus:PublicLimitedCompanyPLCNotQuotedOnAnyExchange
+        public-limited-company-plc: uk-bus:PublicLimitedCompanyPLC
+        registered-charity: uk-bus:RegisteredCharity
+        scottish-partnership: uk-bus:ScottishPartnership
+        unlimited-company: uk-bus:UnlimitedCompany
+    equity:
+      dimension: uk-core:EquityClassesDimension
+      map:
+        ordinary-shares: uk-core:ShareCapitalOrdinaryShares
+        preference-shares: uk-core:ShareCapitalPreferenceShares
+    industry-sector:
+      dimension: uk-bus:MainIndustrySectorDimension
+      map:
+        a: uk-bus:A-AgricultureForestryFishing
+        b: uk-bus:B-MiningQuarrying
+        c: uk-bus:C-Manufacturing
+        d: uk-bus:D-ElectricityGasSteamAirConditioningSupply
+        e: uk-bus:E-WaterSupplySewerageWasteManagementRemediationActivities
+        f: uk-bus:F-Construction
+        g: uk-bus:G-WholesaleRetailTradeRepairMotorVehiclesMotorcycles
+        h: uk-bus:H-TransportationStorage
+        i: uk-bus:I-AccommodationFoodServiceActivities
+        j: uk-bus:J-InformationCommunication
+        k: uk-bus:K-FinancialInsuranceActivities
+        l: uk-bus:L-RealEstateActivities
+        m: uk-bus:M-ProfessionalScientificTechnicalActivities
+        n: uk-bus:N-AdministrativeSupportServiceActivities
+        o: uk-bus:O-PublicAdministrationDefenceCompulsorySocialSecurity
+        p: uk-bus:P-Education
+        q: uk-bus:Q-HumanHealthSocialWorkActivities
+        r: uk-bus:R-ArtsEntertainmentRecreation
+        s: uk-bus:S-OtherServiceActivities
+    matures:
+      dimension: uk-core:MaturitiesOrExpirationPeriodsDimension
+      map:
+        after-1-year: uk-core:AfterOneYear
+        within-1-year: uk-core:WithinOneYear
+    officer:
+      dimension: uk-bus:EntityOfficersDimension
+      map:
+        director1: uk-bus:Director1
+        director10: uk-bus:Director10
+        director2: uk-bus:Director2
+        director3: uk-bus:Director3
+        director4: uk-bus:Director4
+        director5: uk-bus:Director5
+        director6: uk-bus:Director6
+        director7: uk-bus:Director7
+        director8: uk-bus:Director8
+        director9: uk-bus:Director9
+    phone-number-type:
+      dimension: uk-bus:PhoneNumberTypeDimension
+      map:
+        fax: uk-bus:Fax
+        landline: uk-bus:Landline
+        mobile: uk-bus:Mobile
+  sign-reversed:
+    accruals-and-deferred-income: true
+    administrative-expenses: true
+    corporation-tax-owed: true
+    cost-of-sales: true
+    creditors-after-1-year: true
+    creditors-within-1-year: true
+    depreciation-adjustment: true
+    depreciation-charge: true
+    depreciation-total: true
+    other-creditors: true
+    prepayments-and-accrued-income: true
+    provisions-for-liabilities: true
+    trade-creditors: true
+  tags:
+    abbreviated-accounts-in-accordance-special-provisions: uk-direp:AbbreviatedAccountsAreInAccordanceWithSpecialProvisionsInSection4453CompaniesActRelatingToMedium
+    accountant-address: uk-accrep:NameOrLocationAccountantsOffice
+    accountant-business: uk-bus:NameEntityAccountants
+    accountant-name: uk-accrep:NameAccountantResponsible
+    accountants-report-date: uk-accrep:DateAccountantsReport
+    accountants-report-on-financial-statements: uk-accrep:AccountantsReportOnFinancialStatements
+    accounting-standards: uk-bus:AccountingStandardsApplied
+    accounts-prepared-small-company-regime: uk-direp:StatementThatAccountsHaveBeenPreparedInAccordanceWithProvisionsSmallCompaniesRegime
+    accounts-status: uk-bus:AccountsStatusAuditedOrUnaudited
+    accounts-type: uk-bus:AccountsTypeFullOrAbbreviated
+    accruals-and-deferred-income: uk-core:AccruedLiabilitiesDeferredIncome
+    activities: uk-bus:DescriptionPrincipalActivities
+    administrative-expenses: uk-core:AdministrativeExpenses
+    auditor-address: uk-aurep:NameOrLocationOfficePerformingAudit
+    auditor-business: uk-bus:NameEntityAuditors
+    auditor-name: uk-aurep:NameIndividualAuditor
+    auditors-report-date: uk-aurep:DateAuditorsReport
+    authorised-date: uk-core:DateAuthorisationFinancialStatementsForIssue
+    average-employees-previous: uk-core:AverageNumberEmployeesDuringPeriod
+    average-employees-this: uk-core:AverageNumberEmployeesDuringPeriod
+    balance-sheet-date: uk-bus:BalanceSheetDate
+    bank: uk-core:CashBankOnHand
+    basis-for-opinion-auditors: uk-aurep:BasisForOpinionAuditorsOnEntity
+    carrying-final: uk-core:PropertyPlantEquipmentIncludingRight-of-useAssets
+    cash-and-cash-equivalents-policy: uk-core:CashCashEquivalentsPolicy
+    cash-at-end-of-year: uk-core:CashCashEquivalentsCashFlowValue
+    cash-inflow: uk-core:NetCashInflowOutflowFromOperationsBeforeMovementsInWorkingCapital
+    company-is-entitled-to-deliver-abbreviated-accounts: uk-aurep:CompanyEntitledToDeliverAbbreviatedAccountsAccountsProperlyPreparedTruefalse
+    company-name: uk-bus:EntityCurrentLegalOrRegisteredName
+    company-number: uk-bus:UKCompaniesHouseRegisteredNumber
+    contact-address1: uk-bus:AddressLine1
+    contact-address2: uk-bus:AddressLine2
+    contact-address3: uk-bus:AddressLine3
+    contact-county: uk-bus:CountyRegion
+    contact-email: uk-bus:E-mailAddress
+    contact-location: uk-bus:PrincipalLocation-CityOrTown
+    contact-name: uk-bus:NameContactDepartmentOrPerson
+    contact-phone-area: uk-bus:AreaCode
+    contact-phone-country: uk-bus:CountryCode
+    contact-phone-number: uk-bus:LocalNumber
+    contact-postcode: uk-bus:PostalCodeZip
+    corporation-tax-owed: uk-core:TaxationIncludingDeferredTaxationBalanceSheetSubtotal
+    corporation-tax-paid: uk-core:IncomeTaxesPaidRefundClassifiedAsOperatingActivities
+    cost-of-sales: uk-core:CostSales
+    creditors-after-1-year: uk-core:Creditors
+    creditors-within-1-year: uk-core:Creditors
+    current-assets: uk-core:CurrentAssets
+    current-income-tax-policy: uk-core:CurrentIncomeTaxPolicy
+    date-of-auditors-report: uk-aurep:DateAuditorsReport
+    debtors: uk-core:TradeDebtorsTradeReceivables
+    deferred-tax-policy: uk-core:DeferredTaxPolicy
+    defined-contribution-pensions-policy: uk-core:DefinedContributionPensionsPolicy
+    depreciation: uk-core:DepreciationAmortisationImpairmentExpense
+    depreciation-adjustment: uk-core:DepreciationAmortisationImpairmentExpense
+    depreciation-charge: uk-core:IncreaseFromDepreciationChargeForYearPropertyPlantEquipment
+    depreciation-total: uk-core:AccumulatedDepreciationImpairmentPropertyPlantEquipment
+    description-of-basis-used-in-financial-statements: uk-core:GeneralDescriptionBasisMeasurementUsedInPreparingFinancialStatements
+    description-of-body-authorising-financial-statements: uk-core:DescriptionBodyAuthorisingFinancialStatements
+    description-of-depreciation-method-property-plant-equipment: uk-core:DescriptionDepreciationMethodForPropertyPlantEquipment
+    description-of-measurement-property-plant-equipment: uk-core:DescriptionMeasurementBasisForPropertyPlantEquipment
+    description-of-principal-activities: uk-bus:DescriptionPrincipalActivities
+    description-recognition-basis-intangible-assets: uk-core:DescriptionRecognitionBasisMeasurementIntangibleAssets
+    description-why-entity-not-going-concern: uk-core:DescriptionWhyEntityNotGoing-concernOrUncertaintiesOverGoing-concernStatus
+    directors-duty: uk-direp:StatementThatDirectorsAcknowledgeTheirResponsibilitiesUnderCompaniesAct
+    directors-report-consistent-with-revised-accounts: uk-aurep:DirectorsReportConsistentWithRevisedAccountsTruefalse
+    directors-report-date: uk-direp:DateSigningDirectorsReport
+    directors-report-is-consistent: uk-aurep:DirectorsReportConsistentWithAccountsTruefalse
+    directors-report-signing-officer: uk-direp:DirectorSigningDirectorsReport
+    directors-report-small-company-regime: uk-direp:StatementThatDirectorsReportHasBeenPreparedInAccordanceWithProvisionsSmallCompaniesRegime
+    dividend-recommended-by-directors: uk-direp:DividendRecommendedByDirectors
+    dividends-paid: uk-core:DividendsPaidClassifiedAsFinancingActivities
+    emphasis-of-matter: uk-aurep:EmphasisMatterStatement
+    entity-has-taken-exemption-not-publishing-profit-and-loss: uk-direp:EntityHasTakenExemptionUnderCompaniesActInNotPublishingItsOwnProfitLossAccountTruefalse
+    entity-legal-country: uk-bus:CountryFormationOrIncorporation
+    entity-legal-date: uk-bus:DateFormationOrIncorporation
+    entity-legal-form: uk-bus:LegalFormEntity
+    equity: uk-core:Equity
+    finance-income-and-costs-policy: uk-core:FinanceIncomeCostsPolicy
+    financial-statements-going-concern-basis: uk-core:FinancialStatementsArePreparedOnGoing
+    fixed-assets: uk-core:FixedAssets
+    fixed-assets-additions: uk-core:IncreaseDecreaseInPropertyPlantEquipment
+    fixed-assets-total: uk-core:PropertyPlantEquipmentGrossCost
+    gross-profit: uk-core:GrossProfitLoss
+    industry-sector: uk-bus:MainIndustrySector
+    interest-expense: uk-core:InterestExpense
+    interest-income: uk-core:InterestIncome
+    interest-paid: uk-core:InterestPaidClassifiedAsFinancingActivities
+    interest-received: uk-core:InterestReceivedClassifiedAsInvestingActivities
+    inventories: uk-core:GainLossInCashFlowsFromChangeInInventories
+    is-dormant: uk-bus:EntityDormantTruefalse
+    is-revised: uk-bus:ReportAnAmendedRevisedVersionPreviouslyFiledReportTruefalse
+    lessee-operating-lease-policy: uk-core:LesseeOperatingLeasePolicy
+    matters-giving-rise-to-any-modified-audit: uk-aurep:DescriptionMattersGivingRiseToAnyModifiedAuditOpinion
+    members-agreed-abridged-accounts: uk-direp:StatementThatMembersHaveAgreedToPreparationAbridgedAccountsUnderSection444CompaniesAct2006
+    members-not-required-audit: uk-direp:StatementThatMembersHaveNotRequiredCompanyToObtainAnAudit
+    net-assets: uk-core:NetAssetsLiabilities
+    net-cash-from-financing-activities: uk-core:NetCashFlowsFromUsedInFinancingActivities
+    net-cash-from-investing-activities: uk-core:NetCashFlowsFromUsedInInvestingActivities
+    net-cash-from-operating-activities: uk-core:NetCashGeneratedFromOperations
+    net-current-assets: uk-core:NetCurrentAssetsLiabilities
+    nominal-value-of-allotted-share-capital: uk-core:NominalValueAllottedShareCapital
+    nominal-value-of-shares-issued-in-the-period: uk-core:NominalValueSharesIssuedInPeriod
+    officer1: uk-bus:NameEntityOfficer
+    officer10: uk-bus:NameEntityOfficer
+    officer11: uk-bus:NameEntityOfficer
+    officer12: uk-bus:NameEntityOfficer
+    officer13: uk-bus:NameEntityOfficer
+    officer14: uk-bus:NameEntityOfficer
+    officer15: uk-bus:NameEntityOfficer
+    officer16: uk-bus:NameEntityOfficer
+    officer17: uk-bus:NameEntityOfficer
+    officer18: uk-bus:NameEntityOfficer
+    officer19: uk-bus:NameEntityOfficer
+    officer2: uk-bus:NameEntityOfficer
+    officer20: uk-bus:NameEntityOfficer
+    officer3: uk-bus:NameEntityOfficer
+    officer4: uk-bus:NameEntityOfficer
+    officer5: uk-bus:NameEntityOfficer
+    officer6: uk-bus:NameEntityOfficer
+    officer7: uk-bus:NameEntityOfficer
+    officer8: uk-bus:NameEntityOfficer
+    officer9: uk-bus:NameEntityOfficer
+    opinion-of-auditors-additional-financial-reporting: uk-aurep:OpinionAuditorsInRespectAdditionalFinancialReportingFramework
+    opinion-of-auditors-failure-to-comply-companies-act: uk-aurep:OpinionAuditorsOnFailureOriginalAccountsToComplyWithCompaniesAct2006
+    opinion-of-auditors-on-entity: uk-aurep:OpinionAuditorsOnEntity
+    opinion-of-auditors-on-revised-accounts: uk-aurep:OpinionAuditorsOnRevisedAccounts
+    other-charges: uk-core:OtherOperatingExpensesFormat2
+    other-creditors: uk-core:OtherCreditorsIncludingTaxationSocialSecurityBalanceSheetSubtotal
+    other-operating-income: uk-core:OtherOperatingIncomeFormat2
+    period-end: uk-bus:EndDateForPeriodCoveredByReport
+    period-start: uk-bus:StartDateForPeriodCoveredByReport
+    prepayments-and-accrued-income: uk-core:PrepaymentsAccruedIncomeNotExpressedWithinCurrentAssetSubtotal
+    proceeds-from-issuing-shares: uk-core:ProceedsFromIssuingShares
+    proceeds-sale-equipment: uk-core:ProceedsFromSalesPropertyPlantEquipment
+    profit: uk-core:ProfitLoss
+    provisions-for-liabilities: uk-core:ProvisionsForLiabilitiesBalanceSheetSubtotal
+    purchase-equipment: uk-core:PurchasePropertyPlantEquipment
+    purchase-intangible-assets: uk-core:PurchaseIntangibleAssets
+    purchase-of-non-controlling-interest: uk-core:CashFlowsUsedInPurchaseNon-controllingInterests
+    raw-materials-consumables: uk-core:RawMaterialsConsumablesUsed
+    remuneration-report-properly-prepared: uk-aurep:AuditablePartRemunerationReportHasBeenProperlyPreparedTruefalse
+    report-date: uk-bus:BusinessReportPublicationDate
+    report-title: uk-bus:ReportTitle
+    revenue-recognition-policy: uk-core:RevenueRecognitionPolicy
+    revised-auditors-report-date: uk-aurep:DateAuditorsReportOnRevisedAccounts
+    share-capital: uk-core:Equity
+    shares-issued: uk-core:NominalValueSharesIssuedInPeriod
+    sic1: uk-bus:SICCodeRecordedUKCompaniesHouse1
+    sic2: uk-bus:SICCodeRecordedUKCompaniesHouse2
+    sic3: uk-bus:SICCodeRecordedUKCompaniesHouse3
+    sic4: uk-bus:SICCodeRecordedUKCompaniesHouse4
+    signing-officer: uk-core:DirectorSigningFinancialStatements
+    small-company-exempt-from-audit: uk-direp:StatementThatCompanyEntitledToExemptionFromAuditUnderSection477CompaniesAct2006RelatingToSmallCompanies
+    software-name: uk-bus:NameProductionSoftware
+    software-version: uk-bus:VersionProductionSoftware
+    staff-costs: uk-core:StaffCostsEmployeeBenefitsExpense
+    statement-of-auditors-responsibilities: uk-aurep:StatementAuditorsResponsibilitiesRelatingToOtherInformation
+    statement-of-compliance-reporting-framework: uk-core:StatementComplianceWithApplicableReportingFramework
+    statement-of-key-audit-matters: uk-aurep:StatementKeyAuditMatters
+    statement-of-responsibilities-of-management-corporate-governance: uk-aurep:StatementResponsibilitiesManagementThoseChargedWithCorporateGovernance
+    statement-on matters-required-in-directors-report: uk-direp:StatementOnMattersRequiredInDirectorsReportBeingPlacedInStrategicReport
+    statement-on-application-of-materiality: uk-aurep:StatementOnApplicationMaterialityToAudit
+    statement-on-audit-scope: uk-aurep:StatementOnScopeAuditReport
+    statement-on-information-provided-auditors: uk-direp:StatementOnQualityCompletenessInformationProvidedToAuditors
+    statement-on-matters-on-which-auditor-reports: uk-aurep:StatementOnMattersOnWhichAuditorReportsByException
+    statement-on-respective-responsibilities: uk-aurep:StatementOnRespectiveResponsibilitiesDirectorsAuditors
+    statement-on-risks-of-misstatement: uk-aurep:StatementOnRisksMaterialMisstatementIdentifiedByAuditor
+    statement-on-scope-of-accountants-report: uk-accrep:StatementOnScopeAccountantsReport
+    statement-qualifying-third-party-indemnity: uk-direp:StatementOnQualifyingThirdPartyIndemnityProvisions
+    supplementary-note: uk-bus:SupplementaryNote
+    tangible-assets: uk-core:PropertyPlantEquipmentIncludingRight-of-useAssets
+    tax: uk-core:TaxTaxCreditOnProfitOrLossOnOrdinaryActivities
+    total-assets-less-liabilities: uk-core:TotalAssetsLessCurrentLiabilities
+    total-capital-and-reserves: uk-core:Equity
+    trade-and-other-receivables: uk-core:GainLossInCashFlowsFromChangeInTradeDebtorsTradeReceivables
+    trade-creditors: uk-core:TradeCreditorsTradePayables
+    trade-payables: uk-core:GainLossInCashFlowsFromChangeInTradeCreditorsTradePayables
+    trading-status: uk-bus:EntityTradingStatus
+    turnover: uk-core:TurnoverRevenue
+    vat-refund-owed: uk-core:DeferredTaxAssetDebtors
+    vat-registration: uk-bus:VATRegistrationNumber
+    website-description: uk-bus:DescriptionOrOtherInformationOnWebsite
+    website-url: uk-bus:WebsiteMainPageURL
+title: Audited Micro-Entity Accounts
+worksheets:
+- computations:
+  - fixed-assets
+  - current-assets
+  - prepayments-and-accrued-income
+  - creditors-within-1-year
+  - net-current-assets
+  - total-assets-less-liabilities
+  - creditors-after-1-year
+  - provisions-for-liabilities
+  - accruals-and-deferred-income
+  - net-assets
+  - total-capital-and-reserves
+  id: balance-sheet
+  kind: simple
+- computations:
+  - net-cash-from-operating-activities
+  - net-cash-from-investing-activities
+  - net-cash-from-financing-activities
+  - cash-at-end-of-year
+  id: cash-flows
+  kind: simple
+- computations:
+  - profit
+  description: Profit and Loss
+  id: profit-and-loss
+  kind: simple
+- computations:
+  - fixed-assets-total
+  - depreciation-total
+  - carrying-final
+  description: Fixed Assets
+  id: fixed-assets
+  kind: simple
+- computations:
+  - share-capital
+  description: Share Capital
+  id: share-capital
+  kind: simple
+- computations:
+  - charges
+  description: Charges
+  id: charges
+  kind: simple
+- computations:
+  - interest-income
+  description: Financial income
+  id: financial-income
+  kind: simple
+- computations:
+  - interest-expense
+  description: Financial income
+  id: financial-costs
+  kind: simple
+- computations:
+  - zero
+  description: Zero
+  id: zero
+  kind: simple
+- computations:
+  - staff-costs
+  description: Staff costs
+  id: staff-costs
+  kind: simple
+  note: staff-costs-note
+- computations:
+  - corporation-tax-paid
+  description: Corporation tax
+  id: corporation-tax
+  kind: simple
+- computations:
+  - cash
+  description: Cash
+  id: cash
+  kind: simple
 

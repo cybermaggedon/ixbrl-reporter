@@ -1,321 +1,135 @@
-"
+'
 
-.page {
-  page-break-after: always;
-}
+  .page { page-break-after: always; }
 
-body {
-  font-family: Helvetica, Georgia, sans-serif;
-  font-size: medium;
-}
+  body { font-family: Helvetica, Georgia, sans-serif; font-size: medium; }
 
-@media screen, projection, tv {
+  @media screen, projection, tv {
 
-  body {
-    margin: 2% 4% 2% 4%;
-    background-color: gray; 
-  }
+  body { margin: 2% 4% 2% 4%; background-color: gray; }
 
   div.page {
 
-    background-color: white;
-    padding: 2em;
+  background-color: white; padding: 2em;
 
-    /* CSS hack for cross browser minimum height */
-    min-height: 29.7cm;
+  /* CSS hack for cross browser minimum height */ min-height: 29.7cm;
 
-    height: 29.7cm;
-    width: 21cm;
+  height: 29.7cm; width: 21cm;
 
-    margin: 2em 0;
+  margin: 2em 0; }
+
   }
 
-}
-
-.titlepage .company-number {
-  text-align: right;
-  font-size: small;
-  font-weight: bold;
-}
-
-.titlepage img {
-  margin: auto;
-  width: 25%;
-  display: block;
-  padding-top: 12em;
-  padding-left: 0em;
-  padding-bottom: 1em;
-  padding-right: 0em;
-}
-
-.titlepage .company-name {
-  text-align: center;
-  font-size: xx-large;
-  font-weight: bold;
-  padding-top: 1em;
-  padding-left: 0em;
-  padding-bottom: 1em;
-  padding-right: 0em;
-}
-
-.titlepage .title {
-  text-align: center;
-  font-size: large;
-  font-weight: bold;
-  padding: 0.5rem;
-}
-
-.titlepage .subtitle {
-  text-align: center;
-  font-size: large;
-  font-weight: bold;
-  padding: 0.5rem;
-}
-
-.page .header {
-  text-align: center;
-  font-weight: bold;
-}
-
-.page .header div:last-child {
-  padding-bottom: 0.5rem;
-}
-
-.page .header hr {
-  margin-bottom: 2rem;
-}
-
-.sheet {
-  width: 80%;
-  border-collapse: separate;
-}
-
-.sheet td {
-  padding-top: 0em;
-  padding-left: 1.2em;
-  padding-bottom: 0em;
-  padding-right: 1.2em;
-}
-
-.spacetable {
-  table-layout: fixed;
-  border-collapse: separate;
-}
-
-.spacetable td {
-  padding-top: 0em;
-  padding-left: 1.2em;
-  padding-bottom: 0em;
-  padding-right: 1.2em;
-}
-
-table {
-  border-spacing: 1rem 1rem;
-  border-collapse: separate;
-}
-
-.table {
-  border-spacing: 0.2rem 0rem;
-  border-collapse: separate;
-  font-size: medium;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.company-info {
-  border-collapse: separate;
-  border-spacing: 0em;
-  display: table;
-  table-layout: fixed;  
-}
-
-.company-info tr td {
-  vertical-align: top;
-  padding: 0.5em;
-}
-
-.company-info tr td.tag {
-  width: 15em;
-  font-weight: bold;
-}
-
-.row {
-  display: table-row;
-}
-
-.cell {
-  display: table-cell;
-}
-
-.label {
-  width: 50%;
-  padding-right: 1em;
-  font-size: smaller;
-}
-
-.label.heading {
-  font-weight: bold;
-  margin-top: 1rem;
-}
-
-.note {
-  font-size: smaller;
-  text-align: center;
-  padding-left: 0.2em;
-  padding-right: 0.2em;
-}
-
-.note.header {
-  font-size: smaller;
-  font-weight: bold;
-  text-align: center;
-  padding-left: 1em;
-  padding-right: 1em;
-}
-
-.label.breakdown.heading {
-  margin-bottom: 0.2rem;
-}
-
-.value {
-  font-family: Source Code Pro, monospace, Courier New;
-  width: 20%;
-  padding-left: 1em;
-  padding-right: 1em;
-  margin-right: 1em;
-  font-size: small;
-}
-
-@media print {
-  .label {
-    font-size: small;
-    width: 40%;
+  .titlepage .company-number { text-align: right; font-size: small; font-weight: bold;
   }
-  .value {
-    font-family: Source Code Pro, monospace;
-    width: 20%;
-    font-size: small;
+
+  .titlepage img { margin: auto; width: 25%; display: block; padding-top: 12em; padding-left:
+  0em; padding-bottom: 1em; padding-right: 0em; }
+
+  .titlepage .company-name { text-align: center; font-size: xx-large; font-weight:
+  bold; padding-top: 1em; padding-left: 0em; padding-bottom: 1em; padding-right: 0em;
   }
-  .company-info {
-    font-size: medium;
+
+  .titlepage .title { text-align: center; font-size: large; font-weight: bold; padding:
+  0.5rem; }
+
+  .titlepage .subtitle { text-align: center; font-size: large; font-weight: bold;
+  padding: 0.5rem; }
+
+  .page .header { text-align: center; font-weight: bold; }
+
+  .page .header div:last-child { padding-bottom: 0.5rem; }
+
+  .page .header hr { margin-bottom: 2rem; }
+
+  .sheet { width: 80%; border-collapse: separate; }
+
+  .sheet td { padding-top: 0em; padding-left: 1.2em; padding-bottom: 0em; padding-right:
+  1.2em; }
+
+  .spacetable { table-layout: fixed; border-collapse: separate; }
+
+  .spacetable td { padding-top: 0em; padding-left: 1.2em; padding-bottom: 0em; padding-right:
+  1.2em; }
+
+  table { border-spacing: 1rem 1rem; border-collapse: separate; }
+
+  .table { border-spacing: 0.2rem 0rem; border-collapse: separate; font-size: medium;
+  margin-left: auto; margin-right: auto; }
+
+  .company-info { border-collapse: separate; border-spacing: 0em; display: table;
+  table-layout: fixed; }
+
+  .company-info tr td { vertical-align: top; padding: 0.5em; }
+
+  .company-info tr td.tag { width: 15em; font-weight: bold; }
+
+  .row { display: table-row; }
+
+  .cell { display: table-cell; }
+
+  .label { width: 50%; padding-right: 1em; font-size: smaller; }
+
+  .label.heading { font-weight: bold; margin-top: 1rem; }
+
+  .note { font-size: smaller; text-align: center; padding-left: 0.2em; padding-right:
+  0.2em; }
+
+  .note.header { font-size: smaller; font-weight: bold; text-align: center; padding-left:
+  1em; padding-right: 1em; }
+
+  .label.breakdown.heading { margin-bottom: 0.2rem; }
+
+  .value { font-family: Source Code Pro, monospace, Courier New; width: 20%; padding-left:
+  1em; padding-right: 1em; margin-right: 1em; font-size: small; }
+
+  @media print { .label { font-size: small; width: 40%; } .value { font-family: Source
+  Code Pro, monospace; width: 20%; font-size: small; } .company-info { font-size:
+  medium; } table.sheet { margin-left: 20%; } table.spacetable { margin-left: 20%;
+  } body { font-size: 11pt; } .data { width: 8em; } }
+
+  .total.value { margin-top: 1em; }
+
+  .breakdown.total { margin-top: 0.2em; padding-top: 4px; border-top: 1px solid white;
   }
-  table.sheet {
-    margin-left: 20%;
-  }
-  table.spacetable {
-    margin-left: 20%;
-  }
-  body {
-    font-size: 11pt;
-  }
-  .data {
-    width: 8em;
-  }
-}
 
-.total.value {
-  margin-top: 1em;
-}
+  .breakdown.total.value { border-top: 1px solid #808080; }
 
-.breakdown.total {
-  margin-top: 0.2em;
-  padding-top: 4px;
-  border-top: 1px solid white;
-}
+  .breakdown.total.super-total.value { border-top: 5px double #808080; }
 
-.breakdown.total.value {
-  border-top: 1px solid #808080;
-}
+  .column.header { padding: 0.5em 1em 0.5em 1em; border-bottom: 0.2em solid black;
+  font-weight: bold; text-align: center; width: 20%; margin-right: 1rem; }
 
-.breakdown.total.super-total.value {
-  border-top: 5px double #808080;
-}
+  .currency { text-align: right; padding-left: 1em; padding-right: 1em; width: 20%;
+  margin-right: 1rem; margin-top: 0.25em; }
 
-.column.header {
-  padding: 0.5em 1em 0.5em 1em;
-  border-bottom: 0.2em solid black;
-  font-weight: bold;
-  text-align: center;
-  width: 20%;
-  margin-right: 1rem;
-}
+  .data.value { text-align: right; }
 
-.currency {
-  text-align: right;
-  padding-left: 1em;
-  padding-right: 1em;
-  width: 20%;
-  margin-right: 1rem;
-  margin-top: 0.25em;
-}
+  .data.value.negative { color: #400000; }
 
-.data.value {
-  text-align: right;
-}
+  .data.value.nil { color: #a0a0a0; }
 
-.data.value.negative {
-  color: #400000;
-}
+  .hidden { display: none; }
 
-.data.value.nil {
-  color: #a0a0a0;
-}
+  .fact { display: flex; flex-direction: row; margin: 2px; }
 
-.hidden {
-  display: none;
-}
+  .fact div { margin: 0rem 0rem 0rem 1rem; padding: 4px; }
 
-.fact {
-  display: flex;
-  flex-direction: row;
-  margin: 2px;
-}
+  .fact .ref { width: 5em; text-align: center; color: white; background-color: #2ca469;
+  border: 2px solid #104020; font-weight: bold; font-size: small; padding-left: 0.1rem;
+  padding-right: 0.1rem; }
 
-.fact div {
-  margin: 0rem 0rem 0rem 1rem;
-  padding: 4px;
-}
+  .fact .description { width: 22em; font-size: small; }
 
-.fact .ref {
-  width: 5em;
-  text-align: center;
-  color: white;
-  background-color: #2ca469;
-  border: 2px solid #104020;
-  font-weight: bold;
-  font-size: small;
-  padding-left: 0.1rem;
-  padding-right: 0.1rem;
-}
+  .fact .factvalue { border: 2px solid black; background-color: white; font-family:
+  Source Code Pro, monospace; font-size: small; width: 12rem; padding-left: 1rem;
+  padding-right: 1rem; margin-right: 1rem; }
 
-.fact .description {
-  width: 22em;
-  font-size: small;
-}
+  .fact .factvalue.false { color: #a0a0a0; }
 
-.fact .factvalue {
-  border: 2px solid black;
-  background-color: white;
-  font-family: Source Code Pro, monospace;
-  font-size: small;
-  width: 12rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  margin-right: 1rem;
-}
+  .rank-1 { position: relative; left: -6rem; }
 
-.fact .factvalue.false {
-  color: #a0a0a0;
-}
+  .rank1 { position: relative; left: 4rem; }
 
-.rank-1 {
-  position: relative;
-  left: -6rem;
-}
+  '
 
-.rank1 {
-  position: relative;
-  left: 4rem;
-}
-
-"

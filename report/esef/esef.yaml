@@ -1,250 +1,913 @@
-style: //import report/style.yaml
-taxonomy: //import taxonomy/esef.yaml
-title: Financial statements
-computations: //import report/esef/esef-computations.yaml
-worksheets: //import report/esef/esef-worksheets.yaml
-
+computations:
+- accounts:
+  - Income:Sales
+  description: Consultancy
+  id: consultancy
+  kind: line
+  period: in-year
+- description: Operating revenue
+  id: operating-revenue
+  inputs:
+  - consultancy
+  kind: sum
+  period: in-year
+- accounts:
+  - Expenses:Emoluments:Employees
+  - Expenses:Emoluments:Employer Pension Contribution
+  description: Personnel costs
+  id: personnel-costs
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:Depreciation
+  description: Depreciation and amortisation
+  id: depreciation-and-amortisation
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Accountant
+  description: Accountancy services
+  id: accountancy
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Bank Charges
+  description: Bank charges
+  id: bank-charges
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Office
+  description: Office costs
+  id: office
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Software
+  description: Software
+  id: software
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Subscriptions
+  description: Subscriptions
+  id: subscriptions
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Sundries
+  description: Sundries
+  id: sundries
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Telecoms
+  description: Telecoms
+  id: telecoms
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Travel/Accom
+  description: Travel
+  id: travel
+  kind: line
+  period: in-year
+- description: Other operating costs
+  id: other-operating-costs
+  inputs:
+  - accountancy
+  - bank-charges
+  - office
+  - software
+  - subscriptions
+  - sundries
+  - telecoms
+  - travel
+  kind: sum
+  period: in-year
+- description: Operating costs
+  id: operating-costs
+  inputs:
+  - personnel-costs
+  - depreciation-and-amortisation
+  - other-operating-costs
+  kind: group
+  period: in-year
+- accounts:
+  - Income:Interest
+  description: Interest on current account
+  id: interest-received
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:Interest Paid
+  description: Interest on bank loans
+  id: interest-paid
+  kind: line
+  period: in-year
+- description: Net financial items
+  id: net-financial-items
+  inputs:
+  - interest-received
+  - interest-paid
+  kind: group
+  period: in-year
+- accounts:
+  - Equity:Corporation Tax
+  description: Income tax
+  id: income-tax
+  kind: line
+  period: in-year
+- description: Net profit for the year
+  id: net-profit
+  inputs:
+  - operating-revenue
+  - operating-costs
+  - net-financial-items
+  - income-tax
+  kind: group
+  period: in-year
+- description: Other comprehensive income
+  id: other-comprehensive-income
+  inputs: []
+  kind: group
+  period: in-year
+- description: Comprehensive income for the year
+  id: comprehensive-income
+  inputs:
+  - net-profit
+  - other-comprehensive-income
+  kind: group
+  period: in-year
+- accounts:
+  - Assets:Capital Equipment
+  description: Tangible Assets
+  id: tangible-assets
+  kind: line
+  period: at-end
+- description: Fixed Assets
+  id: fixed-assets
+  inputs:
+  - tangible-assets
+  kind: sum
+  period: at-end
+- description: Other non-current assets
+  id: other-non-current-assets
+  inputs: []
+  kind: sum
+  period: at-end
+- description: Deferred tax assets
+  id: deferred-tax-assets
+  inputs: []
+  kind: sum
+  period: at-end
+- description: Non current assets
+  id: non-current-assets
+  inputs:
+  - fixed-assets
+  - other-non-current-assets
+  - deferred-tax-assets
+  kind: group
+  period: at-end
+- accounts:
+  - Accounts Receivable
+  - Assets:Owed To Us
+  description: Debtors
+  id: debtors
+  kind: line
+  period: at-end
+- accounts:
+  - VAT:Input
+  description: VAT Refund Due
+  id: vat-refund-owed
+  kind: line
+  period: at-end
+- accounts:
+  - Bank Accounts
+  description: Bank
+  id: bank
+  kind: line
+  period: at-end
+- description: Current Assets
+  id: current-assets
+  inputs:
+  - debtors
+  - vat-refund-owed
+  - bank
+  kind: group
+  period: at-end
+- description: Total assets
+  id: total-assets
+  inputs:
+  - non-current-assets
+  - current-assets
+  kind: sum
+  period: at-end
+- accounts:
+  - Equity:Shareholdings
+  description: Capital
+  id: capital
+  kind: line
+  period: at-end
+- accounts:
+  - Income
+  - Expenses
+  - Equity:Corporation Tax
+  - Equity:Dividends
+  description: Retained profit
+  id: retained-profit
+  kind: line
+  period: at-end
+- description: Equity
+  id: equity
+  inputs:
+  - capital
+  - retained-profit
+  kind: group
+  period: at-end
+- description: Non-current liabilities
+  id: non-current-liabilities
+  inputs: []
+  kind: group
+  period: at-end
+- accounts:
+  - Accounts Payable
+  description: Trade Creditors
+  id: trade-creditors
+  kind: line
+  period: at-end
+  reverse-sign: true
+- accounts:
+  - VAT:Output
+  - Liabilities:Owed Corporation Tax
+  description: Other Creditors
+  id: other-creditors
+  kind: line
+  period: at-end
+  reverse-sign: true
+- description: Current liabilities
+  id: current-liabilities
+  inputs:
+  - trade-creditors
+  - other-creditors
+  kind: group
+  period: at-end
+- description: Total liabilities
+  id: total-liabilities
+  inputs:
+  - non-current-liabilities
+  - current-liabilities
+  kind: sum
+  period: at-end
+- description: Total equity and liabilities
+  id: total-equity-and-liabilities
+  inputs:
+  - equity
+  - total-liabilities
+  kind: sum
+  period: at-end
+- accounts:
+  - Equity:Corporation Tax
+  description: Income tax
+  id: income-tax-paid
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:Depreciation
+  description: Adjustment for depreciation
+  id: depreciation-adjustment
+  kind: line
+  period: in-year
+  reverse-sign: true
+- accounts:
+  - Income:Interest
+  - Expenses:Interest Paid
+  description: Adjustment for financial items
+  id: financial-items-adjustment
+  kind: line
+  period: in-year
+  reverse-sign: true
+- accounts:
+  - Equity:Corporation Tax
+  description: Adjustment for Income tax
+  id: income-tax-adjustment
+  kind: line
+  period: in-year
+  reverse-sign: true
+- accounts:
+  - Accounts Receivable
+  - Assets:Owed To Us
+  - VAT:Input
+  description: Decrease (increase) in trade and other receivables
+  id: trade-and-other-receivables
+  kind: line
+  period: in-year
+  reverse-sign: true
+- accounts: []
+  description: Decrease (increase) in inventories
+  id: inventories
+  kind: line
+  period: in-year
+  reverse-sign: true
+- accounts:
+  - Accounts Payable
+  - VAT:Output
+  - Liabilities:Owed Corporation Tax
+  description: Increase (decrease) in trade payables
+  id: trade-payables
+  kind: line
+  period: in-year
+  reverse-sign: true
+- description: Net cash from operating activities
+  id: net-cash-from-operating-activities
+  inputs:
+  - net-profit
+  - depreciation-adjustment
+  - financial-items-adjustment
+  - income-tax-adjustment
+  - trade-and-other-receivables
+  - inventories
+  - trade-payables
+  - income-tax-paid
+  kind: group
+  period: in-year
+- accounts: []
+  description: Proceeds from sale of equipment
+  id: proceeds-sale-equipment
+  kind: line
+  period: in-year
+- accounts:
+  - Assets:Capital Equipment:Computer Equipment
+  description: Purchase of property, plant and equipment
+  id: purchase-equipment
+  kind: line
+  period: in-year
+  reverse-sign: true
+- accounts: []
+  description: Purchase of intangible assets
+  id: purchase-intangible-assets
+  kind: line
+  period: in-year
+- description: Net cash from investing activities
+  id: net-cash-from-investing-activities
+  inputs:
+  - proceeds-sale-equipment
+  - purchase-equipment
+  - purchase-intangible-assets
+  - interest-received
+  kind: group
+  period: in-year
+- accounts:
+  - Equity:Shareholdings
+  description: Issue of share capital
+  id: proceeds-from-issuing-shares
+  kind: line
+  period: in-year
+- accounts:
+  - Equity:Dividends
+  description: Dividends
+  id: dividends-paid
+  kind: line
+  period: in-year
+- description: Net cash from financing activities
+  id: net-cash-from-financing-activities
+  inputs:
+  - interest-paid
+  - proceeds-from-issuing-shares
+  - dividends-paid
+  kind: group
+  period: in-year
+- accounts:
+  - Bank Accounts
+  description: Cash at start of year
+  id: cash-at-start-of-year
+  kind: line
+  period: at-start
+- description: Cash and cash equivalents at end of year
+  id: cash-at-end-of-year
+  inputs:
+  - cash-at-start-of-year
+  - description: Net change in cash and cash equivalents
+    id: net-cash-change
+    inputs:
+    - net-cash-from-operating-activities
+    - net-cash-from-investing-activities
+    - net-cash-from-financing-activities
+    kind: sum
+    period: in-year
+  kind: group
 elements:
-- id: report
+- elements:
+  - elements:
+    - kind: html
+      root:
+        attributes:
+          class: titlepage
+        content:
+        - attributes:
+            class: company-number
+          content: 'expand: ~[name-of-reporting-entity] (~[country-of-incorporation])'
+          tag: div
+        - attributes:
+            alt: Company logo
+            src: //ref logo
+          tag: img
+        - attributes:
+            class: company-name
+          content: expand:~[name-of-reporting-entity]
+          tag: div
+        - attributes:
+            class: title
+          content: Financial Statements
+          tag: div
+        - attributes:
+            class: subtitle
+          content: expand:For the period ended ~[date-of-end-of-reporting-period]
+          tag: div
+        tag: div
+    kind: page
+  - elements:
+    - kind: html
+      root:
+        content:
+        - attributes:
+            class: header
+          content:
+          - content: expand:~[name-of-reporting-entity]
+            tag: div
+          - content: Company information
+            tag: div
+          - content: expand:For the period ended ~[date-of-end-of-reporting-period]
+            tag: div
+          - tag: hr
+          tag: div
+        tag: div
+    - kind: html
+      root:
+        content:
+        - attributes:
+            class: company-info
+          content:
+          - content:
+            - attributes:
+                class: tag
+              content: Name of reporting entity
+              tag: td
+            - content: expand:~[name-of-reporting-entity]
+              tag: td
+            tag: tr
+          - content:
+            - attributes:
+                class: tag
+              content: Domicile of entity
+              tag: td
+            - content: expand:~[domicile-of-entity]
+              tag: td
+            tag: tr
+          - content:
+            - attributes:
+                class: tag
+              content: Legal form of entity
+              tag: td
+            - content: expand:~[legal-form-of-entity]
+              tag: td
+            tag: tr
+          - content:
+            - attributes:
+                class: tag
+              content: Country of incorporation
+              tag: td
+            - content: expand:~[country-of-incorporation]
+              tag: td
+            tag: tr
+          - content:
+            - attributes:
+                class: tag
+              content: Address of entity's registered office
+              tag: td
+            - content: expand:~[address-of-entitys-registered-office]
+              tag: td
+            tag: tr
+          - content:
+            - attributes:
+                class: tag
+              content: Principal place of business
+              tag: td
+            - content: expand:~[principal-place-of-business]
+              tag: td
+            tag: tr
+          - content:
+            - attributes:
+                class: tag
+              content: Nature of entity's principal activities
+              tag: td
+            - content: expand:~[nature-of-entitys-principal-activities]
+              tag: td
+            tag: tr
+          - content:
+            - attributes:
+                class: tag
+              content: Date of end of reporting period
+              tag: td
+            - content: expand:~[date-of-end-of-reporting-period]
+              tag: td
+            tag: tr
+          - content:
+            - attributes:
+                class: tag
+              content: Period covered by financial statements
+              tag: td
+            - content: expand:For the period ~{period-covered-by-financial-statements=
+                ~[period-start] to ~[period-end]}
+              tag: td
+            tag: tr
+          tag: table
+        tag: div
+    kind: page
+  - elements:
+    - kind: html
+      root:
+        content:
+        - attributes:
+            class: header
+          content:
+          - content: expand:~[name-of-reporting-entity]
+            tag: div
+          - content: Consolidated statement of income
+            tag: div
+          - content: expand:For the period ended ~[date-of-end-of-reporting-period]
+            tag: div
+          - tag: hr
+          tag: div
+        tag: div
+    - kind: worksheet
+      worksheet: consolidated-statement-of-income
+    kind: page
+  - elements:
+    - kind: html
+      root:
+        content:
+        - attributes:
+            class: header
+          content:
+          - content: expand:~[name-of-reporting-entity]
+            tag: div
+          - content: Statement of financial position
+            tag: div
+          - content: expand:For the period ended ~[date-of-end-of-reporting-period]
+            tag: div
+          - tag: hr
+          tag: div
+        tag: div
+    - kind: worksheet
+      worksheet: financial-position
+    kind: page
+  - elements:
+    - kind: html
+      root:
+        content:
+        - attributes:
+            class: header
+          content:
+          - content: expand:~[name-of-reporting-entity]
+            tag: div
+          - content: Statement of cash flows
+            tag: div
+          - content: expand:For the period ended ~[date-of-end-of-reporting-period]
+            tag: div
+          - tag: hr
+          tag: div
+        tag: div
+    - kind: worksheet
+      worksheet: cash-flows
+    kind: page
+  - elements:
+    - kind: html
+      root:
+        content:
+        - attributes:
+            class: header
+          content:
+          - content: expand:~[name-of-reporting-entity]
+            tag: div
+          - content: Notes to the accounts
+            tag: div
+          - content: expand:For the period ended ~[date-of-end-of-reporting-period]
+            tag: div
+          - tag: hr
+          tag: div
+        tag: div
+    - kind: html
+      root:
+        content:
+        - element:
+            kind: noteheading
+            level: 1
+            title: Compliance
+        - content: expand:~{statement-of-ifrs-compliance= The consolidated financial
+            statements of ~[name-of-reporting-entity] have been prepared in accordance
+            with International Financial Reporting Standards (IFRS) and interpretations
+            issued by the IFRS Interpretations Committee (IFRS IC) applicable to companies
+            reporting under IFRS. The financial statements comply with IFRS as issued
+            by the International Accounting Standards Board (IASB).}
+          tag: p
+        - element:
+            kind: noteheading
+            level: 1
+            title: Currency
+        - content: expand:~{description-of-presentation-currency= These statements
+            are presented in the euro currency (EUR).}
+          tag: p
+        - element:
+            kind: noteheading
+            level: 1
+            title: Level of rounding
+        - content: expand:~{level-of-rounding= Monetary values are reported rounded
+            to the nearest euro.}
+          tag: p
+        tag: div
+    id: notes
+    kind: page
+  id: report
   kind: composite
-  elements:
-  - title
-  - company-info
-  - consolidated-statement-of-income
-  - financial-position
-  - cash-flows
-  - notes
+style: '
 
-- id: title
-  kind: page
-  elements:
-  - kind: html
-    root:
-      tag: div
-      attributes: { class: titlepage }
-      content:
-      - tag: div
-        attributes: { class: company-number }
-        content: 'expand:
-          ~[name-of-reporting-entity] (~[country-of-incorporation])'
-      - tag: img
-        attributes:
-          src: //import logo.yaml
-          alt: Company logo
-      - tag: div
-        attributes: { class: company-name }
-        content: 'expand:~[name-of-reporting-entity]'
-      - tag: div
-        attributes: { class: title }
-        content: Financial Statements
-      - tag: div
-        attributes: { class: subtitle }
-        content: 'expand:For the period ended ~[date-of-end-of-reporting-period]'
-- id: company-info
-  kind: page
-  elements:
-  - kind: html
-    root:
-      tag: div
-      content:
-      - tag: div
-        attributes: { class: header }
-        content:
-        - tag: div
-          content: 'expand:~[name-of-reporting-entity]'
-        - tag: div
-          content: Company information
-        - tag: div
-          content: 'expand:For the period ended ~[date-of-end-of-reporting-period]'
-        - tag: hr
-  - kind: html
-    root:
-      tag: div
-      content:
-      - tag: table
-        attributes:
-          class: company-info
-        content:
-        - tag: tr
-          content:
-          - tag: td
-            attributes:
-              class: tag
-            content: Name of reporting entity
-          - tag: td
-            content: expand:~[name-of-reporting-entity]
-        - tag: tr
-          content:
-          - tag: td
-            attributes:
-              class: tag
-            content: Domicile of entity
-          - tag: td
-            content: expand:~[domicile-of-entity]
-        - tag: tr
-          content:
-          - tag: td
-            attributes:
-              class: tag
-            content: Legal form of entity
-          - tag: td
-            content: expand:~[legal-form-of-entity]
-        - tag: tr
-          content:
-          - tag: td
-            attributes:
-              class: tag
-            content: Country of incorporation
-          - tag: td
-            content: expand:~[country-of-incorporation]
-        - tag: tr
-          content:
-          - tag: td
-            attributes:
-              class: tag
-            content: Address of entity's registered office
-          - tag: td
-            content: expand:~[address-of-entitys-registered-office]
-        - tag: tr
-          content:
-          - tag: td
-            attributes:
-              class: tag
-            content: Principal place of business
-          - tag: td
-            content: expand:~[principal-place-of-business]
-        - tag: tr
-          content:
-          - tag: td
-            attributes:
-              class: tag
-            content: Nature of entity's principal activities
-          - tag: td
-            content: expand:~[nature-of-entitys-principal-activities]
-        - tag: tr
-          content:
-          - tag: td
-            attributes:
-              class: tag
-            content: Date of end of reporting period
-          - tag: td
-            content: expand:~[date-of-end-of-reporting-period]
-        - tag: tr
-          content:
-          - tag: td
-            attributes:
-              class: tag
-            content: Period covered by financial statements
-          - tag: td
-            content: 'expand:For the period
-              ~{period-covered-by-financial-statements=
-                ~[period-start] to ~[period-end]}'
+  .page { page-break-after: always; }
 
-- id: consolidated-statement-of-income
-  kind: page
-  elements:
-  - kind: html
-    root:
-      tag: div
-      content:
-      - tag: div
-        attributes: { class: header }
-        content:
-        - tag: div
-          content: 'expand:~[name-of-reporting-entity]'
-        - tag: div
-          content: Consolidated statement of income
-        - tag: div
-          content: 'expand:For the period ended ~[date-of-end-of-reporting-period]'
-        - tag: hr
-  - kind: worksheet
-    worksheet: consolidated-statement-of-income
+  body { font-family: Helvetica, Georgia, sans-serif; font-size: medium; }
 
-- id: financial-position
-  kind: page
-  elements:
-  - kind: html
-    root:
-      tag: div
-      content:
-      - tag: div
-        attributes: { class: header }
-        content:
-        - tag: div
-          content: 'expand:~[name-of-reporting-entity]'
-        - tag: div
-          content: Statement of financial position
-        - tag: div
-          content: 'expand:For the period ended ~[date-of-end-of-reporting-period]'
-        - tag: hr
-  - kind: worksheet
-    worksheet: financial-position
+  @media screen, projection, tv {
 
-- id: cash-flows
-  kind: page
-  elements:
-  - kind: html
-    root:
-      tag: div
-      content:
-      - tag: div
-        attributes: { class: header }
-        content:
-        - tag: div
-          content: 'expand:~[name-of-reporting-entity]'
-        - tag: div
-          content: Statement of cash flows
-        - tag: div
-          content: 'expand:For the period ended ~[date-of-end-of-reporting-period]'
-        - tag: hr
-  - kind: worksheet
-    worksheet: cash-flows
+  body { margin: 2% 4% 2% 4%; background-color: gray; }
 
-- id: notes
-  kind: page
-  elements:
-  - kind: html
-    root:
-      tag: div
-      content:
-      - tag: div
-        attributes: { class: header }
-        content:
-        - tag: div
-          content: 'expand:~[name-of-reporting-entity]'
-        - tag: div
-          content: Notes to the accounts
-        - tag: div
-          content: 'expand:For the period ended ~[date-of-end-of-reporting-period]'
-        - tag: hr
-  - kind: html
-    root:
-      tag: div
-      content:
-      - element:
-          kind: noteheading
-          title: Compliance
-          level: 1
-      - tag: p
-        content: 'expand:~{statement-of-ifrs-compliance=
-          The consolidated financial statements of
-          ~[name-of-reporting-entity] have been prepared in accordance
-          with International Financial Reporting Standards (IFRS) and
-          interpretations issued by the IFRS Interpretations Committee
-          (IFRS IC) applicable to companies reporting under IFRS. The
-          financial statements comply with IFRS as issued by the
-          International Accounting Standards Board (IASB).}'
-      - element:
-          kind: noteheading
-          title: Currency
-          level: 1
-      - tag: p
-        content: 'expand:~{description-of-presentation-currency=
-          These statements are presented in the euro currency (EUR).}'
-      - element:
-          kind: noteheading
-          title: Level of rounding
-          level: 1
-      - tag: p
-        content: 'expand:~{level-of-rounding=
-          Monetary values are reported rounded to the nearest euro.}'
+  div.page {
+
+  background-color: white; padding: 2em;
+
+  /* CSS hack for cross browser minimum height */ min-height: 29.7cm;
+
+  height: 29.7cm; width: 21cm;
+
+  margin: 2em 0; }
+
+  }
+
+  .titlepage .company-number { text-align: right; font-size: small; font-weight: bold;
+  }
+
+  .titlepage img { margin: auto; width: 25%; display: block; padding-top: 12em; padding-left:
+  0em; padding-bottom: 1em; padding-right: 0em; }
+
+  .titlepage .company-name { text-align: center; font-size: xx-large; font-weight:
+  bold; padding-top: 1em; padding-left: 0em; padding-bottom: 1em; padding-right: 0em;
+  }
+
+  .titlepage .title { text-align: center; font-size: large; font-weight: bold; padding:
+  0.5rem; }
+
+  .titlepage .subtitle { text-align: center; font-size: large; font-weight: bold;
+  padding: 0.5rem; }
+
+  .page .header { text-align: center; font-weight: bold; }
+
+  .page .header div:last-child { padding-bottom: 0.5rem; }
+
+  .page .header hr { margin-bottom: 2rem; }
+
+  .sheet { width: 80%; border-collapse: separate; }
+
+  .sheet td { padding-top: 0em; padding-left: 1.2em; padding-bottom: 0em; padding-right:
+  1.2em; }
+
+  .spacetable { table-layout: fixed; border-collapse: separate; }
+
+  .spacetable td { padding-top: 0em; padding-left: 1.2em; padding-bottom: 0em; padding-right:
+  1.2em; }
+
+  table { border-spacing: 1rem 1rem; border-collapse: separate; }
+
+  .table { border-spacing: 0.2rem 0rem; border-collapse: separate; font-size: medium;
+  margin-left: auto; margin-right: auto; }
+
+  .company-info { border-collapse: separate; border-spacing: 0em; display: table;
+  table-layout: fixed; }
+
+  .company-info tr td { vertical-align: top; padding: 0.5em; }
+
+  .company-info tr td.tag { width: 15em; font-weight: bold; }
+
+  .row { display: table-row; }
+
+  .cell { display: table-cell; }
+
+  .label { width: 50%; padding-right: 1em; font-size: smaller; }
+
+  .label.heading { font-weight: bold; margin-top: 1rem; }
+
+  .note { font-size: smaller; text-align: center; padding-left: 0.2em; padding-right:
+  0.2em; }
+
+  .note.header { font-size: smaller; font-weight: bold; text-align: center; padding-left:
+  1em; padding-right: 1em; }
+
+  .label.breakdown.heading { margin-bottom: 0.2rem; }
+
+  .value { font-family: Source Code Pro, monospace, Courier New; width: 20%; padding-left:
+  1em; padding-right: 1em; margin-right: 1em; font-size: small; }
+
+  @media print { .label { font-size: small; width: 40%; } .value { font-family: Source
+  Code Pro, monospace; width: 20%; font-size: small; } .company-info { font-size:
+  medium; } table.sheet { margin-left: 20%; } table.spacetable { margin-left: 20%;
+  } body { font-size: 11pt; } .data { width: 8em; } }
+
+  .total.value { margin-top: 1em; }
+
+  .breakdown.total { margin-top: 0.2em; padding-top: 4px; border-top: 1px solid white;
+  }
+
+  .breakdown.total.value { border-top: 1px solid #808080; }
+
+  .breakdown.total.super-total.value { border-top: 5px double #808080; }
+
+  .column.header { padding: 0.5em 1em 0.5em 1em; border-bottom: 0.2em solid black;
+  font-weight: bold; text-align: center; width: 20%; margin-right: 1rem; }
+
+  .currency { text-align: right; padding-left: 1em; padding-right: 1em; width: 20%;
+  margin-right: 1rem; margin-top: 0.25em; }
+
+  .data.value { text-align: right; }
+
+  .data.value.negative { color: #400000; }
+
+  .data.value.nil { color: #a0a0a0; }
+
+  .hidden { display: none; }
+
+  .fact { display: flex; flex-direction: row; margin: 2px; }
+
+  .fact div { margin: 0rem 0rem 0rem 1rem; padding: 4px; }
+
+  .fact .ref { width: 5em; text-align: center; color: white; background-color: #2ca469;
+  border: 2px solid #104020; font-weight: bold; font-size: small; padding-left: 0.1rem;
+  padding-right: 0.1rem; }
+
+  .fact .description { width: 22em; font-size: small; }
+
+  .fact .factvalue { border: 2px solid black; background-color: white; font-family:
+  Source Code Pro, monospace; font-size: small; width: 12rem; padding-left: 1rem;
+  padding-right: 1rem; margin-right: 1rem; }
+
+  .fact .factvalue.false { color: #a0a0a0; }
+
+  .rank-1 { position: relative; left: -6rem; }
+
+  .rank1 { position: relative; left: 4rem; }
+
+  '
+taxonomy:
+  contexts:
+  - entity: metadata.business.company-number
+    id: business
+    scheme: metadata.business.entity-scheme
+  - from: business
+    id: report-period
+    period: metadata.accounting.periods.0
+  - from: business
+    id: previous-period
+    period: metadata.accounting.periods.1
+  - from: business
+    id: report-date
+    instant: metadata.accounting.date
+  - from: business
+    id: end-of-reporting-period
+    instant: metadata.accounting.periods.0.end
+  document-metadata:
+  - name-of-reporting-entity
+  metadata:
+  - config: metadata.business.company-name
+    context: report-period
+    id: name-of-reporting-entity
+  - config: metadata.business.domicile-of-entity
+    context: report-period
+    id: domicile-of-entity
+  - config: metadata.business.legal-form-of-entity
+    context: report-period
+    id: legal-form-of-entity
+  - config: metadata.business.country-of-incorporation
+    context: report-period
+    id: country-of-incorporation
+  - config: metadata.business.address-of-entitys-registered-office
+    context: report-period
+    id: address-of-entitys-registered-office
+  - config: metadata.business.principal-place-of-business
+    context: report-period
+    id: principal-place-of-business
+  - config: metadata.business.nature-of-entitys-principal-activities
+    context: report-period
+    id: nature-of-entitys-principal-activities
+  - config: metadata.accounting.periods.0.end
+    context: report-period
+    id: date-of-end-of-reporting-period
+  - config: metadata.accounting.periods.0.start
+    context: report-period
+    id: period-start
+  - config: metadata.accounting.periods.0.end
+    context: report-period
+    id: period-end
+  namespaces:
+    ifrs-full: http://xbrl.ifrs.org/taxonomy/2021-03-24/ifrs-full
+  note-templates: []
+  schema:
+  - http://www.esma.europa.eu/taxonomy/2021-03-24/esef_cor.xsd
+  segment: {}
+  sign-reversed: {}
+  tags:
+    address-of-entitys-registered-office: ifrs-full:AddressOfRegisteredOfficeOfEntity
+    bank: ifrs-full:CashAndCashEquivalents
+    capital: ifrs-full:IssuedCapital
+    cash-at-end-of-year: ifrs-full:CashAndCashEquivalents
+    cash-at-start-of-year: ifrs-full:CashAndCashEquivalents
+    comprehensive-income: ifrs-full:ProfitLoss
+    country-of-incorporation: ifrs-full:CountryOfIncorporation
+    current-assets: ifrs-full:CurrentAssets
+    current-liabilities: ifrs-full:CurrentLiabilities
+    date-of-end-of-reporting-period: ifrs-full:DateOfEndOfReportingPeriod2013
+    debtors: ifrs-full:TradeAndOtherCurrentReceivables
+    deferred-tax-assets: ifrs-full:DeferredTaxAssets
+    depreciation-adjustment: ifrs-full:AdjustmentsForDepreciationExpense
+    depreciation-and-amortisation: ifrs-full:DepreciationAndAmortisationExpense
+    description-of-presentation-currency: ifrs-full:DescriptionOfPresentationCurrency
+    dividends-paid: ifrs-full:DividendsPaidClassifiedAsFinancingActivities
+    domicile-of-entity: ifrs-full:DomicileOfEntity
+    equity: ifrs-full:Equity
+    financial-items-adjustment: ifrs-full:AdjustmentsForFinanceCosts
+    fixed-assets: ifrs-full:PropertyPlantAndEquipment
+    income-tax: ifrs-full:IncomeTaxExpenseContinuingOperations
+    income-tax-adjustment: ifrs-full:AdjustmentsForIncomeTaxExpense
+    income-tax-paid: ifrs-full:IncomeTaxesPaidRefundClassifiedAsOperatingActivities
+    interest-paid: ifrs-full:FinanceCosts
+    interest-received: ifrs-full:FinanceIncome
+    inventories: ifrs-full:AdjustmentsForDecreaseIncreaseInInventories
+    legal-form-of-entity: ifrs-full:LegalFormOfEntity
+    level-of-rounding: ifrs-full:LevelOfRoundingUsedInFinancialStatements
+    name-of-reporting-entity: ifrs-full:NameOfReportingEntityOrOtherMeansOfIdentification
+    nature-of-entitys-principal-activities: ifrs-full:DescriptionOfNatureOfEntitysOperationsAndPrincipalActivities
+    net-cash-change: ifrs-full:IncreaseDecreaseInCashAndCashEquivalents
+    net-cash-from-financing-activities: ifrs-full:CashFlowsFromUsedInFinancingActivities
+    net-cash-from-investing-activities: ifrs-full:CashFlowsFromUsedInInvestingActivities
+    net-cash-from-operating-activities: ifrs-full:CashFlowsFromUsedInOperations
+    net-profit: ifrs-full:ProfitLossFromOperatingActivities
+    non-current-assets: ifrs-full:NoncurrentAssets
+    non-current-liabilities: ifrs-full:NoncurrentLiabilities
+    operating-revenue: ifrs-full:Revenue
+    other-comprehensive-income: ifrs-full:OtherIncomeExpenseFromSubsidiariesJointlyControlledEntitiesAndAssociates
+    other-creditors: ifrs-full:OtherCurrentFinancialLiabilities
+    other-non-current-assets: ifrs-full:OtherNoncurrentFinancialAssets
+    other-operating-costs: ifrs-full:OtherExpenseByNature
+    period-covered-by-financial-statements: ifrs-full:PeriodCoveredByFinancialStatements
+    personnel-costs: ifrs-full:EmployeeBenefitsExpense
+    principal-place-of-business: ifrs-full:PrincipalPlaceOfBusiness
+    proceeds-from-issuing-shares: ifrs-full:ProceedsFromIssuingShares
+    proceeds-sale-equipment: ifrs-full:ProceedsFromSalesOfPropertyPlantAndEquipmentClassifiedAsInvestingActivities
+    purchase-equipment: ifrs-full:PurchaseOfPropertyPlantAndEquipmentClassifiedAsInvestingActivities
+    purchase-intangible-assets: ifrs-full:ProceedsFromSalesOfIntangibleAssetsClassifiedAsInvestingActivities
+    retained-profit: ifrs-full:RetainedEarnings
+    statement-of-ifrs-compliance: ifrs-full:StatementOfIFRSCompliance
+    total-assets: ifrs-full:Assets
+    total-equity-and-liabilities: ifrs-full:EquityAndLiabilities
+    total-liabilities: ifrs-full:Liabilities
+    trade-and-other-receivables: ifrs-full:AdjustmentsForDecreaseIncreaseInTradeAccountReceivable
+    trade-creditors: ifrs-full:TradeAndOtherCurrentPayables
+    trade-payables: ifrs-full:AdjustmentsForIncreaseDecreaseInTradeAccountPayable
+    vat-refund-owed: ifrs-full:CurrentTaxAssetsCurrent
+title: Financial statements
+worksheets:
+- computations:
+  - operating-revenue
+  - operating-costs
+  - net-financial-items
+  - income-tax
+  - net-profit
+  - other-comprehensive-income
+  - comprehensive-income
+  id: consolidated-statement-of-income
+  kind: simple
+- computations:
+  - non-current-assets
+  - current-assets
+  - total-assets
+  - equity
+  - non-current-liabilities
+  - current-liabilities
+  - total-liabilities
+  - total-equity-and-liabilities
+  id: financial-position
+  kind: simple
+- computations:
+  - net-cash-from-operating-activities
+  - net-cash-from-investing-activities
+  - net-cash-from-financing-activities
+  - cash-at-end-of-year
+  id: cash-flows
+  kind: simple
+

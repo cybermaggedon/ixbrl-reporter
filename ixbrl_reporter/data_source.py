@@ -138,11 +138,17 @@ class DataSource:
 
         # This deals with references
 
-        elt_defs = self.cfg.get("report.elements")
+        try:
+            elt_defs = self.cfg.get("report.elements")
+        except:
+            raise RuntimeError("Couldn't find report.elements")
 
-        for elt_def in elt_defs:
-            if elt_def.get("id") == elt:
-                return Element.load(elt_def, self)
+        try:
+            for elt_def in elt_defs:
+                if elt_def.get("id") == elt:
+                    return Element.load(elt_def, self)
+        except:
+            raise RuntimeError("Problem looking for element id '%s'" % elt)
 
         raise RuntimeError("Could not find element '%s'" % elt)
 

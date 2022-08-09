@@ -1,37 +1,6 @@
-
-#############################################################################
-### GnuCash accounts source #################################################
-#############################################################################
 accounts:
-  # Filename of GnuCash accounts
-
-# This file is in GnuCash XML format, and needs the gnucash module to read it
-#  kind: gnucash
-#  file: example.gnucash
-
-  # Sqlite format, and needs the piecash module.
-  kind: piecash
   file: example2.gnucash
-
-#report: //import report/ch/unaudited-micro.yaml
-#report: //import report/ch/audited-micro.yaml
-#report: //import report/ch/audited-small.yaml
-#report: //import report/ch/unaudited-abridged.yaml
-#report: //import report/ch/unaudited-full.yaml
-#report: //import report/ch/audited-full.yaml
-report: //import report/hmrc/corp-tax.yaml
-
-# pretty-print: true
-# Decimal places
-
+  kind: piecash
 metadata: //import test/metadata-ct.yaml
-
-directors-report: //import directors-report.yaml
-
-#auditors-report: //import auditors-report.yaml
-auditors-report: //import revised-auditors-report.yaml
-
-accountants-report: //import accountants-report.yaml
-
-notes: //import notes.yaml
+report: //import report/hmrc/corp-tax.yaml
 

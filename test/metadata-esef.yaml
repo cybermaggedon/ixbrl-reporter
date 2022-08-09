@@ -1,10 +1,15 @@
+accountant:
+  address: 82 End Crescent Terrace, Threapminchington QQ99 9DF
+  business: DSKL Chartered Accountants
+  name: Kirsty Furlong BSc FCA
+  report-date: '2021-01-01'
 accounting:
   authorised-date: '2021-02-01'
   balance-sheet-date: '2020-12-31'
-  currency: GBP
-  currency-label: "\xA3"
+  currency: EUR
+  currency-label: "\u20AC"
   date: '2021-03-01'
-  decimals: 0
+  decimals: 2
   directors-report-signed-by: A Bloggs
   directors-report-signing-officer: director1
   periods:
@@ -17,17 +22,19 @@ accounting:
   scale: 0
   signed-by: B Smith
   signing-officer: director2
+auditor:
+  address: 123a High Avenue Street, Threapminchington QQ99 9AB
+  business: Auditors-R-Us LLC
+  name: Bunchy McGlochlain BSc FCA
+  report-date: '2021-02-01'
 business:
   activities: Computer security consultancy and development services
+  address-of-entitys-registered-office: 1281 Boulevard du leon, 75000 Paris
   average-employees:
   - 2
   - 1
-  company-formation:
-    country: england-and-wales
-    date: '2017-04-05'
-    form: private-limited-company
-  company-name: Example Biz Ltd.
-  company-number: '12345678'
+  company-name: Exemple d'Entreprise SARL
+  company-number: 0AAAAAAAAAAAAA0AAA40
   contact:
     address:
     - 123 Leadbarton Street
@@ -43,18 +50,23 @@ business:
       number: '0123456'
       type: landline
     postcode: QQ99 9ZZ
+  country-of-incorporation: France
   directors:
   - A Bloggs
   - B Smith
   - C Jones
-  entity-scheme: http://www.companieshouse.gov.uk/
+  domicile-of-entity: France
+  entity-scheme: http://standards.iso.org/iso/17442
   industry-sector: m
   is-dormant: false
   jurisdiction: England and Wales
+  legal-form-of-entity: "Soci\xE9t\xE9 \xE0 responsabilit\xE9 limit\xE9e"
+  nature-of-entitys-principal-activities: Services de blockchain
+  principal-place-of-business: PARIS, France
   sic-codes:
   - '62020'
   - '62021'
-  vat-registration: GB012345678
+  vat-registration: FR012345678
   website:
     description: Corporate website
     url: https://example.org/corporate
