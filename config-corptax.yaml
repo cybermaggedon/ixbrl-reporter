@@ -13,12 +13,5 @@ report: //import report/hmrc/corp-tax.yaml
 
 #pretty-print: true
 
-metadata: //import metadata-corptax.yaml
+metadata: //import detail/metadata-corptax.yaml
 
-directors-report: //import directors-report.yaml
-
-auditors-report: //import auditors-report.yaml
-
-accountants-report: //import accountants-report.yaml
-
-notes: //import notes.yaml
