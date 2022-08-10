@@ -1,197 +1,116 @@
-
-# Same as esef.yaml but invokes the French-labelled taxonomy.
-
-#############################################################################
-### Taxonomy configuration ##################################################
-#############################################################################
-
-# Some elements from the ESEF taxonomy.
-
-# One or more taxonomy definitions to include.  You can have more than
-# one to mix multiple taxonomies in a document.
-schema:
-- http://www.esma.europa.eu/taxonomy/2021-03-24/esef_cor-lab-fr.xml
-
-# XML namespaces which are added to the iXBRL output.  A bunch of
-# standard iXBRL outputs are added automatically and don't need to be
-# listed here.
-namespaces:
-  ifrs-full: http://xbrl.ifrs.org/taxonomy/2021-03-24/ifrs-full
-
-# Contexts are references invoke by tagged data, they describe an
-# entity, any dimensions, and a time period/instant.  We define
-# contexts hierarchically.  Contexts reference other contexts.  That's
-# just how ixbrl-reporter works, and is nothing to do with standards.
-# Also, the context names are not used in the iXBRL output, again, that's
-# just how ixbrl-reporter manages things internally.
 contexts:
-
-# The business context, has a business identifier and a scheme under
-# which that identifier was issued.
-- id: business
-  entity: metadata.business.company-number
+- entity: metadata.business.company-number
+  id: business
   scheme: metadata.business.entity-scheme
-
-# The 'report-period' context describes the period of time which
-# the report covers.
-- id: report-period
-  from: business
+- from: business
+  id: report-period
   period: metadata.accounting.periods.0
-
-# The 'previous-period' context describes the previous accounting period
 - from: business
   id: previous-period
   period: metadata.accounting.periods.1
-
-# The 'report-date' context describes the report issue date.
-- id: report-date
-  from: business
+- from: business
+  id: report-date
   instant: metadata.accounting.date
-
-# The 'end-of-reporting-period' context describes the last day of reporting
-# period.
-- id: end-of-reporting-period
-  from: business
+- from: business
+  id: end-of-reporting-period
   instant: metadata.accounting.periods.0.end
-
-# This is a list of metadata fields which are added to the 'hidden'
-# section at the start of the report.  The identifiers here are defined
-# in the metadata section below.
 document-metadata:
 - name-of-reporting-entity
-
-# Definitions for metadata fields.  Each field has content defined
-# using 'config' (value fetch from configuration) or 'value' (value defined
-# literally.  Default is string, but 'kind' describes the type for
-# non-strings e.g. number, bool, date.  The typing is important so that
-# iXBRL is tagged correctly.
 metadata:
-- id: name-of-reporting-entity
+- config: metadata.business.company-name
   context: report-period
-  config: metadata.business.company-name
-- id: domicile-of-entity
+  id: name-of-reporting-entity
+- config: metadata.business.domicile-of-entity
   context: report-period
-  config: metadata.business.domicile-of-entity
-- id: legal-form-of-entity
+  id: domicile-of-entity
+- config: metadata.business.legal-form-of-entity
   context: report-period
-  config: metadata.business.legal-form-of-entity
-- id: country-of-incorporation
+  id: legal-form-of-entity
+- config: metadata.business.country-of-incorporation
   context: report-period
-  config: metadata.business.country-of-incorporation
-- id: address-of-entitys-registered-office
+  id: country-of-incorporation
+- config: metadata.business.address-of-entitys-registered-office
   context: report-period
-  config: metadata.business.address-of-entitys-registered-office
-- id: principal-place-of-business
+  id: address-of-entitys-registered-office
+- config: metadata.business.principal-place-of-business
   context: report-period
-  config: metadata.business.principal-place-of-business
-- id: nature-of-entitys-principal-activities
+  id: principal-place-of-business
+- config: metadata.business.nature-of-entitys-principal-activities
   context: report-period
-  config: metadata.business.nature-of-entitys-principal-activities
-- id: date-of-end-of-reporting-period
+  id: nature-of-entitys-principal-activities
+- config: metadata.accounting.periods.0.end
   context: report-period
-  config: metadata.accounting.periods.0.end
-- id: period-start
+  id: date-of-end-of-reporting-period
+- config: metadata.accounting.periods.0.start
   context: report-period
-  config: metadata.accounting.periods.0.start
-- id: period-end
+  id: period-start
+- config: metadata.accounting.periods.0.end
   context: report-period
-  config: metadata.accounting.periods.0.end
-
-# Boiler-plate notes for the accounts notes page.  ~[...] is used to
-# insert a metadata field value.  The full form is
-# ~[fld:prefix:suffix:null].  If value is defined, the prefix and
-# suffix are included as text (not part of the tag value).  If the value
-# is not defined, the null text is shown.  ~{tag=text} is used to markup
-# text with an iXBRL tag.
+  id: period-end
+namespaces:
+  ifrs-full: http://xbrl.ifrs.org/taxonomy/2021-03-24/ifrs-full
 note-templates: []
-
-# If sign-reversed is true for a field, it's value is negated.  We
-# normally treat things which cause money to 'go away' (e.g. expenses)
-# as negatives.  iXBRL generally treats money going away as positive
-# numbers.
+schema:
+- http://www.esma.europa.eu/taxonomy/2021-03-24/esef_cor-lab-fr.xml
+segment: {}
 sign-reversed: {}
-
-# Taxonomy mapping.  Identifiers are mapped to their iXBRL tag names
-# here.
 tags:
-  name-of-reporting-entity: ifrs-full:NameOfReportingEntityOrOtherMeansOfIdentification
-  domicile-of-entity: ifrs-full:DomicileOfEntity
-  legal-form-of-entity: ifrs-full:LegalFormOfEntity
-  country-of-incorporation: ifrs-full:CountryOfIncorporation
   address-of-entitys-registered-office: ifrs-full:AddressOfRegisteredOfficeOfEntity
-  principal-place-of-business: ifrs-full:PrincipalPlaceOfBusiness
-  nature-of-entitys-principal-activities: ifrs-full:DescriptionOfNatureOfEntitysOperationsAndPrincipalActivities
-  date-of-end-of-reporting-period: ifrs-full:DateOfEndOfReportingPeriod2013
-  period-covered-by-financial-statements: ifrs-full:PeriodCoveredByFinancialStatements
-  description-of-presentation-currency: ifrs-full:DescriptionOfPresentationCurrency
-  level-of-rounding: ifrs-full:LevelOfRoundingUsedInFinancialStatements
-  statement-of-ifrs-compliance: ifrs-full:StatementOfIFRSCompliance
-
-  operating-revenue: ifrs-full:Revenue
-  personnel-costs: ifrs-full:EmployeeBenefitsExpense
-  depreciation-and-amortisation: ifrs-full:DepreciationAndAmortisationExpense
-  other-operating-costs: ifrs-full:OtherExpenseByNature
-  interest-received: ifrs-full:FinanceIncome
-  interest-paid: ifrs-full:FinanceCosts
-  income-tax: ifrs-full:IncomeTaxExpenseContinuingOperations
-  net-profit: ifrs-full:ProfitLossFromOperatingActivities
-  other-comprehensive-income: ifrs-full:OtherIncomeExpenseFromSubsidiariesJointlyControlledEntitiesAndAssociates
-  comprehensive-income: ifrs-full:ProfitLoss
-
-  fixed-assets: ifrs-full:PropertyPlantAndEquipment
-  other-non-current-assets: ifrs-full:OtherNoncurrentFinancialAssets
-  deferred-tax-assets: ifrs-full:DeferredTaxAssets
-  non-current-assets: ifrs-full:NoncurrentAssets
-  debtors: ifrs-full:TradeAndOtherCurrentReceivables
-  vat-refund-owed: ifrs-full:CurrentTaxAssetsCurrent
   bank: ifrs-full:CashAndCashEquivalents
-  current-assets: ifrs-full:CurrentAssets
-  total-assets: ifrs-full:Assets
-
   capital: ifrs-full:IssuedCapital
-  retained-profit: ifrs-full:RetainedEarnings
-  equity: ifrs-full:Equity
-
-  non-current-liabilities: ifrs-full:NoncurrentLiabilities
-  trade-creditors: ifrs-full:TradeAndOtherCurrentPayables
-  other-creditors: ifrs-full:OtherCurrentFinancialLiabilities
+  cash-at-end-of-year: ifrs-full:CashAndCashEquivalents
+  cash-at-start-of-year: ifrs-full:CashAndCashEquivalents
+  comprehensive-income: ifrs-full:ProfitLoss
+  country-of-incorporation: ifrs-full:CountryOfIncorporation
+  current-assets: ifrs-full:CurrentAssets
   current-liabilities: ifrs-full:CurrentLiabilities
-  total-liabilities: ifrs-full:Liabilities
-  total-equity-and-liabilities: ifrs-full:EquityAndLiabilities
-
-  income-tax-paid: ifrs-full:IncomeTaxesPaidRefundClassifiedAsOperatingActivities
-  income-tax-adjustment: ifrs-full:AdjustmentsForIncomeTaxExpense
-  financial-items-adjustment: ifrs-full:AdjustmentsForFinanceCosts
+  date-of-end-of-reporting-period: ifrs-full:DateOfEndOfReportingPeriod2013
+  debtors: ifrs-full:TradeAndOtherCurrentReceivables
+  deferred-tax-assets: ifrs-full:DeferredTaxAssets
   depreciation-adjustment: ifrs-full:AdjustmentsForDepreciationExpense
-
-  trade-and-other-receivables: ifrs-full:AdjustmentsForDecreaseIncreaseInTradeAccountReceivable
-
+  depreciation-and-amortisation: ifrs-full:DepreciationAndAmortisationExpense
+  description-of-presentation-currency: ifrs-full:DescriptionOfPresentationCurrency
+  dividends-paid: ifrs-full:DividendsPaidClassifiedAsFinancingActivities
+  domicile-of-entity: ifrs-full:DomicileOfEntity
+  equity: ifrs-full:Equity
+  financial-items-adjustment: ifrs-full:AdjustmentsForFinanceCosts
+  fixed-assets: ifrs-full:PropertyPlantAndEquipment
+  income-tax: ifrs-full:IncomeTaxExpenseContinuingOperations
+  income-tax-adjustment: ifrs-full:AdjustmentsForIncomeTaxExpense
+  income-tax-paid: ifrs-full:IncomeTaxesPaidRefundClassifiedAsOperatingActivities
+  interest-paid: ifrs-full:FinanceCosts
+  interest-received: ifrs-full:FinanceIncome
   inventories: ifrs-full:AdjustmentsForDecreaseIncreaseInInventories
-  trade-payables: ifrs-full:AdjustmentsForIncreaseDecreaseInTradeAccountPayable
+  legal-form-of-entity: ifrs-full:LegalFormOfEntity
+  level-of-rounding: ifrs-full:LevelOfRoundingUsedInFinancialStatements
+  name-of-reporting-entity: ifrs-full:NameOfReportingEntityOrOtherMeansOfIdentification
+  nature-of-entitys-principal-activities: ifrs-full:DescriptionOfNatureOfEntitysOperationsAndPrincipalActivities
+  net-cash-change: ifrs-full:IncreaseDecreaseInCashAndCashEquivalents
+  net-cash-from-financing-activities: ifrs-full:CashFlowsFromUsedInFinancingActivities
+  net-cash-from-investing-activities: ifrs-full:CashFlowsFromUsedInInvestingActivities
   net-cash-from-operating-activities: ifrs-full:CashFlowsFromUsedInOperations
+  net-profit: ifrs-full:ProfitLossFromOperatingActivities
+  non-current-assets: ifrs-full:NoncurrentAssets
+  non-current-liabilities: ifrs-full:NoncurrentLiabilities
+  operating-revenue: ifrs-full:Revenue
+  other-comprehensive-income: ifrs-full:OtherIncomeExpenseFromSubsidiariesJointlyControlledEntitiesAndAssociates
+  other-creditors: ifrs-full:OtherCurrentFinancialLiabilities
+  other-non-current-assets: ifrs-full:OtherNoncurrentFinancialAssets
+  other-operating-costs: ifrs-full:OtherExpenseByNature
+  period-covered-by-financial-statements: ifrs-full:PeriodCoveredByFinancialStatements
+  personnel-costs: ifrs-full:EmployeeBenefitsExpense
+  principal-place-of-business: ifrs-full:PrincipalPlaceOfBusiness
+  proceeds-from-issuing-shares: ifrs-full:ProceedsFromIssuingShares
   proceeds-sale-equipment: ifrs-full:ProceedsFromSalesOfPropertyPlantAndEquipmentClassifiedAsInvestingActivities
   purchase-equipment: ifrs-full:PurchaseOfPropertyPlantAndEquipmentClassifiedAsInvestingActivities
   purchase-intangible-assets: ifrs-full:ProceedsFromSalesOfIntangibleAssetsClassifiedAsInvestingActivities
-  net-cash-from-investing-activities: ifrs-full:CashFlowsFromUsedInInvestingActivities
-  proceeds-from-issuing-shares: ifrs-full:ProceedsFromIssuingShares
-  dividends-paid: ifrs-full:DividendsPaidClassifiedAsFinancingActivities
-  net-cash-from-financing-activities: ifrs-full:CashFlowsFromUsedInFinancingActivities
-  cash-at-start-of-year: ifrs-full:CashAndCashEquivalents
-  cash-at-end-of-year: ifrs-full:CashAndCashEquivalents
-  net-cash-change: ifrs-full:IncreaseDecreaseInCashAndCashEquivalents
+  retained-profit: ifrs-full:RetainedEarnings
+  statement-of-ifrs-compliance: ifrs-full:StatementOfIFRSCompliance
+  total-assets: ifrs-full:Assets
+  total-equity-and-liabilities: ifrs-full:EquityAndLiabilities
+  total-liabilities: ifrs-full:Liabilities
+  trade-and-other-receivables: ifrs-full:AdjustmentsForDecreaseIncreaseInTradeAccountReceivable
+  trade-creditors: ifrs-full:TradeAndOtherCurrentPayables
+  trade-payables: ifrs-full:AdjustmentsForIncreaseDecreaseInTradeAccountPayable
+  vat-refund-owed: ifrs-full:CurrentTaxAssetsCurrent
 
-# Segments / dimensions are mapped here.  Segments are defined with a
-# segment identifier and a value e.g. accounting-standards = frs102.
-# For each segment identifier, there is listed a dimension (which is added
-# to a context) and a map from value to dimension value.
-segment: {}
-  # accounting-standards:
-  #   dimension: uk-bus:AccountingStandardsDimension
-  #   map:
-  #     frs101: uk-bus:FRS101
-  #     frs102: uk-bus:FRS102
-  #     frsse: uk-bus:FRSSE
-  #     full-irs: uk-bus:FullIFRS
-  #     micro-entities: uk-bus:Micro-entities
-  #     other-standards: uk-bus:OtherStandards
-  #     small-entities-regime: uk-bus:SmallEntities

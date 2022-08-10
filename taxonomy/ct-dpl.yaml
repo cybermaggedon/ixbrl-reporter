@@ -1,60 +1,76 @@
 contexts:
-- id: business
-  entity: metadata.business.company-number
+- entity: metadata.business.company-number
+  id: business
   scheme: metadata.business.entity-scheme
-- id: report-period
-  from: business
+- from: business
+  id: report-period
   period: metadata.accounting.periods.0
   segments:
-    - business-type: company
-- id: management-expenses-period
-  from: business
+  - business-type: company
+- from: business
+  id: management-expenses-period
   period: metadata.accounting.periods.0
   segments:
-    - business-type: management-expenses
-- id: report-date
-  from: business
+  - business-type: management-expenses
+- from: business
+  id: report-date
   instant: metadata.accounting.date
   segments:
-    - business-type: company
-- id: trade-period
-  from: business
+  - business-type: company
+- from: business
+  id: trade-period
   period: metadata.accounting.periods.0
   segments:
-    - business-name: metadata.business.company-name
-    - business-type: trade
-    - loss-reform: post-loss-reform
-    - territory: uk
-metadata:
-- id: software-name
-  config: internal.software-name
-  context: report-date
-- id: software-version
-  config: internal.software-version
-  context: report-date
-- id: company-name
-  context: report-date
-  config: metadata.business.company-name
-- id: tax-reference
-  config: metadata.tax.utr
-  context: report-date
+  - business-name: metadata.business.company-name
+  - business-type: trade
+  - loss-reform: post-loss-reform
+  - territory: uk
+description-tags:
+  income: dpl:DescriptionActivity
+  rnd-proj1-enhanced-expenditure: ct-comp:TextNote
 document-metadata:
 - software-name
 - software-version
 - company-name
 - tax-reference
+metadata:
+- config: internal.software-name
+  context: report-date
+  id: software-name
+- config: internal.software-version
+  context: report-date
+  id: software-version
+- config: metadata.business.company-name
+  context: report-date
+  id: company-name
+- config: metadata.tax.utr
+  context: report-date
+  id: tax-reference
+namespaces:
+  ct-comp: http://www.hmrc.gov.uk/schemas/ct/comp/2021-01-01
+  dpl: http://www.hmrc.gov.uk/schemas/ct/dpl/2021-01-01
+  uk-bus: http://xbrl.frc.org.uk/cd/2021-01-01/business
+  uk-core: http://xbrl.frc.org.uk/fr/2021-01-01/core
+  uk-geo: http://xbrl.frc.org.uk/cd/2021-01-01/countries
+schema:
+- http://www.hmrc.gov.uk/schemas/ct/comp/2021-01-01/ct-comp-2021.xsd
+- http://www.hmrc.gov.uk/schemas/ct/dpl/2021-01-01/dpl-2021.xsd
 segment:
+  activity:
+    dimension: dpl:ActivityDimension
+    map:
+      m: uk-bus:M-ProfessionalScientificTechnicalActivities
   business-name:
-    typed-dimension: ct-comp:BusinessNameDimension
     content:
-      tag: ct-comp:BusinessNameDomain
       kind: string
+      tag: ct-comp:BusinessNameDomain
+    typed-dimension: ct-comp:BusinessNameDimension
   business-type:
     dimension: ct-comp:BusinessTypeDimension
     map:
       company: ct-comp:Company
-      trade: ct-comp:Trade
       management-expenses: ct-comp:ManagementExpenses
+      trade: ct-comp:Trade
   countries-regions:
     dimension: uk-geo:CountriesRegionsDimension
     map:
@@ -70,6 +86,9 @@ segment:
     dimension: dpl:DetailedAnalysisDimension
     map:
       item1: dpl:Item1
+      item10: dpl:Item10
+      item11: dpl:Item11
+      item12: dpl:Item12
       item2: dpl:Item2
       item3: dpl:Item3
       item4: dpl:Item4
@@ -78,129 +97,67 @@ segment:
       item7: dpl:Item7
       item8: dpl:Item8
       item9: dpl:Item9
-      item10: dpl:Item10
-      item11: dpl:Item11
-      item12: dpl:Item12
   expense-type:
     dimension: dpl:ExpenseTypeDimension
     map:
+      administrative-expenses: dpl:AdministrativeExpenses
       cost-of-sales: dpl:CostSales
       distribution-costs: dpl:DistributionCosts
-      administrative-expenses: dpl:AdministrativeExpenses
-  territory:
-    dimension: ct-comp:TerritoryDimension
-    map:
-      uk: ct-comp:UK
-  activity:
-    dimension: dpl:ActivityDimension
-    map:
-      m: uk-bus:M-ProfessionalScientificTechnicalActivities
   loss-reform:
     dimension: ct-comp:LossReformDimension
     map:
       post-loss-reform: ct-comp:Post-lossReform
-namespaces:
-  ct-comp: http://www.hmrc.gov.uk/schemas/ct/comp/2021-01-01
-  dpl: http://www.hmrc.gov.uk/schemas/ct/dpl/2021-01-01
-  uk-core: http://xbrl.frc.org.uk/fr/2021-01-01/core
-  uk-bus: http://xbrl.frc.org.uk/cd/2021-01-01/business
-  uk-geo: http://xbrl.frc.org.uk/cd/2021-01-01/countries
-schema:
-- http://www.hmrc.gov.uk/schemas/ct/comp/2021-01-01/ct-comp-2021.xsd
-- http://www.hmrc.gov.uk/schemas/ct/dpl/2021-01-01/dpl-2021.xsd
+  territory:
+    dimension: ct-comp:TerritoryDimension
+    map:
+      uk: ct-comp:UK
 sign-reversed:
   accountancy: true
   administrative-expenses: true
   annual-investment-allowance: true
-  ct-annual-investment-allowance: true
+  bank-charges: true
   corporation-tax-chargeable: true
-  net-corporation-tax-payable: true
-  tax-chargeable: true
-  tax-payable: true
-  tax-outstanding: true
   corporation-tax-chargeable-payable: true
-  fy1-tax-at-first-rate: true
-  fy2-tax-at-first-rate: true
+  creative-enhanced-expenditure: true
+  ct-annual-investment-allowance: true
+  ct-management-expenses: true
   ct-tax-fy1: true
   ct-tax-fy2: true
   ct-tax-total: true
-  ct-management-expenses: true
-  management-expenses: true
-  total-deductions-and-reliefs: true
-  salaries: true
-  pensions: true
-  legal-and-professional: true
-  bank-charges: true
-  office: true
-  software-expenses: true
-  sundries: true
-  travel: true
+  ct-trading-losses: true
   depreciation: true
   entertainment: true
-  subscriptions-costs: true
-  total-costs: true
-  tax-due: true
-  telecoms: true
-  rnd-proj1-enhanced-staffing: true
-  rnd-proj1-enhanced-software: true
-  rnd-proj1-enhanced-external: true
-  rnd-proj1-enhanced-expenditure: true
+  fy1-tax-at-first-rate: true
+  fy2-tax-at-first-rate: true
+  insurance: true
+  insurance-costs: true
+  legal-and-professional: true
+  management-expenses: true
+  net-corporation-tax-payable: true
+  office: true
+  pensions: true
+  rnd-creative-enhanced-expenditure: true
   rnd-enhanced-expenditure: true
   rnd-proj1-enhanced-expenditure: true
-  creative-enhanced-expenditure: true
-  rnd-creative-enhanced-expenditure: true
-description-tags:
-  rnd-proj1-enhanced-expenditure: ct-comp:TextNote
-  income: dpl:DescriptionActivity
+  rnd-proj1-enhanced-external: true
+  rnd-proj1-enhanced-software: true
+  rnd-proj1-enhanced-staffing: true
+  salaries: true
+  software-expenses: true
+  subscriptions-costs: true
+  sundries: true
+  tax-chargeable: true
+  tax-due: true
+  tax-outstanding: true
+  tax-payable: true
+  telecoms: true
+  total-costs: true
+  total-deductions-and-reliefs: true
+  travel: true
 tags:
-  subscriptions-costs: dpl:SubscriptionsCosts
-  turnover: uk-core:TurnoverRevenue
-  income: uk-core:TurnoverRevenue
-  gross-profit: uk-core:GrossProfitLoss
-  software-expenses: dpl:ITComputingCosts
-  profit-before-tax: uk-core:ProfitLossBeforeTax
-  salaries: uk-core:WagesSalaries
-  telecoms: dpl:TelecommunicationsCosts
-  total-costs: dpl:TotalCosts
-  pensions: uk-core:PensionCostsDefinedContributionPlan
-  depreciation: uk-core:DepreciationExpensePropertyPlantEquipment
-  entertainment: dpl:ClientEntertainingCosts
-  accountancy: dpl:AuditAccountancyCosts
-  bank-charges: dpl:BankCharges
-  office: dpl:PrintingPostageStationeryCosts
-  sundries: dpl:OtherOperationalAdministrationCosts
-  travel: dpl:TravelSubsistenceCosts
-  tax-due: uk-core:IncomeTaxExpenseCredit
-  profit: uk-core:ProfitLoss
-  rnd-proj1-enhanced-staffing: ct-comp:SubsidisedQualifyingExpenditureOnIn-HouseDirectRDIncurredOnStaffingCosts
-  rnd-proj1-enhanced-software: ct-comp:SubsidisedQualifyingExpenditureOnIn-HouseDirectRDIncurredOnSoftwareOrConsumableItems
-  rnd-proj1-enhanced-external: ct-comp:SubsidisedQualifyingExpenditureOnIn-HouseDirectRDExpenditureOfExternallyProvidedWorkers
-  rnd-enhanced-expenditure: ct-comp:AdjustmentsAdditionalDeductionForQualifyingRDExpenditureSME
-  rnd-proj1-enhanced-expenditure: ct-comp:AdjustmentsAdditionalDeductionForQualifyingRDExpenditureSME
-  creative-enhanced-expenditure: ct-comp:AdjustmentsCreativeProductionCompanyAdjustment
-
-  ct-profit-before-tax-fy1: ct-comp:FY1AmountOfProfitChargeableAtFirstRate
-  ct-profit-before-tax-fy2: ct-comp:FY2AmountOfProfitChargeableAtFirstRate
-  ct-tax-fy1: ct-comp:FY1TaxAtFirstRate
-  ct-tax-fy2: ct-comp:FY2TaxAtFirstRate
-  ct-tax-total: ct-comp:CorporationTaxChargeable
-  ct-profit-before-tax-total: ct-comp:TotalProfitsChargeableToCorporationTax
-  ct-trading-profits: ct-comp:AdjustedTradingProfitOfThisPeriod
-  legal-and-professional: ct-comp:ManagementExpensesLegalAndProfessional
-  software-name: ct-comp:NameOfProductionSoftware
-  software-version: ct-comp:VersionOfProductionSoftware
-  ct-management-expenses: ct-comp:TotalManagementExpenses
-  ct-profits-before-other-deductions-and-reliefs: ct-comp:ProfitsBeforeOtherDeductionsAndReliefs
-  ct-annual-investment-allowance: ct-comp:MainPoolAnnualInvestmentAllowance
-  annual-investment-allowance: ct-comp:MainPoolAnnualInvestmentAllowance
-  ct-trading-losses-brought-forward: ct-comp:TradingLossesBroughtForward
-  ct-net-trading-profits: ct-comp:NetTradingProfits
-  ct-net-chargeable-gains: ct-comp:NetChargeableGains
-  ct-profits-before-deductions-and-reliefs: ct-comp:ProfitsBeforeOtherDeductionsAndReliefs
-  ct-profits-chargeable-to-corporation-tax: ct-comp:TotalProfitsChargeableToCorporationTax
-
   account-period-end: ct-comp:PeriodOfAccountEndDate
   account-period-start: ct-comp:PeriodOfAccountStartDate
+  accountancy: dpl:AuditAccountancyCosts
   act-set-against-corporation-tax: ct-comp:ACTSetAgainstCorporationTax
   adjusted-blagab-management-expenses: ct-comp:AdjustedBLAGABManagementExpenses
   adjusted-loss-of-period: ct-comp:AdjustedLossOfPeriod
@@ -319,9 +276,11 @@ tags:
   allocated-interest-reactivated-for-period: ct-comp:AllocatedInterestReactivatedForPeriod
   amount-of-interest-available-for-reactivation: ct-comp:AmountOfInterestAvailableForReactivation
   amount-of-rd-expenditure-credit: ct-comp:AmountOfRDExpenditureCredit
+  annual-investment-allowance: ct-comp:MainPoolAnnualInvestmentAllowance
   annual-payments: ct-comp:AnnualPayments
   balance-of-losses-brought-forward-carried-forward: ct-comp:BalanceOfLossesBroughtForwardCarriedForward
   balance-of-non-resident-company-landlord-income-tax-losses-brought-forward-carried-forward: ct-comp:BalanceOfNonResidentCompanyLandlordIncomeTaxLossesBroughtForwardCarriedForward
+  bank-charges: dpl:BankCharges
   bank-compensation-payments-restriction: ct-comp:BankCompensationPaymentsRestriction
   bank-levy-chargeable: ct-comp:BankLevyChargeable
   bank-levy-double-taxation-relief: ct-comp:BankLevyDoubleTaxationRelief
@@ -457,6 +416,7 @@ tags:
   corporate-venturing-scheme-loss-relief: ct-comp:CorporateVenturingSchemeLossRelief
   corporation-tax-chargeable: ct-comp:CorporationTaxChargeable
   corporation-tax-chargeable-payable: ct-comp:CorporationTaxChargeablePayable
+  creative-enhanced-expenditure: ct-comp:AdjustmentsCreativeProductionCompanyAdjustment
   creative-industries-additional-deduction: ct-comp:CreativeIndustriesAdditionalDeduction
   creative-industries-appropriate-core-expenditure: ct-comp:CreativeIndustriesAppropriateCoreExpenditure
   creative-industries-available-loss-after-surrender: ct-comp:CreativeIndustriesAvailableLossAfterSurrender
@@ -500,7 +460,23 @@ tags:
   creative-industries-total-non--core-expenditure-to-date: ct-comp:CreativeIndustriesTotalNon-CoreExpenditureToDate
   creative-industries-uk-core-expenditure-incurred-to-date-and-paid-within4-months-of-ape: ct-comp:CreativeIndustriesUKCoreExpenditureIncurredToDateAndPaidWithin4MonthsOfAPE
   creative-industries-video-game-post--completion-bugging-maintenance-expenditure-incurred-to-date: ct-comp:CreativeIndustriesVideoGamePost-CompletionBuggingMaintenanceExpenditureIncurredToDate
+  ct-annual-investment-allowance: ct-comp:MainPoolAnnualInvestmentAllowance
+  ct-management-expenses: ct-comp:TotalManagementExpenses
+  ct-net-chargeable-gains: ct-comp:NetChargeableGains
+  ct-net-trading-profits: ct-comp:NetTradingProfits
+  ct-profit-before-tax-fy1: ct-comp:FY1AmountOfProfitChargeableAtFirstRate
+  ct-profit-before-tax-fy2: ct-comp:FY2AmountOfProfitChargeableAtFirstRate
+  ct-profit-before-tax-total: ct-comp:TotalProfitsChargeableToCorporationTax
   ct-profit-loss: ct-comp:CTProfitLoss
+  ct-profits-before-deductions-and-reliefs: ct-comp:ProfitsBeforeOtherDeductionsAndReliefs
+  ct-profits-before-other-deductions-and-reliefs: ct-comp:ProfitsBeforeOtherDeductionsAndReliefs
+  ct-profits-chargeable-to-corporation-tax: ct-comp:TotalProfitsChargeableToCorporationTax
+  ct-tax-fy1: ct-comp:FY1TaxAtFirstRate
+  ct-tax-fy2: ct-comp:FY2TaxAtFirstRate
+  ct-tax-total: ct-comp:CorporationTaxChargeable
+  ct-trading-losses: ct-comp:TradingLossesOfThisOrLaterAP
+  ct-trading-losses-brought-forward: ct-comp:TradingLossesBroughtForward
+  ct-trading-profits: ct-comp:AdjustedTradingProfitOfThisPeriod
   current-period-loans-released-or-written-off-after9-months: ct-comp:CurrentPeriodLoansReleasedOrWrittenOffAfter9Months
   current-period-loans-released-or-written-off-after9-months-relief-due: ct-comp:CurrentPeriodLoansReleasedOrWrittenOffAfter9MonthsReliefDue
   current-period-loans-released-or-written-off-within9-months: ct-comp:CurrentPeriodLoansReleasedOrWrittenOffWithin9Months
@@ -514,6 +490,7 @@ tags:
   deduction-allowance: ct-comp:DeductionAllowance
   deductions: ct-comp:Deductions
   deemed-i-e-receipt-under-s93-5a-minimum-profits-charge: ct-comp:DeemedI-EReceiptUnderS93-5aMinimumProfitsCharge
+  depreciation: uk-core:DepreciationExpensePropertyPlantEquipment
   description-of-trade: ct-comp:DescriptionOfTrade
   direct-grassroots-sport-payments-that-exceed-direct-payment-limit: ct-comp:DirectGrassrootsSportPaymentsThatExceedDirectPaymentLimit
   direct-grassroots-sport-payments-within-direct-payment-limit: ct-comp:DirectGrassrootsSportPaymentsWithinDirectPaymentLimit
@@ -522,6 +499,7 @@ tags:
   disallowed-tax-interest-expense-brought-forward-carried-forward: ct-comp:DisallowedTax-interestExpenseBroughtForwardCarriedForward
   disposals-of-property-deriving-value-from-land-in-the-uk: ct-comp:DisposalsOfPropertyDerivingValueFromLandInTheUK
   double-taxation-relief: ct-comp:DoubleTaxationRelief
+  entertainment: dpl:ClientEntertainingCosts
   excess-management-expenses: ct-comp:ExcessManagementExpenses
   excess-management-expenses-carried-forward-surrendered: ct-comp:ExcessManagementExpensesCarriedForwardSurrendered
   excess-management-expenses-maximum-available: ct-comp:ExcessManagementExpensesMaximumAvailable
@@ -583,6 +561,7 @@ tags:
   fy2-tax-at-third-rate: ct-comp:FY2TaxAtThirdRate
   fy2-third-rate-of-tax: ct-comp:FY2ThirdRateOfTax
   gross-chargeable-gains: ct-comp:GrossChargeableGains
+  gross-profit: uk-core:GrossProfitLoss
   gross-s212-deemed-chargeable-gains: ct-comp:GrossS212DeemedChargeableGains
   gross-turnover-off-payroll-working: ct-comp:GrossTurnoverOffPayrollWorking
   group-atlrd-tax-credits-received: ct-comp:GroupATLRDTaxCreditsReceived
@@ -604,11 +583,14 @@ tags:
   in-year-reliefs-allocated-to-chargeable-gains: ct-comp:InYearReliefsAllocatedToChargeableGains
   in-year-reliefs-allocated-to-non-trading-profits: ct-comp:InYearReliefsAllocatedToNon-tradingProfits
   in-year-reliefs-allocated-to-trading-profits: ct-comp:InYearReliefsAllocatedToTradingProfits
+  income: uk-core:TurnoverRevenue
   income-from-a-property-business: ct-comp:IncomeFromAPropertyBusiness
   income-from-which-it-deducted: ct-comp:IncomeFromWhichITDeducted
   income-not-falling-under-any-other-heading: ct-comp:IncomeNotFallingUnderAnyOtherHeading
   income-tax-repayable: ct-comp:IncomeTaxRepayable
   income-tax-suffered: ct-comp:IncomeTaxSuffered
+  insurance: uk-core:InsuranceCosts
+  insurance-costs: uk-core:InsuranceCosts
   intangible-fixed-assets-accounting-basis-debits: ct-comp:IntangibleFixedAssetsAccountingBasisDebits
   intangible-fixed-assets-acquired-or-created-in-period: ct-comp:IntangibleFixedAssetsAcquiredOrCreatedInPeriod
   intangible-fixed-assets-fixed-rate-basis-debits: ct-comp:IntangibleFixedAssetsFixedRateBasisDebits
@@ -624,6 +606,7 @@ tags:
   know-how-writing-down-allowance: ct-comp:Know-howWritingDownAllowance
   know-how-written-down-value: ct-comp:Know-howWrittenDownValue
   land-remediation-tax-credit-payable: ct-comp:LandRemediationTaxCreditPayable
+  legal-and-professional: ct-comp:ManagementExpensesLegalAndProfessional
   loan-brought-forward-carried-forward: ct-comp:LoanBroughtForwardCarriedForward
   loan-relationships-balancing-payments-made: ct-comp:LoanRelationshipsBalancingPaymentsMade
   loan-relationships-balancing-payments-received: ct-comp:LoanRelationshipsBalancingPaymentsReceived
@@ -792,6 +775,7 @@ tags:
   nrcgt-or-ated--related-cgt-loss-brought-forward-carried-forward: ct-comp:NRCGTOrATED-RelatedCGTLossBroughtForwardCarriedForward
   number-of51-percent-group-companies: ct-comp:NumberOf51PercentGroupCompanies
   off-payroll-working-applicable: ct-comp:OffPayrollWorkingApplicable
+  office: dpl:PrintingPostageStationeryCosts
   orchestra-tax-credits-payable: ct-comp:OrchestraTaxCreditsPayable
   other-blagab-income: ct-comp:OtherBLAGABIncome
   other-capital-allowances-balancing-charges: ct-comp:OtherCapitalAllowancesBalancingCharges
@@ -946,12 +930,15 @@ tags:
   payable-rd-credit-calculation-amount-used-to-discharge-payment-of-any-other-liability-to-commissioners: ct-comp:PayableRDCreditCalculationAmountUsedToDischargePaymentOfAnyOtherLiabilityToCommissioners
   payable-rd-credit-calculation-net-value-of-set-off-amount: ct-comp:PayableRDCreditCalculationNetValueOfSetOffAmount
   payable-rd-credit-calculation-the-relevant-proportion-of-a-companys-staffing-costs-for-an-ap: ct-comp:PayableRDCreditCalculationTheRelevantProportionOfACompanysStaffingCostsForAnAP
+  pensions: uk-core:PensionCostsDefinedContributionPlan
   period-from-which-loss-brought-back: ct-comp:PeriodFromWhichLossBroughtBack
   policyholder-tax: ct-comp:PolicyholderTax
   policyholder-tax-deduction: ct-comp:PolicyholderTaxDeduction
   post-loss-reform-non-trading-losses-on-intangible-fixed-assets: ct-comp:Post-lossReformNon-tradingLossesOnIntangibleFixedAssets
   pre-loss-reform-non-trading-losses-on-intangible-fixed-assets: ct-comp:Pre-lossReformNon-tradingLossesOnIntangibleFixedAssets
   pro-rata-share-of-disallowed-amount: ct-comp:ProRataShareOfDisallowedAmount
+  profit: uk-core:ProfitLoss
+  profit-before-tax: uk-core:ProfitLossBeforeTax
   profit-loss-per-accounts: ct-comp:ProfitLossPerAccounts
   profits-and-gains-from-non-trading-loan-relationships: ct-comp:ProfitsAndGainsFromNon-tradingLoanRelationships
   profits-before-charges-and-group-relief: ct-comp:ProfitsBeforeChargesAndGroupRelief
@@ -1004,7 +991,13 @@ tags:
   return-period-start: ct-comp:StartOfPeriodCoveredByReturn
   ring-fence-corporation-tax-included: ct-comp:RingFenceCorporationTaxIncluded
   ring-fence-profits-included: ct-comp:RingFenceProfitsIncluded
+  rnd-enhanced-expenditure: ct-comp:AdjustmentsAdditionalDeductionForQualifyingRDExpenditureSME
+  rnd-proj1-enhanced-expenditure: ct-comp:AdjustmentsAdditionalDeductionForQualifyingRDExpenditureSME
+  rnd-proj1-enhanced-external: ct-comp:SubsidisedQualifyingExpenditureOnIn-HouseDirectRDExpenditureOfExternallyProvidedWorkers
+  rnd-proj1-enhanced-software: ct-comp:SubsidisedQualifyingExpenditureOnIn-HouseDirectRDIncurredOnSoftwareOrConsumableItems
+  rnd-proj1-enhanced-staffing: ct-comp:SubsidisedQualifyingExpenditureOnIn-HouseDirectRDIncurredOnStaffingCosts
   s92-income-miscellaneous-receipts: ct-comp:S92IncomeMiscellaneousReceipts
+  salaries: uk-core:WagesSalaries
   share-loss-relief-allowable-costs: ct-comp:ShareLossReliefAllowableCosts
   share-loss-relief-allowable-loss: ct-comp:ShareLossReliefAllowableLoss
   share-loss-relief-claimed: ct-comp:ShareLossReliefClaimed
@@ -1047,6 +1040,9 @@ tags:
   short-life-assets-written-down-value: ct-comp:ShortLifeAssetsWrittenDownValue
   sme-and-ni-employer-with-excluded-trade-with-back-office-election: ct-comp:SMEAndNIEmployerWithExcludedTradeWithBackOfficeElection
   smeni-large-company-rules-election: ct-comp:SMENILargeCompanyRulesElection
+  software-expenses: dpl:ITComputingCosts
+  software-name: ct-comp:NameOfProductionSoftware
+  software-version: ct-comp:VersionOfProductionSoftware
   special-allowance-for-decommissioning: ct-comp:SpecialAllowanceForDecommissioning
   special-leasing-capital-allowances: ct-comp:SpecialLeasingCapitalAllowances
   special-leasing-expenses: ct-comp:SpecialLeasingExpenses
@@ -1078,14 +1074,17 @@ tags:
   structures-and-buildings-allowance-notional-writing-down-allowances: ct-comp:StructuresAndBuildingsAllowanceNotionalWritingDownAllowances
   structures-and-buildings-allowance-writing-down-allowances: ct-comp:StructuresAndBuildingsAllowanceWritingDownAllowances
   structures-and-buildings-allowance-written-down-value-brought-forward-carried-forward: ct-comp:StructuresAndBuildingsAllowanceWrittenDownValueBroughtForwardCarriedForward
+  subscriptions-costs: dpl:SubscriptionsCosts
   subsidised-qualifying-expenditure-on-contracted-out-rd: ct-comp:SubsidisedQualifyingExpenditureOnContractedOutRD
   subsidised-qualifying-expenditure-on-in--house-direct-rd: ct-comp:SubsidisedQualifyingExpenditureOnIn-HouseDirectRD
   subsidised-qualifying-expenditure-on-in--house-direct-rd-expenditure-of-externally-provided-workers: ct-comp:SubsidisedQualifyingExpenditureOnIn-HouseDirectRDExpenditureOfExternallyProvidedWorkers
   subsidised-qualifying-expenditure-on-in--house-direct-rd-incurred-on-relevant-payments-to-the-subjects-of-a-clinical-trial: ct-comp:SubsidisedQualifyingExpenditureOnIn-HouseDirectRDIncurredOnRelevantPaymentsToTheSubjectsOfAClinicalTrial
   subsidised-qualifying-expenditure-on-in--house-direct-rd-incurred-on-software-or-consumable-items: ct-comp:SubsidisedQualifyingExpenditureOnIn-HouseDirectRDIncurredOnSoftwareOrConsumableItems
   subsidised-qualifying-expenditure-on-in--house-direct-rd-incurred-on-staffing-costs: ct-comp:SubsidisedQualifyingExpenditureOnIn-HouseDirectRDIncurredOnStaffingCosts
+  sundries: dpl:OtherOperationalAdministrationCosts
   supplementary-charge-ring-fence-trades-payable: ct-comp:SupplementaryChargeRingFenceTradesPayable
   tax-chargeable: ct-comp:TaxChargeable
+  tax-due: uk-core:IncomeTaxExpenseCredit
   tax-ebitda-income: ct-comp:TaxEBITDAIncome
   tax-nic-deductions-off-payroll-working: ct-comp:TaxNICDeductionsOffPayrollWorking
   tax-payable: ct-comp:TaxPayable
@@ -1093,6 +1092,7 @@ tags:
   tax-reference: ct-comp:TaxReference
   taxable-blagab-trade-profit-loss: ct-comp:TaxableBLAGABTradeProfitLoss
   taxable-non-blagab-trade-profit-loss: ct-comp:TaxableNon-BLAGABTradeProfitLoss
+  telecoms: dpl:TelecommunicationsCosts
   television-animation-tax-credits-payable: ct-comp:TelevisionAnimationTaxCreditsPayable
   television-childrens-tax-credits-payable: ct-comp:TelevisionChildrensTaxCreditsPayable
   television-documentary-tax-credits-payable: ct-comp:TelevisionDocumentaryTaxCreditsPayable
@@ -1108,6 +1108,7 @@ tags:
   total-blagab-income-i: ct-comp:TotalBLAGABIncome-I
   total-capital-allowances: ct-comp:TotalCapitalAllowances
   total-cfc-tax-payable: ct-comp:TotalCFCTaxPayable
+  total-costs: dpl:TotalCosts
   total-decommissioning-adjustment: ct-comp:TotalDecommissioningAdjustment
   total-deductions-and-reliefs: ct-comp:TotalDeductionsAndReliefs
   total-disallowed-financing-and-decommissioning-costs-relating-to-loss-relief-surrendered: ct-comp:TotalDisallowedFinancingAndDecommissioningCostsRelatingToLossReliefSurrendered
@@ -1133,6 +1134,8 @@ tags:
   trading-losses-maximum-available: ct-comp:TradingLossesMaximumAvailable
   trading-losses-of-this-or-later-ap: ct-comp:TradingLossesOfThisOrLaterAP
   trading-losses-surrendered: ct-comp:TradingLossesSurrendered
+  travel: dpl:TravelSubsistenceCosts
+  turnover: uk-core:TurnoverRevenue
   uk-property-business-losses-set-against-total-profits: ct-comp:UKPropertyBusinessLossesSetAgainstTotalProfits
   unlisted-share-loss-relief: ct-comp:UnlistedShareLossRelief
   unlisted-share-loss-relief-non-uk-total: ct-comp:UnlistedShareLossReliefNon-UKTotal
@@ -1140,3 +1143,4 @@ tags:
   value-of-losses-used-against-total-profits: ct-comp:ValueOfLossesUsedAgainstTotalProfits
   value-of-losses-used-against-trading-profits: ct-comp:ValueOfLossesUsedAgainstTradingProfits
   video-game-tax-credits-payable: ct-comp:VideoGameTaxCreditsPayable
+
