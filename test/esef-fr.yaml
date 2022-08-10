@@ -1,14 +1,8 @@
-
 accounts:
-  # Filename of GnuCash accounts
-  kind: piecash
   file: example2.gnucash
-
-# Do you want your accounts in English or French?
-#report: //import report/esef/esef.yaml
+  kind: piecash
+logo: //import detail/logo.yaml
+metadata: //import test/metadata-esef.yaml
 report: //import report/esef/esef-fr.yaml
-
-#pretty-print: true
-
-metadata: //import metadata-esef.yaml
+signature: //import detail/signature.yaml
 

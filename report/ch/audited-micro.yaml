@@ -1,79 +1,1843 @@
-
-#############################################################################
-### Taxonomy configuration ##################################################
-#############################################################################
-# This sets up the iXBRL taxonomy.  There should be a filename and a
-# taxonomy ID.
-taxonomy: //import taxonomy/frs102.yaml
-
-# CSS style
-style: //import report/style.yaml
-
-# The accounting-standards applied.  One of:
-#   frs101, frs102, frsse, full-irs, micro-entities, other-standards,
-#   small-entities-regime.
 accounting-standards: micro-entities
-
-# Accounts status, one of:
-#   audit-exempt-no-accountants-report,
-#   audit-exempt-with-accountants-report, audited,
-#   independent-examination, other-reporting-regime
 accounts-status: audited
-
-# Accounts type, one of:
-#   abbreviated-accounts, abridged-accounts, full-accounts
 accounts-type: abridged-accounts
-
-# Report title
-title: Audited Micro-Entity Accounts
-
-#############################################################################
-### Macros ##################################################################
-#############################################################################
-macros: //import report/ch/macros.yaml
-
-#############################################################################
-### Report computations #####################################################
-#############################################################################
-computations: //import report/ch/frc102-computations.yaml
-
-#############################################################################
-### Worksheets ##############################################################
-#############################################################################
-# Worksheets list the computations which are shown on each accounting figure
-worksheets: //import report/ch/frc102-worksheets.yaml
-
-#############################################################################
-### Elements describe the report structure ##################################
-#############################################################################
-
+computations:
+- accounts:
+  - Income:Sales
+  description: Consultancy
+  id: consultancy
+  kind: line
+  period: in-year
+- description: Turnover / revenue
+  id: turnover
+  inputs:
+  - consultancy
+  kind: sum
+  period: in-year
+- description: Other income
+  id: other-operating-income
+  inputs: []
+  kind: sum
+  period: in-year
+- description: Cost of raw materials
+  id: raw-materials-consumables
+  inputs: []
+  kind: sum
+  period: in-year
+- description: Gross Profit
+  id: gross-profit
+  inputs:
+  - turnover
+  kind: sum
+  period: in-year
+- accounts:
+  - Expenses:Emoluments:Employees
+  description: Salaries
+  id: salaries-expense
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:Emoluments:Employer Pension Contribution
+  description: Pension contributions
+  id: pensions-expense
+  kind: line
+  period: in-year
+- description: Staff costs
+  id: staff-costs
+  inputs:
+  - salaries-expense
+  - pensions-expense
+  kind: group
+  note: staff-costs-note
+  period: in-year
+- accounts:
+  - Expenses:Depreciation
+  description: Depreciation
+  id: depreciation
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Accountant
+  description: Accountancy services
+  id: accountancy
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Bank Charges
+  description: Bank charges
+  id: bank-charges
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Office
+  description: Office costs
+  id: office
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Software
+  description: Software
+  id: software
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Subscriptions
+  description: Subscriptions
+  id: subscriptions
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Sundries
+  description: Sundries
+  id: sundries
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Telecoms
+  description: Telecoms
+  id: telecoms
+  kind: line
+  period: in-year
+- accounts:
+  - Expenses:VAT Purchases:Travel/Accom
+  description: Travel
+  id: travel
+  kind: line
+  period: in-year
+- description: Other charges
+  id: other-charges
+  inputs:
+  - accountancy
+  - bank-charges
+  - office
+  - software
+  - subscriptions
+  - sundries
+  - telecoms
+  - travel
+  kind: sum
+  period: in-year
+- accounts:
+  - Equity:Corporation Tax
+  description: Tax
+  id: tax
+  kind: line
+  period: in-year
+- description: Profit (Loss)
+  id: profit
+  inputs:
+  - turnover
+  - other-operating-income
+  - raw-materials-consumables
+  - staff-costs
+  - depreciation
+  - other-charges
+  kind: group
+  note: profit-note
+  period: in-year
+- description: Charges against profits
+  id: charges
+  inputs:
+  - depreciation
+  - staff-costs
+  - other-charges
+  kind: group
+  period: in-year
+- accounts:
+  - Income:Interest
+  description: Interest on current account
+  id: interest-received
+  kind: line
+  note: financial-income-note
+  period: in-year
+- description: Interest income
+  id: interest-income
+  inputs:
+  - interest-received
+  kind: group
+  period: in-year
+- accounts:
+  - Expenses:Interest Paid
+  description: Interest on bank loans
+  id: interest-paid
+  kind: line
+  note: financial-costs-note
+  period: in-year
+- description: Interest expense
+  id: interest-expense
+  inputs:
+  - interest-paid
+  kind: group
+  period: in-year
+- description: No information
+  id: zero
+  inputs: []
+  kind: group
+  period: in-year
+- accounts:
+  - Assets:Capital Equipment
+  description: Tangible Assets
+  id: tangible-assets
+  kind: line
+  period: at-end
+- description: Fixed Assets
+  id: fixed-assets
+  inputs:
+  - tangible-assets
+  kind: sum
+  note: equipment-note
+  period: at-end
+- accounts:
+  - Accounts Receivable
+  - Assets:Owed To Us
+  description: Debtors
+  id: debtors
+  kind: line
+  period: at-end
+- accounts:
+  - VAT:Input
+  - VAT:Settlement:Input
+  - Assets:VAT Repayments Due
+  description: VAT Refund Due
+  id: vat-refund-owed
+  kind: line
+  period: at-end
+- accounts:
+  - Bank Accounts
+  description: Bank
+  id: bank
+  kind: line
+  period: at-end
+- description: Current Assets
+  id: current-assets
+  inputs:
+  - debtors
+  - vat-refund-owed
+  - bank
+  kind: sum
+- description: Prepayments and Accrued Income
+  id: prepayments-and-accrued-income
+  inputs: []
+  kind: group
+- accounts:
+  - Accounts Payable
+  description: Trade Creditors
+  id: trade-creditors
+  kind: line
+  period: at-end
+- accounts:
+  - VAT:Output
+  - VAT:Settlement:Output
+  - Liabilities:Credit Cards
+  description: Other Creditors
+  id: other-creditors
+  kind: line
+  period: at-end
+- description: 'Creditors: falling due within one year'
+  id: creditors-within-1-year
+  inputs:
+  - trade-creditors
+  - other-creditors
+  kind: sum
+  segments:
+  - matures: within-1-year
+- description: Net Current Assets
+  id: net-current-assets
+  inputs:
+  - current-assets
+  - prepayments-and-accrued-income
+  - creditors-within-1-year
+  kind: sum
+- description: Total Assets Less Liabilities
+  id: total-assets-less-liabilities
+  inputs:
+  - fixed-assets
+  - current-assets
+  - prepayments-and-accrued-income
+  - creditors-within-1-year
+  kind: sum
+- description: 'Creditors: falling due after one year'
+  id: creditors-after-1-year
+  inputs: []
+  kind: group
+  segments:
+  - matures: after-1-year
+- accounts:
+  - Liabilities:Owed Corporation Tax
+  description: Corporation tax
+  id: corporation-tax-owed
+  kind: line
+  period: at-end
+- description: Provisions For Liabilities
+  id: provisions-for-liabilities
+  inputs:
+  - corporation-tax-owed
+  kind: sum
+- description: Accrued liabilities and deferred income
+  id: accruals-and-deferred-income
+  inputs: []
+  kind: group
+- description: Net Assets
+  id: net-assets
+  inputs:
+  - total-assets-less-liabilities
+  - creditors-after-1-year
+  - provisions-for-liabilities
+  - accruals-and-deferred-income
+  kind: sum
+- accounts:
+  - Equity:Shareholdings
+  description: Share Capital
+  id: share-capital-equity
+  kind: line
+  period: at-end
+  segments:
+  - equity: ordinary-shares
+- accounts:
+  - Income
+  - Expenses
+  description: Retained Profit
+  id: profit-loss
+  kind: line
+  period: at-end
+- accounts:
+  - Equity:Dividends
+  description: Dividends
+  id: dividends
+  kind: line
+  period: at-end
+- accounts:
+  - Equity:Corporation Tax
+  description: Corporation tax
+  id: corporation-tax
+  kind: line
+  period: at-end
+- description: Capital and Reserves
+  id: capital-and-reserves
+  inputs:
+  - share-capital-equity
+  - profit-loss
+  - dividends
+  - corporation-tax
+  kind: group
+- description: Capital and Reserves
+  id: total-capital-and-reserves
+  inputs:
+  - capital-and-reserves
+  kind: sum
+- accounts:
+  - Assets:Capital Equipment:Computer Equipment
+  description: At start of period
+  id: fixed-assets-initial
+  kind: line
+  period: at-start
+- accounts:
+  - Assets:Capital Equipment:Computer Equipment
+  description: Additions
+  id: fixed-assets-additions
+  kind: line
+  period: in-year
+- description: Fixed Assets
+  id: fixed-assets-total
+  inputs:
+  - fixed-assets-initial
+  - fixed-assets-additions
+  kind: group
+- accounts:
+  - Assets:Capital Equipment:Depreciation
+  description: At start of period
+  id: depreciation-initial
+  kind: line
+  period: at-start
+- accounts:
+  - Assets:Capital Equipment:Depreciation
+  description: Charge
+  id: depreciation-charge
+  kind: line
+  period: in-year
+- description: Depreciation
+  id: depreciation-total
+  inputs:
+  - depreciation-initial
+  - depreciation-charge
+  kind: group
+- description: Carrying at end of period
+  id: carrying-final
+  inputs:
+  - fixed-assets-total
+  - depreciation-total
+  kind: sum
+- accounts:
+  - Equity:Shareholdings:Ordinary Shares
+  - Equity:Shareholdings:Preference Shares
+  description: Ordinary Shares held at start
+  id: shares-at-start
+  kind: line
+  period: at-start
+- accounts:
+  - Equity:Shareholdings
+  description: Shares Issued in period
+  id: shares-issued
+  kind: line
+  period: in-year
+- description: Share Capital
+  id: share-capital
+  inputs:
+  - shares-at-start
+  - shares-issued
+  kind: group
+  period: at-end
+  segments:
+  - equity: ordinary-shares
+- accounts:
+  - Equity:Corporation Tax
+  description: Corporation tax
+  id: corporation-tax-paid
+  kind: line
+  note: taxation-note
+  period: in-year
+- accounts:
+  - Expenses:Depreciation
+  description: Adjustment for depreciation
+  id: depreciation-adjustment
+  kind: line
+  note: equipment-note
+  period: in-year
+  reverse-sign: true
+- accounts:
+  - Accounts Receivable
+  - Assets:Owed To Us
+  - VAT:Input
+  - VAT:Settlement:Input
+  description: Decrease (increase) in trade and other receivables
+  id: trade-and-other-receivables
+  kind: line
+  period: in-year
+  reverse-sign: true
+- accounts: []
+  description: Decrease (increase) in inventories
+  id: inventories
+  kind: line
+  period: in-year
+  reverse-sign: true
+- accounts:
+  - Accounts Payable
+  - VAT:Output
+  - VAT:Settlement:Output
+  - Liabilities:Owed Corporation Tax
+  description: Increase (decrease) in trade payables
+  id: trade-payables
+  kind: line
+  period: in-year
+  reverse-sign: true
+- id: cash-inflow
+  inputs:
+  - profit
+  kind: sum
+  period: in-year
+- description: Cash from operations
+  id: cash-from-operations
+  inputs:
+  - cash-inflow
+  - depreciation-adjustment
+  - trade-and-other-receivables
+  - inventories
+  - trade-payables
+  kind: group
+  period: in-year
+- description: Net cash from operating activities
+  id: net-cash-from-operating-activities
+  inputs:
+  - profit
+  - depreciation-adjustment
+  - trade-and-other-receivables
+  - inventories
+  - trade-payables
+  - corporation-tax-paid
+  kind: group
+  period: in-year
+- accounts: []
+  description: Proceeds from sale of equipment
+  id: proceeds-sale-equipment
+  kind: line
+  period: in-year
+- accounts:
+  - Assets:Capital Equipment:Computer Equipment
+  description: Purchase of property, plant and equipment
+  id: purchase-equipment
+  kind: line
+  period: in-year
+  reverse-sign: true
+- accounts: []
+  description: Purchase of intangible assets
+  id: purchase-intangible-assets
+  kind: line
+  period: in-year
+- description: Net cash from investing activities
+  id: net-cash-from-investing-activities
+  inputs:
+  - proceeds-sale-equipment
+  - purchase-equipment
+  - purchase-intangible-assets
+  - interest-received
+  kind: group
+  period: in-year
+- description: Issue of share capital
+  id: proceeds-from-issuing-shares
+  inputs:
+  - shares-issued
+  kind: group
+  note: share-capital-note
+  period: in-year
+- accounts: []
+  description: Purchase of non-controlling interest
+  id: purchase-of-non-controlling-interest
+  kind: line
+  period: in-year
+- accounts:
+  - Equity:Dividends
+  description: Dividends
+  id: dividends-paid
+  kind: line
+  period: in-year
+- description: Net cash from financing activities
+  id: net-cash-from-financing-activities
+  inputs:
+  - interest-paid
+  - proceeds-from-issuing-shares
+  - purchase-of-non-controlling-interest
+  - dividends-paid
+  kind: group
+  period: in-year
+- accounts:
+  - Bank Accounts
+  description: Cash at start of year
+  id: cash-at-start-of-year
+  kind: line
+  period: at-start
+- description: Cash and cash equivalents at end of year
+  id: cash-at-end-of-year
+  inputs:
+  - cash-at-start-of-year
+  - description: Net change in cash and cash equivalents
+    id: net-cash-change
+    inputs:
+    - net-cash-from-operating-activities
+    - net-cash-from-investing-activities
+    - net-cash-from-financing-activities
+    kind: sum
+  kind: group
+  note: cash-note
+- description: Cash and cash equivalents at end of year
+  id: cash
+  inputs:
+  - accounts:
+    - Bank Accounts:Current Account
+    description: Current account
+    id: current-account
+    kind: line
+    period: at-end
+  - accounts:
+    - Bank Accounts:Reserve Account
+    description: Reserve account
+    id: reserve-account
+    kind: line
+    period: at-end
+  kind: group
+  period: at-end
 elements:
-
-# Top-level report element is a composite which invokes the other elements.
-# The top-level element adds iXBRL schema stuff and document metadata.
-# That is configurable in the taxonomy, not here.
-
-- id: report
-  kind: html
-  root:
-    tag: div
-    content:
-    - element: title
-    - element: company-info
-    - element: auditors-report
-    - element: balance-sheet
-    - ifdef: metadata.accounting.is-revised
+- elements:
+  - elements:
+    - kind: html
+      root:
+        attributes:
+          class: titlepage
+        content:
+        - attributes:
+            class: company-number
+          content: 'expand: Company registration no. ~[company-number] (~[jurisdiction])'
+          tag: div
+        - attributes:
+            alt: Company logo
+            src: //ref logo
+          tag: img
+        - attributes:
+            class: company-name
+          content: expand:~[company-name]
+          tag: div
+        - attributes:
+            class: title
+          content: expand:~[report-title]
+          tag: div
+        - attributes:
+            class: subtitle
+          content: expand:For the year ended ~[period-end]
+          tag: div
+        tag: div
+    kind: page
+  - elements:
+    - kind: html
+      root:
+        content:
+        - attributes:
+            class: header
+          content:
+          - content: expand:~[company-name]
+            tag: div
+          - content: Company information
+            tag: div
+          - content: expand:For the year ended ~[period-end]
+            tag: div
+          - tag: hr
+          tag: div
+        - attributes:
+            class: company-info
+          content:
+          - content:
+            - attributes:
+                class: tag
+              content: Directors
+              tag: td
+            - content:
+              - content:
+                  content:
+                  - expand:~[officer1]
+                  - tag: br
+                  tag: div
+                ifdef: metadata.business.directors.0
+              - content:
+                  content:
+                  - expand:~[officer2]
+                  - tag: br
+                  tag: div
+                ifdef: metadata.business.directors.1
+              - content:
+                  content:
+                  - expand:~[officer3]
+                  - tag: br
+                  tag: div
+                ifdef: metadata.business.directors.2
+              - content:
+                  content:
+                  - expand:~[officer4]
+                  - tag: br
+                  tag: div
+                ifdef: metadata.business.directors.3
+              - content:
+                  content:
+                  - expand:~[officer5]
+                  - tag: br
+                  tag: div
+                ifdef: metadata.business.directors.4
+              - content:
+                  content:
+                  - expand:~[officer6]
+                  - tag: br
+                  tag: div
+                ifdef: metadata.business.directors.5
+              tag: td
+            tag: tr
+          - content:
+            - attributes:
+                class: tag
+              content: Company number
+              tag: td
+            - content: 'expand: ~[company-number], registered in ~[jurisdiction]'
+              tag: td
+            tag: tr
+          - content:
+            - attributes:
+                class: tag
+              content: Registered office
+              tag: td
+            - content:
+              - content:
+                  content:
+                  - expand:~[contact-address1::, ]
+                  - tag: br
+                  tag: div
+                ifdef: metadata.business.contact.address.0
+              - content:
+                  content:
+                  - expand:~[contact-address2::, ]
+                  - tag: br
+                  tag: div
+                ifdef: metadata.business.contact.address.1
+              - content:
+                  content:
+                  - expand:~[contact-address3::, ]
+                  - tag: br
+                  tag: div
+                ifdef: metadata.business.contact.address.2
+              - expand:~[contact-location::, ] ~[contact-postcode]
+              tag: td
+            tag: tr
+          - content:
+              content:
+              - attributes:
+                  class: tag
+                content: Accountant
+                tag: td
+              - content:
+                - expand:~[accountant-name]
+                - tag: br
+                - expand:~[accountant-business]
+                - tag: br
+                - expand:~[accountant-address]
+                tag: td
+              tag: tr
+            ifdef: metadata.accountant.name
+          - content:
+              content:
+              - attributes:
+                  class: tag
+                content: Auditor
+                tag: td
+              - content:
+                - expand:~[auditor-name]
+                - tag: br
+                - expand:~[auditor-business]
+                - tag: br
+                - expand:~[auditor-address]
+                tag: td
+              tag: tr
+            ifdef: metadata.auditor.name
+          tag: table
+        tag: div
+    kind: page
+  - //ref auditors-report
+  - elements:
+    - kind: html
+      root:
+        content:
+        - attributes:
+            class: header
+          content:
+          - content: expand:~[company-name]
+            tag: div
+          - content: Statement of financial position
+            tag: div
+          - content: expand:As at ~[balance-sheet-date]
+            tag: div
+          - tag: hr
+          tag: div
+        - worksheet: balance-sheet
+        - element:
+            id: balance-sheet-notes
+            kind: html
+            root:
+              content:
+              - content:
+                - template:micro-entity-provisions
+                tag: p
+              - content:
+                - template:directors-acknowledge
+                tag: p
+              tag: div
+        - element:
+            kind: html
+            root:
+              content:
+              - content: expand:Approved by the board of directors and authorised
+                  for publication on ~[authorised-date].
+                tag: p
+              - content: expand:Signed on behalf of the board, by ~[signers-name].
+                tag: p
+              - attributes:
+                  alt: Director's signature
+                  src: //ref signature
+                tag: img
+              tag: div
+        tag: div
+    kind: page
+    signature: //ref signature
+  - kind: html
+    root:
       content:
-        element: revision-info
-    - element: notes
+        content:
+          element:
+            elements:
+            - kind: html
+              root:
+                content:
+                - attributes:
+                    class: header
+                  content:
+                  - content: expand:~[company-name]
+                    tag: div
+                  - content: Revision of the financial statements
+                    tag: div
+                  - attributes:
+                      class: subtitle
+                    content: expand:For the year ended ~[period-end]
+                    tag: div
+                  - tag: hr
+                  tag: div
+                tag: div
+            - kind: html
+              root: //ref revision-info
+            kind: page
+          kind: element
+        ifdef: metadata.accounting.is-revised
+      tag: div
+  - elements:
+    - kind: html
+      root:
+        content:
+        - attributes:
+            class: header
+          content:
+          - content: expand:~[company-name]
+            tag: div
+          - content: Notes to the accounts
+            tag: div
+          - content: expand:For the year ended ~[period-end]
+            tag: div
+          - tag: hr
+          tag: div
+        - element:
+            kind: html
+            root:
+              content:
+              - element:
+                  kind: noteheading
+                  level: 1
+                  title: Company information
+              - content:
+                - template:company
+                tag: p
+              tag: div
+        - element:
+            kind: html
+            root:
+              content:
+              - element:
+                  kind: noteheading
+                  level: 1
+                  title: Employees
+              - content: 'The average monthly number of persons employed by the company
+                  (including directors) during the period was as follows:'
+                tag: p
+              - attributes:
+                  class: sheet table
+                content:
+                - content:
+                  - attributes:
+                      class: label
+                    content: ''
+                    tag: td
+                  - attributes:
+                      class: column header
+                    content: expand:~[metadata.accounting.periods.0.name]
+                    tag: td
+                  - content:
+                      attributes:
+                        class: column header
+                      content: expand:~[metadata.accounting.periods.1.name]
+                      tag: td
+                    ifdef: metadata.business.average-employees.1
+                  tag: tr
+                - content:
+                  - attributes:
+                      class: label heading
+                    content: Employees
+                    tag: td
+                  - attributes:
+                      class: data value
+                    content: expand:~[average-employees-this]
+                    tag: td
+                  - content:
+                      attributes:
+                        class: data value
+                      content: expand:~[average-employees-previous]
+                      tag: td
+                    ifdef: metadata.business.average-employees.1
+                  tag: tr
+                tag: table
+              tag: div
+        tag: div
+    kind: page
+  id: report
+  kind: composite
+style: '
 
-- //ref directors-report
-- //ref auditors-report
+  .page { page-break-after: always; }
 
-- //ref report.macros.title
-- //ref report.macros.company-info
-- //ref report.macros.balance-sheet-audited-micro
-- //ref report.macros.signature
-- //ref report.macros.revision
-- //ref report.macros.simple-notes
+  body { font-family: Helvetica, Georgia, sans-serif; font-size: medium; }
+
+  @media screen, projection, tv {
+
+  body { margin: 2% 4% 2% 4%; background-color: gray; }
+
+  div.page {
+
+  background-color: white; padding: 2em;
+
+  /* CSS hack for cross browser minimum height */ min-height: 29.7cm;
+
+  height: 29.7cm; width: 21cm;
+
+  margin: 2em 0; }
+
+  }
+
+  .titlepage .company-number { text-align: right; font-size: small; font-weight: bold;
+  }
+
+  .titlepage img { margin: auto; width: 25%; display: block; padding-top: 12em; padding-left:
+  0em; padding-bottom: 1em; padding-right: 0em; }
+
+  .titlepage .company-name { text-align: center; font-size: xx-large; font-weight:
+  bold; padding-top: 1em; padding-left: 0em; padding-bottom: 1em; padding-right: 0em;
+  }
+
+  .titlepage .title { text-align: center; font-size: large; font-weight: bold; padding:
+  0.5rem; }
+
+  .titlepage .subtitle { text-align: center; font-size: large; font-weight: bold;
+  padding: 0.5rem; }
+
+  .page .header { text-align: center; font-weight: bold; }
+
+  .page .header div:last-child { padding-bottom: 0.5rem; }
+
+  .page .header hr { margin-bottom: 2rem; }
+
+  .sheet { width: 80%; border-collapse: separate; }
+
+  .sheet td { padding-top: 0em; padding-left: 1.2em; padding-bottom: 0em; padding-right:
+  1.2em; }
+
+  .spacetable { table-layout: fixed; border-collapse: separate; }
+
+  .spacetable td { padding-top: 0em; padding-left: 1.2em; padding-bottom: 0em; padding-right:
+  1.2em; }
+
+  table { border-spacing: 1rem 1rem; border-collapse: separate; }
+
+  .table { border-spacing: 0.2rem 0rem; border-collapse: separate; font-size: medium;
+  margin-left: auto; margin-right: auto; }
+
+  .company-info { border-collapse: separate; border-spacing: 0em; display: table;
+  table-layout: fixed; }
+
+  .company-info tr td { vertical-align: top; padding: 0.5em; }
+
+  .company-info tr td.tag { width: 15em; font-weight: bold; }
+
+  .row { display: table-row; }
+
+  .cell { display: table-cell; }
+
+  .label { width: 50%; padding-right: 1em; font-size: smaller; }
+
+  .label.heading { font-weight: bold; margin-top: 1rem; }
+
+  .note { font-size: smaller; text-align: center; padding-left: 0.2em; padding-right:
+  0.2em; }
+
+  .note.header { font-size: smaller; font-weight: bold; text-align: center; padding-left:
+  1em; padding-right: 1em; }
+
+  .label.breakdown.heading { margin-bottom: 0.2rem; }
+
+  .value { font-family: Source Code Pro, monospace, Courier New; width: 20%; padding-left:
+  1em; padding-right: 1em; margin-right: 1em; font-size: small; }
+
+  @media print { .label { font-size: small; width: 40%; } .value { font-family: Source
+  Code Pro, monospace; width: 20%; font-size: small; } .company-info { font-size:
+  medium; } table.sheet { margin-left: 20%; } table.spacetable { margin-left: 20%;
+  } body { font-size: 11pt; } .data { width: 8em; } }
+
+  .total.value { margin-top: 1em; }
+
+  .breakdown.total { margin-top: 0.2em; padding-top: 4px; border-top: 1px solid white;
+  }
+
+  .breakdown.total.value { border-top: 1px solid #808080; }
+
+  .breakdown.total.super-total.value { border-top: 5px double #808080; }
+
+  .column.header { padding: 0.5em 1em 0.5em 1em; border-bottom: 0.2em solid black;
+  font-weight: bold; text-align: center; width: 20%; margin-right: 1rem; }
+
+  .currency { text-align: right; padding-left: 1em; padding-right: 1em; width: 20%;
+  margin-right: 1rem; margin-top: 0.25em; }
+
+  .data.value { text-align: right; }
+
+  .data.value.negative { color: #400000; }
+
+  .data.value.nil { color: #a0a0a0; }
+
+  .hidden { display: none; }
+
+  .fact { display: flex; flex-direction: row; margin: 2px; }
+
+  .fact div { margin: 0rem 0rem 0rem 1rem; padding: 4px; }
+
+  .fact .ref { width: 5em; text-align: center; color: white; background-color: #2ca469;
+  border: 2px solid #104020; font-weight: bold; font-size: small; padding-left: 0.1rem;
+  padding-right: 0.1rem; }
+
+  .fact .description { width: 22em; font-size: small; }
+
+  .fact .factvalue { border: 2px solid black; background-color: white; font-family:
+  Source Code Pro, monospace; font-size: small; width: 12rem; padding-left: 1rem;
+  padding-right: 1rem; margin-right: 1rem; }
+
+  .fact .factvalue.false { color: #a0a0a0; }
+
+  .rank-1 { position: relative; left: -6rem; }
+
+  .rank1 { position: relative; left: 4rem; }
+
+  '
+taxonomy:
+  contexts:
+  - entity: metadata.business.company-number
+    id: business
+    scheme: metadata.business.entity-scheme
+  - from: business
+    id: report-period
+    period: metadata.accounting.periods.0
+  - from: business
+    id: previous-period
+    period: metadata.accounting.periods.1
+  - from: business
+    id: report-date
+    instant: metadata.accounting.date
+  - from: business
+    id: end-of-reporting-period
+    instant: metadata.accounting.periods.0.end
+  - from: report-period
+    id: industry-sector
+    segments:
+    - industry-sector: metadata.business.industry-sector
+  - from: report-period
+    id: accounting-standards
+    segments:
+    - accounting-standards: report.accounting-standards
+  - from: report-period
+    id: accounts-type
+    segments:
+    - accounts-type: report.accounts-type
+  - from: report-period
+    id: accounts-status
+    segments:
+    - accounts-status: report.accounts-status
+  - from: report-period
+    id: entity-legal-form
+    segments:
+    - entity-legal-form: metadata.business.company-formation.form
+  - from: report-period
+    id: entity-legal-country
+    segments:
+    - countries-regions: metadata.business.company-formation.country
+  - from: report-period
+    id: officer1
+    segments:
+    - officer: director1
+  - from: report-period
+    id: officer2
+    segments:
+    - officer: director2
+  - from: report-period
+    id: officer3
+    segments:
+    - officer: director3
+  - from: report-period
+    id: officer4
+    segments:
+    - officer: director4
+  - from: report-period
+    id: officer5
+    segments:
+    - officer: director5
+  - from: report-period
+    id: officer6
+    segments:
+    - officer: director6
+  - from: report-period
+    id: officer7
+    segments:
+    - officer: director7
+  - from: report-period
+    id: officer8
+    segments:
+    - officer: director8
+  - from: report-period
+    id: officer9
+    segments:
+    - officer: director9
+  - from: report-period
+    id: officer10
+    segments:
+    - officer: director10
+  - from: report-period
+    id: officer11
+    segments:
+    - officer: director11
+  - from: report-period
+    id: officer12
+    segments:
+    - officer: director12
+  - from: report-period
+    id: officer13
+    segments:
+    - officer: director13
+  - from: report-period
+    id: officer14
+    segments:
+    - officer: director14
+  - from: report-period
+    id: officer15
+    segments:
+    - officer: director15
+  - from: report-period
+    id: officer16
+    segments:
+    - officer: director16
+  - from: report-period
+    id: officer17
+    segments:
+    - officer: director17
+  - from: report-period
+    id: officer18
+    segments:
+    - officer: director18
+  - from: report-period
+    id: officer19
+    segments:
+    - officer: director19
+  - from: report-period
+    id: officer20
+    segments:
+    - officer: director20
+  - from: report-period
+    id: signing-officer
+    segments:
+    - officer: metadata.accounting.signing-officer
+  - from: report-period
+    id: directors-report-signing-officer
+    segments:
+    - officer: metadata.accounting.directors-report-signing-officer
+  - from: report-period
+    id: contact-country
+    segments:
+    - countries-regions: metadata.business.contact.country
+  - from: report-period
+    id: phone
+    segments:
+    - phone-number-type: metadata.business.contact.phone.type
+  - from: report-period
+    id: website
+    segments:
+    - countries-regions: metadata.business.contact.country
+  document-metadata:
+  - report-title
+  - report-date
+  - authorised-date
+  - period-start
+  - period-end
+  - company-name
+  - company-number
+  - vat-registration
+  - software-name
+  - software-version
+  - balance-sheet-date
+  - activities
+  - sic1
+  - sic2
+  - sic3
+  - sic4
+  - industry-sector
+  - is-dormant
+  - trading-status
+  - accounting-standards
+  - accounts-type
+  - accounts-status
+  - entity-legal-form
+  - entity-legal-country
+  - entity-legal-date
+  - average-employees-this
+  - average-employees-previous
+  - officer
+  - signing-officer
+  - contact-name
+  - contact-address1
+  - contact-address2
+  - contact-address3
+  - contact-location
+  - contact-county
+  - contact-postcode
+  - contact-email
+  - contact-phone-country
+  - contact-phone-area
+  - contact-phone-number
+  - website-url
+  - website-description
+  - is-revised
+  - directors-report-consistent-with-revised-accounts
+  metadata:
+  - config: report.title
+    context: report-period
+    id: report-title
+  - config: metadata.accounting.date
+    context: report-date
+    id: report-date
+    kind: date
+  - config: metadata.accounting.authorised-date
+    context: end-of-reporting-period
+    id: authorised-date
+    kind: date
+  - config: metadata.accounting.periods.0.start
+    context: report-date
+    id: period-start
+    kind: date
+  - config: metadata.accounting.periods.0.end
+    context: report-date
+    id: period-end
+    kind: date
+  - config: metadata.business.company-name
+    context: report-period
+    id: company-name
+  - config: metadata.business.company-number
+    context: report-period
+    id: company-number
+  - config: metadata.business.vat-registration
+    context: report-period
+    id: vat-registration
+  - config: internal.software-name
+    context: report-period
+    id: software-name
+  - config: internal.software-version
+    context: report-period
+    id: software-version
+  - config: metadata.accounting.balance-sheet-date
+    context: end-of-reporting-period
+    id: balance-sheet-date
+    kind: date
+  - config: metadata.business.activities
+    context: report-period
+    id: activities
+  - config: metadata.business.sic-codes.0
+    context: report-period
+    id: sic1
+  - config: metadata.business.sic-codes.1
+    context: report-period
+    id: sic2
+  - config: metadata.business.sic-codes.2
+    context: report-period
+    id: sic3
+  - config: metadata.business.sic-codes.3
+    context: report-period
+    id: sic4
+  - context: industry-sector
+    id: industry-sector
+    value: ''
+  - config: metadata.business.is-dormant
+    context: report-period
+    id: is-dormant
+    kind: bool
+  - context: report-period
+    id: trading-status
+    value: ''
+  - context: accounting-standards
+    id: accounting-standards
+    value: ''
+  - context: accounts-type
+    id: accounts-type
+    value: ''
+  - context: accounts-status
+    id: accounts-status
+    value: ''
+  - context: entity-legal-form
+    id: entity-legal-form
+    value: ''
+  - context: entity-legal-country
+    id: entity-legal-country
+    value: ''
+  - config: metadata.business.company-formation.date
+    context: report-date
+    id: entity-legal-date
+    kind: date
+  - config: metadata.business.average-employees.0
+    context: report-period
+    id: average-employees-this
+    kind: count
+  - config: metadata.business.average-employees.1
+    context: previous-period
+    id: average-employees-previous
+    kind: count
+  - config: metadata.business.directors.0
+    context: officer1
+    id: officer1
+  - config: metadata.business.directors.1
+    context: officer2
+    id: officer2
+  - config: metadata.business.directors.2
+    context: officer3
+    id: officer3
+  - config: metadata.business.directors.3
+    context: officer4
+    id: officer4
+  - config: metadata.business.directors.4
+    context: officer5
+    id: officer5
+  - config: metadata.business.directors.5
+    context: officer6
+    id: officer6
+  - config: metadata.business.directors.6
+    context: officer7
+    id: officer7
+  - config: metadata.business.directors.7
+    context: officer8
+    id: officer8
+  - config: metadata.business.directors.8
+    context: officer9
+    id: officer9
+  - config: metadata.business.directors.9
+    context: officer10
+    id: officer10
+  - config: metadata.business.directors.10
+    context: officer11
+    id: officer11
+  - config: metadata.business.directors.11
+    context: officer12
+    id: officer12
+  - config: metadata.business.directors.12
+    context: officer13
+    id: officer13
+  - config: metadata.business.directors.13
+    context: officer14
+    id: officer14
+  - config: metadata.business.directors.14
+    context: officer15
+    id: officer15
+  - config: metadata.business.directors.15
+    context: officer16
+    id: officer16
+  - config: metadata.business.directors.16
+    context: officer17
+    id: officer17
+  - config: metadata.business.directors.17
+    context: officer18
+    id: officer18
+  - config: metadata.business.directors.18
+    context: officer19
+    id: officer19
+  - config: metadata.business.directors.19
+    context: officer20
+    id: officer20
+  - context: signing-officer
+    id: signing-officer
+    value: ''
+  - context: signing-officer
+    id: signed-by
+    value: FIXME
+  - config: metadata.accounting.signed-by
+    context: report-period
+    id: signers-name
+  - config: metadata.business.jurisdiction
+    context: report-period
+    id: jurisdiction
+  - config: metadata.business.contact.name
+    context: contact-country
+    id: contact-name
+  - config: metadata.business.contact.address.0
+    context: contact-country
+    id: contact-address1
+  - config: metadata.business.contact.address.1
+    context: contact-country
+    id: contact-address2
+  - config: metadata.business.contact.address.2
+    context: contact-country
+    id: contact-address3
+  - config: metadata.business.contact.location
+    context: contact-country
+    id: contact-location
+  - config: metadata.business.contact.county
+    context: contact-country
+    id: contact-county
+  - config: metadata.business.contact.postcode
+    context: contact-country
+    id: contact-postcode
+  - config: metadata.business.contact.email
+    context: contact-country
+    id: contact-email
+  - config: metadata.business.contact.phone.country
+    context: phone
+    id: contact-phone-country
+  - config: metadata.business.contact.phone.area
+    context: phone
+    id: contact-phone-area
+  - config: metadata.business.contact.phone.number
+    context: phone
+    id: contact-phone-number
+  - config: metadata.business.website.url
+    context: website
+    id: website-url
+  - config: metadata.business.website.description
+    context: website
+    id: website-description
+  - config: metadata.accountant.report-date
+    context: end-of-reporting-period
+    id: accountants-report-date
+    kind: date
+  - config: metadata.accountant.name
+    context: report-period
+    id: accountant-name
+  - config: metadata.accountant.business
+    context: report-period
+    id: accountant-business
+  - config: metadata.accountant.address
+    context: report-period
+    id: accountant-address
+  - config: metadata.auditor.report-date
+    context: end-of-reporting-period
+    id: auditors-report-date
+    kind: date
+  - config: metadata.auditor.name
+    context: report-period
+    id: auditor-name
+  - config: metadata.auditor.business
+    context: report-period
+    id: auditor-business
+  - config: metadata.auditor.address
+    context: report-period
+    id: auditor-address
+  - config: metadata.directors.report-date
+    context: end-of-reporting-period
+    id: directors-report-date
+    kind: date
+  - context: directors-report-signing-officer
+    id: directors-report-signing-officer
+    value: ''
+  - config: metadata.accounting.is-revised
+    context: report-period
+    id: is-revised
+    kind: bool
+  - config: metadata.auditor.revised-report-date
+    context: end-of-reporting-period
+    id: revised-auditors-report-date
+    kind: date
+  - config: metadata.auditor.directors-report-consistent-revised-accounts
+    context: report-period
+    id: directors-report-consistent-with-revised-accounts
+    kind: bool
+  namespaces:
+    uk-accrep: http://xbrl.frc.org.uk/reports/2021-01-01/accrep
+    uk-aurep: http://xbrl.frc.org.uk/reports/2021-01-01/aurep
+    uk-bus: http://xbrl.frc.org.uk/cd/2021-01-01/business
+    uk-core: http://xbrl.frc.org.uk/fr/2021-01-01/core
+    uk-direp: http://xbrl.frc.org.uk/reports/2021-01-01/direp
+    uk-geo: http://xbrl.frc.org.uk/cd/2021-01-01/countries
+  note-templates:
+    company: 'expand:The company is a private company limited by shares and is registered
+      in England and Wales number ~[company-number]. The registered address is: ~[contact-address1::,
+      ] ~[contact-address2::, ] ~[contact-address3::, ] ~[contact-location:: ] ~[contact-postcode].'
+    directors-acknowledge: expand:~{directors-duty=The directors acknowledge their
+      responsibilities for complying with the requirements of the Act with respect
+      to accounting records and the preparation of financial statements.}
+    members-agreed-abridged-accounts: expand:~{members-agreed-abridged-accounts= All
+      of the members of ~[company-name] have consented to the preparation of the Abridged
+      Statement of Financial Position and the Abridged Income Statement for the year
+      ended ~[period-end] in accordance with Section 444(2A) of the Companies Act
+      2006.}
+    micro-entity-pl-provisions: expand:~{accounts-prepared-small-company-regime= These
+      financial statements have been prepared in accordance with the micro-entity
+      provisions.}
+    micro-entity-provisions: expand:~{accounts-prepared-small-company-regime=These
+      financial statements have been prepared in accordance with the micro-entity
+      provisions and delivered in accordance with the provisions applicable under
+      the small companies regime.}
+    no-audit-required: expand:~{members-not-required-audit=The members have not required
+      the company to obtain an audit of its financial statements for the accounting
+      period in accordance with section 476.}
+    small-company-audit-exempt: expand:~{small-company-exempt-from-audit=For the accounting
+      period ending ~[period-end] the company was entitled to exemption from audit
+      under section 477 of the Companies Act 2006 relating to small companies.}
+    small-company-provisions: expand:~{accounts-prepared-small-company-regime= These
+      accounts have been prepared in accordance with the provisions applicable to
+      companies subject to the small companies regime.}
+    software-version: expand:These accounts were generated using ~[software-name]
+      version ~[software-version].
+  schema:
+  - https://xbrl.frc.org.uk/FRS-102/2021-01-01/FRS-102-2021-01-01.xsd
+  segment:
+    accounting-standards:
+      dimension: uk-bus:AccountingStandardsDimension
+      map:
+        frs101: uk-bus:FRS101
+        frs102: uk-bus:FRS102
+        frsse: uk-bus:FRSSE
+        full-irs: uk-bus:FullIFRS
+        micro-entities: uk-bus:Micro-entities
+        other-standards: uk-bus:OtherStandards
+        small-entities-regime: uk-bus:SmallEntities
+    accounts-status:
+      dimension: uk-bus:AccountsStatusDimension
+      map:
+        audit-exempt-no-accountants-report: uk-bus:AuditExempt-NoAccountantsReport
+        audit-exempt-with-accountants-report: uk-bus:AuditExemptWithAccountantsReport
+        audited: uk-bus:Audited
+        independent-examination: uk-bus:IndependentExaminationCharity
+        other-reporting-regime: uk-bus:OtherReportingRegime
+    accounts-type:
+      dimension: uk-bus:AccountsTypeDimension
+      map:
+        abbreviated-accounts: uk-bus:AbbreviatedAccounts
+        abridged-accounts: uk-bus:AbridgedAccounts
+        full-accounts: uk-bus:FullAccounts
+    countries-regions:
+      dimension: uk-geo:CountriesRegionsDimension
+      map:
+        UK: uk-geo:UnitedKingdom
+        england-and-wales: uk-geo:EnglandWales
+    entity-legal-form:
+      dimension: uk-bus:LegalFormEntityDimension
+      map:
+        branch-trading-in-uk: uk-bus:BranchTradingInUK
+        community-interest-company: uk-bus:CommunityInterestCompanyCIC
+        company-limited-by-guarantee: uk-bus:CompanyLimitedByGuarantee
+        friendly-society: uk-bus:FriendlySociety
+        incorporated-by-act-of-parliament: uk-bus:IncorporatedByActParliament
+        incorporated-by-royal-charter: uk-bus:IncorporatedByRoyalCharter
+        industrial-and-provident-society: uk-bus:IndustrialProvidentSociety
+        limited-liability-partnership: uk-bus:LimitedLiabilityPartnershipLLP
+        other-incorporated-association: uk-bus:OtherIncorporatedAssociation
+        other-non-uk: uk-bus:OtherNon-UK
+        other-uk: uk-bus:OtherUK
+        private-limited-company: uk-bus:PrivateLimitedCompanyLtd
+        public-limited-company-not-quoted: uk-bus:PublicLimitedCompanyPLCNotQuotedOnAnyExchange
+        public-limited-company-plc: uk-bus:PublicLimitedCompanyPLC
+        registered-charity: uk-bus:RegisteredCharity
+        scottish-partnership: uk-bus:ScottishPartnership
+        unlimited-company: uk-bus:UnlimitedCompany
+    equity:
+      dimension: uk-core:EquityClassesDimension
+      map:
+        ordinary-shares: uk-core:ShareCapitalOrdinaryShares
+        preference-shares: uk-core:ShareCapitalPreferenceShares
+    industry-sector:
+      dimension: uk-bus:MainIndustrySectorDimension
+      map:
+        a: uk-bus:A-AgricultureForestryFishing
+        b: uk-bus:B-MiningQuarrying
+        c: uk-bus:C-Manufacturing
+        d: uk-bus:D-ElectricityGasSteamAirConditioningSupply
+        e: uk-bus:E-WaterSupplySewerageWasteManagementRemediationActivities
+        f: uk-bus:F-Construction
+        g: uk-bus:G-WholesaleRetailTradeRepairMotorVehiclesMotorcycles
+        h: uk-bus:H-TransportationStorage
+        i: uk-bus:I-AccommodationFoodServiceActivities
+        j: uk-bus:J-InformationCommunication
+        k: uk-bus:K-FinancialInsuranceActivities
+        l: uk-bus:L-RealEstateActivities
+        m: uk-bus:M-ProfessionalScientificTechnicalActivities
+        n: uk-bus:N-AdministrativeSupportServiceActivities
+        o: uk-bus:O-PublicAdministrationDefenceCompulsorySocialSecurity
+        p: uk-bus:P-Education
+        q: uk-bus:Q-HumanHealthSocialWorkActivities
+        r: uk-bus:R-ArtsEntertainmentRecreation
+        s: uk-bus:S-OtherServiceActivities
+    matures:
+      dimension: uk-core:MaturitiesOrExpirationPeriodsDimension
+      map:
+        after-1-year: uk-core:AfterOneYear
+        within-1-year: uk-core:WithinOneYear
+    officer:
+      dimension: uk-bus:EntityOfficersDimension
+      map:
+        director1: uk-bus:Director1
+        director10: uk-bus:Director10
+        director2: uk-bus:Director2
+        director3: uk-bus:Director3
+        director4: uk-bus:Director4
+        director5: uk-bus:Director5
+        director6: uk-bus:Director6
+        director7: uk-bus:Director7
+        director8: uk-bus:Director8
+        director9: uk-bus:Director9
+    phone-number-type:
+      dimension: uk-bus:PhoneNumberTypeDimension
+      map:
+        fax: uk-bus:Fax
+        landline: uk-bus:Landline
+        mobile: uk-bus:Mobile
+  sign-reversed:
+    accruals-and-deferred-income: true
+    administrative-expenses: true
+    corporation-tax-owed: true
+    cost-of-sales: true
+    creditors-after-1-year: true
+    creditors-within-1-year: true
+    depreciation-adjustment: true
+    depreciation-charge: true
+    depreciation-total: true
+    other-creditors: true
+    prepayments-and-accrued-income: true
+    provisions-for-liabilities: true
+    trade-creditors: true
+  tags:
+    abbreviated-accounts-in-accordance-special-provisions: uk-direp:AbbreviatedAccountsAreInAccordanceWithSpecialProvisionsInSection4453CompaniesActRelatingToMedium
+    accountant-address: uk-accrep:NameOrLocationAccountantsOffice
+    accountant-business: uk-bus:NameEntityAccountants
+    accountant-name: uk-accrep:NameAccountantResponsible
+    accountants-report-date: uk-accrep:DateAccountantsReport
+    accountants-report-on-financial-statements: uk-accrep:AccountantsReportOnFinancialStatements
+    accounting-standards: uk-bus:AccountingStandardsApplied
+    accounts-prepared-small-company-regime: uk-direp:StatementThatAccountsHaveBeenPreparedInAccordanceWithProvisionsSmallCompaniesRegime
+    accounts-status: uk-bus:AccountsStatusAuditedOrUnaudited
+    accounts-type: uk-bus:AccountsTypeFullOrAbbreviated
+    accruals-and-deferred-income: uk-core:AccruedLiabilitiesDeferredIncome
+    activities: uk-bus:DescriptionPrincipalActivities
+    administrative-expenses: uk-core:AdministrativeExpenses
+    auditor-address: uk-aurep:NameOrLocationOfficePerformingAudit
+    auditor-business: uk-bus:NameEntityAuditors
+    auditor-name: uk-aurep:NameIndividualAuditor
+    auditors-report-date: uk-aurep:DateAuditorsReport
+    authorised-date: uk-core:DateAuthorisationFinancialStatementsForIssue
+    average-employees-previous: uk-core:AverageNumberEmployeesDuringPeriod
+    average-employees-this: uk-core:AverageNumberEmployeesDuringPeriod
+    balance-sheet-date: uk-bus:BalanceSheetDate
+    bank: uk-core:CashBankOnHand
+    basis-for-opinion-auditors: uk-aurep:BasisForOpinionAuditorsOnEntity
+    carrying-final: uk-core:PropertyPlantEquipmentIncludingRight-of-useAssets
+    cash-and-cash-equivalents-policy: uk-core:CashCashEquivalentsPolicy
+    cash-at-end-of-year: uk-core:CashCashEquivalentsCashFlowValue
+    cash-inflow: uk-core:NetCashInflowOutflowFromOperationsBeforeMovementsInWorkingCapital
+    company-is-entitled-to-deliver-abbreviated-accounts: uk-aurep:CompanyEntitledToDeliverAbbreviatedAccountsAccountsProperlyPreparedTruefalse
+    company-name: uk-bus:EntityCurrentLegalOrRegisteredName
+    company-number: uk-bus:UKCompaniesHouseRegisteredNumber
+    contact-address1: uk-bus:AddressLine1
+    contact-address2: uk-bus:AddressLine2
+    contact-address3: uk-bus:AddressLine3
+    contact-county: uk-bus:CountyRegion
+    contact-email: uk-bus:E-mailAddress
+    contact-location: uk-bus:PrincipalLocation-CityOrTown
+    contact-name: uk-bus:NameContactDepartmentOrPerson
+    contact-phone-area: uk-bus:AreaCode
+    contact-phone-country: uk-bus:CountryCode
+    contact-phone-number: uk-bus:LocalNumber
+    contact-postcode: uk-bus:PostalCodeZip
+    corporation-tax-owed: uk-core:TaxationIncludingDeferredTaxationBalanceSheetSubtotal
+    corporation-tax-paid: uk-core:IncomeTaxesPaidRefundClassifiedAsOperatingActivities
+    cost-of-sales: uk-core:CostSales
+    creditors-after-1-year: uk-core:Creditors
+    creditors-within-1-year: uk-core:Creditors
+    current-assets: uk-core:CurrentAssets
+    current-income-tax-policy: uk-core:CurrentIncomeTaxPolicy
+    date-of-auditors-report: uk-aurep:DateAuditorsReport
+    debtors: uk-core:TradeDebtorsTradeReceivables
+    deferred-tax-policy: uk-core:DeferredTaxPolicy
+    defined-contribution-pensions-policy: uk-core:DefinedContributionPensionsPolicy
+    depreciation: uk-core:DepreciationAmortisationImpairmentExpense
+    depreciation-adjustment: uk-core:DepreciationAmortisationImpairmentExpense
+    depreciation-charge: uk-core:IncreaseFromDepreciationChargeForYearPropertyPlantEquipment
+    depreciation-total: uk-core:AccumulatedDepreciationImpairmentPropertyPlantEquipment
+    description-of-basis-used-in-financial-statements: uk-core:GeneralDescriptionBasisMeasurementUsedInPreparingFinancialStatements
+    description-of-body-authorising-financial-statements: uk-core:DescriptionBodyAuthorisingFinancialStatements
+    description-of-depreciation-method-property-plant-equipment: uk-core:DescriptionDepreciationMethodForPropertyPlantEquipment
+    description-of-measurement-property-plant-equipment: uk-core:DescriptionMeasurementBasisForPropertyPlantEquipment
+    description-of-principal-activities: uk-bus:DescriptionPrincipalActivities
+    description-recognition-basis-intangible-assets: uk-core:DescriptionRecognitionBasisMeasurementIntangibleAssets
+    description-why-entity-not-going-concern: uk-core:DescriptionWhyEntityNotGoing-concernOrUncertaintiesOverGoing-concernStatus
+    directors-duty: uk-direp:StatementThatDirectorsAcknowledgeTheirResponsibilitiesUnderCompaniesAct
+    directors-report-consistent-with-revised-accounts: uk-aurep:DirectorsReportConsistentWithRevisedAccountsTruefalse
+    directors-report-date: uk-direp:DateSigningDirectorsReport
+    directors-report-is-consistent: uk-aurep:DirectorsReportConsistentWithAccountsTruefalse
+    directors-report-signing-officer: uk-direp:DirectorSigningDirectorsReport
+    directors-report-small-company-regime: uk-direp:StatementThatDirectorsReportHasBeenPreparedInAccordanceWithProvisionsSmallCompaniesRegime
+    dividend-recommended-by-directors: uk-direp:DividendRecommendedByDirectors
+    dividends-paid: uk-core:DividendsPaidClassifiedAsFinancingActivities
+    emphasis-of-matter: uk-aurep:EmphasisMatterStatement
+    entity-has-taken-exemption-not-publishing-profit-and-loss: uk-direp:EntityHasTakenExemptionUnderCompaniesActInNotPublishingItsOwnProfitLossAccountTruefalse
+    entity-legal-country: uk-bus:CountryFormationOrIncorporation
+    entity-legal-date: uk-bus:DateFormationOrIncorporation
+    entity-legal-form: uk-bus:LegalFormEntity
+    equity: uk-core:Equity
+    finance-income-and-costs-policy: uk-core:FinanceIncomeCostsPolicy
+    financial-statements-going-concern-basis: uk-core:FinancialStatementsArePreparedOnGoing
+    fixed-assets: uk-core:FixedAssets
+    fixed-assets-additions: uk-core:IncreaseDecreaseInPropertyPlantEquipment
+    fixed-assets-total: uk-core:PropertyPlantEquipmentGrossCost
+    gross-profit: uk-core:GrossProfitLoss
+    industry-sector: uk-bus:MainIndustrySector
+    interest-expense: uk-core:InterestExpense
+    interest-income: uk-core:InterestIncome
+    interest-paid: uk-core:InterestPaidClassifiedAsFinancingActivities
+    interest-received: uk-core:InterestReceivedClassifiedAsInvestingActivities
+    inventories: uk-core:GainLossInCashFlowsFromChangeInInventories
+    is-dormant: uk-bus:EntityDormantTruefalse
+    is-revised: uk-bus:ReportAnAmendedRevisedVersionPreviouslyFiledReportTruefalse
+    lessee-operating-lease-policy: uk-core:LesseeOperatingLeasePolicy
+    matters-giving-rise-to-any-modified-audit: uk-aurep:DescriptionMattersGivingRiseToAnyModifiedAuditOpinion
+    members-agreed-abridged-accounts: uk-direp:StatementThatMembersHaveAgreedToPreparationAbridgedAccountsUnderSection444CompaniesAct2006
+    members-not-required-audit: uk-direp:StatementThatMembersHaveNotRequiredCompanyToObtainAnAudit
+    net-assets: uk-core:NetAssetsLiabilities
+    net-cash-from-financing-activities: uk-core:NetCashFlowsFromUsedInFinancingActivities
+    net-cash-from-investing-activities: uk-core:NetCashFlowsFromUsedInInvestingActivities
+    net-cash-from-operating-activities: uk-core:NetCashGeneratedFromOperations
+    net-current-assets: uk-core:NetCurrentAssetsLiabilities
+    nominal-value-of-allotted-share-capital: uk-core:NominalValueAllottedShareCapital
+    nominal-value-of-shares-issued-in-the-period: uk-core:NominalValueSharesIssuedInPeriod
+    officer1: uk-bus:NameEntityOfficer
+    officer10: uk-bus:NameEntityOfficer
+    officer11: uk-bus:NameEntityOfficer
+    officer12: uk-bus:NameEntityOfficer
+    officer13: uk-bus:NameEntityOfficer
+    officer14: uk-bus:NameEntityOfficer
+    officer15: uk-bus:NameEntityOfficer
+    officer16: uk-bus:NameEntityOfficer
+    officer17: uk-bus:NameEntityOfficer
+    officer18: uk-bus:NameEntityOfficer
+    officer19: uk-bus:NameEntityOfficer
+    officer2: uk-bus:NameEntityOfficer
+    officer20: uk-bus:NameEntityOfficer
+    officer3: uk-bus:NameEntityOfficer
+    officer4: uk-bus:NameEntityOfficer
+    officer5: uk-bus:NameEntityOfficer
+    officer6: uk-bus:NameEntityOfficer
+    officer7: uk-bus:NameEntityOfficer
+    officer8: uk-bus:NameEntityOfficer
+    officer9: uk-bus:NameEntityOfficer
+    opinion-of-auditors-additional-financial-reporting: uk-aurep:OpinionAuditorsInRespectAdditionalFinancialReportingFramework
+    opinion-of-auditors-failure-to-comply-companies-act: uk-aurep:OpinionAuditorsOnFailureOriginalAccountsToComplyWithCompaniesAct2006
+    opinion-of-auditors-on-entity: uk-aurep:OpinionAuditorsOnEntity
+    opinion-of-auditors-on-revised-accounts: uk-aurep:OpinionAuditorsOnRevisedAccounts
+    other-charges: uk-core:OtherOperatingExpensesFormat2
+    other-creditors: uk-core:OtherCreditorsIncludingTaxationSocialSecurityBalanceSheetSubtotal
+    other-operating-income: uk-core:OtherOperatingIncomeFormat2
+    period-end: uk-bus:EndDateForPeriodCoveredByReport
+    period-start: uk-bus:StartDateForPeriodCoveredByReport
+    prepayments-and-accrued-income: uk-core:PrepaymentsAccruedIncomeNotExpressedWithinCurrentAssetSubtotal
+    proceeds-from-issuing-shares: uk-core:ProceedsFromIssuingShares
+    proceeds-sale-equipment: uk-core:ProceedsFromSalesPropertyPlantEquipment
+    profit: uk-core:ProfitLoss
+    provisions-for-liabilities: uk-core:ProvisionsForLiabilitiesBalanceSheetSubtotal
+    purchase-equipment: uk-core:PurchasePropertyPlantEquipment
+    purchase-intangible-assets: uk-core:PurchaseIntangibleAssets
+    purchase-of-non-controlling-interest: uk-core:CashFlowsUsedInPurchaseNon-controllingInterests
+    raw-materials-consumables: uk-core:RawMaterialsConsumablesUsed
+    remuneration-report-properly-prepared: uk-aurep:AuditablePartRemunerationReportHasBeenProperlyPreparedTruefalse
+    report-date: uk-bus:BusinessReportPublicationDate
+    report-title: uk-bus:ReportTitle
+    revenue-recognition-policy: uk-core:RevenueRecognitionPolicy
+    revised-auditors-report-date: uk-aurep:DateAuditorsReportOnRevisedAccounts
+    share-capital: uk-core:Equity
+    shares-issued: uk-core:NominalValueSharesIssuedInPeriod
+    sic1: uk-bus:SICCodeRecordedUKCompaniesHouse1
+    sic2: uk-bus:SICCodeRecordedUKCompaniesHouse2
+    sic3: uk-bus:SICCodeRecordedUKCompaniesHouse3
+    sic4: uk-bus:SICCodeRecordedUKCompaniesHouse4
+    signing-officer: uk-core:DirectorSigningFinancialStatements
+    small-company-exempt-from-audit: uk-direp:StatementThatCompanyEntitledToExemptionFromAuditUnderSection477CompaniesAct2006RelatingToSmallCompanies
+    software-name: uk-bus:NameProductionSoftware
+    software-version: uk-bus:VersionProductionSoftware
+    staff-costs: uk-core:StaffCostsEmployeeBenefitsExpense
+    statement-of-auditors-responsibilities: uk-aurep:StatementAuditorsResponsibilitiesRelatingToOtherInformation
+    statement-of-compliance-reporting-framework: uk-core:StatementComplianceWithApplicableReportingFramework
+    statement-of-key-audit-matters: uk-aurep:StatementKeyAuditMatters
+    statement-of-responsibilities-of-management-corporate-governance: uk-aurep:StatementResponsibilitiesManagementThoseChargedWithCorporateGovernance
+    statement-on matters-required-in-directors-report: uk-direp:StatementOnMattersRequiredInDirectorsReportBeingPlacedInStrategicReport
+    statement-on-application-of-materiality: uk-aurep:StatementOnApplicationMaterialityToAudit
+    statement-on-audit-scope: uk-aurep:StatementOnScopeAuditReport
+    statement-on-information-provided-auditors: uk-direp:StatementOnQualityCompletenessInformationProvidedToAuditors
+    statement-on-matters-on-which-auditor-reports: uk-aurep:StatementOnMattersOnWhichAuditorReportsByException
+    statement-on-respective-responsibilities: uk-aurep:StatementOnRespectiveResponsibilitiesDirectorsAuditors
+    statement-on-risks-of-misstatement: uk-aurep:StatementOnRisksMaterialMisstatementIdentifiedByAuditor
+    statement-on-scope-of-accountants-report: uk-accrep:StatementOnScopeAccountantsReport
+    statement-qualifying-third-party-indemnity: uk-direp:StatementOnQualifyingThirdPartyIndemnityProvisions
+    supplementary-note: uk-bus:SupplementaryNote
+    tangible-assets: uk-core:PropertyPlantEquipmentIncludingRight-of-useAssets
+    tax: uk-core:TaxTaxCreditOnProfitOrLossOnOrdinaryActivities
+    total-assets-less-liabilities: uk-core:TotalAssetsLessCurrentLiabilities
+    total-capital-and-reserves: uk-core:Equity
+    trade-and-other-receivables: uk-core:GainLossInCashFlowsFromChangeInTradeDebtorsTradeReceivables
+    trade-creditors: uk-core:TradeCreditorsTradePayables
+    trade-payables: uk-core:GainLossInCashFlowsFromChangeInTradeCreditorsTradePayables
+    trading-status: uk-bus:EntityTradingStatus
+    turnover: uk-core:TurnoverRevenue
+    vat-refund-owed: uk-core:DeferredTaxAssetDebtors
+    vat-registration: uk-bus:VATRegistrationNumber
+    website-description: uk-bus:DescriptionOrOtherInformationOnWebsite
+    website-url: uk-bus:WebsiteMainPageURL
+title: Audited Micro-Entity Accounts
+worksheets:
+- computations:
+  - fixed-assets
+  - current-assets
+  - prepayments-and-accrued-income
+  - creditors-within-1-year
+  - net-current-assets
+  - total-assets-less-liabilities
+  - creditors-after-1-year
+  - provisions-for-liabilities
+  - accruals-and-deferred-income
+  - net-assets
+  - total-capital-and-reserves
+  id: balance-sheet
+  kind: simple
+- computations:
+  - net-cash-from-operating-activities
+  - net-cash-from-investing-activities
+  - net-cash-from-financing-activities
+  - cash-at-end-of-year
+  id: cash-flows
+  kind: simple
+- computations:
+  - profit
+  description: Profit and Loss
+  id: profit-and-loss
+  kind: simple
+- computations:
+  - fixed-assets-total
+  - depreciation-total
+  - carrying-final
+  description: Fixed Assets
+  id: fixed-assets
+  kind: simple
+- computations:
+  - share-capital
+  description: Share Capital
+  id: share-capital
+  kind: simple
+- computations:
+  - charges
+  description: Charges
+  id: charges
+  kind: simple
+- computations:
+  - interest-income
+  description: Financial income
+  id: financial-income
+  kind: simple
+- computations:
+  - interest-expense
+  description: Financial income
+  id: financial-costs
+  kind: simple
+- computations:
+  - zero
+  description: Zero
+  id: zero
+  kind: simple
+- computations:
+  - staff-costs
+  description: Staff costs
+  id: staff-costs
+  kind: simple
+  note: staff-costs-note
+- computations:
+  - corporation-tax-paid
+  description: Corporation tax
+  id: corporation-tax
+  kind: simple
+- computations:
+  - cash
+  description: Cash
+  id: cash
+  kind: simple
 

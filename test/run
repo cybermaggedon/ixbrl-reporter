@@ -1,0 +1,30 @@
+#!/bin/bash
+
+mkdir -p output/
+
+cfgs=$1
+
+for cfg in ${cfgs}
+do
+    echo ${cfg}...
+    out=output/${cfg%.yaml}.html
+    kv=output/${cfg%.yaml}.kv
+    cmp=log/${cfg%.yaml}.kv
+    scripts/ixbrl-reporter test/${cfg} report ixbrl > ${out}
+    ixbrl-to-kv ${out} | \
+	egrep -v 'VersionProductionSoftware|VersionOfProductionSoftware' | \
+	sort > ${kv}
+    egrep -v 'VersionProductionSoftware|VersionOfProductionSoftware' ${cmp} | \
+	sort | cmp ${kv} -
+    if [ $? -ne 0 ]
+    then
+        echo 'File comparison fail...'
+	echo 'diff ${kv} ${cmp} >>>>'
+	egrep -v 'VersionProductionSoftware|VersionOfProductionSoftware' \
+	      ${cmp} | \
+	    sort | cmp ${kv} -
+	sort ${cmp} | diff ${kv} -
+	exit 1
+    fi
+done
+

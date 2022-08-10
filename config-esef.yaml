@@ -10,5 +10,7 @@ report: //import report/esef/esef-fr.yaml
 
 #pretty-print: true
 
-metadata: //import metadata-esef.yaml
+metadata: //import detail/metadata-esef.yaml
+
+logo:  //import detail/logo.yaml
 

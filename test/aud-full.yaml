@@ -1,38 +1,13 @@
-
-#############################################################################
-### GnuCash accounts source #################################################
-#############################################################################
+accountants-report: //import detail/accountants-report.yaml
 accounts:
-  # Filename of GnuCash accounts
-
-# This file is in GnuCash XML format, and needs the gnucash module to read it
-#  kind: gnucash
-#  file: example.gnucash
-
-  # Sqlite format, and needs the piecash module.
-  kind: piecash
   file: example2.gnucash
-
-#report: //import report/ch/unaudited-micro.yaml
-#report: //import report/ch/audited-micro.yaml
-#report: //import report/ch/audited-small.yaml
-#report: //import report/ch/unaudited-abridged.yaml
-#report: //import report/ch/unaudited-full.yaml
+  kind: piecash
+auditors-report: //import detail/auditors-report.yaml
+directors-report: //import detail/directors-report.yaml
+logo: //import detail/logo.yaml
+metadata: //import test/metadata-acc-aud.yaml
+notes: //import detail/notes.yaml
 report: //import report/ch/audited-full.yaml
-#report: //import report/hmrc/corp-tax.yaml
-
-# pretty-print: true
-# Decimal places
-
-metadata: //import test/metadata-aud.yaml
-#metadata: //import test/metadata-aud-rev.yaml
-
-directors-report: //import directors-report.yaml
-
-auditors-report: //import auditors-report.yaml
-#auditors-report: //import revised-auditors-report.yaml
-
-accountants-report: //import accountants-report.yaml
-
-notes: //import notes.yaml
+revision-info: //import detail/revision-info.yaml
+signature: //import detail/signature.yaml
 
