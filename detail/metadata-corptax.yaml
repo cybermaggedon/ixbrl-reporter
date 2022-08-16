@@ -178,7 +178,9 @@ tax:
     name: FY1
     start: '2020-01-01'
     end: '2020-03-31'
+    year: '2019'
   fy2:
     name: FY2
     start: '2020-04-01'
     end: '2020-12-31'
+    year: '2020'
