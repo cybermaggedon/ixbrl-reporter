@@ -414,7 +414,14 @@ class FactorOperation(Computable):
     def load(cfg, comps, context, data, gcfg):
 
         metadata = Metadata.load(cfg, comps, context, data, gcfg)
-        factor = float(cfg.get("factor"))
+
+        factordef = cfg.get("factor")
+
+        if isinstance(factordef, str):
+            factor = float(factordef)
+        else:
+            factor = factordef
+
         item = cfg.get("input")
 
         return FactorOperation(
@@ -428,7 +435,11 @@ class FactorOperation(Computable):
         context = self.metadata.get_context(start, end)
 
         val = self.item.compute(accounts, start, end, result)
-        val = val * self.factor
+
+        if isinstance(self.factor, dict):
+            val = val * self.factor[str(end)]
+        else:
+            val = val * self.factor
 
         result.set(
             self.metadata.id,
