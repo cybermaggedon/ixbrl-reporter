@@ -175,6 +175,11 @@ class DataSource:
             value = self.get_config_date(defn.get("key"))
             datum = DateDatum(id, value, context)
             return datum
+        elif defn.get("kind") == "config-bool":
+            id = defn.get("id")
+            value = self.get_config_bool(defn.get("key"))
+            datum = BoolDatum(id, value, context)
+            return datum
         elif defn.get("kind") == "bool":
             id = defn.get("id")
             value = defn.get_bool("value")
