@@ -75,5 +75,7 @@ tax:
     end: '2020-12-31'
     name: '2021'
     start: '2020-01-01'
+  rnd-additional-notification-submitted: true
+  rnd-claim-notification-submitted: true
   utr: '8596148860'
 

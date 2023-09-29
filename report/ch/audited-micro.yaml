@@ -32,6 +32,7 @@ computations:
   period: in-year
 - accounts:
   - Expenses:Emoluments:Employees
+  - Expenses:Emoluments:Employer's NICs
   description: Salaries
   id: salaries-expense
   kind: line
@@ -199,7 +200,7 @@ computations:
   - VAT:Settlement:Input
   - Assets:VAT Repayments Due
   description: VAT Refund Due
-  id: vat-refund-owed
+  id: vat-refund-due
   kind: line
   period: at-end
 - accounts:
@@ -212,7 +213,7 @@ computations:
   id: current-assets
   inputs:
   - debtors
-  - vat-refund-owed
+  - vat-refund-due
   - bank
   kind: sum
 - description: Prepayments and Accrued Income
@@ -229,6 +230,7 @@ computations:
   - VAT:Output
   - VAT:Settlement:Output
   - Liabilities:Credit Cards
+  - Liabilities:Owed Corporation Tax
   description: Other Creditors
   id: other-creditors
   kind: line
@@ -262,16 +264,9 @@ computations:
   kind: group
   segments:
   - matures: after-1-year
-- accounts:
-  - Liabilities:Owed Corporation Tax
-  description: Corporation tax
-  id: corporation-tax-owed
-  kind: line
-  period: at-end
 - description: Provisions For Liabilities
   id: provisions-for-liabilities
-  inputs:
-  - corporation-tax-owed
+  inputs: []
   kind: sum
 - description: Accrued liabilities and deferred income
   id: accruals-and-deferred-income
@@ -859,140 +854,70 @@ elements:
     kind: page
   id: report
   kind: composite
-style: '
-
-  .page { page-break-after: always; }
-
-  body { font-family: Helvetica, Georgia, sans-serif; font-size: medium; }
-
-  @media screen, projection, tv {
-
-  body { margin: 2% 4% 2% 4%; background-color: gray; }
-
-  div.page {
-
-  background-color: white; padding: 2em;
-
-  /* CSS hack for cross browser minimum height */ min-height: 29.7cm;
-
-  height: 29.7cm; width: 21cm;
-
-  margin: 2em 0; }
-
-  }
-
-  .titlepage .company-number { text-align: right; font-size: small; font-weight: bold;
-  }
-
-  .titlepage img { margin: auto; width: 25%; display: block; padding-top: 12em; padding-left:
-  0em; padding-bottom: 1em; padding-right: 0em; }
-
-  .titlepage .company-name { text-align: center; font-size: xx-large; font-weight:
-  bold; padding-top: 1em; padding-left: 0em; padding-bottom: 1em; padding-right: 0em;
-  }
-
-  .titlepage .title { text-align: center; font-size: large; font-weight: bold; padding:
-  0.5rem; }
-
-  .titlepage .subtitle { text-align: center; font-size: large; font-weight: bold;
-  padding: 0.5rem; }
-
-  .page .header { text-align: center; font-weight: bold; }
-
-  .page .header div:last-child { padding-bottom: 0.5rem; }
-
-  .page .header hr { margin-bottom: 2rem; }
-
-  .sheet { width: 80%; border-collapse: separate; }
-
-  .sheet td { padding-top: 0em; padding-left: 1.2em; padding-bottom: 0em; padding-right:
-  1.2em; }
-
-  .spacetable { table-layout: fixed; border-collapse: separate; }
-
-  .spacetable td { padding-top: 0em; padding-left: 1.2em; padding-bottom: 0em; padding-right:
-  1.2em; }
-
-  table { border-spacing: 1rem 1rem; border-collapse: separate; }
-
-  .table { border-spacing: 0.2rem 0rem; border-collapse: separate; font-size: medium;
-  margin-left: auto; margin-right: auto; }
-
-  .company-info { border-collapse: separate; border-spacing: 0em; display: table;
-  table-layout: fixed; }
-
-  .company-info tr td { vertical-align: top; padding: 0.5em; }
-
-  .company-info tr td.tag { width: 15em; font-weight: bold; }
-
-  .row { display: table-row; }
-
-  .cell { display: table-cell; }
-
-  .label { width: 50%; padding-right: 1em; font-size: smaller; }
-
-  .label.heading { font-weight: bold; margin-top: 1rem; }
-
-  .note { font-size: smaller; text-align: center; padding-left: 0.2em; padding-right:
-  0.2em; }
-
-  .note.header { font-size: smaller; font-weight: bold; text-align: center; padding-left:
-  1em; padding-right: 1em; }
-
-  .label.breakdown.heading { margin-bottom: 0.2rem; }
-
-  .value { font-family: Source Code Pro, monospace, Courier New; width: 20%; padding-left:
-  1em; padding-right: 1em; margin-right: 1em; font-size: small; }
-
-  @media print { .label { font-size: small; width: 40%; } .value { font-family: Source
-  Code Pro, monospace; width: 20%; font-size: small; } .company-info { font-size:
-  medium; } table.sheet { margin-left: 20%; } table.spacetable { margin-left: 20%;
-  } body { font-size: 11pt; } .data { width: 8em; } }
-
-  .total.value { margin-top: 1em; }
-
-  .breakdown.total { margin-top: 0.2em; padding-top: 4px; border-top: 1px solid white;
-  }
-
-  .breakdown.total.value { border-top: 1px solid #808080; }
-
-  .breakdown.total.super-total.value { border-top: 5px double #808080; }
-
-  .column.header { padding: 0.5em 1em 0.5em 1em; border-bottom: 0.2em solid black;
-  font-weight: bold; text-align: center; width: 20%; margin-right: 1rem; }
-
-  .currency { text-align: right; padding-left: 1em; padding-right: 1em; width: 20%;
-  margin-right: 1rem; margin-top: 0.25em; }
-
-  .data.value { text-align: right; }
-
-  .data.value.negative { color: #400000; }
-
-  .data.value.nil { color: #a0a0a0; }
-
-  .hidden { display: none; }
-
-  .fact { display: flex; flex-direction: row; margin: 2px; }
-
-  .fact div { margin: 0rem 0rem 0rem 1rem; padding: 4px; }
-
-  .fact .ref { width: 5em; text-align: center; color: white; background-color: #2ca469;
-  border: 2px solid #104020; font-weight: bold; font-size: small; padding-left: 0.1rem;
-  padding-right: 0.1rem; }
-
-  .fact .description { width: 22em; font-size: small; }
-
-  .fact .factvalue { border: 2px solid black; background-color: white; font-family:
-  Source Code Pro, monospace; font-size: small; width: 12rem; padding-left: 1rem;
-  padding-right: 1rem; margin-right: 1rem; }
-
-  .fact .factvalue.false { color: #a0a0a0; }
-
-  .rank-1 { position: relative; left: -6rem; }
-
-  .rank1 { position: relative; left: 4rem; }
-
-  '
+style: "\n.page {\n    page-break-after: always; \n}\n\nbody {\n    font-family: Helvetica,\
+  \ Georgia, sans-serif;\n    font-size: medium; \n}\n\n@media screen, projection,\
+  \ tv {\n\n    body {\n\tmargin: 2% 4% 2% 4%;\n\tbackground-color: gray; \n    }\n\
+  \    div.page {\n\n\tbackground-color: white;\n\tpadding: 2em;\n\t/* CSS hack for\
+  \ cross browser minimum height */ min-height: 29.7cm;\n\theight: 29.7cm;\n\twidth:\
+  \ 21cm;\n\tmargin: 2em 0; \n    }\n\n}\n\n.titlepage .company-number {\n    text-align:\
+  \ right;\n    font-size: small;\n    font-weight: bold; \n}\n\n.titlepage img {\n\
+  \    margin: auto;\n    width: 25%;\n    display: block;\n    padding-top: 12em;\n\
+  \    padding-left: 0em;\n    padding-bottom: 1em;\n    padding-right: 0em; \n}\n\
+  \n.titlepage .company-name {\n    text-align: center;\n    font-size: xx-large;\n\
+  \    font-weight: bold;\n    padding-top: 1em;\n    padding-left: 0em;\n    padding-bottom:\
+  \ 1em;\n    padding-right: 0em; \n}\n\n.titlepage .title {\n    text-align: center;\n\
+  \    font-size: large;\n    font-weight: bold;\n    padding: 0.5rem; \n}\n\n.titlepage\
+  \ .subtitle {\n    text-align: center;\n    font-size: large;\n    font-weight:\
+  \ bold;\n    padding: 0.5rem; \n}\n\n.page .header {\n    text-align: center;\n\
+  \    font-weight: bold; \n}\n\n.page .header div:last-child {\n    padding-bottom:\
+  \ 0.5rem; \n}\n\n.page .header hr {\n    margin-bottom: 2rem; \n}\n\n.sheet {\n\
+  \    width: 80%;\n    border-collapse: separate; \n}\n\n.sheet td {\n    padding-top:\
+  \ 0em;\n    padding-left: 1.2em;\n    padding-bottom: 0em;\n    padding-right: 1.2em;\
+  \ \n}\n\n.spacetable {\n    table-layout: fixed;\n    border-collapse: separate;\
+  \ \n}\n\n.spacetable td {\n    padding-top: 0em;\n    padding-left: 1.2em;\n   \
+  \ padding-bottom: 0em;\n    padding-right: 1.2em; \n}\n\ntable {\n    border-spacing:\
+  \ 1rem 1rem;\n    border-collapse: separate; \n}\n\n.table {\n    border-spacing:\
+  \ 0.2rem 0rem;\n    border-collapse: separate;\n    font-size: medium;\n    margin-left:\
+  \ auto;\n    margin-right: auto; \n}\n\n.company-info {\n    border-collapse: separate;\n\
+  \    border-spacing: 0em;\n    display: table;\n    table-layout: fixed; \n}\n\n\
+  .company-info tr td {\n    vertical-align: top;\n    padding: 0.5em; \n}\n\n.company-info\
+  \ tr td.tag {\n    width: 15em;\n    font-weight: bold; \n}\n\n.row {\n    display:\
+  \ table-row; \n}\n\n.cell {\n    display: table-cell; \n}\n\n.label {\n    width:\
+  \ 50%;\n    padding-right: 1em;\n    font-size: smaller;\n\n}\n\n.label.heading\
+  \ {\n    font-weight: bold;\n    margin-top: 1rem; \n}\n\n.note {\n    font-size:\
+  \ smaller;\n    text-align: center;\n    padding-left: 0.2em;\n    padding-right:\
+  \ 0.2em; \n}\n\n.note.header {\n    font-size: smaller;\n    font-weight: bold;\n\
+  \    text-align: center;\n    padding-left: 1em;\n    padding-right: 1em; \n}\n\n\
+  .label.breakdown.heading {\n    margin-bottom: 0.2rem; \n}\n\n.value {\n    font-family:\
+  \ Source Code Pro, monospace, Courier New;\n    width: 20%;\n    padding-left: 1em;\n\
+  \    padding-right: 1em;\n    margin-right: 1em;\n    font-size: small; \n}\n\n\
+  @media print {\n\n    .label {\n\tfont-size: small;\n\twidth: 40%;\n    }\n\n  \
+  \  .value {\n\tfont-family: Source Code Pro, monospace;\n\twidth: 20%; font-size:\
+  \ small;\n\t\n    }\n\n    .company-info {\n\tfont-size: medium;\n\t\n    }\n\n\
+  \    table.sheet {\n\tmargin-left: 8%;\n\t\n    }\n\n    table.spacetable {\n\t\
+  margin-left: 8%;\n\t\n    }\n\n    body {\n\tfont-size: 11pt;\n\t\n    }\n\n   \
+  \ .data {\n\twidth: 8em;\n\t\n    }\n\n}\n\n.total.value {\n    margin-top: 1em;\
+  \ \n}\n\n.breakdown.total {\n    margin-top: 0.2em;\n    padding-top: 4px;\n   \
+  \ border-top: 1px solid white; \n}\n\n.breakdown.total.value {\n    border-top:\
+  \ 1px solid #808080; \n}\n\n.breakdown.total.super-total.value {\n    border-top:\
+  \ 5px double #808080; \n}\n\n.column.header {\n    padding: 0.5em 1em 0.5em 1em;\n\
+  \    border-bottom: 0.2em solid black;\n    font-weight: bold;\n    text-align:\
+  \ center;\n    width: 20%;\n    margin-right: 1rem; \n}\n\n.currency {\n    text-align:\
+  \ right;\n    padding-left: 1em;\n    padding-right: 1em;\n    width: 20%;\n   \
+  \ margin-right: 1rem;\n    margin-top: 0.25em; \n}\n\n.data.value {\n    text-align:\
+  \ right; \n}\n\n.data.value.negative {\n    color: #400000; \n}\n\n.data.value.nil\
+  \ {\n    color: #a0a0a0; \n}\n\n.hidden {\n    display: none; \n}\n\n.fact {\n \
+  \   display: flex; flex-direction: row;\n    margin: 2px; \n}\n\n.fact div {\n \
+  \   margin: 0rem 0rem 0rem 1rem;\n    padding: 4px; \n}\n\n.fact .ref {\n    width:\
+  \ 5em;\n    text-align: center;\n    color: white;\n    background-color: #2ca469;\n\
+  \    border: 2px solid #104020;\n    font-weight: bold;\n    font-size: small;\n\
+  \    padding-left: 0.1rem;\n    padding-right: 0.1rem; \n}\n\n.fact .description\
+  \ {\n    width: 22em;\n    font-size: small; \n}\n\n.fact .factvalue {\n    border:\
+  \ 2px solid black;\n    background-color: white;\n    font-family: Source Code Pro,\
+  \ monospace;\n    font-size: small;\n    width: 12rem;\n    padding-left: 1rem;\n\
+  \    padding-right: 1rem;\n    margin-right: 1rem; \n}\n\n.fact .factvalue.false\
+  \ {\n    color: #a0a0a0; \n}\n\n.rank-1 {\n    position: relative;\n    left: -6rem;\
+  \ \n}\n\n.rank1 {\n    position: relative;\n    left: 4rem; \n}\n"
 taxonomy:
   contexts:
   - entity: metadata.business.company-number
@@ -1427,12 +1352,12 @@ taxonomy:
     id: directors-report-consistent-with-revised-accounts
     kind: bool
   namespaces:
-    uk-accrep: http://xbrl.frc.org.uk/reports/2021-01-01/accrep
-    uk-aurep: http://xbrl.frc.org.uk/reports/2021-01-01/aurep
-    uk-bus: http://xbrl.frc.org.uk/cd/2021-01-01/business
-    uk-core: http://xbrl.frc.org.uk/fr/2021-01-01/core
-    uk-direp: http://xbrl.frc.org.uk/reports/2021-01-01/direp
-    uk-geo: http://xbrl.frc.org.uk/cd/2021-01-01/countries
+    uk-accrep: http://xbrl.frc.org.uk/reports/2023-01-01/accrep
+    uk-aurep: http://xbrl.frc.org.uk/reports/2023-01-01/aurep
+    uk-bus: http://xbrl.frc.org.uk/cd/2023-01-01/business
+    uk-core: http://xbrl.frc.org.uk/fr/2023-01-01/core
+    uk-direp: http://xbrl.frc.org.uk/reports/2023-01-01/direp
+    uk-geo: http://xbrl.frc.org.uk/cd/2023-01-01/countries
   note-templates:
     company: 'expand:The company is a private company limited by shares and is registered
       in England and Wales number ~[company-number]. The registered address is: ~[contact-address1::,
@@ -1464,7 +1389,7 @@ taxonomy:
     software-version: expand:These accounts were generated using ~[software-name]
       version ~[software-version].
   schema:
-  - https://xbrl.frc.org.uk/FRS-102/2021-01-01/FRS-102-2021-01-01.xsd
+  - https://xbrl.frc.org.uk/FRS-102/2023-01-01/FRS-102-2023-01-01.xsd
   segment:
     accounting-standards:
       dimension: uk-bus:AccountingStandardsDimension
@@ -1570,15 +1495,25 @@ taxonomy:
     accruals-and-deferred-income: true
     administrative-expenses: true
     corporation-tax-owed: true
+    corporation-tax-paid: true
     cost-of-sales: true
     creditors-after-1-year: true
     creditors-within-1-year: true
+    depreciation: true
     depreciation-adjustment: true
     depreciation-charge: true
     depreciation-total: true
+    dividends-paid: true
+    interest-expense: true
+    interest-paid: true
+    net-cash-from-investing-activities: true
+    other-charges: true
     other-creditors: true
     prepayments-and-accrued-income: true
     provisions-for-liabilities: true
+    purchase-equipment: true
+    staff-costs: true
+    trade-and-other-receivables: true
     trade-creditors: true
   tags:
     abbreviated-accounts-in-accordance-special-provisions: uk-direp:AbbreviatedAccountsAreInAccordanceWithSpecialProvisionsInSection4453CompaniesActRelatingToMedium
@@ -1590,7 +1525,7 @@ taxonomy:
     accounting-standards: uk-bus:AccountingStandardsApplied
     accounts-prepared-small-company-regime: uk-direp:StatementThatAccountsHaveBeenPreparedInAccordanceWithProvisionsSmallCompaniesRegime
     accounts-status: uk-bus:AccountsStatusAuditedOrUnaudited
-    accounts-type: uk-bus:AccountsTypeFullOrAbbreviated
+    accounts-type: uk-bus:AccountsType
     accruals-and-deferred-income: uk-core:AccruedLiabilitiesDeferredIncome
     activities: uk-bus:DescriptionPrincipalActivities
     administrative-expenses: uk-core:AdministrativeExpenses

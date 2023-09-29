@@ -53,7 +53,18 @@ note-templates: []
 schema:
 - http://www.esma.europa.eu/taxonomy/2021-03-24/esef_cor.xsd
 segment: {}
-sign-reversed: {}
+sign-reversed:
+  depreciation-and-amortisation: true
+  dividends-paid: true
+  financial-items-adjustment: true
+  income-tax: true
+  income-tax-paid: true
+  interest-paid: true
+  net-cash-from-investing-activities: true
+  other-operating-costs: true
+  personnel-costs: true
+  purchase-equipment: true
+  trade-and-other-receivables: true
 tags:
   address-of-entitys-registered-office: ifrs-full:AddressOfRegisteredOfficeOfEntity
   bank: ifrs-full:CashAndCashEquivalents

@@ -431,12 +431,12 @@ metadata:
   id: directors-report-consistent-with-revised-accounts
   kind: bool
 namespaces:
-  uk-accrep: http://xbrl.frc.org.uk/reports/2021-01-01/accrep
-  uk-aurep: http://xbrl.frc.org.uk/reports/2021-01-01/aurep
-  uk-bus: http://xbrl.frc.org.uk/cd/2021-01-01/business
-  uk-core: http://xbrl.frc.org.uk/fr/2021-01-01/core
-  uk-direp: http://xbrl.frc.org.uk/reports/2021-01-01/direp
-  uk-geo: http://xbrl.frc.org.uk/cd/2021-01-01/countries
+  uk-accrep: http://xbrl.frc.org.uk/reports/2023-01-01/accrep
+  uk-aurep: http://xbrl.frc.org.uk/reports/2023-01-01/aurep
+  uk-bus: http://xbrl.frc.org.uk/cd/2023-01-01/business
+  uk-core: http://xbrl.frc.org.uk/fr/2023-01-01/core
+  uk-direp: http://xbrl.frc.org.uk/reports/2023-01-01/direp
+  uk-geo: http://xbrl.frc.org.uk/cd/2023-01-01/countries
 note-templates:
   company: 'expand:The company is a private company limited by shares and is registered
     in England and Wales number ~[company-number]. The registered address is: ~[contact-address1::,
@@ -466,7 +466,7 @@ note-templates:
   software-version: expand:These accounts were generated using ~[software-name] version
     ~[software-version].
 schema:
-- https://xbrl.frc.org.uk/FRS-102/2021-01-01/FRS-102-2021-01-01.xsd
+- https://xbrl.frc.org.uk/FRS-102/2023-01-01/FRS-102-2023-01-01.xsd
 segment:
   accounting-standards:
     dimension: uk-bus:AccountingStandardsDimension
@@ -572,15 +572,25 @@ sign-reversed:
   accruals-and-deferred-income: true
   administrative-expenses: true
   corporation-tax-owed: true
+  corporation-tax-paid: true
   cost-of-sales: true
   creditors-after-1-year: true
   creditors-within-1-year: true
+  depreciation: true
   depreciation-adjustment: true
   depreciation-charge: true
   depreciation-total: true
+  dividends-paid: true
+  interest-expense: true
+  interest-paid: true
+  net-cash-from-investing-activities: true
+  other-charges: true
   other-creditors: true
   prepayments-and-accrued-income: true
   provisions-for-liabilities: true
+  purchase-equipment: true
+  staff-costs: true
+  trade-and-other-receivables: true
   trade-creditors: true
 tags:
   abbreviated-accounts-in-accordance-special-provisions: uk-direp:AbbreviatedAccountsAreInAccordanceWithSpecialProvisionsInSection4453CompaniesActRelatingToMedium
@@ -592,7 +602,7 @@ tags:
   accounting-standards: uk-bus:AccountingStandardsApplied
   accounts-prepared-small-company-regime: uk-direp:StatementThatAccountsHaveBeenPreparedInAccordanceWithProvisionsSmallCompaniesRegime
   accounts-status: uk-bus:AccountsStatusAuditedOrUnaudited
-  accounts-type: uk-bus:AccountsTypeFullOrAbbreviated
+  accounts-type: uk-bus:AccountsType
   accruals-and-deferred-income: uk-core:AccruedLiabilitiesDeferredIncome
   activities: uk-bus:DescriptionPrincipalActivities
   administrative-expenses: uk-core:AdministrativeExpenses

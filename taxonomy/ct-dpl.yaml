@@ -27,7 +27,7 @@ contexts:
   - territory: uk
 description-tags:
   income: dpl:DescriptionActivity
-  rnd-proj1-enhanced-expenditure: ct-comp:TextNote
+  rnd-proj1-qualifying-expenditure: ct-comp:TextNote
 document-metadata:
 - software-name
 - software-version
@@ -47,13 +47,13 @@ metadata:
   context: report-date
   id: tax-reference
 namespaces:
-  ct-comp: http://www.hmrc.gov.uk/schemas/ct/comp/2021-01-01
+  ct-comp: http://www.hmrc.gov.uk/schemas/ct/comp/2023-01-01
   dpl: http://www.hmrc.gov.uk/schemas/ct/dpl/2021-01-01
   uk-bus: http://xbrl.frc.org.uk/cd/2021-01-01/business
   uk-core: http://xbrl.frc.org.uk/fr/2021-01-01/core
   uk-geo: http://xbrl.frc.org.uk/cd/2021-01-01/countries
 schema:
-- http://www.hmrc.gov.uk/schemas/ct/comp/2021-01-01/ct-comp-2021.xsd
+- http://www.hmrc.gov.uk/schemas/ct/comp/2023-01-01/ct-comp-2023.xsd
 - http://www.hmrc.gov.uk/schemas/ct/dpl/2021-01-01/dpl-2021.xsd
 segment:
   activity:
@@ -89,6 +89,10 @@ segment:
       item10: dpl:Item10
       item11: dpl:Item11
       item12: dpl:Item12
+      item13: dpl:Item13
+      item14: dpl:Item14
+      item15: dpl:Item15
+      item16: dpl:Item16
       item2: dpl:Item2
       item3: dpl:Item3
       item4: dpl:Item4
@@ -138,10 +142,11 @@ sign-reversed:
   pensions: true
   rnd-creative-enhanced-expenditure: true
   rnd-enhanced-expenditure: true
-  rnd-proj1-enhanced-expenditure: true
-  rnd-proj1-enhanced-external: true
-  rnd-proj1-enhanced-software: true
-  rnd-proj1-enhanced-staffing: true
+  rnd-proj1-qualifying-expenditure: true
+  rnd-proj1-qualifying-external: true
+  rnd-proj1-qualifying-software: true
+  rnd-proj1-qualifying-staffing: true
+  rnd-qualifying-expenditure: true
   salaries: true
   software-expenses: true
   subscriptions-costs: true
@@ -992,10 +997,11 @@ tags:
   ring-fence-corporation-tax-included: ct-comp:RingFenceCorporationTaxIncluded
   ring-fence-profits-included: ct-comp:RingFenceProfitsIncluded
   rnd-enhanced-expenditure: ct-comp:AdjustmentsAdditionalDeductionForQualifyingRDExpenditureSME
-  rnd-proj1-enhanced-expenditure: ct-comp:AdjustmentsAdditionalDeductionForQualifyingRDExpenditureSME
-  rnd-proj1-enhanced-external: ct-comp:SubsidisedQualifyingExpenditureOnIn-HouseDirectRDExpenditureOfExternallyProvidedWorkers
-  rnd-proj1-enhanced-software: ct-comp:SubsidisedQualifyingExpenditureOnIn-HouseDirectRDIncurredOnSoftwareOrConsumableItems
-  rnd-proj1-enhanced-staffing: ct-comp:SubsidisedQualifyingExpenditureOnIn-HouseDirectRDIncurredOnStaffingCosts
+  rnd-proj1-qualifying-expenditure: ct-comp:SubsidisedQualifyingExpenditureOnIn-HouseDirectRD
+  rnd-proj1-qualifying-external: ct-comp:SubsidisedQualifyingExpenditureOnIn-HouseDirectRDExpenditureOfExternallyProvidedWorkers
+  rnd-proj1-qualifying-software: ct-comp:SubsidisedQualifyingExpenditureOnIn-HouseDirectRDIncurredOnSoftwareOrConsumableItems
+  rnd-proj1-qualifying-staffing: ct-comp:SubsidisedQualifyingExpenditureOnIn-HouseDirectRDIncurredOnStaffingCosts
+  rnd-qualifying-expenditure: ct-comp:SubsidisedQualifyingExpenditureOnIn-HouseDirectRD
   s92-income-miscellaneous-receipts: ct-comp:S92IncomeMiscellaneousReceipts
   salaries: uk-core:WagesSalaries
   share-loss-relief-allowable-costs: ct-comp:ShareLossReliefAllowableCosts
