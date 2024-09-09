@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="ixbrl-reporter",
-    version="1.1.0",
+    version="1.1.1",
     author="Cybermaggedon",
     author_email="mark@cyberapocalypse.co.uk",
     description="Production of iXBRL reports from templates and accounts files",
