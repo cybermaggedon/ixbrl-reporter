@@ -174,7 +174,7 @@ class MetadataElt(Elt):
 
     def to_debug(self, taxonomy, out):
 
-        fact = taxonomy.get_metadata_by_id(self.data, self.name)
+        fact = taxonomy.get_metadata_by_id(self.name)
         if fact:
             if self.prefix != "": out.write(self.prefix)
             out.write(str(fact.value))
