@@ -19,7 +19,8 @@ class Config(dict):
         super().__init__(value)
     @staticmethod
     def load(file="config.yaml", resolve=True):
-        val = yaml.load(open(file), Loader=yaml.FullLoader)
+        with open(file,encoding='utf8') as f:
+            val = yaml.load(f, Loader=yaml.FullLoader)
         c = Config.makevalue(val)
         c.file = file
         if resolve:
