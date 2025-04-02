@@ -1,4 +1,3 @@
-
 #
 # Wrapper for GnuCash Python API, extracts account structure, splits, and
 # also VAT return information from the accounts.
@@ -13,6 +12,7 @@
 import piecash
 import json
 import math
+from datetime import datetime
 
 # Wrapper for GnuCash accounts.
 class Accounts:
@@ -32,8 +32,9 @@ class Accounts:
     # Given a root account and start/end points return all matching splits
     # recorded against that account and any child accounts.
     def get_splits(self, acct, start, end, endinclusive=True):
-
         splits = []
+        # Get GBP commodity
+        gbp = next(c for c in self.book.commodities if c.mnemonic == "GBP")
 
         # Recurse into children
         childs = acct.children
@@ -55,10 +56,26 @@ class Accounts:
                 inperiod = True
 
             if inperiod:
+                amount = float(spl.quantity)
+                if acct.commodity and acct.commodity != gbp:
+                    # Find the latest price up to 'end' date
+                    price = None
+                    relevant_prices = [p for p in self.book.prices 
+                                     if p.commodity == acct.commodity 
+                                     and p.currency == gbp 
+                                     and p.date <= end]
+                    if relevant_prices:
+                        # Sort by date descending and take the latest
+                        price = max(relevant_prices, key=lambda p: p.date)
+                        factor = float(price.value)
+                        amount = amount * factor
+                    else:
+                        # Fallback to 0 if no price available
+                        amount = 0
                 splits.append(
                     {
                         "date": dt,
-                        "amount": float(spl.quantity),
+                        "amount": amount,
                         "description": tx.description
                     }
                 )
@@ -135,7 +152,7 @@ class Accounts:
     def next_bill_id(self, vendor):
         return self.book.BillNextID(vendor)
 
-    # Createa a bill
+    # Create a bill
     def create_bill(self, id, currency, vendor, date_opened):
         return gnucash.gnucash_business.Bill(self.book, id, currency, vendor,
                                              date_opened)
@@ -211,4 +228,4 @@ class Accounts:
         bill.PostToAccount(bill_acct, bill_date, due_date, memo, False, False)
 
         self.save()
-
+        
