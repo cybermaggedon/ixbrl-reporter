@@ -78,7 +78,13 @@ class Metadata:
     def get_context(self, start, end):
 
         if self.period == AT_START:
-            context = self.context.with_instant(start)
+            # FIXME: The start is the first day of the period.  Does this
+            # context represent the start of play, or close of play on the
+            # start date?  Assuming this means start of play, and should
+            # therefore be the day before.
+            context = self.context.with_instant(
+                start - datetime.timedelta(days=1)
+            )
         elif self.period == AT_END:
             context = self.context.with_instant(end)
         else: # IN_YEAR
@@ -155,7 +161,10 @@ class Line(Computable):
         if self.metadata.period == AT_START:
             context = self.metadata.context.with_instant(start)
             history = datetime.date(1970, 1, 1)
-            start, end = history, start
+            # For transaction computation, since 'start' is inclusive,
+            # Need to filter on the day before to exclude transactions
+            # took place on the first day of the period
+            start, end = history, start - datetime.timedelta(days = 1)
         elif self.metadata.period == AT_END:
             context = self.metadata.context.with_instant(end)
             history = datetime.date(1970, 1, 1)
