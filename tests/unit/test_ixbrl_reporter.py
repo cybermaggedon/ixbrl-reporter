@@ -496,29 +496,33 @@ class TestIxbrlReporterHeaderGeneration:
         mock_col2.metadata.description = "Column 2"
         mock_cols = [(mock_col1, 1), (mock_col2, 1)]
         
-        mock_cells = [Mock(), Mock(), Mock()]  # Label cell + 2 column cells
-        self.mock_xhtml_maker.td.side_effect = mock_cells
+        # Mock create_cell to return appropriate cells
+        # Need 4 cells: label cell + note cell (when notes not hidden) + 2 column cells
+        mock_cells = [Mock(), Mock(), Mock(), Mock()]
         
-        with patch.object(self.reporter, 'add_row') as mock_add_row:
-            self.reporter.add_column_headers(mock_grid, mock_cols)
-            
-            # Should create cells with proper text
-            assert self.mock_xhtml_maker.td.call_count == 3
-            self.mock_xhtml_maker.td.assert_any_call("\u00a0")  # Empty label cell
-            self.mock_xhtml_maker.td.assert_any_call("Column 1")
-            self.mock_xhtml_maker.td.assert_any_call("Column 2")
-            
-            # Should set classes on cells
-            mock_cells[0].set.assert_called_with("class", "label cell")
-            mock_cells[1].set.assert_called_with("class", "column header cell")
-            mock_cells[2].set.assert_called_with("class", "column header cell")
-            
-            # Should set colspan on column cells
-            mock_cells[1].set.assert_any_call("colspan", "1")
-            mock_cells[2].set.assert_any_call("colspan", "1")
-            
-            # Should add row to grid
-            mock_add_row.assert_called_once_with(mock_grid, mock_cells)
+        with patch.object(self.reporter, 'create_cell') as mock_create_cell:
+            with patch.object(self.reporter, 'add_row') as mock_add_row:
+                mock_create_cell.side_effect = mock_cells
+                
+                self.reporter.add_column_headers(mock_grid, mock_cols)
+                
+                # Should create cells with proper text
+                assert mock_create_cell.call_count == 4
+                mock_create_cell.assert_any_call("\u00a0")  # Empty label cell
+                mock_create_cell.assert_any_call("\u00a0")  # Empty note cell
+                mock_create_cell.assert_any_call("Column 1")
+                mock_create_cell.assert_any_call("Column 2")
+                
+                # Should set classes and colspan on cells
+                mock_cells[0].set.assert_called_with("class", "label cell")
+                mock_cells[1].set.assert_called_with("class", "note")
+                mock_cells[2].set.assert_any_call("class", "column header cell")
+                mock_cells[2].set.assert_any_call("colspan", "1")
+                mock_cells[3].set.assert_any_call("class", "column header cell")
+                mock_cells[3].set.assert_any_call("colspan", "1")
+                
+                # Should add row to grid
+                mock_add_row.assert_called_once()
     
     def test_add_currency_subheaders(self):
         """add_currency_subheaders should create currency subheader row"""
@@ -530,29 +534,33 @@ class TestIxbrlReporterHeaderGeneration:
         mock_col2.units = "USD"
         mock_cols = [(mock_col1, 1), (mock_col2, 1)]
         
-        mock_cells = [Mock(), Mock(), Mock()]  # Label cell + 2 currency cells
-        self.mock_xhtml_maker.td.side_effect = mock_cells
+        # Mock create_cell to return appropriate cells
+        # Need 4 cells: label cell + note cell (when notes not hidden) + 2 currency cells
+        mock_cells = [Mock(), Mock(), Mock(), Mock()]
         
-        with patch.object(self.reporter, 'add_row') as mock_add_row:
-            self.reporter.add_currency_subheaders(mock_grid, mock_cols)
-            
-            # Should create currency headers
-            assert self.mock_xhtml_maker.td.call_count == 3
-            self.mock_xhtml_maker.td.assert_any_call("\u00a0")  # Empty label cell
-            self.mock_xhtml_maker.td.assert_any_call("USD")
-            self.mock_xhtml_maker.td.assert_any_call("USD")
-            
-            # Should set appropriate classes
-            mock_cells[0].set.assert_called_with("class", "label cell")
-            mock_cells[1].set.assert_called_with("class", "column currency cell")
-            mock_cells[2].set.assert_called_with("class", "column currency cell")
-            
-            # Should set colspan on currency cells
-            mock_cells[1].set.assert_any_call("colspan", "1")
-            mock_cells[2].set.assert_any_call("colspan", "1")
-            
-            # Should add row to grid
-            mock_add_row.assert_called_once_with(mock_grid, mock_cells)
+        with patch.object(self.reporter, 'create_cell') as mock_create_cell:
+            with patch.object(self.reporter, 'add_row') as mock_add_row:
+                mock_create_cell.side_effect = mock_cells
+                
+                self.reporter.add_currency_subheaders(mock_grid, mock_cols)
+                
+                # Should create currency headers
+                assert mock_create_cell.call_count == 4
+                mock_create_cell.assert_any_call("\u00a0")  # Empty label cell
+                mock_create_cell.assert_any_call("note")  # Note header cell
+                mock_create_cell.assert_any_call("USD")
+                mock_create_cell.assert_any_call("USD")
+                
+                # Should set classes and colspan on cells
+                mock_cells[0].set.assert_called_with("class", "label cell")
+                mock_cells[1].set.assert_called_with("class", "note header")
+                mock_cells[2].set.assert_any_call("class", "column currency cell")
+                mock_cells[2].set.assert_any_call("colspan", "1")
+                mock_cells[3].set.assert_any_call("class", "column currency cell")
+                mock_cells[3].set.assert_any_call("colspan", "1")
+                
+                # Should add row to grid
+                mock_add_row.assert_called_once()
 
 
 class TestIxbrlReporterRowGeneration:
@@ -565,6 +573,7 @@ class TestIxbrlReporterRowGeneration:
         self.mock_xhtml_maker = Mock()
         self.mock_par.xhtml_maker = self.mock_xhtml_maker
         self.reporter.par = self.mock_par
+        self.reporter.taxonomy = Mock()  # Add taxonomy mock
         
         # Mock table structure
         self.mock_table = Mock()
@@ -572,7 +581,7 @@ class TestIxbrlReporterRowGeneration:
     
     def test_add_row_ix_with_data(self):
         """add_row_ix should create data row with cells"""
-        from ixbrl_reporter.table import Row
+        from ixbrl_reporter.table import Row, TotalIndex
         
         # Mock a regular row (not TotalIndex)
         mock_row_obj = Mock()
@@ -583,39 +592,50 @@ class TestIxbrlReporterRowGeneration:
         mock_child = Mock()
         mock_values = [Mock(), Mock()]
         mock_values[0].value = Mock()
+        mock_values[0].value.context = "ctx1"
         mock_values[1].value = Mock()
+        mock_values[1].value.context = "ctx2"
         mock_child.values = mock_values
         mock_row_obj.child = mock_child
         
-        # Mock table to get columns
-        self.mock_table.get_cols.return_value = [Mock(), Mock()]
+        # Mock create_cell and description fact
+        mock_desc_fact = Mock()
+        mock_desc_fact.to_elt.return_value = Mock()
+        self.reporter.taxonomy.create_description_fact.return_value = mock_desc_fact
         
-        mock_label_cell = Mock()
-        mock_data_cells = [Mock(), Mock()]
-        self.mock_xhtml_maker.td.side_effect = [mock_label_cell] + mock_data_cells
-        
-        with patch.object(self.reporter, 'maybe_tag') as mock_maybe_tag:
-            with patch.object(self.reporter, 'add_note') as mock_add_note:
-                with patch.object(self.reporter, 'add_row') as mock_add_row:
-                    mock_maybe_tag.side_effect = ["Tagged Data 1", "Tagged Data 2"]
-                    
-                    self.reporter.add_row_ix(self.mock_table, mock_row_obj)
-                    
-                    # Should create label cell with description
-                    mock_label_cell.set.assert_called_with("class", "label breakdown item cell")
-                    
-                    # Should create data cells and tag them
-                    assert mock_maybe_tag.call_count == 2
-                    mock_maybe_tag.assert_any_call(mock_values[0].value, mock_values[0].value)
-                    mock_maybe_tag.assert_any_call(mock_values[1].value, mock_values[1].value)
-                    
-                    # Should append tagged content to cells
-                    mock_data_cells[0].append.assert_called_once_with("Tagged Data 1")
-                    mock_data_cells[1].append.assert_called_once_with("Tagged Data 2")
-                    
-                    # Should add note and row
-                    mock_add_note.assert_called_once()
-                    mock_add_row.assert_called_once()
+        with patch.object(self.reporter, 'create_cell') as mock_create_cell:
+            with patch.object(self.reporter, 'maybe_tag') as mock_maybe_tag:
+                with patch.object(self.reporter, 'add_note') as mock_add_note:
+                    with patch.object(self.reporter, 'add_row') as mock_add_row:
+                        # Mock cells
+                        mock_label_cell = Mock()
+                        mock_data_cells = [Mock(), Mock()]
+                        mock_create_cell.side_effect = [mock_label_cell] + mock_data_cells
+                        mock_maybe_tag.side_effect = ["Tagged Data 1", "Tagged Data 2"]
+                        
+                        self.reporter.add_row_ix(self.mock_table, mock_row_obj)
+                        
+                        # Should create description fact
+                        self.reporter.taxonomy.create_description_fact.assert_called_once_with(
+                            mock_row_obj.metadata, mock_row_obj.metadata.description, "ctx1"
+                        )
+                        
+                        # Should create label cell with description
+                        mock_label_cell.set.assert_called_with("class", "label breakdown item cell")
+                        mock_label_cell.append.assert_called_once()
+                        
+                        # Should create data cells and tag them
+                        assert mock_maybe_tag.call_count == 2
+                        mock_maybe_tag.assert_any_call(mock_values[0].value, mock_values[0].value)
+                        mock_maybe_tag.assert_any_call(mock_values[1].value, mock_values[1].value)
+                        
+                        # Should append tagged content to cells
+                        mock_data_cells[0].append.assert_called_once_with("Tagged Data 1")
+                        mock_data_cells[1].append.assert_called_once_with("Tagged Data 2")
+                        
+                        # Should add note and row
+                        mock_add_note.assert_called_once()
+                        mock_add_row.assert_called_once()
     
     def test_add_single_line_ix_with_totals(self):
         """add_single_line_ix should create single line with totals"""
@@ -630,30 +650,42 @@ class TestIxbrlReporterRowGeneration:
         mock_child = Mock()
         mock_values = [Mock()]
         mock_values[0].value = Mock()
+        mock_values[0].value.context = "ctx1"
         mock_child.values = mock_values
         mock_row_obj.child = mock_child
         
-        mock_label_cell = Mock()
-        mock_data_cell = Mock()
-        self.mock_xhtml_maker.td.side_effect = [mock_label_cell, mock_data_cell]
+        # Mock description fact
+        mock_desc_fact = Mock()
+        mock_desc_fact.to_elt.return_value = Mock()
+        self.reporter.taxonomy.create_description_fact.return_value = mock_desc_fact
         
-        with patch.object(self.reporter, 'maybe_tag') as mock_maybe_tag:
-            with patch.object(self.reporter, 'add_note') as mock_add_note:
-                with patch.object(self.reporter, 'add_row') as mock_add_row:
-                    mock_maybe_tag.return_value = "Tagged Total"
-                    
-                    self.reporter.add_single_line_ix(self.mock_table, mock_row_obj)
-                    
-                    # Should create label cell
-                    mock_label_cell.set.assert_called_with("class", "label heading total cell")
-                    
-                    # Should create and tag single data cell
-                    mock_maybe_tag.assert_called_once_with(mock_values[0].value, mock_values[0].value)
-                    mock_data_cell.append.assert_called_once_with("Tagged Total")
-                    
-                    # Should add note and row
-                    mock_add_note.assert_called_once()
-                    mock_add_row.assert_called_once()
+        with patch.object(self.reporter, 'create_cell') as mock_create_cell:
+            with patch.object(self.reporter, 'maybe_tag') as mock_maybe_tag:
+                with patch.object(self.reporter, 'add_note') as mock_add_note:
+                    with patch.object(self.reporter, 'add_row') as mock_add_row:
+                        mock_label_cell = Mock()
+                        mock_data_cell = Mock()
+                        mock_create_cell.side_effect = [mock_label_cell, mock_data_cell]
+                        mock_maybe_tag.return_value = "Tagged Total"
+                        
+                        self.reporter.add_single_line_ix(self.mock_table, mock_row_obj)
+                        
+                        # Should create description fact
+                        self.reporter.taxonomy.create_description_fact.assert_called_once_with(
+                            mock_row_obj.metadata, mock_row_obj.metadata.description, "ctx1"
+                        )
+                        
+                        # Should create label cell
+                        mock_label_cell.set.assert_called_with("class", "label heading total cell")
+                        mock_label_cell.append.assert_called_once()
+                        
+                        # Should create and tag single data cell
+                        mock_maybe_tag.assert_called_once_with(mock_values[0].value, mock_values[0].value)
+                        mock_data_cell.append.assert_called_once_with("Tagged Total")
+                        
+                        # Should add note and row
+                        mock_add_note.assert_called_once()
+                        mock_add_row.assert_called_once()
     
     def test_add_note_with_notes_enabled(self):
         """add_note should add note cell when notes are not hidden"""
@@ -717,19 +749,39 @@ class TestIxbrlReporterRowGeneration:
         mock_row_obj.metadata = Mock()  # Ensure metadata exists
         mock_row_obj.notes = None
         
-        mock_heading_cell = Mock()
-        self.mock_xhtml_maker.td.return_value = mock_heading_cell
+        # Mock child structure for heading
+        mock_child = [Mock()]
+        mock_child[0].child = Mock()
+        mock_child[0].child.values = [Mock()]
+        mock_child[0].child.values[0].value = Mock()
+        mock_child[0].child.values[0].value.context = "ctx1"
+        mock_row_obj.child = mock_child
         
-        with patch.object(self.reporter, 'add_note') as mock_add_note:
-            with patch.object(self.reporter, 'add_row') as mock_add_row:
-                self.reporter.add_heading_ix(self.mock_table, mock_row_obj)
-                
-                # Should create heading cell with appropriate class
-                mock_heading_cell.set.assert_called_with("class", "label breakdown heading cell")
-                
-                # Should add note and row
-                mock_add_note.assert_called_once()
-                mock_add_row.assert_called_once()
+        # Mock description fact
+        mock_desc_fact = Mock()
+        mock_desc_fact.to_elt.return_value = Mock()
+        self.reporter.taxonomy.create_description_fact.return_value = mock_desc_fact
+        
+        with patch.object(self.reporter, 'create_cell') as mock_create_cell:
+            with patch.object(self.reporter, 'add_note') as mock_add_note:
+                with patch.object(self.reporter, 'add_row') as mock_add_row:
+                    mock_heading_cell = Mock()
+                    mock_create_cell.return_value = mock_heading_cell
+                    
+                    self.reporter.add_heading_ix(self.mock_table, mock_row_obj)
+                    
+                    # Should create description fact
+                    self.reporter.taxonomy.create_description_fact.assert_called_once_with(
+                        mock_row_obj.metadata, mock_row_obj.metadata.description, "ctx1"
+                    )
+                    
+                    # Should create heading cell with appropriate class
+                    mock_heading_cell.set.assert_called_with("class", "label breakdown heading cell")
+                    mock_heading_cell.append.assert_called_once()
+                    
+                    # Should add note and row
+                    mock_add_note.assert_called_once()
+                    mock_add_row.assert_called_once()
 
 
 class TestIxbrlReporterReportGeneration:
@@ -838,8 +890,16 @@ class TestIxbrlReporterIntegration:
             "metadata.accounting.currency": "EUR"
         }.get(key, default)
         
+        # Mock worksheet and its table
+        mock_worksheet = Mock()
+        mock_ds = Mock()
+        mock_ds.has_notes.return_value = True
+        mock_ds.header_levels.return_value = 0  # No header levels to avoid loop
+        mock_ds.ixs = []  # No body items to process
+        mock_worksheet.get_table.return_value = mock_ds
+        
         # Initialize with 3 decimals
-        result = self.reporter.get_elt(Mock(), Mock(), Mock(), mock_data)
+        result = self.reporter.get_elt(mock_worksheet, Mock(), Mock(), mock_data)
         
         # Tiny should be (10^-3) / 2 = 0.0005
         assert self.reporter.tiny == 0.0005
