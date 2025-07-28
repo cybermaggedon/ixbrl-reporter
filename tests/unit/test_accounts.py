@@ -3,7 +3,7 @@ Unit tests for ixbrl_reporter.accounts module
 """
 import pytest
 import sys
-from unittest.mock import Mock, patch, MagicMock
+from unittest.mock import Mock, patch, MagicMock, PropertyMock
 
 from ixbrl_reporter.accounts import get_class
 
@@ -13,33 +13,25 @@ class TestGetClass:
     
     def test_get_gnucash_class(self):
         """get_class('gnucash') should return gnucash Accounts class"""
-        # Create a mock module with an Accounts class
-        mock_module = MagicMock()
         mock_accounts_class = Mock()
-        mock_module.Accounts = mock_accounts_class
         
-        # Patch the import statement
-        with patch.dict('sys.modules', {'ixbrl_reporter.accounts_gnucash': mock_module}):
+        with patch('ixbrl_reporter.accounts_gnucash.Accounts', mock_accounts_class):
             result = get_class("gnucash")
             assert result == mock_accounts_class
     
     def test_get_piecash_class(self):
         """get_class('piecash') should return piecash Accounts class"""
-        mock_module = MagicMock()
         mock_accounts_class = Mock()
-        mock_module.Accounts = mock_accounts_class
         
-        with patch.dict('sys.modules', {'ixbrl_reporter.accounts_piecash': mock_module}):
+        with patch('ixbrl_reporter.accounts_piecash.Accounts', mock_accounts_class):
             result = get_class("piecash")
             assert result == mock_accounts_class
     
     def test_get_csv_class(self):
         """get_class('csv') should return csv Accounts class"""
-        mock_module = MagicMock()
         mock_accounts_class = Mock()
-        mock_module.Accounts = mock_accounts_class
         
-        with patch.dict('sys.modules', {'ixbrl_reporter.accounts_csv': mock_module}):
+        with patch('ixbrl_reporter.accounts_csv.Accounts', mock_accounts_class):
             result = get_class("csv")
             assert result == mock_accounts_class
     
@@ -58,18 +50,16 @@ class TestGetClass:
         with pytest.raises(RuntimeError, match="Accounts kind 'None' not known"):
             get_class(None)
     
-    @pytest.mark.parametrize("kind,module_name", [
-        ("gnucash", "ixbrl_reporter.accounts_gnucash"),
-        ("piecash", "ixbrl_reporter.accounts_piecash"), 
-        ("csv", "ixbrl_reporter.accounts_csv")
+    @pytest.mark.parametrize("kind,class_path", [
+        ("gnucash", "ixbrl_reporter.accounts_gnucash.Accounts"),
+        ("piecash", "ixbrl_reporter.accounts_piecash.Accounts"), 
+        ("csv", "ixbrl_reporter.accounts_csv.Accounts")
     ])
-    def test_get_class_imports_correct_module(self, kind, module_name):
+    def test_get_class_imports_correct_module(self, kind, class_path):
         """get_class should import the correct module for each kind"""
-        mock_module = MagicMock()
         mock_accounts_class = Mock()
-        mock_module.Accounts = mock_accounts_class
         
-        with patch.dict('sys.modules', {module_name: mock_module}):
+        with patch(class_path, mock_accounts_class):
             result = get_class(kind)
             assert result == mock_accounts_class
     
@@ -86,11 +76,9 @@ class TestGetClass:
     
     def test_get_class_multiple_calls_same_kind(self):
         """Multiple calls with same kind should work consistently"""
-        mock_module = MagicMock()
         mock_accounts_class = Mock()
-        mock_module.Accounts = mock_accounts_class
         
-        with patch.dict('sys.modules', {'ixbrl_reporter.accounts_csv': mock_module}):
+        with patch('ixbrl_reporter.accounts_csv.Accounts', mock_accounts_class):
             result1 = get_class("csv")
             result2 = get_class("csv")
             
@@ -99,11 +87,9 @@ class TestGetClass:
     
     def test_get_class_returns_class_not_instance(self):
         """get_class should return class, not instance"""
-        mock_module = MagicMock()
         mock_accounts_class = Mock()
-        mock_module.Accounts = mock_accounts_class
         
-        with patch.dict('sys.modules', {'ixbrl_reporter.accounts_csv': mock_module}):
+        with patch('ixbrl_reporter.accounts_csv.Accounts', mock_accounts_class):
             result = get_class("csv")
             
             # Result should be the class itself, not an instance
@@ -113,26 +99,14 @@ class TestGetClass:
     
     def test_get_class_returns_different_classes(self):
         """Test that different kinds return different classes"""
-        # Set up different mock modules for each type
-        mock_csv_module = MagicMock()
-        mock_gnucash_module = MagicMock()
-        mock_piecash_module = MagicMock()
-        
         mock_csv_class = Mock(name="CSVAccounts")
         mock_gnucash_class = Mock(name="GnuCashAccounts")  
         mock_piecash_class = Mock(name="PieCashAccounts")
         
-        mock_csv_module.Accounts = mock_csv_class
-        mock_gnucash_module.Accounts = mock_gnucash_class
-        mock_piecash_module.Accounts = mock_piecash_class
-        
-        modules = {
-            'ixbrl_reporter.accounts_csv': mock_csv_module,
-            'ixbrl_reporter.accounts_gnucash': mock_gnucash_module,
-            'ixbrl_reporter.accounts_piecash': mock_piecash_module
-        }
-        
-        with patch.dict('sys.modules', modules):
+        with patch('ixbrl_reporter.accounts_csv.Accounts', mock_csv_class), \
+             patch('ixbrl_reporter.accounts_gnucash.Accounts', mock_gnucash_class), \
+             patch('ixbrl_reporter.accounts_piecash.Accounts', mock_piecash_class):
+            
             csv_class = get_class("csv")
             gnucash_class = get_class("gnucash")
             piecash_class = get_class("piecash")
@@ -164,13 +138,24 @@ class TestGetClassImportBehavior:
     
     def test_module_missing_accounts_attribute(self):
         """Test behavior when module exists but has no Accounts class"""
-        mock_module = MagicMock()
-        # Don't set Accounts attribute
-        del mock_module.Accounts  # Remove the default mock attribute
+        # Import the module and temporarily remove the Accounts attribute
+        import ixbrl_reporter.accounts_csv as csv_module
         
-        with patch.dict('sys.modules', {'ixbrl_reporter.accounts_csv': mock_module}):
+        # Save original Accounts if it exists
+        original_accounts = getattr(csv_module, 'Accounts', None)
+        
+        # Remove the Accounts attribute
+        if hasattr(csv_module, 'Accounts'):
+            delattr(csv_module, 'Accounts')
+        
+        try:
+            # This should raise AttributeError when trying to access a.Accounts
             with pytest.raises(AttributeError):
                 get_class("csv")
+        finally:
+            # Restore the original Accounts attribute if it existed
+            if original_accounts is not None:
+                setattr(csv_module, 'Accounts', original_accounts)
 
 
 class TestGetClassIntegration:
