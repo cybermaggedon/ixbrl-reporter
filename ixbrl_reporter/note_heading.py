@@ -3,7 +3,7 @@ from . basic_element import BasicElement
 
 class NoteHeading(BasicElement):
 
-    counts = {}
+    counts : dict[str, int] = {}
 
     def __init__(self, id, level, title, data):
 
