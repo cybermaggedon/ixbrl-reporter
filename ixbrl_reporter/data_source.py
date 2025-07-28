@@ -110,7 +110,7 @@ class DataSource:
             if period.name == name:
                 return period
 
-        raise RuntimeError("Period '" + period + "' not known")
+        raise RuntimeError("Period '" + name + "' not known")
 
     def get_worksheet(self, id):
 
