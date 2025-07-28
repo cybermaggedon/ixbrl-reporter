@@ -44,7 +44,7 @@ jobs:
         run: |
           pytest tests/contract/ -v --tb=short
 
-      - name: Run contract tests
+      - name: Run integration tests
         run: |
           pytest tests/integration/ -v --tb=short
 
