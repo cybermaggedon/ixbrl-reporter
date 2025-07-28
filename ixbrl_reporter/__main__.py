@@ -5,6 +5,11 @@ import ixbrl_reporter.accounts as accounts
 from ixbrl_reporter.taxonomy import Taxonomy
 from ixbrl_reporter.data_source import DataSource
 
+try:
+    from importlib.metadata import version
+except ImportError:
+    from importlib_metadata import version
+
 
 def main():
     if len(sys.argv) < 4:
@@ -15,7 +20,12 @@ def main():
     try:
         cfg = Config.load(sys.argv[1])
         cfg.set("internal.software-name", "ixbrl-reporter")
-        cfg.set("internal.software-version", "1.1.2")
+        
+        try:
+            pkg_version = version("ixbrl-reporter")
+        except Exception:
+            pkg_version = "unknown"
+        cfg.set("internal.software-version", pkg_version)
 
         kind = cfg.get("accounts.kind")
         file = cfg.get("accounts.file")
