@@ -6,9 +6,9 @@ from ixbrl_reporter.taxonomy import Taxonomy
 from ixbrl_reporter.data_source import DataSource
 
 try:
-    from importlib.metadata import version as get_version
+    from importlib.metadata import version
 except ImportError:
-    from importlib_metadata import version as get_version # type: ignore
+    from importlib_metadata import version # type: ignore
 
 
 def main():
@@ -22,7 +22,7 @@ def main():
         cfg.set("internal.software-name", "ixbrl-reporter")
         
         try:
-            pkg_version = get_version("ixbrl-reporter")
+            pkg_version = version("ixbrl-reporter")
         except Exception:
             pkg_version = "unknown"
         cfg.set("internal.software-version", pkg_version)
