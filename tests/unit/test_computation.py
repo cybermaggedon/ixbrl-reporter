@@ -1122,12 +1122,14 @@ class TestAbsOperation:
         abs_op = AbsOperation(self.mock_metadata, self.mock_input)
         
         assert abs_op.metadata == self.mock_metadata
-        assert abs_op.input == self.mock_input
+        assert abs_op.item == self.mock_input
     
     def test_abs_operation_load(self):
         """AbsOperation.load should create AbsOperation from config"""
         mock_cfg = Mock()
-        mock_cfg.get.return_value = "input_ref"
+        mock_cfg.get.side_effect = lambda key, deflt=None, mandatory=True: {
+            "input": "input_ref"
+        }.get(key, deflt)
         
         with patch.object(Metadata, 'load', return_value=self.mock_metadata):
             with patch('ixbrl_reporter.computation.get_computation', return_value=self.mock_input) as mock_get_comp:
@@ -1135,7 +1137,7 @@ class TestAbsOperation:
         
         mock_get_comp.assert_called_once_with("input_ref", "comps", "context", "data", "gcfg")
         assert abs_op.metadata == self.mock_metadata
-        assert abs_op.input == self.mock_input
+        assert abs_op.item == self.mock_input
     
     def test_abs_operation_compute_positive(self):
         """AbsOperation.compute should return absolute value of positive input"""
@@ -1177,28 +1179,22 @@ class TestAbsOperation:
         assert result == 150.0
     
     def test_abs_operation_get_output(self):
-        """AbsOperation.get_output should return SimpleResult with input output"""
+        """AbsOperation.get_output should return TotalResult"""
         abs_op = AbsOperation(self.mock_metadata, self.mock_input)
         
         mock_result = Mock()
         mock_datum = Mock()
         mock_result.get.return_value = mock_datum
         
-        mock_input_output = Mock()
-        self.mock_input.get_output.return_value = mock_input_output
-        
-        with patch('ixbrl_reporter.computation.SimpleResult') as mock_simple_result:
-            mock_simple_instance = Mock()
-            mock_simple_result.return_value = mock_simple_instance
+        with patch('ixbrl_reporter.computation.TotalResult') as mock_total_result:
+            mock_total_instance = Mock()
+            mock_total_result.return_value = mock_total_instance
             
             output = abs_op.get_output(mock_result)
         
-        # Should get output from input
-        self.mock_input.get_output.assert_called_once_with(mock_result)
-        
-        # Should create simple result
-        mock_simple_result.assert_called_once_with(abs_op, mock_datum, items=[mock_input_output])
-        assert output == mock_simple_instance
+        # Should create total result with empty items
+        mock_total_result.assert_called_once_with(abs_op, mock_datum, items=[])
+        assert output == mock_total_instance
 
 
 class TestApportionOperation:
@@ -1213,40 +1209,50 @@ class TestApportionOperation:
     def test_apportion_operation_init(self):
         """ApportionOperation should initialize with metadata, input and periods"""
         proportion_period = Mock()
+        proportion_period.days.return_value = 30
         whole_period = Mock()
+        whole_period.days.return_value = 365
         
         apportion_op = ApportionOperation(
             self.mock_metadata, self.mock_input, proportion_period, whole_period
         )
         
         assert apportion_op.metadata == self.mock_metadata
-        assert apportion_op.input == self.mock_input
-        assert apportion_op.proportion_period == proportion_period
-        assert apportion_op.whole_period == whole_period
+        assert apportion_op.item == self.mock_input
+        assert apportion_op.fraction == 30/365
     
     def test_apportion_operation_load(self):
         """ApportionOperation.load should create ApportionOperation from config"""
         mock_cfg = Mock()
-        mock_cfg.get.side_effect = lambda key: {
+        mock_cfg.get.side_effect = lambda key, deflt=None, mandatory=True: {
             "input": "input_ref",
-            "proportion": "2023-01-01/2023-03-31",
-            "whole": "2023-01-01/2023-12-31"
+            "whole-period": "whole_period_key",
+            "proportion-period": "proportion_period_key"
+        }.get(key, deflt)
+        
+        mock_data = Mock()
+        mock_whole_config = Mock()
+        mock_proportion_config = Mock()
+        mock_data.get_config.side_effect = lambda key: {
+            "whole_period_key": mock_whole_config,
+            "proportion_period_key": mock_proportion_config
         }[key]
         
         mock_proportion_period = Mock()
+        mock_proportion_period.days.return_value = 30
         mock_whole_period = Mock()
+        mock_whole_period.days.return_value = 365
         
         with patch.object(Metadata, 'load', return_value=self.mock_metadata):
             with patch('ixbrl_reporter.computation.get_computation', return_value=self.mock_input):
-                with patch('ixbrl_reporter.computation.Period') as mock_period_class:
-                    mock_period_class.side_effect = [mock_proportion_period, mock_whole_period]
+                with patch('ixbrl_reporter.computation.Period.load') as mock_period_load:
+                    mock_period_load.side_effect = [mock_whole_period, mock_proportion_period]
                     
-                    apportion_op = ApportionOperation.load(mock_cfg, "comps", "context", "data", "gcfg")
+                    apportion_op = ApportionOperation.load(mock_cfg, "comps", "context", mock_data, "gcfg")
         
-        # Should have created periods
-        assert mock_period_class.call_count == 2
-        assert apportion_op.proportion_period == mock_proportion_period
-        assert apportion_op.whole_period == mock_whole_period
+        # Should have loaded periods
+        assert mock_period_load.call_count == 2
+        assert apportion_op.fraction == 30/365
     
     def test_apportion_operation_compute(self):
         """ApportionOperation.compute should calculate proportional value"""
@@ -1283,28 +1289,27 @@ class TestApportionOperation:
         mock_result.set.assert_called_once_with("apportion-1", mock_datum)
     
     def test_apportion_operation_get_output(self):
-        """ApportionOperation.get_output should return SimpleResult with input output"""
-        apportion_op = ApportionOperation(self.mock_metadata, self.mock_input, Mock(), Mock())
+        """ApportionOperation.get_output should return TotalResult"""
+        mock_part = Mock()
+        mock_part.days.return_value = 30
+        mock_whole = Mock()
+        mock_whole.days.return_value = 365
+        
+        apportion_op = ApportionOperation(self.mock_metadata, self.mock_input, mock_part, mock_whole)
         
         mock_result = Mock()
         mock_datum = Mock()
         mock_result.get.return_value = mock_datum
         
-        mock_input_output = Mock()
-        self.mock_input.get_output.return_value = mock_input_output
-        
-        with patch('ixbrl_reporter.computation.SimpleResult') as mock_simple_result:
-            mock_simple_instance = Mock()
-            mock_simple_result.return_value = mock_simple_instance
+        with patch('ixbrl_reporter.computation.TotalResult') as mock_total_result:
+            mock_total_instance = Mock()
+            mock_total_result.return_value = mock_total_instance
             
             output = apportion_op.get_output(mock_result)
         
-        # Should get output from input
-        self.mock_input.get_output.assert_called_once_with(mock_result)
-        
-        # Should create simple result
-        mock_simple_result.assert_called_once_with(apportion_op, mock_datum, items=[mock_input_output])
-        assert output == mock_simple_instance
+        # Should create total result with empty items
+        mock_total_result.assert_called_once_with(apportion_op, mock_datum, items=[])
+        assert output == mock_total_instance
 
 
 class TestRoundOperation:
@@ -1317,26 +1322,26 @@ class TestRoundOperation:
         self.mock_input = Mock()
     
     def test_round_operation_init(self):
-        """RoundOperation should initialize with metadata, input and direction"""
-        round_op = RoundOperation(self.mock_metadata, self.mock_input, ROUND_UP)
+        """RoundOperation should initialize with metadata, direction and input"""
+        round_op = RoundOperation(self.mock_metadata, ROUND_UP, self.mock_input)
         
         assert round_op.metadata == self.mock_metadata
-        assert round_op.input == self.mock_input
-        assert round_op.direction == ROUND_UP
+        assert round_op.item == self.mock_input
+        assert round_op.direc == ROUND_UP
     
     def test_round_operation_load(self):
         """RoundOperation.load should create RoundOperation from config"""
         mock_cfg = Mock()
-        mock_cfg.get.side_effect = lambda key: {
+        mock_cfg.get.side_effect = lambda key, deflt=None, mandatory=True: {
             "input": "input_ref",
             "direction": "up"
-        }[key]
+        }.get(key, deflt)
         
         with patch.object(Metadata, 'load', return_value=self.mock_metadata):
             with patch('ixbrl_reporter.computation.get_computation', return_value=self.mock_input):
                 round_op = RoundOperation.load(mock_cfg, "comps", "context", "data", "gcfg")
         
-        assert round_op.direction == ROUND_UP
+        assert round_op.direc == ROUND_UP
     
     def test_round_operation_load_directions(self):
         """RoundOperation.load should handle all rounding directions"""
@@ -1349,52 +1354,58 @@ class TestRoundOperation:
         
         for direction_str, expected_const in test_cases:
             mock_cfg = Mock()
-            mock_cfg.get.side_effect = lambda key: {
+            mock_cfg.get.side_effect = lambda key, deflt=None, mandatory=True, current_dir=direction_str: {
                 "input": "input_ref",
-                "direction": direction_str
-            }[key]
+                "direction": current_dir
+            }.get(key, deflt)
             
             with patch.object(Metadata, 'load', return_value=self.mock_metadata):
                 with patch('ixbrl_reporter.computation.get_computation', return_value=self.mock_input):
                     round_op = RoundOperation.load(mock_cfg, "comps", "context", "data", "gcfg")
             
-            assert round_op.direction == expected_const
+            assert round_op.direc == expected_const
     
     def test_round_operation_compute_round_up(self):
         """RoundOperation.compute should round up correctly"""
         self.mock_input.compute.return_value = 123.45
         
-        round_op = RoundOperation(self.mock_metadata, self.mock_input, ROUND_UP)
+        round_op = RoundOperation(self.mock_metadata, ROUND_UP, self.mock_input)
         
         mock_context = Mock()
+        mock_datum = Mock()
         self.mock_metadata.get_context.return_value = mock_context
+        mock_context.create_money_datum.return_value = mock_datum
         
-        with patch('math.ceil', return_value=124) as mock_ceil:
-            result = round_op.compute("session", date(2023, 1, 1), date(2023, 12, 31), Mock())
+        mock_result = Mock()
+        result = round_op.compute("session", date(2023, 1, 1), date(2023, 12, 31), mock_result)
         
-        mock_ceil.assert_called_once_with(123.45)
+        # Should round up using int(val + 1): int(123.45 + 1) = int(124.45) = 124
         assert result == 124
+        mock_result.set.assert_called_once()
     
     def test_round_operation_compute_round_down(self):
         """RoundOperation.compute should round down correctly"""
         self.mock_input.compute.return_value = 123.45
         
-        round_op = RoundOperation(self.mock_metadata, self.mock_input, ROUND_DOWN)
+        round_op = RoundOperation(self.mock_metadata, ROUND_DOWN, self.mock_input)
         
         mock_context = Mock()
+        mock_datum = Mock()
         self.mock_metadata.get_context.return_value = mock_context
+        mock_context.create_money_datum.return_value = mock_datum
         
-        with patch('math.floor', return_value=123) as mock_floor:
-            result = round_op.compute("session", date(2023, 1, 1), date(2023, 12, 31), Mock())
+        mock_result = Mock()
+        result = round_op.compute("session", date(2023, 1, 1), date(2023, 12, 31), mock_result)
         
-        mock_floor.assert_called_once_with(123.45)
+        # Should round down using int(val): int(123.45) = 123
         assert result == 123
+        mock_result.set.assert_called_once()
     
     def test_round_operation_compute_round_nearest(self):
         """RoundOperation.compute should round to nearest correctly"""
         self.mock_input.compute.return_value = 123.45
         
-        round_op = RoundOperation(self.mock_metadata, self.mock_input, ROUND_NEAREST)
+        round_op = RoundOperation(self.mock_metadata, ROUND_NEAREST, self.mock_input)
         
         mock_context = Mock()
         self.mock_metadata.get_context.return_value = mock_context
@@ -1406,7 +1417,7 @@ class TestRoundOperation:
     
     def test_round_operation_get_output(self):
         """RoundOperation.get_output should return SimpleResult with input output"""
-        round_op = RoundOperation(self.mock_metadata, self.mock_input, ROUND_NEAREST)
+        round_op = RoundOperation(self.mock_metadata, ROUND_NEAREST, self.mock_input)
         
         mock_result = Mock()
         mock_datum = Mock()
@@ -1415,18 +1426,15 @@ class TestRoundOperation:
         mock_input_output = Mock()
         self.mock_input.get_output.return_value = mock_input_output
         
-        with patch('ixbrl_reporter.computation.SimpleResult') as mock_simple_result:
-            mock_simple_instance = Mock()
-            mock_simple_result.return_value = mock_simple_instance
+        with patch('ixbrl_reporter.computation.TotalResult') as mock_total_result:
+            mock_total_instance = Mock()
+            mock_total_result.return_value = mock_total_instance
             
             output = round_op.get_output(mock_result)
         
-        # Should get output from input
-        self.mock_input.get_output.assert_called_once_with(mock_result)
-        
-        # Should create simple result
-        mock_simple_result.assert_called_once_with(round_op, mock_datum, items=[mock_input_output])
-        assert output == mock_simple_instance
+        # Should create total result with empty items
+        mock_total_result.assert_called_once_with(round_op, mock_datum, items=[])
+        assert output == mock_total_instance
 
 
 class TestFactorOperation:
@@ -1533,9 +1541,9 @@ class TestFactorOperation:
         mock_input_output = Mock()
         self.mock_input.get_output.return_value = mock_input_output
         
-        with patch('ixbrl_reporter.computation.SimpleResult') as mock_simple_result:
-            mock_simple_instance = Mock()
-            mock_simple_result.return_value = mock_simple_instance
+        with patch('ixbrl_reporter.computation.TotalResult') as mock_total_result:
+            mock_total_instance = Mock()
+            mock_total_result.return_value = mock_total_instance
             
             output = factor_op.get_output(mock_result)
         
@@ -1598,16 +1606,12 @@ class TestComparison:
         
         for op_str, expected_const in test_cases:
             mock_cfg = Mock()
-            def mock_get(key, deflt=None, mandatory=True, op=op_str):
-                values = {
-                    "input": "input_ref",
-                    "comparison": op,
-                    "value": 100.0,
-                    "if-false": 0.0
-                }
-                return values.get(key, deflt)
-            
-            mock_cfg.get.side_effect = mock_get
+            mock_cfg.get.side_effect = lambda key, deflt=None, mandatory=True, current_op=op_str: {
+                "input": "input_ref",
+                "comparison": current_op,
+                "value": 100.0,
+                "if-false": 0.0
+            }.get(key, deflt)
             
             with patch.object(Metadata, 'load', return_value=self.mock_metadata):
                 with patch('ixbrl_reporter.computation.get_computation', return_value=self.mock_input):
@@ -1693,9 +1697,9 @@ class TestComparison:
         mock_input_output = Mock()
         self.mock_input.get_output.return_value = mock_input_output
         
-        with patch('ixbrl_reporter.computation.SimpleResult') as mock_simple_result:
-            mock_simple_instance = Mock()
-            mock_simple_result.return_value = mock_simple_instance
+        with patch('ixbrl_reporter.computation.TotalResult') as mock_total_result:
+            mock_total_instance = Mock()
+            mock_total_result.return_value = mock_total_instance
             
             output = comparison.get_output(mock_result)
         
