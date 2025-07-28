@@ -38,8 +38,8 @@ class TagElt(Elt):
     @staticmethod
     def load(root, data):
         tag = root.get("tag")
-        attrs = root.get("attributes", {}, mandatory=False)
-        content = root.get("content", [], mandatory=False)
+        attrs = root.get("attributes", {})
+        content = root.get("content", [])
 
         if isinstance(content, str):
             content = [Elt.load(content, data)]
@@ -218,8 +218,8 @@ class FactElt(Elt):
     @staticmethod
     def load(root, data):
         fact = root.get("fact")
-        attrs = root.get("attributes", {}, mandatory=False)
-        content = root.get("content", [], mandatory=False)
+        attrs = root.get("attributes", {})
+        content = root.get("content", [])
 
         if isinstance(content, str):
             content = [Elt.load(content, data)]
@@ -280,7 +280,7 @@ class ElementElt(Elt):
             return ElementElt(data.get_element(element), data)
         else:        
             raise RuntimeError(
-                "Can't handle element being type %s" % str(type(content))
+                "Can't handle element being type %s" % str(type(element))
             )
 
     def to_html(self, par, taxonomy):
@@ -353,8 +353,6 @@ class ComputationElt(Elt):
 
     def to_text(self, taxonomy, out):
 
-        elt = par.xhtml_maker.span()
-
         if self.period == "":
             period = self.data.get_report_period(0)
         else:
@@ -369,7 +367,7 @@ class ComputationElt(Elt):
 
         fact = taxonomy.create_fact(res)
 
-        out.write(fact.to_text())
+        fact.to_text(out)
 
     def to_debug(self, taxonomy, out):
 

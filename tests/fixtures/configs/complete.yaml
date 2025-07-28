@@ -1,0 +1,20 @@
+accounts:
+  kind: csv
+  file: complete.csv
+  
+report:
+  name: Complete Test Report
+  taxonomy: full-taxonomy
+  
+metadata:
+  company: Test Company Ltd
+  period: 2023
+  
+internal:
+  software-name: ixbrl-reporter
+  software-version: test-version
+
+nested:
+  deep:
+    value: 42
+    reference: ${accounts.file}

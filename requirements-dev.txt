@@ -1,0 +1,6 @@
+types-lxml
+pytest
+pytest-cov
+SQLAlchemy
+piecash
+mypy

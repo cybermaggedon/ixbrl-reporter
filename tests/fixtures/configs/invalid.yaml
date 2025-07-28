@@ -1,0 +1,3 @@
+invalid: yaml: content: [
+missing_bracket: value
+  bad_indent: wrong
