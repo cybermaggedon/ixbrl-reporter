@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ixbrl-reporter"
-version = "1.1.2"
+version = "1.2.0"
 description = "Production of iXBRL reports from templates and accounts files"
 authors = [
     {name = "Cybermaggedon", email = "mark@cyberapocalypse.co.uk"}
