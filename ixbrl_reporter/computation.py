@@ -232,7 +232,7 @@ class Constant(Computable):
 
     def get_output(self, result):
 
-        output = SimpleValue(
+        output = SimpleResult(
             self,
             result.get(self.metadata.id)
         )
@@ -306,7 +306,7 @@ class Group(Computable):
                 ]
             )
 
-            output = TotalResult(self, self.metadata, result.get(self.metadata.id),
+            output = TotalResult(self, result.get(self.metadata.id),
                                  items=[bd])
 
         else:

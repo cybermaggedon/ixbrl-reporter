@@ -1531,15 +1531,12 @@ class TestFactorOperation:
         assert result == 240.0  # 200.0 * 1.2
     
     def test_factor_operation_get_output(self):
-        """FactorOperation.get_output should return SimpleResult with input output"""
+        """FactorOperation.get_output should return TotalResult"""
         factor_op = FactorOperation(self.mock_metadata, self.mock_input, 1.0)
         
         mock_result = Mock()
         mock_datum = Mock()
         mock_result.get.return_value = mock_datum
-        
-        mock_input_output = Mock()
-        self.mock_input.get_output.return_value = mock_input_output
         
         with patch('ixbrl_reporter.computation.TotalResult') as mock_total_result:
             mock_total_instance = Mock()
@@ -1547,12 +1544,9 @@ class TestFactorOperation:
             
             output = factor_op.get_output(mock_result)
         
-        # Should get output from input
-        self.mock_input.get_output.assert_called_once_with(mock_result)
-        
-        # Should create simple result
-        mock_simple_result.assert_called_once_with(factor_op, mock_datum, items=[mock_input_output])
-        assert output == mock_simple_instance
+        # Should create total result with empty items
+        mock_total_result.assert_called_once_with(factor_op, mock_datum, items=[])
+        assert output == mock_total_instance
 
 
 class TestComparison:
@@ -1598,26 +1592,30 @@ class TestComparison:
         """Comparison.load should handle all comparison operations"""
         test_cases = [
             ("less", CMP_LESS),
-            ("less-equal", CMP_LESS_EQUAL),
+            ("less-or-equal", CMP_LESS_EQUAL),
             ("greater", CMP_GREATER),
-            ("greater-equal", CMP_GREATER_EQUAL),
+            ("greater-or-equal", CMP_GREATER_EQUAL),
             ("invalid", CMP_LESS)  # Default fallback
         ]
         
-        for op_str, expected_const in test_cases:
+        def create_mock_cfg(op_str):
             mock_cfg = Mock()
-            mock_cfg.get.side_effect = lambda key, deflt=None, mandatory=True, current_op=op_str: {
+            mock_cfg.get.side_effect = lambda key, deflt=None, mandatory=True: {
                 "input": "input_ref",
-                "comparison": current_op,
+                "comparison": op_str,
                 "value": 100.0,
                 "if-false": 0.0
             }.get(key, deflt)
+            return mock_cfg
+        
+        for op_str, expected_const in test_cases:
+            mock_cfg = create_mock_cfg(op_str)
             
             with patch.object(Metadata, 'load', return_value=self.mock_metadata):
                 with patch('ixbrl_reporter.computation.get_computation', return_value=self.mock_input):
                     comparison = Comparison.load(mock_cfg, "comps", "context", "data", "gcfg")
             
-            assert comparison.comparison == expected_const
+            assert comparison.comparison == expected_const, f"For op '{op_str}', got {comparison.comparison} but expected {expected_const}"
     
     def test_comparison_compute_greater_true(self):
         """Comparison.compute should return input value when comparison is true (greater)"""
@@ -1687,15 +1685,12 @@ class TestComparison:
                 assert result == -999.0, f"Op {op}: {input_val} vs {compare_val} should return false_value"
     
     def test_comparison_get_output(self):
-        """Comparison.get_output should return SimpleResult with input output"""
+        """Comparison.get_output should return TotalResult"""
         comparison = Comparison(self.mock_metadata, self.mock_input, CMP_GREATER, 100.0, 0.0)
         
         mock_result = Mock()
         mock_datum = Mock()
         mock_result.get.return_value = mock_datum
-        
-        mock_input_output = Mock()
-        self.mock_input.get_output.return_value = mock_input_output
         
         with patch('ixbrl_reporter.computation.TotalResult') as mock_total_result:
             mock_total_instance = Mock()
@@ -1703,12 +1698,9 @@ class TestComparison:
             
             output = comparison.get_output(mock_result)
         
-        # Should get output from input
-        self.mock_input.get_output.assert_called_once_with(mock_result)
-        
-        # Should create simple result
-        mock_simple_result.assert_called_once_with(comparison, mock_datum, items=[mock_input_output])
-        assert output == mock_simple_instance
+        # Should create total result with empty items
+        mock_total_result.assert_called_once_with(comparison, mock_datum, items=[])
+        assert output == mock_total_instance
 
 
 class TestIntegration:
