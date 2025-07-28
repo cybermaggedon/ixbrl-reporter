@@ -264,12 +264,13 @@ class TestDataSource:
         mock_cfg.get.side_effect = ["scheme", "number"]
         mock_session = Mock()
         
-        with patch('ixbrl_reporter.data_source.get_computations'), \
+        with patch('ixbrl_reporter.data_source.get_computations') as mock_get_computations, \
              patch('ixbrl_reporter.data_source.Context'):
             
-            data_source = DataSource(mock_cfg, mock_session)
             mock_computation = Mock()
-            data_source.computations["test-comp"] = mock_computation
+            mock_get_computations.return_value = {"test-comp": mock_computation}
+            
+            data_source = DataSource(mock_cfg, mock_session)
             
             result = data_source.get_computation("test-comp")
             assert result == mock_computation
@@ -671,21 +672,19 @@ class TestDataSource:
         """Test getting config value"""
         mock_cfg = Mock()
         mock_cfg.get.side_effect = ["scheme", "number"]
-        mock_cfg.get.return_value = "config_value"
         mock_session = Mock()
         
         with patch('ixbrl_reporter.data_source.get_computations'), \
              patch('ixbrl_reporter.data_source.Context'):
             
             data_source = DataSource(mock_cfg, mock_session)
-            # Reset mock after init calls
-            mock_cfg.reset_mock()
-            mock_cfg.get.return_value = "config_value"
             
-            result = data_source.get_config("test.key", "default", False)
-            
-            mock_cfg.get.assert_called_once_with("test.key", "default", False)
-            assert result == "config_value"
+            # Patch the get method directly for this test
+            with patch.object(data_source.cfg, 'get', return_value="config_value") as mock_get:
+                result = data_source.get_config("test.key", "default", False)
+                
+                mock_get.assert_called_once_with("test.key", "default", False)
+                assert result == "config_value"
     
     def test_get_config_date(self):
         """Test getting config date value"""
@@ -771,7 +770,11 @@ class TestDataSourceToDatum:
     def test_to_datum_config_bool_kind(self):
         """Test converting config-bool kind definition to BoolDatum"""
         mock_defn = Mock()
-        mock_defn.get.side_effect = ["config-bool", "test-id", "config.bool"]
+        mock_defn.get.side_effect = lambda key: {
+            "kind": "config-bool",
+            "id": "test-id", 
+            "key": "config.bool"
+        }.get(key)
         
         with patch.object(self.data_source, 'get_config_bool', return_value=True) as mock_get_bool:
             result = self.data_source.to_datum(mock_defn, self.mock_context)
@@ -785,7 +788,10 @@ class TestDataSourceToDatum:
     def test_to_datum_bool_kind(self):
         """Test converting bool kind definition to BoolDatum"""
         mock_defn = Mock()
-        mock_defn.get.side_effect = ["bool", "test-id"]
+        mock_defn.get.side_effect = lambda key: {
+            "kind": "bool",
+            "id": "test-id"
+        }.get(key)
         mock_defn.get_bool.return_value = False
         
         result = self.data_source.to_datum(mock_defn, self.mock_context)
@@ -799,7 +805,11 @@ class TestDataSourceToDatum:
     def test_to_datum_string_kind(self):
         """Test converting string kind definition to StringDatum"""
         mock_defn = Mock()
-        mock_defn.get.side_effect = ["string", "test-id", "string_value"]
+        mock_defn.get.side_effect = lambda key: {
+            "kind": "string",
+            "id": "test-id", 
+            "value": "string_value"
+        }.get(key)
         
         result = self.data_source.to_datum(mock_defn, self.mock_context)
         
@@ -811,7 +821,11 @@ class TestDataSourceToDatum:
     def test_to_datum_money_kind(self):
         """Test converting money kind definition to MoneyDatum"""
         mock_defn = Mock()
-        mock_defn.get.side_effect = ["money", "test-id", 1000.0]
+        mock_defn.get.side_effect = lambda key: {
+            "kind": "money",
+            "id": "test-id", 
+            "value": 1000.0
+        }.get(key)
         
         result = self.data_source.to_datum(mock_defn, self.mock_context)
         
@@ -823,7 +837,11 @@ class TestDataSourceToDatum:
     def test_to_datum_number_kind(self):
         """Test converting number kind definition to NumberDatum"""
         mock_defn = Mock()
-        mock_defn.get.side_effect = ["number", "test-id", 3.14]
+        mock_defn.get.side_effect = lambda key: {
+            "kind": "number",
+            "id": "test-id", 
+            "value": 3.14
+        }.get(key)
         
         result = self.data_source.to_datum(mock_defn, self.mock_context)
         
@@ -835,7 +853,11 @@ class TestDataSourceToDatum:
     def test_to_datum_computation_kind(self):
         """Test converting computation kind definition"""
         mock_defn = Mock()
-        mock_defn.get.side_effect = ["computation", "comp-id", "period.config"]
+        mock_defn.get.side_effect = lambda key: {
+            "kind": "computation",
+            "computation": "comp-id", 
+            "period-config": "period.config"
+        }.get(key)
         
         mock_period_config = {"name": "2020", "start": "2020-01-01", "end": "2020-12-31"}
         mock_period = Mock()
@@ -858,7 +880,10 @@ class TestDataSourceToDatum:
     def test_to_datum_variable_kind(self):
         """Test converting variable kind definition to VariableDatum"""
         mock_defn = Mock()
-        mock_defn.get.side_effect = ["variable", "var-name"]
+        mock_defn.get.side_effect = lambda key: {
+            "kind": "variable",
+            "variable": "var-name"
+        }.get(key)
         
         result = self.data_source.to_datum(mock_defn, self.mock_context)
         
