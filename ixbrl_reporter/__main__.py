@@ -5,18 +5,17 @@ import ixbrl_reporter.accounts as accounts
 from ixbrl_reporter.taxonomy import Taxonomy
 from ixbrl_reporter.data_source import DataSource
 
-if __name__ == "__main__":
 
+def main():
     if len(sys.argv) < 4:
         sys.stderr.write("Usage:\n")
         sys.stderr.write("\tixbrl-reporter <config> <report> <format>\n")
         sys.exit(1)
 
     try:
-
         cfg = Config.load(sys.argv[1])
         cfg.set("internal.software-name", "ixbrl-reporter")
-        cfg.set("internal.software-version", "1.0.4")
+        cfg.set("internal.software-version", "1.1.2")
 
         kind = cfg.get("accounts.kind")
         file = cfg.get("accounts.file")
@@ -51,4 +50,8 @@ if __name__ == "__main__":
         sys.stderr.write("Exception: %s\n" % str(e))
         raise e
         sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()
 
