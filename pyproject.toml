@@ -24,6 +24,14 @@ dependencies = [
     "PyYAML"
 ]
 
+[project.optional-dependencies]
+test = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "pytest-mock>=3.10",
+    "pyyaml>=6.0"
+]
+
 [project.urls]
 Homepage = "https://github.com/cybermaggedon/ixbrl-reporter"
 Download = "https://github.com/cybermaggedon/ixbrl-reporter/archive/refs/tags/v1.1.0.tar.gz"

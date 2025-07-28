@@ -1,0 +1,6 @@
+accounts:
+  kind: csv
+  file: test.csv
+report:
+  name: Test Report
+  taxonomy: basic
