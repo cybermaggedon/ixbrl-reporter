@@ -39,33 +39,38 @@ EXCLUDE_FIELDS = [
 ]
 
 
+# Module-level fixtures that can be used by all test classes
+@pytest.fixture(scope="module")
+def project_root():
+    """Get the project root directory"""
+    return Path(__file__).parent.parent.parent
+
+
+@pytest.fixture(scope="module")
+def test_configs_dir(project_root):
+    """Directory containing test configuration files"""
+    return project_root / "test"
+
+
+@pytest.fixture(scope="module")
+def expected_outputs_dir(project_root):
+    """Directory containing expected KV outputs"""
+    return project_root / "log"
+
+
+@pytest.fixture(scope="module")
+def ixbrl_to_kv_available():
+    """Check if ixbrl-to-kv is available"""
+    try:
+        subprocess.run(["ixbrl-to-kv", "--help"], 
+                     capture_output=True, check=True)
+        return True
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return False
+
+
 class TestIXBRLRegression:
     """Test suite for iXBRL report generation regression tests"""
-    
-    @pytest.fixture(scope="class")
-    def project_root(self):
-        """Get the project root directory"""
-        return Path(__file__).parent.parent.parent
-    
-    @pytest.fixture(scope="class")
-    def test_configs_dir(self, project_root):
-        """Directory containing test configuration files"""
-        return project_root / "test"
-    
-    @pytest.fixture(scope="class")
-    def expected_outputs_dir(self, project_root):
-        """Directory containing expected KV outputs"""
-        return project_root / "log"
-    
-    @pytest.fixture(scope="class")
-    def ixbrl_to_kv_available(self):
-        """Check if ixbrl-to-kv is available"""
-        try:
-            subprocess.run(["ixbrl-to-kv", "--help"], 
-                         capture_output=True, check=True)
-            return True
-        except (subprocess.CalledProcessError, FileNotFoundError):
-            return False
     
     def extract_kv_pairs(self, html_path: Path, 
                         ixbrl_to_kv_available: bool) -> List[str]:
