@@ -4,3 +4,5 @@ pytest-cov
 SQLAlchemy
 piecash
 mypy
+ixbrl-parse
+

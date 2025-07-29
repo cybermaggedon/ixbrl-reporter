@@ -29,7 +29,8 @@ test = [
     "pytest>=7.0",
     "pytest-cov>=4.0",
     "pytest-mock>=3.10",
-    "pyyaml>=6.0"
+    "pyyaml>=6.0",
+    "ixbrl-parse>=0.5.0"
 ]
 
 [project.urls]

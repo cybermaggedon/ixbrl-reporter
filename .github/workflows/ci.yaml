@@ -33,7 +33,7 @@ jobs:
 
       - name: Run unit tests with coverage
         run: |
-          pytest tests/unit/ -v --tb=short --cov=ixbrl_reporter --cov-report=xml --cov-report=term
+          pytest tests/unit/ -v --tb=short --cov=ixbrl_reporter --cov-report=xml --cov-report=term --cov-report=html
 
       - name: Run contract tests
         run: |
@@ -42,6 +42,10 @@ jobs:
       - name: Run integration tests
         run: |
           pytest tests/integration/ -v --tb=short
+
+      - name: Run regression tests
+        run: |
+          pytest tests/regression/ -v --tb=short -m "not slow"
 
       - name: Type check with mypy
         run: |

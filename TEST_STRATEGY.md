@@ -237,22 +237,59 @@ pytest -n auto
 - **Memory constraints**
 - **Invalid data transformations**
 
+## Regression Tests (`tests/regression/`)
+
+### Overview
+The project includes comprehensive regression tests that verify iXBRL report generation remains consistent across changes. These tests use real-world configurations and compare outputs against known good results.
+
+**Regression Test Framework (`test_ixbrl_regression.py`)**
+- Runs ixbrl-reporter on 15 different report configurations
+- Extracts key-value pairs using `ixbrl-to-kv` tool
+- Compares against expected outputs in `/log/` directory
+- Filters out version-related fields that change between runs
+
+**Test Configurations Include:**
+- Audited/Unaudited reports (micro, small, full, abridged)
+- Revised/Non-revised versions
+- Corporation tax reports
+- ESEF and ESEF-FR reports
+
+**Helper Tools:**
+- `update_expected_outputs.py` - Script to review and update expected outputs
+- `MIGRATION_GUIDE.md` - Documentation for transitioning from legacy tests
+
+### Running Regression Tests
+```bash
+# Run all regression tests
+pytest tests/regression/ -v
+
+# Run specific configuration
+pytest tests/regression/ -k "unaud-micro" -v
+
+# Run in parallel
+pytest tests/regression/ -n auto
+
+# Update expected outputs after intentional changes
+python tests/regression/update_expected_outputs.py --review
+```
+
 ## Migration from Current Tests
 
-### Phase 1: Preserve Existing
+### Phase 1: Preserve Existing ✓ (Completed)
 1. Keep current `/test/` directory and shell scripts
 2. Add pytest infrastructure alongside
 3. Ensure both systems can coexist
 
-### Phase 2: Pytest Implementation
+### Phase 2: Pytest Implementation ✓ (Completed)
 1. Implement unit tests for core components
 2. Convert shell-based integration tests to pytest
 3. Add contract tests for data formats
+4. Integrate regression tests into pytest framework
 
 ### Phase 3: Consolidation
 1. Migrate all test data to `/tests/fixtures/`
-2. Remove shell-based test system
-3. Full pytest adoption
+2. Gradually phase out shell-based test system
+3. Full pytest adoption while maintaining backwards compatibility
 
 ## Success Metrics
 
