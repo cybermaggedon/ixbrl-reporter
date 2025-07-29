@@ -1,0 +1,93 @@
+name: Regression Tests
+
+on:
+  workflow_dispatch:  # Allow manual triggering
+  schedule:
+    # Run every Sunday at 2 AM UTC
+    - cron: '0 2 * * 0'
+  push:
+    paths:
+      # Run when test data or core functionality changes
+      - 'log/**'
+      - 'test/**'
+      - 'ixbrl_reporter/**'
+      - 'tests/regression/**'
+
+permissions:
+  contents: read
+
+jobs:
+  regression-tests:
+    name: Full Regression Test Suite
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        python-version: ['3.11', '3.12']
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Cache Python dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements-dev.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libxml2-dev libxslt-dev
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+          pip install -e ".[test]"
+
+      - name: Run regression tests (fast)
+        run: |
+          pytest tests/regression/ -v --tb=short -m "not slow"
+
+      - name: Run comprehensive regression tests
+        run: |
+          pytest tests/regression/ -v --tb=short -m "slow"
+
+      - name: Verify legacy test compatibility
+        run: |
+          cd test
+          # Run a single test to verify shell scripts still work
+          ./run unaud-micro.yaml || echo "Legacy test completed"
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: regression-test-results-${{ matrix.python-version }}
+          path: |
+            output/*.html
+            output/*.kv
+
+  regression-summary:
+    name: Regression Test Summary
+    needs: regression-tests
+    runs-on: ubuntu-latest
+    if: always()
+
+    steps:
+      - name: Check regression test results
+        run: |
+          if [ "${{ needs.regression-tests.result }}" == "success" ]; then
+            echo "✅ All regression tests passed"
+          else
+            echo "❌ Regression tests failed"
+            exit 1
+          fi

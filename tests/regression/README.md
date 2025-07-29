@@ -1,5 +1,7 @@
 # Regression Tests
 
+[![Regression Tests](https://github.com/cybermaggedon/ixbrl-reporter/actions/workflows/regression-tests.yaml/badge.svg)](https://github.com/cybermaggedon/ixbrl-reporter/actions/workflows/regression-tests.yaml)
+
 This directory contains regression tests that ensure iXBRL report generation remains consistent across changes.
 
 ## Quick Start
