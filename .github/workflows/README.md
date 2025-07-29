@@ -28,19 +28,6 @@ This directory contains the CI/CD workflows for the ixbrl-reporter project.
   - Type checking
   - Package installation verification
 
-### 3. Regression Tests (`regression-tests.yaml`)
-- **Trigger**: 
-  - Manual workflow dispatch
-  - Weekly schedule (Sundays at 2 AM UTC)
-  - Changes to test data or core functionality
-- **Purpose**: Comprehensive regression testing
-- **Matrix Testing**: Python 3.11 and 3.12
-- **Features**:
-  - Full regression test suite including slow tests
-  - Legacy test compatibility verification
-  - Test artifact upload for debugging
-  - Summary job for overall status
-
 ## Test Categories
 
 ### Unit Tests
