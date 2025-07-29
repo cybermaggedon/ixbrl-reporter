@@ -68,7 +68,7 @@ jobs:
           ./run unaud-micro.yaml || echo "Legacy test completed"
 
       - name: Upload test results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: regression-test-results-${{ matrix.python-version }}
