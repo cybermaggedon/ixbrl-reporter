@@ -10,7 +10,7 @@ do
     out=output/${cfg%.yaml}.html
     kv=output/${cfg%.yaml}.kv
     cmp=log/${cfg%.yaml}.kv
-    scripts/ixbrl-reporter test/${cfg} report ixbrl > ${out}
+    ixbrl-reporter test/${cfg} report ixbrl > ${out}
     ixbrl-to-kv ${out} | \
 	grep -E -v 'VersionProductionSoftware|VersionOfProductionSoftware' | \
 	sort > ${kv}
