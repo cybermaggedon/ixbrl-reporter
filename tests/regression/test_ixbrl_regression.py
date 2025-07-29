@@ -209,7 +209,6 @@ class TestIXBRLRegression:
             # Compare
             self.compare_outputs(actual_kv, expected_kv, config_file)
     
-    @pytest.mark.slow
     def test_all_regression_configs(self, project_root, test_configs_dir, 
                                    expected_outputs_dir, ixbrl_to_kv_available):
         """Run all regression tests and provide a summary
