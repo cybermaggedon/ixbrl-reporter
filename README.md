@@ -17,6 +17,9 @@ to discuss... https://discord.gg/3cAvPASS6p
 The configuration files used by ixbrl-reporter are complex.  See
 [`ixbrl-reporter-jsonnet`](https://github.com/cybermaggedon/ixbrl-reporter-jsonnet) for an easier way to manage the configuration files.
 
+There seem to be more users of ixbrl-reporter-jsonnet, so expect to have
+an easier time tracking the latest submissions for HMRC.
+
 ## Summary
 
 This code is intended for use with `ixbrl-reporter`.
@@ -220,7 +223,23 @@ a browser with markup so that you can navigate the tags and discover tagged
 information.  With the iXBRL viewer when you hover over tagged information,
 it is highlighted, clicking opens up the metadata viewer.
 
-### Test suite / examples
+### Test suite - unit, contract, integration
+
+This is a comprehensive test suite.  It is run automatically on pull
+requests in Github Actions.
+
+You need to install: pytest pytest-cov lxml pyyaml piecash
+ixbrl-parse
+
+Run: `pytest tests/`
+
+### Test suite - examples
+
+These are basically invoke by the regression test suite above.
+
+This test suite generates example output from example configuration,
+and verifies nothing has changed in output values.  It's a regression
+test.  You need to install: piecash.
 
 See the `test` directory.
 

@@ -1,14 +1,14 @@
 computations:
 - accounts:
   - Income:Sales
-  description: Consultance
-  id: consultancy
+  description: Revenu principal
+  id: main-income
   kind: line
   period: in-year
 - description: Revenus d'exploitation
   id: operating-revenue
   inputs:
-  - consultancy
+  - main-income
   kind: sum
   period: in-year
 - accounts:
@@ -178,8 +178,10 @@ computations:
   period: at-end
 - accounts:
   - VAT:Input
+  - VAT:Settlement:Input
+  - Assets:VAT Repayments Due
   description: "Remboursement de la TVA d\xFB"
-  id: vat-refund-owed
+  id: vat-refund-due
   kind: line
   period: at-end
 - accounts:
@@ -192,7 +194,7 @@ computations:
   id: current-assets
   inputs:
   - debtors
-  - vat-refund-owed
+  - vat-refund-due
   - bank
   kind: group
   period: at-end
@@ -239,6 +241,8 @@ computations:
   reverse-sign: true
 - accounts:
   - VAT:Output
+  - VAT:Settlement:Output
+  - Liabilities:Credit Cards
   - Liabilities:Owed Corporation Tax
   description: "Autres cr\xE9anciers"
   id: other-creditors
@@ -298,6 +302,7 @@ computations:
   - Accounts Receivable
   - Assets:Owed To Us
   - VAT:Input
+  - VAT:Settlement:Input
   description: "Diminution (augmentation) des cr\xE9ances commerciales et autres cr\xE9\
     ances"
   id: trade-and-other-receivables
@@ -305,7 +310,7 @@ computations:
   period: in-year
   reverse-sign: true
 - accounts: []
-  description: Decrease (increase) in inventories
+  description: Diminution (augmentation) des stocks
   id: inventories
   kind: line
   period: in-year
@@ -313,14 +318,15 @@ computations:
 - accounts:
   - Accounts Payable
   - VAT:Output
+  - VAT:Settlement:Output
   - Liabilities:Owed Corporation Tax
-  description: Diminution (augmentation) des stocks
+  description: Augmentation (diminution) des dettes commerciales
   id: trade-payables
   kind: line
   period: in-year
   reverse-sign: true
 - description: "Tr\xE9sorerie nette des activit\xE9s op\xE9rationnelles"
-  id: net-cash-from-operating-activities
+  id: esef-net-cash-from-operating-activities
   inputs:
   - net-profit
   - depreciation-adjustment
@@ -350,7 +356,7 @@ computations:
   kind: line
   period: in-year
 - description: "Tr\xE9sorerie nette des activit\xE9s d'investissement"
-  id: net-cash-from-investing-activities
+  id: esef-net-cash-from-investing-activities
   inputs:
   - proceeds-sale-equipment
   - purchase-equipment
@@ -370,8 +376,8 @@ computations:
   id: dividends-paid
   kind: line
   period: in-year
-- description: "Tr\xE9sorerie nette des activit\xE9s de financement"
-  id: net-cash-from-financing-activities
+- description: "Tr\xE9sorerie nette provenant des activit\xE9s de financement"
+  id: esef-net-cash-from-financing-activities
   inputs:
   - interest-paid
   - proceeds-from-issuing-shares
@@ -380,24 +386,24 @@ computations:
   period: in-year
 - accounts:
   - Bank Accounts
-  description: "Liquidit\xE9s au d\xE9but de l'ann\xE9e"
+  description: "Tr\xE9sorerie en d\xE9but d'ann\xE9e"
   id: cash-at-start-of-year
   kind: line
   period: at-start
-- description: "Tr\xE9sorerie et \xE9quivalents de tr\xE9sorerie \xE0 la fin de l'ann\xE9\
-    e"
-  id: cash-at-end-of-year
+- description: "Variation nette de la tr\xE9sorerie et des \xE9quivalents de tr\xE9\
+    sorerie"
+  id: esef-net-cash-change
+  inputs:
+  - esef-net-cash-from-operating-activities
+  - esef-net-cash-from-investing-activities
+  - esef-net-cash-from-financing-activities
+  kind: sum
+  period: in-year
+- description: "Tr\xE9sorerie et \xE9quivalents de tr\xE9sorerie \xE0 la fin de l'exercice"
+  id: esef-cash-at-end-of-year
   inputs:
   - cash-at-start-of-year
-  - description: "Variation nette de la tr\xE9sorerie et des \xE9quivalents de tr\xE9\
-      sorerie"
-    id: net-cash-change
-    inputs:
-    - net-cash-from-operating-activities
-    - net-cash-from-investing-activities
-    - net-cash-from-financing-activities
-    kind: sum
-    period: in-year
+  - esef-net-cash-change
   kind: group
 elements:
 - elements:
@@ -758,6 +764,7 @@ taxonomy:
   sign-reversed:
     depreciation-and-amortisation: true
     dividends-paid: true
+    esef-net-cash-from-investing-activities: true
     financial-items-adjustment: true
     income-tax: true
     income-tax-paid: true
@@ -771,7 +778,6 @@ taxonomy:
     address-of-entitys-registered-office: ifrs-full:AddressOfRegisteredOfficeOfEntity
     bank: ifrs-full:CashAndCashEquivalents
     capital: ifrs-full:IssuedCapital
-    cash-at-end-of-year: ifrs-full:CashAndCashEquivalents
     cash-at-start-of-year: ifrs-full:CashAndCashEquivalents
     comprehensive-income: ifrs-full:ProfitLoss
     country-of-incorporation: ifrs-full:CountryOfIncorporation
@@ -786,6 +792,11 @@ taxonomy:
     dividends-paid: ifrs-full:DividendsPaidClassifiedAsFinancingActivities
     domicile-of-entity: ifrs-full:DomicileOfEntity
     equity: ifrs-full:Equity
+    esef-cash-at-end-of-year: ifrs-full:CashAndCashEquivalents
+    esef-net-cash-change: ifrs-full:IncreaseDecreaseInCashAndCashEquivalents
+    esef-net-cash-from-financing-activities: ifrs-full:CashFlowsFromUsedInFinancingActivities
+    esef-net-cash-from-investing-activities: ifrs-full:CashFlowsFromUsedInInvestingActivities
+    esef-net-cash-from-operating-activities: ifrs-full:CashFlowsFromUsedInOperations
     financial-items-adjustment: ifrs-full:AdjustmentsForFinanceCosts
     fixed-assets: ifrs-full:PropertyPlantAndEquipment
     income-tax: ifrs-full:IncomeTaxExpenseContinuingOperations
@@ -798,7 +809,6 @@ taxonomy:
     level-of-rounding: ifrs-full:LevelOfRoundingUsedInFinancialStatements
     name-of-reporting-entity: ifrs-full:NameOfReportingEntityOrOtherMeansOfIdentification
     nature-of-entitys-principal-activities: ifrs-full:DescriptionOfNatureOfEntitysOperationsAndPrincipalActivities
-    net-cash-change: ifrs-full:IncreaseDecreaseInCashAndCashEquivalents
     net-cash-from-financing-activities: ifrs-full:CashFlowsFromUsedInFinancingActivities
     net-cash-from-investing-activities: ifrs-full:CashFlowsFromUsedInInvestingActivities
     net-cash-from-operating-activities: ifrs-full:CashFlowsFromUsedInOperations
@@ -825,6 +835,7 @@ taxonomy:
     trade-and-other-receivables: ifrs-full:AdjustmentsForDecreaseIncreaseInTradeAccountReceivable
     trade-creditors: ifrs-full:TradeAndOtherCurrentPayables
     trade-payables: ifrs-full:AdjustmentsForIncreaseDecreaseInTradeAccountPayable
+    vat-refund-due: ifrs-full:CurrentTaxAssetsCurrent
     vat-refund-owed: ifrs-full:CurrentTaxAssetsCurrent
 title: Financial statements
 worksheets:
@@ -850,10 +861,10 @@ worksheets:
   id: financial-position
   kind: simple
 - computations:
-  - net-cash-from-operating-activities
-  - net-cash-from-investing-activities
-  - net-cash-from-financing-activities
-  - cash-at-end-of-year
+  - esef-net-cash-from-operating-activities
+  - esef-net-cash-from-investing-activities
+  - esef-net-cash-from-financing-activities
+  - esef-cash-at-end-of-year
   id: cash-flows
   kind: simple
 

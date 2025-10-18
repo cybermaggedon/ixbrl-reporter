@@ -48,18 +48,14 @@ metadata:
   id: tax-reference
 namespaces:
   ct-comp: http://www.hmrc.gov.uk/schemas/ct/comp/2023-01-01
-  dpl: http://www.hmrc.gov.uk/schemas/ct/dpl/2021-01-01
-  uk-bus: http://xbrl.frc.org.uk/cd/2021-01-01/business
-  uk-core: http://xbrl.frc.org.uk/fr/2021-01-01/core
-  uk-geo: http://xbrl.frc.org.uk/cd/2021-01-01/countries
+  dpl: http://xbrl.frc.org.uk/dpl/2023-01-01
+  uk-bus: http://xbrl.frc.org.uk/cd/2023-01-01/business
+  uk-core: http://xbrl.frc.org.uk/fr/2023-01-01/core
+  uk-geo: http://xbrl.frc.org.uk/cd/2023-01-01/countries
 schema:
 - http://www.hmrc.gov.uk/schemas/ct/comp/2023-01-01/ct-comp-2023.xsd
-- http://www.hmrc.gov.uk/schemas/ct/dpl/2021-01-01/dpl-2021.xsd
+- https://xbrl.frc.org.uk/dpl/2023-01-01/dpl-2023-01-01.xsd
 segment:
-  activity:
-    dimension: dpl:ActivityDimension
-    map:
-      m: uk-bus:M-ProfessionalScientificTechnicalActivities
   business-name:
     content:
       kind: string
@@ -82,6 +78,11 @@ segment:
       item1: ct-comp:Item1
       item2: ct-comp:Item2
       item3: ct-comp:Item3
+      item4: ct-comp:Item4
+      item5: ct-comp:Item5
+      item6: ct-comp:Item6
+      item7: ct-comp:Item7
+      item8: ct-comp:Item8
   detailed-analysis:
     dimension: dpl:DetailedAnalysisDimension
     map:
@@ -111,6 +112,10 @@ segment:
     dimension: ct-comp:LossReformDimension
     map:
       post-loss-reform: ct-comp:Post-lossReform
+  main-industry-sector:
+    dimension: dpl:MainIndustrySector
+    map:
+      m: uk-bus:M-ProfessionalScientificTechnicalActivities
   territory:
     dimension: ct-comp:TerritoryDimension
     map:
@@ -129,6 +134,7 @@ sign-reversed:
   ct-tax-fy2: true
   ct-tax-total: true
   ct-trading-losses: true
+  ct-trading-losses-brought-forward: true
   depreciation: true
   entertainment: true
   fy1-tax-at-first-rate: true
@@ -482,6 +488,7 @@ tags:
   ct-trading-losses: ct-comp:TradingLossesOfThisOrLaterAP
   ct-trading-losses-brought-forward: ct-comp:TradingLossesBroughtForward
   ct-trading-profits: ct-comp:AdjustedTradingProfitOfThisPeriod
+  ct-turnover: uk-core:TurnoverRevenue
   current-period-loans-released-or-written-off-after9-months: ct-comp:CurrentPeriodLoansReleasedOrWrittenOffAfter9Months
   current-period-loans-released-or-written-off-after9-months-relief-due: ct-comp:CurrentPeriodLoansReleasedOrWrittenOffAfter9MonthsReliefDue
   current-period-loans-released-or-written-off-within9-months: ct-comp:CurrentPeriodLoansReleasedOrWrittenOffWithin9Months
@@ -567,6 +574,7 @@ tags:
   fy2-third-rate-of-tax: ct-comp:FY2ThirdRateOfTax
   gross-chargeable-gains: ct-comp:GrossChargeableGains
   gross-profit: uk-core:GrossProfitLoss
+  gross-profit-round: uk-core:GrossProfitLoss
   gross-s212-deemed-chargeable-gains: ct-comp:GrossS212DeemedChargeableGains
   gross-turnover-off-payroll-working: ct-comp:GrossTurnoverOffPayrollWorking
   group-atlrd-tax-credits-received: ct-comp:GroupATLRDTaxCreditsReceived
@@ -943,6 +951,7 @@ tags:
   pre-loss-reform-non-trading-losses-on-intangible-fixed-assets: ct-comp:Pre-lossReformNon-tradingLossesOnIntangibleFixedAssets
   pro-rata-share-of-disallowed-amount: ct-comp:ProRataShareOfDisallowedAmount
   profit: uk-core:ProfitLoss
+  profit-after-tax: uk-core:ProfitLoss
   profit-before-tax: uk-core:ProfitLossBeforeTax
   profit-loss-per-accounts: ct-comp:ProfitLossPerAccounts
   profits-and-gains-from-non-trading-loan-relationships: ct-comp:ProfitsAndGainsFromNon-tradingLoanRelationships
