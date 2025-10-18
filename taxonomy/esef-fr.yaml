@@ -53,12 +53,23 @@ note-templates: []
 schema:
 - http://www.esma.europa.eu/taxonomy/2021-03-24/esef_cor-lab-fr.xml
 segment: {}
-sign-reversed: {}
+sign-reversed:
+  depreciation-and-amortisation: true
+  dividends-paid: true
+  esef-net-cash-from-investing-activities: true
+  financial-items-adjustment: true
+  income-tax: true
+  income-tax-paid: true
+  interest-paid: true
+  net-cash-from-investing-activities: true
+  other-operating-costs: true
+  personnel-costs: true
+  purchase-equipment: true
+  trade-and-other-receivables: true
 tags:
   address-of-entitys-registered-office: ifrs-full:AddressOfRegisteredOfficeOfEntity
   bank: ifrs-full:CashAndCashEquivalents
   capital: ifrs-full:IssuedCapital
-  cash-at-end-of-year: ifrs-full:CashAndCashEquivalents
   cash-at-start-of-year: ifrs-full:CashAndCashEquivalents
   comprehensive-income: ifrs-full:ProfitLoss
   country-of-incorporation: ifrs-full:CountryOfIncorporation
@@ -73,6 +84,11 @@ tags:
   dividends-paid: ifrs-full:DividendsPaidClassifiedAsFinancingActivities
   domicile-of-entity: ifrs-full:DomicileOfEntity
   equity: ifrs-full:Equity
+  esef-cash-at-end-of-year: ifrs-full:CashAndCashEquivalents
+  esef-net-cash-change: ifrs-full:IncreaseDecreaseInCashAndCashEquivalents
+  esef-net-cash-from-financing-activities: ifrs-full:CashFlowsFromUsedInFinancingActivities
+  esef-net-cash-from-investing-activities: ifrs-full:CashFlowsFromUsedInInvestingActivities
+  esef-net-cash-from-operating-activities: ifrs-full:CashFlowsFromUsedInOperations
   financial-items-adjustment: ifrs-full:AdjustmentsForFinanceCosts
   fixed-assets: ifrs-full:PropertyPlantAndEquipment
   income-tax: ifrs-full:IncomeTaxExpenseContinuingOperations
@@ -85,7 +101,6 @@ tags:
   level-of-rounding: ifrs-full:LevelOfRoundingUsedInFinancialStatements
   name-of-reporting-entity: ifrs-full:NameOfReportingEntityOrOtherMeansOfIdentification
   nature-of-entitys-principal-activities: ifrs-full:DescriptionOfNatureOfEntitysOperationsAndPrincipalActivities
-  net-cash-change: ifrs-full:IncreaseDecreaseInCashAndCashEquivalents
   net-cash-from-financing-activities: ifrs-full:CashFlowsFromUsedInFinancingActivities
   net-cash-from-investing-activities: ifrs-full:CashFlowsFromUsedInInvestingActivities
   net-cash-from-operating-activities: ifrs-full:CashFlowsFromUsedInOperations
@@ -112,5 +127,6 @@ tags:
   trade-and-other-receivables: ifrs-full:AdjustmentsForDecreaseIncreaseInTradeAccountReceivable
   trade-creditors: ifrs-full:TradeAndOtherCurrentPayables
   trade-payables: ifrs-full:AdjustmentsForIncreaseDecreaseInTradeAccountPayable
+  vat-refund-due: ifrs-full:CurrentTaxAssetsCurrent
   vat-refund-owed: ifrs-full:CurrentTaxAssetsCurrent
 

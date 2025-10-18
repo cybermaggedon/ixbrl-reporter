@@ -4,14 +4,14 @@ accounts-type: full-accounts
 computations:
 - accounts:
   - Income:Sales
-  description: Consultancy
-  id: consultancy
+  description: Main income
+  id: main-income
   kind: line
   period: in-year
 - description: Turnover / revenue
   id: turnover
   inputs:
-  - consultancy
+  - main-income
   kind: sum
   period: in-year
 - description: Other income
@@ -49,7 +49,6 @@ computations:
   - salaries-expense
   - pensions-expense
   kind: group
-  note: staff-costs-note
   period: in-year
 - accounts:
   - Expenses:Depreciation
@@ -134,7 +133,6 @@ computations:
   - depreciation
   - other-charges
   kind: group
-  note: profit-note
   period: in-year
 - description: Charges against profits
   id: charges
@@ -149,7 +147,6 @@ computations:
   description: Interest on current account
   id: interest-received
   kind: line
-  note: financial-income-note
   period: in-year
 - description: Interest income
   id: interest-income
@@ -162,7 +159,6 @@ computations:
   description: Interest on bank loans
   id: interest-paid
   kind: line
-  note: financial-costs-note
   period: in-year
 - description: Interest expense
   id: interest-expense
@@ -186,7 +182,6 @@ computations:
   inputs:
   - tangible-assets
   kind: sum
-  note: equipment-note
   period: at-end
 - accounts:
   - Accounts Receivable
@@ -216,10 +211,12 @@ computations:
   - vat-refund-due
   - bank
   kind: sum
+  period: at-end
 - description: Prepayments and Accrued Income
   id: prepayments-and-accrued-income
   inputs: []
   kind: group
+  period: at-end
 - accounts:
   - Accounts Payable
   description: Trade Creditors
@@ -241,6 +238,7 @@ computations:
   - trade-creditors
   - other-creditors
   kind: sum
+  period: at-end
   segments:
   - matures: within-1-year
 - description: Net Current Assets
@@ -250,6 +248,7 @@ computations:
   - prepayments-and-accrued-income
   - creditors-within-1-year
   kind: sum
+  period: at-end
 - description: Total Assets Less Liabilities
   id: total-assets-less-liabilities
   inputs:
@@ -258,20 +257,24 @@ computations:
   - prepayments-and-accrued-income
   - creditors-within-1-year
   kind: sum
+  period: at-end
 - description: 'Creditors: falling due after one year'
   id: creditors-after-1-year
   inputs: []
-  kind: group
+  kind: sum
+  period: at-end
   segments:
   - matures: after-1-year
 - description: Provisions For Liabilities
   id: provisions-for-liabilities
   inputs: []
   kind: sum
+  period: at-end
 - description: Accrued liabilities and deferred income
   id: accruals-and-deferred-income
   inputs: []
   kind: group
+  period: at-end
 - description: Net Assets
   id: net-assets
   inputs:
@@ -280,6 +283,7 @@ computations:
   - provisions-for-liabilities
   - accruals-and-deferred-income
   kind: sum
+  period: at-end
 - accounts:
   - Equity:Shareholdings
   description: Share Capital
@@ -315,11 +319,13 @@ computations:
   - dividends
   - corporation-tax
   kind: group
+  period: at-end
 - description: Capital and Reserves
   id: total-capital-and-reserves
   inputs:
   - capital-and-reserves
   kind: sum
+  period: at-end
 - accounts:
   - Assets:Capital Equipment:Computer Equipment
   description: At start of period
@@ -338,6 +344,7 @@ computations:
   - fixed-assets-initial
   - fixed-assets-additions
   kind: group
+  period: at-end
 - accounts:
   - Assets:Capital Equipment:Depreciation
   description: At start of period
@@ -356,12 +363,14 @@ computations:
   - depreciation-initial
   - depreciation-charge
   kind: group
+  period: at-end
 - description: Carrying at end of period
   id: carrying-final
   inputs:
   - fixed-assets-total
   - depreciation-total
   kind: sum
+  period: at-end
 - accounts:
   - Equity:Shareholdings:Ordinary Shares
   - Equity:Shareholdings:Preference Shares
@@ -389,14 +398,12 @@ computations:
   description: Corporation tax
   id: corporation-tax-paid
   kind: line
-  note: taxation-note
   period: in-year
 - accounts:
   - Expenses:Depreciation
   description: Adjustment for depreciation
   id: depreciation-adjustment
   kind: line
-  note: equipment-note
   period: in-year
   reverse-sign: true
 - accounts:
@@ -425,7 +432,8 @@ computations:
   kind: line
   period: in-year
   reverse-sign: true
-- id: cash-inflow
+- description: Cash inflow
+  id: cash-inflow
   inputs:
   - profit
   kind: sum
@@ -482,7 +490,6 @@ computations:
   inputs:
   - shares-issued
   kind: group
-  note: share-capital-note
   period: in-year
 - accounts: []
   description: Purchase of non-controlling interest
@@ -510,34 +517,38 @@ computations:
   id: cash-at-start-of-year
   kind: line
   period: at-start
+- description: Net change in cash and cash equivalents
+  id: net-cash-change
+  inputs:
+  - net-cash-from-operating-activities
+  - net-cash-from-investing-activities
+  - net-cash-from-financing-activities
+  kind: sum
+  period: at-end
 - description: Cash and cash equivalents at end of year
   id: cash-at-end-of-year
   inputs:
   - cash-at-start-of-year
-  - description: Net change in cash and cash equivalents
-    id: net-cash-change
-    inputs:
-    - net-cash-from-operating-activities
-    - net-cash-from-investing-activities
-    - net-cash-from-financing-activities
-    kind: sum
+  - net-cash-change
   kind: group
-  note: cash-note
+  period: at-end
+- accounts:
+  - Bank Accounts:Current Account
+  description: Current account
+  id: current-account
+  kind: line
+  period: at-end
+- accounts:
+  - Bank Accounts:Reserve Account
+  description: Reserve account
+  id: reserve-account
+  kind: line
+  period: at-end
 - description: Cash and cash equivalents at end of year
   id: cash
   inputs:
-  - accounts:
-    - Bank Accounts:Current Account
-    description: Current account
-    id: current-account
-    kind: line
-    period: at-end
-  - accounts:
-    - Bank Accounts:Reserve Account
-    description: Reserve account
-    id: reserve-account
-    kind: line
-    period: at-end
+  - current-account
+  - reserve-account
   kind: group
   period: at-end
 elements:

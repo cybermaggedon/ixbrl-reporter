@@ -16,26 +16,27 @@ computations:
   segments:
   - expense-type: administrative-expenses
 - accounts:
+  - Assets:Capital Equipment:Computer Equipment
+  description: Capital investment
+  id: capital-investment
+  kind: line
+  period: in-year
+  reverse-sign: true
+  segments:
+  - business-type: management-expenses
+- accounts:
   - Equity:Corporation Tax
   description: Corporation tax
   id: corporation-tax
   kind: line
   period: in-year
-- description: Annual investment allowance
-  direction: down
-  id: ct-annual-investment-allowance
-  input:
-    accounts:
-    - Assets:Capital Equipment:Computer Equipment
-    kind: line
-    period: in-year
-    reverse-sign: true
-    segments:
-    - business-type: management-expenses
-  kind: round
+- accounts: []
+  description: Trading losses brought forward
+  id: ct-trading-losses-brought-forward
+  kind: line
   period: in-year
   segments:
-  - business-type: management-expenses
+  - business-type: company
 - accounts:
   - Income
   description: Income from main trade
@@ -43,9 +44,14 @@ computations:
   kind: line
   period: in-year
   segments:
-  - activity: m
   - detailed-analysis: item1
   - countries-regions: UK
+- accounts:
+  - Income:Sales
+  description: Main income
+  id: main-income
+  kind: line
+  period: in-year
 - accounts:
   - Expenses:VAT Purchases:Office
   description: Office costs
@@ -169,6 +175,21 @@ computations:
   period: in-year
   segments:
   - expense-type: administrative-expenses
+- description: Annual investment allowance
+  direction: down
+  id: ct-annual-investment-allowance
+  input: capital-investment
+  kind: round
+  period: in-year
+  reverse-sign: true
+  segments:
+  - business-type: management-expenses
+- description: Turnover / revenue
+  id: ct-turnover
+  inputs:
+  - income
+  kind: group
+  period: in-year
 - description: Project Iguana
   id: rnd-proj1-enhanced-expenditure
   inputs:
@@ -204,21 +225,11 @@ computations:
   - travel
   kind: group
   period: in-year
-- description: Turnover / revenue
-  id: turnover
+- description: Gross profit unrounded
+  id: gross-profit-raw
   inputs:
-  - income
+  - ct-turnover
   kind: group
-  period: in-year
-- description: Gross profit
-  direction: down
-  id: gross-profit
-  input:
-    inputs:
-    - turnover
-    kind: sum
-    period: in-year
-  kind: round
   period: in-year
 - description: SME R&D tax relief (130%)
   id: rnd-enhanced-expenditure
@@ -231,12 +242,11 @@ computations:
   - business-type: trade
   - loss-reform: post-loss-reform
   - territory: uk
-- description: Net profit before tax
-  id: profit-before-tax
-  inputs:
-  - gross-profit
-  - total-costs
-  kind: group
+- description: Gross profit
+  direction: down
+  id: gross-profit-round
+  input: gross-profit-raw
+  kind: round
   period: in-year
 - description: SME R&D / Creative enhanced expenditure (130%)
   id: rnd-creative-enhanced-expenditure
@@ -249,8 +259,15 @@ computations:
   - business-type: trade
   - loss-reform: post-loss-reform
   - territory: uk
+- description: Net profit before tax
+  id: profit-before-tax
+  inputs:
+  - gross-profit-round
+  - total-costs
+  kind: group
+  period: in-year
 - description: Profit (Loss) after tax
-  id: profit
+  id: profit-after-tax
   inputs:
   - profit-before-tax
   - tax-due
@@ -277,12 +294,22 @@ computations:
   period: in-year
   segments:
   - business-type: company
+- comparison: less
+  description: Profits (if negative)
+  id: ct-trading-profits-if-neg
+  input: ct-trading-profits-raw
+  kind: compare
+  period: in-year
+- comparison: greater
+  description: Profits (if positive)
+  id: ct-trading-profits-if-pos
+  input: ct-trading-profits-raw
+  kind: compare
+  period: in-year
 - description: Trading losses
   id: ct-trading-losses
   inputs:
-  - comparison: less
-    input: ct-trading-profits-raw
-    kind: compare
+  - ct-trading-profits-if-neg
   kind: sum
   period: in-year
   segments:
@@ -290,10 +317,7 @@ computations:
 - description: Taxable profits
   direction: down
   id: ct-trading-profits
-  input:
-    comparison: greater
-    input: ct-trading-profits-raw
-    kind: compare
+  input: ct-trading-profits-if-pos
   kind: round
   period: in-year
   segments:
@@ -302,20 +326,41 @@ computations:
   id: ct-net-trading-profits
   inputs:
   - ct-trading-profits
+  - ct-trading-losses-brought-forward
   kind: sum
+  period: in-year
+  segments:
+  - business-type: company
+- description: FY1 (raw)
+  id: ct-profit-before-tax-fy1-raw
+  input: ct-net-trading-profits
+  kind: apportion
+  period: in-year
+  proportion-period: metadata.tax.fy1
+  segments:
+  - business-type: company
+  whole-period: metadata.accounting.periods.0
+- description: FY2 (raw)
+  id: ct-profit-before-tax-fy2-raw
+  input: ct-net-trading-profits
+  kind: apportion
+  period: in-year
+  proportion-period: metadata.tax.fy2
+  segments:
+  - business-type: company
+  whole-period: metadata.accounting.periods.0
+- description: Profits before other deductions and reliefs
+  id: profits-before-other-deductions-and-reliefs
+  inputs:
+  - ct-net-trading-profits
+  kind: group
   period: in-year
   segments:
   - business-type: company
 - description: FY1
   direction: nearest
   id: ct-profit-before-tax-fy1
-  input:
-    description: FY1
-    input: ct-net-trading-profits
-    kind: apportion
-    period: in-year
-    proportion-period: metadata.tax.fy1
-    whole-period: metadata.accounting.periods.0
+  input: ct-profit-before-tax-fy1-raw
   kind: round
   period: in-year
   segments:
@@ -323,21 +368,15 @@ computations:
 - description: FY2
   direction: nearest
   id: ct-profit-before-tax-fy2
-  input:
-    description: FY2
-    input: ct-net-trading-profits
-    kind: apportion
-    period: in-year
-    proportion-period: metadata.tax.fy2
-    whole-period: metadata.accounting.periods.0
+  input: ct-profit-before-tax-fy2-raw
   kind: round
   period: in-year
   segments:
   - business-type: company
-- description: Profits before other deductions and reliefs
-  id: profits-before-other-deductions-and-reliefs
+- description: Profits before donations and group relief
+  id: profits-before-charges-and-group-relief
   inputs:
-  - ct-net-trading-profits
+  - profits-before-other-deductions-and-reliefs
   kind: group
   period: in-year
   segments:
@@ -369,10 +408,10 @@ computations:
   reverse-sign: true
   segments:
   - business-type: company
-- description: Profits before donations and group relief
-  id: profits-before-charges-and-group-relief
+- description: Profits chargeable to Corporation Tax
+  id: total-profits-chargeable-to-corporation-tax
   inputs:
-  - profits-before-other-deductions-and-reliefs
+  - profits-before-charges-and-group-relief
   kind: group
   period: in-year
   segments:
@@ -386,43 +425,40 @@ computations:
   period: in-year
   segments:
   - business-type: company
-- description: Profits chargeable to Corporation Tax
-  id: total-profits-chargeable-to-corporation-tax
-  inputs:
-  - profits-before-charges-and-group-relief
-  kind: group
-  period: in-year
-  segments:
-  - business-type: company
-- id: corporation-tax-chargeable-payable
+- description: Corporation tax chargeable payable
+  id: corporation-tax-chargeable-payable
   inputs:
   - ct-tax-total
   kind: sum
   period: in-year
   segments:
   - business-type: company
-- id: net-corporation-tax-payable
+- description: Net corporation tax payable
+  id: net-corporation-tax-payable
   inputs:
   - corporation-tax-chargeable-payable
   kind: sum
   period: in-year
   segments:
   - business-type: company
-- id: ct-tax-owed
+- description: Corporation tax owed
+  id: ct-tax-owed
   inputs:
   - net-corporation-tax-payable
   kind: sum
   period: in-year
   segments:
   - business-type: company
-- id: tax-chargeable
+- description: Corporation tax chargeable
+  id: tax-chargeable
   inputs:
   - ct-tax-owed
   kind: sum
   period: in-year
   segments:
   - business-type: company
-- id: tax-payable
+- description: Corporation tax payable
+  id: tax-payable
   inputs:
   - tax-chargeable
   kind: sum
@@ -499,13 +535,14 @@ elements:
         id: adjusted-trading-profit-of-this-period
         kind: computation
         period-config: metadata.tax.period
-      - context: report-period
+      - computation: ct-trading-losses-brought-forward
+        context: report-period
         description: Trading losses brough forward
         field: 160, 285
         id: trading-losses-brought-forward
-        kind: money
-        value: 0
-      - computation: ct-trading-profits
+        kind: computation
+        period-config: metadata.tax.period
+      - computation: ct-net-trading-profits
         context: report-period
         description: Net trading profits
         field: '165'
@@ -916,18 +953,14 @@ taxonomy:
     id: tax-reference
   namespaces:
     ct-comp: http://www.hmrc.gov.uk/schemas/ct/comp/2023-01-01
-    dpl: http://www.hmrc.gov.uk/schemas/ct/dpl/2021-01-01
-    uk-bus: http://xbrl.frc.org.uk/cd/2021-01-01/business
-    uk-core: http://xbrl.frc.org.uk/fr/2021-01-01/core
-    uk-geo: http://xbrl.frc.org.uk/cd/2021-01-01/countries
+    dpl: http://xbrl.frc.org.uk/dpl/2023-01-01
+    uk-bus: http://xbrl.frc.org.uk/cd/2023-01-01/business
+    uk-core: http://xbrl.frc.org.uk/fr/2023-01-01/core
+    uk-geo: http://xbrl.frc.org.uk/cd/2023-01-01/countries
   schema:
   - http://www.hmrc.gov.uk/schemas/ct/comp/2023-01-01/ct-comp-2023.xsd
-  - http://www.hmrc.gov.uk/schemas/ct/dpl/2021-01-01/dpl-2021.xsd
+  - https://xbrl.frc.org.uk/dpl/2023-01-01/dpl-2023-01-01.xsd
   segment:
-    activity:
-      dimension: dpl:ActivityDimension
-      map:
-        m: uk-bus:M-ProfessionalScientificTechnicalActivities
     business-name:
       content:
         kind: string
@@ -950,6 +983,11 @@ taxonomy:
         item1: ct-comp:Item1
         item2: ct-comp:Item2
         item3: ct-comp:Item3
+        item4: ct-comp:Item4
+        item5: ct-comp:Item5
+        item6: ct-comp:Item6
+        item7: ct-comp:Item7
+        item8: ct-comp:Item8
     detailed-analysis:
       dimension: dpl:DetailedAnalysisDimension
       map:
@@ -979,6 +1017,10 @@ taxonomy:
       dimension: ct-comp:LossReformDimension
       map:
         post-loss-reform: ct-comp:Post-lossReform
+    main-industry-sector:
+      dimension: dpl:MainIndustrySector
+      map:
+        m: uk-bus:M-ProfessionalScientificTechnicalActivities
     territory:
       dimension: ct-comp:TerritoryDimension
       map:
@@ -997,6 +1039,7 @@ taxonomy:
     ct-tax-fy2: true
     ct-tax-total: true
     ct-trading-losses: true
+    ct-trading-losses-brought-forward: true
     depreciation: true
     entertainment: true
     fy1-tax-at-first-rate: true
@@ -1350,6 +1393,7 @@ taxonomy:
     ct-trading-losses: ct-comp:TradingLossesOfThisOrLaterAP
     ct-trading-losses-brought-forward: ct-comp:TradingLossesBroughtForward
     ct-trading-profits: ct-comp:AdjustedTradingProfitOfThisPeriod
+    ct-turnover: uk-core:TurnoverRevenue
     current-period-loans-released-or-written-off-after9-months: ct-comp:CurrentPeriodLoansReleasedOrWrittenOffAfter9Months
     current-period-loans-released-or-written-off-after9-months-relief-due: ct-comp:CurrentPeriodLoansReleasedOrWrittenOffAfter9MonthsReliefDue
     current-period-loans-released-or-written-off-within9-months: ct-comp:CurrentPeriodLoansReleasedOrWrittenOffWithin9Months
@@ -1435,6 +1479,7 @@ taxonomy:
     fy2-third-rate-of-tax: ct-comp:FY2ThirdRateOfTax
     gross-chargeable-gains: ct-comp:GrossChargeableGains
     gross-profit: uk-core:GrossProfitLoss
+    gross-profit-round: uk-core:GrossProfitLoss
     gross-s212-deemed-chargeable-gains: ct-comp:GrossS212DeemedChargeableGains
     gross-turnover-off-payroll-working: ct-comp:GrossTurnoverOffPayrollWorking
     group-atlrd-tax-credits-received: ct-comp:GroupATLRDTaxCreditsReceived
@@ -1811,6 +1856,7 @@ taxonomy:
     pre-loss-reform-non-trading-losses-on-intangible-fixed-assets: ct-comp:Pre-lossReformNon-tradingLossesOnIntangibleFixedAssets
     pro-rata-share-of-disallowed-amount: ct-comp:ProRataShareOfDisallowedAmount
     profit: uk-core:ProfitLoss
+    profit-after-tax: uk-core:ProfitLoss
     profit-before-tax: uk-core:ProfitLossBeforeTax
     profit-loss-per-accounts: ct-comp:ProfitLossPerAccounts
     profits-and-gains-from-non-trading-loan-relationships: ct-comp:ProfitsAndGainsFromNon-tradingLoanRelationships
@@ -2027,6 +2073,7 @@ worksheets:
   kind: simple
 - computations:
   - ct-trading-profits-raw
+  - ct-trading-losses-brought-forward
   - ct-net-trading-profits
   - ct-trading-losses
   - ct-profit-before-tax-total
@@ -2035,12 +2082,12 @@ worksheets:
   id: tax-calculation
   kind: simple
 - computations:
-  - turnover
-  - gross-profit
+  - ct-turnover
+  - gross-profit-round
   - total-costs
   - profit-before-tax
   - tax-due
-  - profit
+  - profit-after-tax
   description: Detailed Profit-and-Loss
   id: detailed-profit-and-loss
   kind: simple
