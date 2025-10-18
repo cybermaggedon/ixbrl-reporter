@@ -17,6 +17,9 @@ to discuss... https://discord.gg/3cAvPASS6p
 The configuration files used by ixbrl-reporter are complex.  See
 [`ixbrl-reporter-jsonnet`](https://github.com/cybermaggedon/ixbrl-reporter-jsonnet) for an easier way to manage the configuration files.
 
+There seem to be more users of ixbrl-reporter-jsonnet, so expect to have
+an easier time tracking the latest submissions for HMRC.
+
 ## Summary
 
 This code is intended for use with `ixbrl-reporter`.
