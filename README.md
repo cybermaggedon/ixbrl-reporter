@@ -232,6 +232,8 @@ Run: `pytest tests/`
 
 ### Test suite - examples
 
+These are basically invoke by the regression test suite above.
+
 This test suite generates example output from example configuration,
 and verifies nothing has changed in output values.  It's a regression
 test.  You need to install: piecash.
