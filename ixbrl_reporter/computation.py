@@ -28,14 +28,20 @@ CMP_LESS_EQUAL = 2
 CMP_GREATER = 3
 CMP_GREATER_EQUAL = 4
 
+ZERO_IF_LESS = 1
+ZERO_IF_GREATER = 2
+
 class Metadata:
-    def __init__(self, id, description, context, segments, period, note):
+    def __init__(self, id, description, context, segments, period, note,
+                 suppress_zero=False, zero_if=None):
         self.id = id
         self.description = description
         self.context = context
         self.segments = segments
         self.period = period
         self.note = note
+        self.suppress_zero = suppress_zero
+        self.zero_if = zero_if
         
     @staticmethod
     def load(cfg, comps, context, data, gcfg):
@@ -73,7 +79,16 @@ class Metadata:
 
         if note: note = str(note)
 
-        return Metadata(id, description, context, segs, pid, note)
+        suppress_zero = cfg.get_bool("suppress-if-zero", False)
+
+        zero_if_spec = cfg.get("zero-if", mandatory=False)
+        zero_if = {
+            "less-than-zero": ZERO_IF_LESS,
+            "greater-than-zero": ZERO_IF_GREATER,
+        }.get(zero_if_spec)
+
+        return Metadata(id, description, context, segs, pid, note,
+                        suppress_zero, zero_if)
 
     def get_context(self, start, end):
 
@@ -186,6 +201,11 @@ class Line(Computable):
 
         if self.reverse: total *= -1
 
+        if self.metadata.zero_if == ZERO_IF_LESS and total < 0:
+            total = 0
+        elif self.metadata.zero_if == ZERO_IF_GREATER and total > 0:
+            total = 0
+
         if len(self.metadata.segments) != 0:
             context = context.with_segments(self.metadata.segments)
 
@@ -280,6 +300,11 @@ class Group(Computable):
         total = 0
         for input in self.inputs:
             total += input.compute(accounts, start, end, result)
+
+        if self.metadata.zero_if == ZERO_IF_LESS and total < 0:
+            total = 0
+        elif self.metadata.zero_if == ZERO_IF_GREATER and total > 0:
+            total = 0
 
         result.set(
             self.metadata.id,
@@ -555,6 +580,11 @@ class Sum(Computable):
 
         for v in self.steps:
             total += v.compute(accounts, start, end, result)
+
+        if self.metadata.zero_if == ZERO_IF_LESS and total < 0:
+            total = 0
+        elif self.metadata.zero_if == ZERO_IF_GREATER and total > 0:
+            total = 0
 
         context = self.metadata.get_context(start, end)
 

@@ -209,6 +209,58 @@ adding the `depreciation` expense will make the expense larger.
 So, the computation can be made by taking a 'reversed' depreciation expense
 and adding it to management expenses.
 
+### Zero clamping
+
+The `zero-if` attribute can be used to clamp a computed value to zero
+when it meets a condition:
+
+```
+zero-if: less-than-zero
+```
+
+or:
+
+```
+zero-if: greater-than-zero
+```
+
+With `less-than-zero`, any negative result is replaced with zero.
+With `greater-than-zero`, any positive result is replaced with zero.
+This can be applied to `line`, `group` and `sum` computations.
+
+### Suppressing zero lines
+
+The `suppress-if-zero` attribute removes a line from the output when its
+value is zero across all periods.  This is useful for expense categories
+that may not apply every year:
+
+```
+- id: software-expenses
+  kind: line
+  description: Software
+  accounts:
+  - Expenses:VAT Purchases:Software
+  period: in-year
+  suppress-if-zero: true
+```
+
+If Software is 0.00 in both the current and prior year, the line will not
+appear in the report.  If it has a value in any period, it will be shown
+for all periods.
+
+When `suppress-if-zero` is set on individual lines within a `group`, those
+lines are filtered from the breakdown.  If all lines in a group are
+suppressed, the group collapses to a single total line rather than showing
+an empty breakdown.
+
+`suppress-if-zero` can also be set on a `group` or `sum` computation
+itself, which suppresses the entire section when the total is zero
+across all periods.
+
+`zero-if` and `suppress-if-zero` can be combined: `zero-if` is applied
+first during computation, and `suppress-if-zero` then checks the
+(possibly clamped) result.
+
 ### iXBRL
 
 Regarding iXBRL output, the taxonomy configuration file is used to map
