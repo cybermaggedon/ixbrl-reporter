@@ -12,7 +12,8 @@ from ixbrl_reporter.computation import (
     get_computation, create_uuid, ResultSet,
     IN_YEAR, AT_START, AT_END,
     ROUND_DOWN, ROUND_UP, ROUND_NEAREST,
-    CMP_LESS, CMP_LESS_EQUAL, CMP_GREATER, CMP_GREATER_EQUAL
+    CMP_LESS, CMP_LESS_EQUAL, CMP_GREATER, CMP_GREATER_EQUAL,
+    ZERO_IF_LESS, ZERO_IF_GREATER
 )
 
 
@@ -79,6 +80,11 @@ class TestConstants:
         assert CMP_LESS_EQUAL == 2
         assert CMP_GREATER == 3
         assert CMP_GREATER_EQUAL == 4
+
+    def test_zero_if_constants(self):
+        """Test zero-if type constants"""
+        assert ZERO_IF_LESS == 1
+        assert ZERO_IF_GREATER == 2
 
 
 class TestResultSet:
@@ -306,7 +312,109 @@ class TestMetadata:
         metadata = Metadata.load(mock_cfg, {}, self.mock_context, None, self.mock_gcfg)
         
         assert metadata.note == "12345"
-    
+
+    def test_metadata_init_suppress_zero_default(self):
+        """Metadata should default suppress_zero to False"""
+        metadata = Metadata("id", "desc", None, [], AT_END, None)
+        assert metadata.suppress_zero is False
+        assert metadata.zero_if is None
+
+    def test_metadata_init_suppress_zero(self):
+        """Metadata should store suppress_zero and zero_if"""
+        metadata = Metadata("id", "desc", None, [], AT_END, None,
+                            suppress_zero=True, zero_if=ZERO_IF_LESS)
+        assert metadata.suppress_zero is True
+        assert metadata.zero_if == ZERO_IF_LESS
+
+    def test_metadata_load_suppress_if_zero(self):
+        """Metadata.load should parse suppress-if-zero from config"""
+        mock_cfg = Mock()
+
+        def mock_get(key, deflt=None, mandatory=True):
+            values = {
+                "id": "test-id",
+                "description": "Test",
+                "period": "at-end",
+                "segments": [],
+                "note": None,
+                "zero-if": None,
+            }
+            return values.get(key, deflt)
+
+        mock_cfg.get.side_effect = mock_get
+        mock_cfg.get_bool.return_value = True
+
+        metadata = Metadata.load(mock_cfg, {}, self.mock_context, None, self.mock_gcfg)
+
+        mock_cfg.get_bool.assert_called_once_with("suppress-if-zero", False)
+        assert metadata.suppress_zero is True
+
+    def test_metadata_load_zero_if_less_than_zero(self):
+        """Metadata.load should parse zero-if: less-than-zero"""
+        mock_cfg = Mock()
+
+        def mock_get(key, deflt=None, mandatory=True):
+            values = {
+                "id": "test-id",
+                "description": "Test",
+                "period": "at-end",
+                "segments": [],
+                "note": None,
+                "zero-if": "less-than-zero",
+            }
+            return values.get(key, deflt)
+
+        mock_cfg.get.side_effect = mock_get
+        mock_cfg.get_bool.return_value = False
+
+        metadata = Metadata.load(mock_cfg, {}, self.mock_context, None, self.mock_gcfg)
+
+        assert metadata.zero_if == ZERO_IF_LESS
+
+    def test_metadata_load_zero_if_greater_than_zero(self):
+        """Metadata.load should parse zero-if: greater-than-zero"""
+        mock_cfg = Mock()
+
+        def mock_get(key, deflt=None, mandatory=True):
+            values = {
+                "id": "test-id",
+                "description": "Test",
+                "period": "at-end",
+                "segments": [],
+                "note": None,
+                "zero-if": "greater-than-zero",
+            }
+            return values.get(key, deflt)
+
+        mock_cfg.get.side_effect = mock_get
+        mock_cfg.get_bool.return_value = False
+
+        metadata = Metadata.load(mock_cfg, {}, self.mock_context, None, self.mock_gcfg)
+
+        assert metadata.zero_if == ZERO_IF_GREATER
+
+    def test_metadata_load_zero_if_none(self):
+        """Metadata.load should set zero_if to None when not specified"""
+        mock_cfg = Mock()
+
+        def mock_get(key, deflt=None, mandatory=True):
+            values = {
+                "id": "test-id",
+                "description": "Test",
+                "period": "at-end",
+                "segments": [],
+                "note": None,
+                "zero-if": None,
+            }
+            return values.get(key, deflt)
+
+        mock_cfg.get.side_effect = mock_get
+        mock_cfg.get_bool.return_value = False
+
+        metadata = Metadata.load(mock_cfg, {}, self.mock_context, None, self.mock_gcfg)
+
+        assert metadata.zero_if is None
+
     def test_metadata_get_context_at_start(self):
         """get_context should handle AT_START period correctly"""
         metadata = Metadata("id", "desc", self.mock_context, [], AT_START, None)
@@ -720,6 +828,106 @@ class TestLine:
         mock_total_result.assert_called_once_with(line, mock_datum, items=[])
         assert output == mock_total_instance
 
+    def test_line_compute_zero_if_less_clamps_negative(self):
+        """Line.compute should clamp negative total to zero when zero_if=ZERO_IF_LESS"""
+        self.mock_metadata.period = IN_YEAR
+        self.mock_metadata.zero_if = ZERO_IF_LESS
+
+        mock_context = Mock()
+        mock_session = Mock()
+        mock_account = Mock()
+        mock_result = Mock()
+
+        self.mock_metadata.context.with_period.return_value = mock_context
+        mock_session.get_account.return_value = mock_account
+        mock_session.get_splits.return_value = [{"amount": -100.0}]
+        mock_session.is_debit.return_value = False
+
+        line = Line(self.mock_metadata, ["Expenses:Rent"], reverse=False)
+        result = line.compute(mock_session, date(2023, 1, 1), date(2023, 12, 31), mock_result)
+
+        assert result == 0
+
+    def test_line_compute_zero_if_less_keeps_positive(self):
+        """Line.compute should keep positive total when zero_if=ZERO_IF_LESS"""
+        self.mock_metadata.period = IN_YEAR
+        self.mock_metadata.zero_if = ZERO_IF_LESS
+
+        mock_context = Mock()
+        mock_session = Mock()
+        mock_account = Mock()
+        mock_result = Mock()
+
+        self.mock_metadata.context.with_period.return_value = mock_context
+        mock_session.get_account.return_value = mock_account
+        mock_session.get_splits.return_value = [{"amount": 100.0}]
+        mock_session.is_debit.return_value = False
+
+        line = Line(self.mock_metadata, ["Revenue:Sales"], reverse=False)
+        result = line.compute(mock_session, date(2023, 1, 1), date(2023, 12, 31), mock_result)
+
+        assert result == 100.0
+
+    def test_line_compute_zero_if_greater_clamps_positive(self):
+        """Line.compute should clamp positive total to zero when zero_if=ZERO_IF_GREATER"""
+        self.mock_metadata.period = IN_YEAR
+        self.mock_metadata.zero_if = ZERO_IF_GREATER
+
+        mock_context = Mock()
+        mock_session = Mock()
+        mock_account = Mock()
+        mock_result = Mock()
+
+        self.mock_metadata.context.with_period.return_value = mock_context
+        mock_session.get_account.return_value = mock_account
+        mock_session.get_splits.return_value = [{"amount": 100.0}]
+        mock_session.is_debit.return_value = False
+
+        line = Line(self.mock_metadata, ["Revenue:Sales"], reverse=False)
+        result = line.compute(mock_session, date(2023, 1, 1), date(2023, 12, 31), mock_result)
+
+        assert result == 0
+
+    def test_line_compute_zero_if_greater_keeps_negative(self):
+        """Line.compute should keep negative total when zero_if=ZERO_IF_GREATER"""
+        self.mock_metadata.period = IN_YEAR
+        self.mock_metadata.zero_if = ZERO_IF_GREATER
+
+        mock_context = Mock()
+        mock_session = Mock()
+        mock_account = Mock()
+        mock_result = Mock()
+
+        self.mock_metadata.context.with_period.return_value = mock_context
+        mock_session.get_account.return_value = mock_account
+        mock_session.get_splits.return_value = [{"amount": -50.0}]
+        mock_session.is_debit.return_value = False
+
+        line = Line(self.mock_metadata, ["Expenses:Rent"], reverse=False)
+        result = line.compute(mock_session, date(2023, 1, 1), date(2023, 12, 31), mock_result)
+
+        assert result == -50.0
+
+    def test_line_compute_zero_if_none_no_clamping(self):
+        """Line.compute should not clamp when zero_if is None"""
+        self.mock_metadata.period = IN_YEAR
+        self.mock_metadata.zero_if = None
+
+        mock_context = Mock()
+        mock_session = Mock()
+        mock_account = Mock()
+        mock_result = Mock()
+
+        self.mock_metadata.context.with_period.return_value = mock_context
+        mock_session.get_account.return_value = mock_account
+        mock_session.get_splits.return_value = [{"amount": -100.0}]
+        mock_session.is_debit.return_value = False
+
+        line = Line(self.mock_metadata, ["Expenses:Rent"], reverse=False)
+        result = line.compute(mock_session, date(2023, 1, 1), date(2023, 12, 31), mock_result)
+
+        assert result == -100.0
+
 
 class TestConstant:
     """Test Constant computation class"""
@@ -1010,6 +1218,52 @@ class TestGroup:
         )
         assert output == mock_breakdown_instance
 
+    def test_group_compute_zero_if_less_clamps_negative(self):
+        """Group.compute should clamp negative total to zero when zero_if=ZERO_IF_LESS"""
+        mock_input1 = Mock()
+        mock_input2 = Mock()
+        mock_input1.compute.return_value = -100.0
+        mock_input2.compute.return_value = -50.0
+
+        self.mock_metadata.zero_if = ZERO_IF_LESS
+        mock_context = Mock()
+        self.mock_metadata.get_context.return_value = mock_context
+
+        group = Group(self.mock_metadata, [mock_input1, mock_input2])
+        result = group.compute("accounts", date(2023, 1, 1), date(2023, 12, 31), Mock())
+
+        assert result == 0
+
+    def test_group_compute_zero_if_greater_clamps_positive(self):
+        """Group.compute should clamp positive total to zero when zero_if=ZERO_IF_GREATER"""
+        mock_input1 = Mock()
+        mock_input2 = Mock()
+        mock_input1.compute.return_value = 100.0
+        mock_input2.compute.return_value = 50.0
+
+        self.mock_metadata.zero_if = ZERO_IF_GREATER
+        mock_context = Mock()
+        self.mock_metadata.get_context.return_value = mock_context
+
+        group = Group(self.mock_metadata, [mock_input1, mock_input2])
+        result = group.compute("accounts", date(2023, 1, 1), date(2023, 12, 31), Mock())
+
+        assert result == 0
+
+    def test_group_compute_zero_if_none_no_clamping(self):
+        """Group.compute should not clamp when zero_if is None"""
+        mock_input1 = Mock()
+        mock_input1.compute.return_value = -100.0
+
+        self.mock_metadata.zero_if = None
+        mock_context = Mock()
+        self.mock_metadata.get_context.return_value = mock_context
+
+        group = Group(self.mock_metadata, [mock_input1])
+        result = group.compute("accounts", date(2023, 1, 1), date(2023, 12, 31), Mock())
+
+        assert result == -100.0
+
 
 class TestSum:
     """Test Sum computation class"""
@@ -1106,6 +1360,60 @@ class TestSum:
             sum_comp, mock_datum, items=[mock_input1, mock_input2]
         )
         assert output == mock_total_instance
+
+    def test_sum_compute_zero_if_less_clamps_negative(self):
+        """Sum.compute should clamp negative total to zero when zero_if=ZERO_IF_LESS"""
+        mock_input1 = Mock()
+        mock_input2 = Mock()
+        mock_input1.compute.return_value = -100.0
+        mock_input2.compute.return_value = -50.0
+
+        self.mock_metadata.zero_if = ZERO_IF_LESS
+        mock_context = Mock()
+        self.mock_metadata.get_context.return_value = mock_context
+
+        sum_comp = Sum(self.mock_metadata)
+        sum_comp.add(mock_input1)
+        sum_comp.add(mock_input2)
+
+        result = sum_comp.compute("session", date(2023, 1, 1), date(2023, 12, 31), Mock())
+
+        assert result == 0
+
+    def test_sum_compute_zero_if_greater_clamps_positive(self):
+        """Sum.compute should clamp positive total to zero when zero_if=ZERO_IF_GREATER"""
+        mock_input1 = Mock()
+        mock_input2 = Mock()
+        mock_input1.compute.return_value = 100.0
+        mock_input2.compute.return_value = 50.0
+
+        self.mock_metadata.zero_if = ZERO_IF_GREATER
+        mock_context = Mock()
+        self.mock_metadata.get_context.return_value = mock_context
+
+        sum_comp = Sum(self.mock_metadata)
+        sum_comp.add(mock_input1)
+        sum_comp.add(mock_input2)
+
+        result = sum_comp.compute("session", date(2023, 1, 1), date(2023, 12, 31), Mock())
+
+        assert result == 0
+
+    def test_sum_compute_zero_if_none_no_clamping(self):
+        """Sum.compute should not clamp when zero_if is None"""
+        mock_input1 = Mock()
+        mock_input1.compute.return_value = -100.0
+
+        self.mock_metadata.zero_if = None
+        mock_context = Mock()
+        self.mock_metadata.get_context.return_value = mock_context
+
+        sum_comp = Sum(self.mock_metadata)
+        sum_comp.add(mock_input1)
+
+        result = sum_comp.compute("session", date(2023, 1, 1), date(2023, 12, 31), Mock())
+
+        assert result == -100.0
 
 
 class TestAbsOperation:

@@ -184,3 +184,8 @@ tax:
     start: '2020-04-01'
     end: '2020-12-31'
     year: '2020'
+
+  rnd-claim-notification-submitted: false
+
+  rnd-additional-notification-submitted: false
+

@@ -12,6 +12,13 @@ class WorksheetSection:
     def __init__(self, id):
         self.id = id
 
+def is_all_zero(computation, results):
+    for period, result in results:
+        value = computation.get_output(result).value
+        if abs(value.value) > 0:
+            return False
+    return True
+
 class SimpleWorksheet(Worksheet):
 
     def __init__(self, comps, periods, data):
@@ -40,6 +47,10 @@ class SimpleWorksheet(Worksheet):
 
     def get_single_line_ix(self, computation, results):
 
+        if computation.metadata.suppress_zero:
+            if is_all_zero(computation, results):
+                return None
+
         cells = []
 
         for period, result in results:
@@ -63,8 +74,18 @@ class SimpleWorksheet(Worksheet):
 
     def get_breakdown_ix(self, computation, results):
 
+        # If the whole group is suppress-zero and all zero, skip entirely
+        if computation.metadata.suppress_zero:
+            if is_all_zero(computation, results):
+                return None
+
         item_ixs = []
         for item in computation.inputs:
+
+            # Filter out zero children that have suppress-zero
+            if item.metadata.suppress_zero:
+                if is_all_zero(item, results):
+                    continue
 
             note = None
             if item.metadata.note:
@@ -98,6 +119,13 @@ class SimpleWorksheet(Worksheet):
                 note = self.data.get_note(computation.metadata.note)
             except:
                 pass
+
+        # If all children were suppressed, render as a single line
+        # instead of a group with just a total
+        if len(item_ixs) == 0:
+            ix = TotalIndex(computation.metadata, Row(cells), notes=note)
+            ix = Index(computation.metadata, [ix])
+            return ix
 
         ix = TotalIndex(computation.metadata, Row(cells))
         item_ixs.append(ix)
@@ -140,12 +168,12 @@ class SimpleWorksheet(Worksheet):
             computation = computations[cid]
 
             if isinstance(computation, Group):
-
                 ix = self.get_breakdown_ix(computation, results)
-                ixs.append(ix)
-
             else:
-                ixs.append(self.get_single_line_ix(computation, results))
+                ix = self.get_single_line_ix(computation, results)
+
+            if ix is not None:
+                ixs.append(ix)
 
         tbl = Table(columns, ixs)
 
