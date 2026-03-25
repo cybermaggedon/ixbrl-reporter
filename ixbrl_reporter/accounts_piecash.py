@@ -9,6 +9,8 @@
 #     for v in rtn["totalVatDue"]["splits"]:
 #         print(v["date"], v["amount"])
 
+import warnings
+
 import piecash
 import json
 import math
@@ -20,7 +22,9 @@ class Accounts:
     # Opens a GnuCash book.  Config object provides configuration, needs
     # to support config.get("key.name") method.
     def __init__(self, file, rw=False):
-        self.book = piecash.open_book(file, readonly=not rw)
+        with warnings.catch_warnings():
+            warnings.filterwarnings("ignore", message="relationship '.*' will copy column")
+            self.book = piecash.open_book(file, readonly=not rw)
 
     def __del__(self):
         pass
