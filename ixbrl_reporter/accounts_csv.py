@@ -6,8 +6,10 @@ import datetime
 class Accounts:
 
     # Opens a CSV file.  Config object provides configuration, needs
-    # to support config.get("key.name") method.
-    def __init__(self, file):
+    # to support config.get("key.name") method.  `currency` is accepted
+    # for signature parity with the gnucash/piecash backends; CSV amounts
+    # are already expressed in the reporting currency, so it is unused.
+    def __init__(self, file, currency=None):
 
         self.transactions = []
         tx = {}

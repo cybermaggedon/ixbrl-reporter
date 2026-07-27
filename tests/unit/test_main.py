@@ -143,27 +143,29 @@ class TestMainConfigurationLoading:
                         config_instance = Mock()
                         config_instance.get.side_effect = lambda key: {
                             "accounts.kind": "csv",
-                            "accounts.file": "test.csv"
+                            "accounts.file": "test.csv",
+                            "metadata.accounting.currency": "GBP"
                         }[key]
                         mock_config.load.return_value = config_instance
-                        
+
                         accounts_class = Mock()
                         accounts_session = Mock()
                         accounts_class.return_value = accounts_session
                         mock_accounts.get_class.return_value = accounts_class
-                        
+
                         mock_data_source.return_value = Mock()
-                        
+
                         try:
                             main()
                         except Exception:
                             pass  # We only care about accounts processing
-                        
+
                         # Verify accounts were processed correctly
                         config_instance.get.assert_any_call("accounts.kind")
                         config_instance.get.assert_any_call("accounts.file")
+                        config_instance.get.assert_any_call("metadata.accounting.currency")
                         mock_accounts.get_class.assert_called_once_with("csv")
-                        accounts_class.assert_called_once_with("test.csv")
+                        accounts_class.assert_called_once_with("test.csv", "GBP")
                         mock_data_source.assert_called_once_with(config_instance, accounts_session)
 
 
@@ -176,6 +178,7 @@ class TestMainOutputFormats:
         self.mock_config.get.side_effect = lambda key: {
             "accounts.kind": "csv",
             "accounts.file": "test.csv",
+            "metadata.accounting.currency": "GBP",
             "report.taxonomy": "test-taxonomy"
         }.get(key, "default")
         
@@ -322,10 +325,11 @@ class TestMainErrorHandling:
                         config_instance = Mock()
                         config_instance.get.side_effect = lambda key: {
                             "accounts.kind": "invalid",
-                            "accounts.file": "test.csv"
+                            "accounts.file": "test.csv",
+                            "metadata.accounting.currency": "GBP"
                         }[key]
                         mock_config.load.return_value = config_instance
-                        
+
                         # Simulate accounts error
                         mock_accounts.get_class.side_effect = RuntimeError("Invalid accounts kind")
                         
@@ -386,7 +390,8 @@ class TestMainIntegration:
                                 config_instance = Mock()
                                 config_instance.get.side_effect = lambda key: {
                                     "accounts.kind": "csv",
-                                    "accounts.file": "accounts.csv", 
+                                    "accounts.file": "accounts.csv",
+                                    "metadata.accounting.currency": "GBP",
                                     "report.taxonomy": "taxonomy.yaml"
                                 }[key]
                                 mock_config.load.return_value = config_instance
@@ -412,7 +417,7 @@ class TestMainIntegration:
                                 config_instance.set.assert_any_call("internal.software-name", "ixbrl-reporter")
                                 config_instance.set.assert_any_call("internal.software-version", "1.2.3")
                                 mock_accounts.get_class.assert_called_once_with("csv")
-                                accounts_class.assert_called_once_with("accounts.csv")
+                                accounts_class.assert_called_once_with("accounts.csv", "GBP")
                                 mock_data_source.assert_called_once_with(config_instance, accounts_session)
                                 data_source_instance.get_element.assert_called_once_with('report.yaml')
                                 mock_taxonomy.assert_called_once_with("taxonomy.yaml", data_source_instance)

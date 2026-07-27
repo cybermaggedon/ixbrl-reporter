@@ -20,8 +20,11 @@ from datetime import datetime
 class Accounts:
 
     # Opens a GnuCash book.  Config object provides configuration, needs
-    # to support config.get("key.name") method.
-    def __init__(self, file, rw=False):
+    # to support config.get("key.name") method.  `currency` is the ISO
+    # mnemonic of the reporting currency (e.g. "GBP", "USD"); commodity
+    # amounts are converted into it via the book's price database.
+    def __init__(self, file, currency, rw=False):
+        self.currency = currency
         with warnings.catch_warnings():
             warnings.filterwarnings("ignore", message="relationship '.*' will copy column")
             self.book = piecash.open_book(file, readonly=not rw)
@@ -37,8 +40,13 @@ class Accounts:
     # recorded against that account and any child accounts.
     def get_splits(self, acct, start, end, endinclusive=True):
         splits = []
-        # Get GBP commodity
-        gbp = next(c for c in self.book.commodities if c.mnemonic == "GBP")
+        # Reporting currency may not appear in the book (e.g. a GBP-only
+        # book generating an EUR-labelled ESEF report).  In that case
+        # there is no FX conversion to attempt; pass amounts through.
+        target = next(
+            (c for c in self.book.commodities if c.mnemonic == self.currency),
+            None
+        )
 
         # Recurse into children
         childs = acct.children
@@ -61,12 +69,11 @@ class Accounts:
 
             if inperiod:
                 amount = float(spl.quantity)
-                if acct.commodity and acct.commodity != gbp:
+                if target is not None and acct.commodity and acct.commodity != target:
                     # Find the latest price up to 'end' date
-                    price = None
-                    relevant_prices = [p for p in self.book.prices 
-                                     if p.commodity == acct.commodity 
-                                     and p.currency == gbp 
+                    relevant_prices = [p for p in self.book.prices
+                                     if p.commodity == acct.commodity
+                                     and p.currency == target
                                      and p.date <= end]
                     if relevant_prices:
                         # Sort by date descending and take the latest
