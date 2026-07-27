@@ -28,6 +28,7 @@ class Accounts:
             self.session = self.open_session_rw(file)
         self.book = self.session.book
         self.root = self.book.get_root_account()
+        self.price_cache = {}
 
     def __del__(self):
         if self.session != None:
@@ -61,6 +62,8 @@ class Accounts:
             for v in acct.get_children():
                 splits.extend(self.get_splits(v, start, end))
 
+        rate = self.get_gbp_rate(acct, end)
+
         # Iterate over split list
         for spl in acct.GetSplitList():
             tx = spl.parent
@@ -78,12 +81,45 @@ class Accounts:
                 splits.append(
                     {
                         "date": dt,
-                        "amount": spl.GetAmount().to_double(),
+                        "amount": spl.GetAmount().to_double() * rate,
                         "description": tx.GetDescription()
                     }
                 )
 
         return splits
+
+    def get_gbp_rate(self, acct, end):
+        """
+        Latest price on or before 'end' converting the account's
+        commodity to GBP, as a float.  1.0 for GBP-denominated accounts,
+        0.0 if no price is available (mirrors the piecash backend).
+        """
+
+        comm = acct.GetCommodity()
+        if comm is None:
+            return 1.0
+
+        gbp = self.book.get_table().lookup("CURRENCY", "GBP")
+        if comm.equal(gbp):
+            return 1.0
+
+        key = (comm.get_unique_name(), end)
+        if key in self.price_cache:
+            return self.price_cache[key]
+
+        rate = 0.0
+        best_date = None
+        pdb = self.book.get_price_db()
+        for pr in pdb.get_prices(comm, gbp):
+            dt = pr.get_time64().date()
+            if dt <= end and (best_date is None or dt > best_date):
+                best_date = dt
+                rate = gnucash.GncNumeric(
+                    instance=pr.get_value()
+                ).to_double()
+
+        self.price_cache[key] = rate
+        return rate
 
     # Return an account given an account locator.  Navigates through
     # hierarchy, account parts are colon separated.
