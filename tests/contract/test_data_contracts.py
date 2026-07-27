@@ -293,7 +293,7 @@ class TestPiecashDataContract:
             mock_piecash.open_book.return_value = mock_book
             
             try:
-                accounts_impl = accounts_module.get_class("piecash")("dummy.gnucash")
+                accounts_impl = accounts_module.get_class("piecash")("dummy.gnucash", "GBP")
                 assert accounts_impl is not None
             except ImportError:
                 pytest.skip("Piecash integration not available")

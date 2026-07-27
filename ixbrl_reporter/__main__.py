@@ -29,9 +29,10 @@ def main():
 
         kind = cfg.get("accounts.kind")
         file = cfg.get("accounts.file")
+        currency = cfg.get("metadata.accounting.currency")
 
         cls = accounts.get_class(kind)
-        session = cls(file)
+        session = cls(file, currency)
 
         d = DataSource(cfg, session)
 

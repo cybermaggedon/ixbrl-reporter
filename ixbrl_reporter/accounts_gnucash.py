@@ -18,9 +18,12 @@ import math
 class Accounts:
 
     # Opens a GnuCash book.  Config object provides configuration, needs
-    # to support config.get("key.name") method.
-    def __init__(self, file, rw=False):
+    # to support config.get("key.name") method.  `currency` is the ISO
+    # mnemonic of the reporting currency (e.g. "GBP", "USD"); commodity
+    # amounts are converted into it via the book's price database.
+    def __init__(self, file, currency, rw=False):
         self.file = file
+        self.currency = currency
         self.session = None
         if rw:
             self.session = self.open_session(file)
@@ -62,7 +65,7 @@ class Accounts:
             for v in acct.get_children():
                 splits.extend(self.get_splits(v, start, end))
 
-        rate = self.get_gbp_rate(acct, end)
+        rate = self.get_currency_rate(acct, end)
 
         # Iterate over split list
         for spl in acct.GetSplitList():
@@ -88,19 +91,20 @@ class Accounts:
 
         return splits
 
-    def get_gbp_rate(self, acct, end):
+    def get_currency_rate(self, acct, end):
         """
         Latest price on or before 'end' converting the account's
-        commodity to GBP, as a float.  1.0 for GBP-denominated accounts,
-        0.0 if no price is available (mirrors the piecash backend).
+        commodity to the reporting currency, as a float.  1.0 for
+        accounts already denominated in the reporting currency, 0.0 if
+        no price is available (mirrors the piecash backend).
         """
 
         comm = acct.GetCommodity()
         if comm is None:
             return 1.0
 
-        gbp = self.book.get_table().lookup("CURRENCY", "GBP")
-        if comm.equal(gbp):
+        target = self.book.get_table().lookup("CURRENCY", self.currency)
+        if comm.equal(target):
             return 1.0
 
         key = (comm.get_unique_name(), end)
@@ -110,7 +114,7 @@ class Accounts:
         rate = 0.0
         best_date = None
         pdb = self.book.get_price_db()
-        for pr in pdb.get_prices(comm, gbp):
+        for pr in pdb.get_prices(comm, target):
             dt = pr.get_time64().date()
             if dt <= end and (best_date is None or dt > best_date):
                 best_date = dt
