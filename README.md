@@ -251,6 +251,6 @@ Output in `output`.
 
 ## License
 
-Copyright (c) Accounts Machine Limited, 2020-2022
+Copyright (c) cybermaggedon, 2020-2026,
 Licenced under the GPL version 3 licence, see the [LICENSE](LICENCE) file
 
