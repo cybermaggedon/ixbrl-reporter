@@ -42,6 +42,14 @@ def main():
             tx_cfg = cfg.get("report.taxonomy")
             tx = Taxonomy(tx_cfg, d)
             elt.to_ixbrl(tx, sys.stdout)
+        elif sys.argv[3] == "view":
+            from io import StringIO
+            from ixbrl_reporter.view import serve
+            tx_cfg = cfg.get("report.taxonomy")
+            tx = Taxonomy(tx_cfg, d)
+            buf = StringIO()
+            elt.to_ixbrl(tx, buf)
+            serve(buf.getvalue())
         elif sys.argv[3] == "html":
             tx_cfg = cfg.get("report.taxonomy")
             tx = Taxonomy(tx_cfg, d)

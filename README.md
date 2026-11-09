@@ -138,7 +138,8 @@ Where:
 - `report` specifies a report tag.
 - `format` specifies output format.  `text` outputs plain text, `ixbrl`
   outputs iXBRL (XHTML tagged with XBRL tags) and `html` outputs HTML, which
-  is iXBRL with the XBRL tags removed.
+  is iXBRL with the XBRL tags removed.  `view` generates the iXBRL and
+  opens it in Graffiti (see below).
 
 The examples use files in the git repo.  Clone the git repo to run this
 stuff:
@@ -171,6 +172,20 @@ The basic version is free.  It's just a bookmark in your browser!  Once
 your iXBRL document is loaded in the browser, invoke the bookmark and
 iXBRL tag navigation is seamlessly added to the document you are looking at.
 https://stechanalytics.com/#Graffiti
+
+### View in Graffiti
+
+```
+ixbrl-reporter config.yaml report view
+```
+
+This generates the same iXBRL as `ixbrl`, puts it in a temporary folder,
+serves that folder on 127.0.0.1 (this machine only, a free port, Python
+standard library only) and opens a page in your browser with one button,
+"Open in Graffiti".  Press it and the accounts open in Graffiti; the file
+passes between browser tabs and is not uploaded.  Press Ctrl-C to stop the
+server and delete the temporary folder.  To use a Graffiti server other than
+https://ai.stechanalytics.com, set `GRAFFITI_PROXY`.
 
 ## Configuration
 
