@@ -1,6 +1,7 @@
 """
 The 'view' output: serve the generated iXBRL from a temporary folder on
 127.0.0.1 and open a launcher page that hands it to Graffiti in the browser.
+When stdout is redirected the same iXBRL is also written there first.
 Standard library only.  The file is not uploaded: the launcher page passes
 it to the Graffiti tab with postMessage (the way the Graffiti bookmarklet
 does).  Set GRAFFITI_PROXY to use a Graffiti server other than
@@ -95,8 +96,17 @@ class _Handler(http.server.SimpleHTTPRequestHandler):
         pass
 
 
-def serve(content, proxy=None, open_browser=webbrowser.open, out=sys.stderr):
-    """Serve content (the iXBRL text) until Ctrl-C, then remove the folder."""
+def serve(content, proxy=None, open_browser=webbrowser.open, out=sys.stderr,
+          save=None):
+    """Serve content (the iXBRL text) until Ctrl-C, then remove the folder.
+
+    When save (default sys.stdout) is not a terminal, the content is also
+    written to it and flushed before serving, so
+    'report view > accounts.html' keeps the file."""
+    save = sys.stdout if save is None else save
+    if not save.isatty():
+        save.write(content)
+        save.flush()
     proxy = proxy or os.environ.get("GRAFFITI_PROXY") or DEFAULT_PROXY
     folder = tempfile.mkdtemp(prefix="ixbrl-reporter-view-")
     try:

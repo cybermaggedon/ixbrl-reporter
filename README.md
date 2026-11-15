@@ -187,6 +187,17 @@ passes between browser tabs and is not uploaded.  Press Ctrl-C to stop the
 server and delete the temporary folder.  To use a Graffiti server other than
 https://ai.stechanalytics.com, set `GRAFFITI_PROXY`.
 
+To keep the accounts file as well, redirect the output:
+
+```
+ixbrl-reporter config.yaml report view > accounts.html
+```
+
+When stdout is not a terminal, `view` writes the same iXBRL to it (complete
+and flushed) before it starts serving, so you get `accounts.html` and the
+Graffiti page from one command.  On a terminal nothing is printed; the
+server's own messages always go to stderr.
+
 ## Configuration
 
 All the configuration is in YAML, and there are various configuration

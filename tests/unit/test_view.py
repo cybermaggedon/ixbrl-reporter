@@ -17,6 +17,15 @@ def view_folders():
     return {d for d in os.listdir(root) if d.startswith("ixbrl-reporter-view-")}
 
 
+class FakeStdout(StringIO):
+    def __init__(self, tty):
+        super().__init__()
+        self.tty = tty
+
+    def isatty(self):
+        return self.tty
+
+
 def run_serve(content, checks, **kw):
     """Run serve() with a fake browser; checks(url) runs, then Ctrl-C."""
     out = StringIO()
@@ -76,3 +85,13 @@ class TestView:
         got = {}
         run_serve("x", lambda url: got.update(url=url))
         assert "proxy=http%3A%2F%2Flocalhost%3A3998" in got["url"]
+
+    def test_redirected_stdout_gets_the_ixbrl_before_serving(self):
+        save, seen = FakeStdout(tty=False), {}
+        run_serve("<html>accounts</html>", lambda url: seen.update(file=save.getvalue()), save=save)
+        assert seen["file"] == "<html>accounts</html>"
+
+    def test_terminal_stdout_gets_nothing(self):
+        save = FakeStdout(tty=True)
+        run_serve("<html>accounts</html>", lambda url: None, save=save)
+        assert save.getvalue() == ""
