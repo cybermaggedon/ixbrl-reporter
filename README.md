@@ -7,6 +7,10 @@ This is a command-line utility which creates iXBRL-tagged financial reports
 from configuration templates and account data.  It currently supports account
 information from GnuCash files, and also a CSV file of transactions.
 
+To see the result, the `view` output opens the generated accounts in
+[Graffiti](https://stechanalytics.com/#Graffiti), an in-browser iXBRL viewer:
+see [View in Graffiti](#view-in-graffiti).
+
 ## Discuss
 
 There's a #ixbrl-reporter channel on our Discord server if you want
@@ -139,7 +143,7 @@ Where:
 - `format` specifies output format.  `text` outputs plain text, `ixbrl`
   outputs iXBRL (XHTML tagged with XBRL tags) and `html` outputs HTML, which
   is iXBRL with the XBRL tags removed.  `view` generates the iXBRL and
-  opens it in Graffiti (see below).
+  opens it in Graffiti (see [View in Graffiti](#view-in-graffiti)).
 
 The examples use files in the git repo.  Clone the git repo to run this
 stuff:
@@ -148,8 +152,50 @@ stuff:
 git clone https://github.com/cybermaggedon/ixbrl-reporter
 ```
 
-Example, Companies House accounts. You should be able to view the resultant
-HTML in a browser:
+### View in Graffiti
+
+The easiest way to check the output is to open it in Graffiti, which shows
+the document with its iXBRL tags, checks and ratios:
+
+```
+ixbrl-reporter config.yaml report view
+```
+
+This generates the same iXBRL as `ixbrl`, puts it in a temporary folder,
+serves that folder on 127.0.0.1 (this machine only, a free port, Python
+standard library only) and opens a page in your browser with one button,
+"Open in Graffiti".  Press it and the accounts open in Graffiti; the file
+passes between browser tabs and is not uploaded.  No Graffiti account is
+needed.  Press Ctrl-C to stop the server and delete the temporary folder.
+To use a Graffiti server other than https://ai.stechanalytics.com, set
+`GRAFFITI_PROXY`.
+
+To keep the accounts file as well, redirect the output:
+
+```
+ixbrl-reporter config.yaml report view > accounts.html
+```
+
+When stdout is not a terminal, `view` writes the same iXBRL to it (complete
+and flushed) before it starts serving, so you get `accounts.html` and the
+Graffiti page from one command.  On a terminal nothing is printed; the
+server's own messages always go to stderr.
+
+Already have an iXBRL file?  Graffiti also works as a bookmark in your
+browser, and the basic version is free: open the file in the browser,
+invoke the bookmark, and iXBRL tag navigation is added to the document you
+are looking at.  See https://stechanalytics.com/#Graffiti
+
+> **Alternative: Arelle.**  You can also load the iXBRL into
+> [Arelle](https://arelle.org/arelle/), an iXBRL development tool, and run
+> its validation to check the output against the schema.  With the Workiva
+> [ixbrl-viewer](https://github.com/Workiva/ixbrl-viewer) plugin installed,
+> Arelle opens the document in a browser where you can navigate the tags
+> and inspect each fact's metadata.
+
+### Writing iXBRL to a file
+
+Companies House accounts.  You can open the resulting HTML in a browser:
 
 ```
 ixbrl-reporter config.yaml report ixbrl > accts.html
@@ -166,37 +212,6 @@ ESMA ESEF filing:
 ```
 ixbrl-reporter config-esef.yaml report ixbrl > esef.html
 ```
-
-Check out the awesome Graffiti tool for viewing iXBRL tags in a document.
-The basic version is free.  It's just a bookmark in your browser!  Once
-your iXBRL document is loaded in the browser, invoke the bookmark and
-iXBRL tag navigation is seamlessly added to the document you are looking at.
-https://stechanalytics.com/#Graffiti
-
-### View in Graffiti
-
-```
-ixbrl-reporter config.yaml report view
-```
-
-This generates the same iXBRL as `ixbrl`, puts it in a temporary folder,
-serves that folder on 127.0.0.1 (this machine only, a free port, Python
-standard library only) and opens a page in your browser with one button,
-"Open in Graffiti".  Press it and the accounts open in Graffiti; the file
-passes between browser tabs and is not uploaded.  Press Ctrl-C to stop the
-server and delete the temporary folder.  To use a Graffiti server other than
-https://ai.stechanalytics.com, set `GRAFFITI_PROXY`.
-
-To keep the accounts file as well, redirect the output:
-
-```
-ixbrl-reporter config.yaml report view > accounts.html
-```
-
-When stdout is not a terminal, `view` writes the same iXBRL to it (complete
-and flushed) before it starts serving, so you get `accounts.html` and the
-Graffiti page from one command.  On a terminal nothing is printed; the
-server's own messages always go to stderr.
 
 ## Configuration
 
@@ -235,19 +250,7 @@ See [Configuration File](docs/config.md).
 
 [Screenshots](docs/screenshots.md)
 
-## Other things to try
-
-Having created iXBRL, you can try loading into
-[Arelle](https://arelle.org/arelle/) which is an iXBRL development tool.
-In Arelle, you can invoke a validation and check the output matches the
-schema.
-
-Once Arelle is installed, you can install the Workiva
-[ixbrl-viewer](https://github.com/Workiva/ixbrl-viewer).  When an iXBRL
-document is loaded into Arelle, the document is automatically loaded into
-a browser with markup so that you can navigate the tags and discover tagged
-information.  With the iXBRL viewer when you hover over tagged information,
-it is highlighted, clicking opens up the metadata viewer.
+## Tests
 
 ### Test suite - unit, contract, integration
 
