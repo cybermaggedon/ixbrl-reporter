@@ -181,10 +181,9 @@ and flushed) before it starts serving, so you get `accounts.html` and the
 Graffiti page from one command.  On a terminal nothing is printed; the
 server's own messages always go to stderr.
 
-Already have an iXBRL file?  Graffiti also works as a bookmark in your
-browser, and the basic version is free: open the file in the browser,
-invoke the bookmark, and iXBRL tag navigation is added to the document you
-are looking at.  See https://stechanalytics.com/#Graffiti
+Already have an iXBRL file?  Open it from the Graffiti website: go to
+https://stechanalytics.com/browse.html, choose "Your own file or link" and
+pick the file.  This is free and needs no account or install.
 
 > **Alternative: Arelle.**  You can also load the iXBRL into
 > [Arelle](https://arelle.org/arelle/), an iXBRL development tool, and run
